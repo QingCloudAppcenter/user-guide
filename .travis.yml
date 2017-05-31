@@ -1,0 +1,26 @@
+sudo: required
+language: node_js
+node_js:
+- node
+cache:
+  directories:
+  - node_modules
+before_install:
+- openssl aes-256-cbc -K $encrypted_7127281a9724_key -iv $encrypted_7127281a9724_iv
+  -in config.yaml.enc -out config.yaml -d
+install:
+- npm install -g gitbook-cli
+- npm install -g markdownlint-cli
+- sudo pip install qsctl
+before_script:
+- export FILENAME="_book/qingcloud-apps-user-guide"
+script:
+- markdownlint --config markdownlint.conf.json docs/*
+- gitbook install
+- gitbook build . $FILENAME
+- if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then qsctl
+  sync _book/qingcloud-apps-user-guide/ qs://appcenter-docs/user-guide/apps/ 
+  --config config.yaml; fi
+notifications:
+  slack:
+    secure: uOnKljnxLH5YApJ/mdPJurGYmOvLibIENVEgaln8ibAp+2xeHTJ9QoKSRJQjGB1Dl9EBB6pvu/mSQsE7ywsH9xHMG8gUSn6KlEwuQ1vUhdY3hwTmRxDcfIxsguFCGXGP6TQZqz28IoD+7oLr+JYV5c8YEW50vQtfSxnf/p6LWzNZEKpoH2OxoHcM44oZv5py5FQQHXL40TkOTQeSZndYUjjsWWZWsiM8G4Um5W7WPTZAQt+aFFCTKKzy4AEI9dpUYQaQjigpz6rsCyVmxEAXLSCveRt5Kh6f9/72a72tPzNuyiqi8qw1mFa5xc9duEHDx6LWhtg4F0nChwRTVx4CjrL4SidP70ydz28oiiFyER6HofQNeLzaS9TnX4pzzsjOwGK3e4u52bq9lsJvNT902YgMChtjekNHN/ZMISWZoLPrcAT/heXhfrjP+9NHI7UJt8zNcVFVkfac86tJyiu+pEB+gD4QLH3a8q0cVM62o1/adKZ88r5CvM2Uf76Ug6cTo8ju1AbHzAj88HZe42ZSC31g7tcOqYRoT3k3TSxY1J86quHAmAcp3BUYynC1IQtT18w+oq9shM8Yn6md52wVrU8pO7Ffxqgg1c1IhZErMGbaZc/lvxfbvg8RbLF1itKR1g+1vnRi3gH1RhmoKeH9dqyGdKOtkzLqWC73ccXn7qU=
