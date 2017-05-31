@@ -1,0 +1,20 @@
+{
+  "title": "QingCloud Apps User Guide on AppCenter 2.0",
+  "structure.readme": "README.md",
+  "gitbook":">=3.2.2",
+  "plugins": ["image-captions", "styles-less","-lunr", "-search", "search-pro","anchor-navigation-ex","-sharing","sitemap"],
+  "pluginsConfig": {
+    "image-captions": {
+      "align": "left"
+    },
+    "anchor-navigation-ex":{
+      "showLevel": false
+    },
+    "sitemap":{
+      "hostname":"https://appcenter-docs.qingcloud.com/user-guide/apps/docs/"
+    }
+  },
+  "styles": {
+    "website": "./styles/website.less"
+  }
+}
