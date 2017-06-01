@@ -115,7 +115,7 @@ Harbor on QingCloud 将 Harbor 制作成了 App，能直接在 AppCenter 进行�
 
 通过浏览器访问 Harbor 镜像仓库，地址为之前填写的`Harbor 地址`,如这里的 http://139.198.1.46
 
-**初始账户密码为: admin/Harbor12345**
+初始账户密码为: admin/Harbor12345
 
 ![](snapshot/WX20170531-125146@2x.png)
 
