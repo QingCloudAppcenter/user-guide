@@ -22,7 +22,7 @@ function test_by_nodejs {
 
 set -x
 
-if not type docker &> /dev/null; then
+if type docker &> /dev/null; then
   test_by_docker
 elif type node &> /dev/null; then
   if ! type markdownlint &> /dev/null; then
