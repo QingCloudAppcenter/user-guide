@@ -8,6 +8,7 @@ function test_by_docker {
   docker cp markdownlint.conf.json nodejs_guide:/tmp/
   docker exec -it nodejs_guide npm install -g markdownlint-cli --registry=https://registry.npm.taobao.org
   docker exec -it nodejs_guide markdownlint --config /tmp/markdownlint.conf.json /tmp/docs/
+  docker rm -f nodejs_guide
 }
 
 function test_by_nodejs {
