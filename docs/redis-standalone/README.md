@@ -153,7 +153,7 @@ done
 
 ​	获取 **Redis** 日志，**Redis on QingCloud Standalone** 默认开启了 FTP 服务，您可以通过 FTP 来获取 **Redis** 的日志，用户名为 _ubuntu_ ， 与系统上 ubuntu 用户的密码相同，默认密码为 _p12cHANgepwD_。
 
-![get_log](/home/zry/workspace/user-guide/images/redis-standalone/get_log.png)
+![get_log](../../images/redis-standalone/get_log.png)
 
 
 
