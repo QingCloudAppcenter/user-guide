@@ -2,19 +2,21 @@
 
 ## 简介
 
-[Kafka](http://kafka.apache.org/) 是一种高吞吐量、低延迟、高可靠的分布式发布订阅消息系统。
+[Kafka](http://kafka.apache.org/) 是一种高吞吐、低延迟、高可靠的分布式发布订阅消息系统。
 
-`Kafka on QingCloud AppCenter` 将 Kafka 通过云应用的形式在 QingCloud AppCenter 部署，具有如下特性：
+`Kafka on QingCloud AppCenter` 将 Kafka 通过云应用的形式在 QingCloud AppCenter 部署，具有如下特性:
 
-
-    - 支持横向与纵向扩容
-    - 系统自动运维，降低企业使用成本
-    - 提供了监控告警功能更好的管理集群
-    - 节点上安装了 Kafka-manager，可以管理和监控对多个 Kafka 集群
+-  支持横向与纵向扩容
+- 系统自动运维，降低企业使用成本
+- 提供了监控告警功能更好的管理集群
+- 节点上安装了 Kafka-manager，可以管理和监控对多个 Kafka 集群
 
 ## 创建 Kafka
 
-创建 Kafka 集群前，您需要先创建一个 VPC 网络和 Zookeeper 集群,强烈建议 Kafka 与 Zookeeper 在一个私有网络中。
+创建 Kafka 集群前，您需要先创建一个 VPC 网络和 Zookeeper 集群,建议 Kafka 与 Zookeeper 在一个私有网络中。
+
+> 为了保障数据安全, Kafka 集群需要运行在受管私有网络中。所以在创建一个 Kafka 集群之前，需要创建一个 VPC 和一个受管私有网络，受管私有网络需要加入 VPC，并开启 DHCP 服务（默认开启）。
+
 
 
 ### 第一步：基本设置
@@ -58,10 +60,10 @@ CPU，内存，节点数量，主机类型和磁盘大小根据自己实际需�
 
 #### 自动添加集群配置到 Kafka-manager
 
-Kafka 创建完后，会自动把相关配置加载到 Kafka-manager，可以直接通过集群 Id 点击进入集群。
+Kafka 创建完后，会自动把相关配置加载到 Kafka-manager，可以直接通过集群 id 点击进入集群。
 
 
-#### 手动添加集群配置到 Kafka-manager 方法
+#### 同时也可以手动添加集群配置到 Kafka-manager  
 
 如图所示
 
@@ -71,12 +73,12 @@ Kafka 创建完后，会自动把相关配置加载到 Kafka-manager，可以直
 
 #### 具体步骤说明
 
-    1. 浏览器上输入 http://任意节点IP:port/，默认端口为9000
-    2. 如果配置时指定需要登录，请使用配置的帐号登录
-    3. 选择 Cluster，Add Cluster
-    4. 自定义一个名字,填写所连接的 Kafka 集群地址，青云提供的 Kafka 服务对应的命名空间路径为： zkhost1:port,zkhost2:port...,zkhost/kafka/集群ID,例如 Kafka 集群 id为 cl-j0yf8y1l ， Zookeeper 地址：192.168.0.1:2181,192.168.0.2:2181,192.168.0.3:2181，则填写 192.168.0.1:2181,192.168.0.2:2181,192.168.0.3:2181/kafka/cl-j0yf8y1
-    5. 选择 Kafka 对应的版本 ，对应到大版本即可，例如 Kafka 版本为0.10.2,可以选择 0.10.*  并勾选jmx配置
-    6. 更改基本配置，save 后可以使用 kafka-manger 来管理和监控 Kafka 集群了
+ 1. 浏览器上输入 http://任意节点IP:port/，默认端口为9000
+ 2. 如果配置时指定需要登录，请使用配置的帐号登录
+ 3. 选择 Cluster，Add Cluster
+ 4. 自定义一个名字,填写所连接的 Kafka 集群地址，青云提供的 Kafka 服务对应的命名空间路径为： zkhost1:port,zkhost2:port...,zkhost/kafka/集群ID,例如 Kafka 集群 id 为 cl-j0yf8y1l ， Zookeeper 地址：192.168.0.1:2181,192.168.0.2:2181,192.168.0.3:2181，则填写 192.168.0.1:2181,192.168.0.2:2181,192.168.0.3:2181/kafka/cl-j0yf8y1
+ 5. 选择 Kafka 对应的版本 ，对应到大版本即可，例如 Kafka 版本为0.10.2,可以选择 0.10.* ,勾选jmx配置
+ 6. 更改基本配置，save 后可以使用 kafka-manger 来管理和监控 Kafka 集群了
 
 ## 集群使用
 
@@ -113,7 +115,7 @@ Kafka 创建完后，会自动把相关配置加载到 Kafka-manager，可以直
 
 ### kafka-manager 创建 topic
 
-点击 `topic` ， 点击 `Create`,若不单独配置参数，会使用集群级别默认参数：
+点击 `topic` ， 点击 `Create`,若不单独给 topic 配置参数，会使用集群级别默认参数：
 
 ![创建主题](../../images/kafka/create_topic.png)
 
