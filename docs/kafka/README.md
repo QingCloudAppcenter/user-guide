@@ -10,13 +10,12 @@
     - 支持横向与纵向扩容
     - 系统自动运维，降低企业使用成本
     - 提供了监控告警功能更好的管理集群
-    - 节点上安装了 Kafka-manager，可以管理和监控对多个 Kafka 集群，例如：创建与管理 topic、监控 topic，监控集群，平衡 partitions 等。
+    - 节点上安装了 Kafka-manager，可以管理和监控对多个 Kafka 集群
 
 ## 创建 Kafka
 
-创建 Kafka 集群前，您需要先创建一个 VPC 网络和 Zookeeper 集群。
+创建 Kafka 集群前，您需要先创建一个 VPC 网络和 Zookeeper 集群,强烈建议 Kafka 与 Zookeeper 在一个私有网络中。
 
-    >为了保障数据安全, Kafka 集群需要运行在受管私有网络中。所以在创建一个 Kafka 集群之前，需要创建一个 VPC 和一个受管私有网络，受管私有网络需要加入 VPC，并开启 DHCP 服务（默认开启）。
 
 ### 第一步：基本设置
 
@@ -59,7 +58,7 @@ CPU，内存，节点数量，主机类型和磁盘大小根据自己实际需�
 
 #### 自动添加集群配置到 Kafka-manager
 
-Kafka 创建完后，会自动把相关配置加载到 Kafka-manager，可以直接通过集群Id 点击进入集群。
+Kafka 创建完后，会自动把相关配置加载到 Kafka-manager，可以直接通过集群 Id 点击进入集群。
 
 
 #### 手动添加集群配置到 Kafka-manager 方法
@@ -114,19 +113,19 @@ Kafka 创建完后，会自动把相关配置加载到 Kafka-manager，可以直
 
 ### kafka-manager 创建 topic
 
-点击 `topic` ， 可以在 Create,若不单独配置参数，会使用集群级别默认参数：
+点击 `topic` ， 点击 `Create`,若不单独配置参数，会使用集群级别默认参数：
 
 ![创建主题](../../images/kafka/create_topic.png)
 
 ### kafka-manager 管理 topic
 
-点击 `topic` ， 可以在 List 里找到 topic 进行管理，修改 topic 参数：
+点击 `topic` ， 可以在 `List` 里找到 topic 进行管理，修改 topic 参数：
 
 ![管理主题](../../images/kafka/manager_topic.png)
 
 ### kafka-manager 平衡分区 leader
 
-点击 `Preferred Replica Election` ，点击 Run 执行：
+点击 `Preferred Replica Election` 通过 Run 执行：
 
 ![平衡分区](../../images/kafka/rebalance_leader.png)
 
