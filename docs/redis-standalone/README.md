@@ -107,9 +107,9 @@
 ​	如果您目前有 **Redis( >= 2.6.0)** 数据库数据想迁移到 **Redis on QingCloud** 上来，可以使用下列的方式来迁移:
 
 - **迁移脚本** 您可以使用 [redis_migrate.sh](./redis_migrate.sh) 来迁移，请将脚本下载到本地后，修改脚本里的服务器信息，填写实际的服务器IP和端口号。如有设置密码请将密码一起填入，然后执行脚本即可。
-- **redis-port** 您也可以使用 [redis_port](https://github.com/CodisLabs/redis-port/releases) 来迁移， 下载程序后，执行 `./redis-port sync -f [源地址:端口号] -t [目标地址:端口号] -n 8`即可。此工具也支持rdb文件导入，比较灵活，详细说明请参见 https://github.com/CodisLabs/redis-port
+- **redis-port** 您也可以使用 [redis_port](https://github.com/CodisLabs/redis-port/releases) 来迁移， 下载程序后，执行 `./redis-port sync -f [源地址:端口号] -t [目标地址:端口号] --redis -n 8`，如下图，提示完成[100%]，即可终止程序。此工具也支持rdb文件导入，比较灵活，详细说明请参见 https://github.com/CodisLabs/redis-port
 
-
+![redis_port](../../images/redis-standalone/migrate.png)
 
 ### 获取日志
 
