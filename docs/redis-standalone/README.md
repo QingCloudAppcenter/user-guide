@@ -104,52 +104,16 @@
 
 ### 迁移现有数据
 
-​	如果您目前有 **Redis( >= 2.6.0)** 数据库数据想迁移到 **Redis on QingCloud** 上来，可以使用下面的脚本来拷贝数据，根据您的服务器配置来修改下列脚本的参数。
+​	如果您目前有 **Redis( >= 2.6.0)** 数据库数据想迁移到 **Redis on QingCloud** 上来，可以使用下列的方式来迁移:
 
-```shell
-#!/bin/bash
-
-######
-###	Migrates the keys responding to the pattern specified on the command line, using DUMP/RESTORE, supports authentication differently from MIGRATE
-######
-
-KEYS_MATCHER=$1
-SOURCE_HOST=localhost
-SOURCE_PASSWORD=foobared
-SOURCE_PORT=6379
-SOURCE_SCHEMA=0
-TARGET_HOST=localhost
-TARGET_PASSWORD=foobared
-TARGET_PORT=6379
-TARGET_SCHEMA=0
-LOG_FILE="redis-migrate.log"
-
-if [[ -z "$KEYS_MATCHER" ]]; then
-	echo -e "Please provide a KEYS matcher, like *~cache"
-	exit 1
-fi
-
-echo "***	Migrating keys matching $KEYS_MATCHER"
-
-redis-cli -h $SOURCE_HOST -a $SOURCE_PASSWORD -p $SOURCE_PORT keys $KEYS_MATCHER | while read key; do
-	# Preparing TTL
-	key_ttl=`redis-cli -h $SOURCE_HOST -a $SOURCE_PASSWORD -p $SOURCE_PORT ttl "$key"`
-	if [[ $key_ttl -lt 1 ]]; then
-		key_ttl=0
-	fi
-
-	echo "Dump/Restore \"$key\", ttl $key_ttl" &>> $LOG_FILE
-
-	key_ttl+="000" # TTL must be in milliseconds when specifying it
-	redis-cli --raw -h $SOURCE_HOST -p $SOURCE_PORT -n $SOURCE_SCHEMA -a $SOURCE_PASSWORD DUMP "$key" | head -c -1 | redis-cli -x -h $TARGET_HOST -p $TARGET_PORT -n $TARGET_SCHEMA -a $TARGET_PASSWORD RESTORE "$key" $key_ttl &>> $LOG_FILE
-done
-```
+- **迁移脚本** 您可以使用 [redis_migrate.sh](./redis_migrate.sh) 来迁移，请将脚本下载到本地后，修改脚本里的服务器信息，填写实际的服务器IP和端口号。如有设置密码请将密码一起填入，然后执行脚本即可。
+- **redis-port** 您也可以使用 [redis_port](https://github.com/CodisLabs/redis-port/releases) 来迁移， 下载程序后，执行 `./redis-port sync -f [源地址:端口号] -t [目标地址:端口号] -n 8`即可。此工具也支持rdb文件导入，比较灵活，详细说明请参见 https://github.com/CodisLabs/redis-port
 
 
 
 ### 获取日志
 
-​	获取 **Redis** 日志，**Redis on QingCloud Standalone** 默认开启了 FTP 服务，您可以通过 FTP 来获取 **Redis** 的日志，用户名为 _ubuntu_ ， 与系统上 ubuntu 用户的密码相同，默认密码为 _p12cHANgepwD_。
+​	获取 **Redis** 日志，**Redis on QingCloud Standalone** 默认开启了 FTP 服务，您可以通过 FTP 来获取 **Redis** 的日志，用户名为 _ftp_redis_ ，默认密码为 _Pa88w0rd_。
 
 ![get_log](../../images/redis-standalone/get_log.png)
 
