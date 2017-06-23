@@ -45,7 +45,7 @@ Memcached on QingCloud 将 Memcached 制作成App,　能直接在AppCenter 进�
 
 ```python
 import memcache
-mc = memcache.Client(['192.168.0.13','192.168.0.14','192.168.0.15'])
+mc = memcache.Client(['192.168.0.13:11211','192.168.0.14:11211','192.168.0.15:11211'])
 mc.set('kobe', 'laker')
 mc.get_stats()[0][1].get('curr_items')
 mc.get_stats()[1][1].get('curr_items')
