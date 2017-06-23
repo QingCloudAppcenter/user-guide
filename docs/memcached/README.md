@@ -41,7 +41,14 @@ Memcached on QingCloud 将 Memcached 制作成App,　能直接在AppCenter 进�
 
 当缓存服务创建完成之后，我们可以进行连接测试。 如图所示，我们可以同时连接到多节点进行查询和写入，Memcached 的客户端会根据 Hash 算法来自动计算数据的存放节点位置。
 
-![](snapshot/create_memcached_connect.png)
+测试代码(需要预先安装python以及python-memcached):
+```
+import memcache
+mc = memcache.Client(['192.168.0.13','192.168.0.14','192.168.0.15'])
+mc.set('kobe', 'laker')
+mc.get_stats()[0][1].get('curr_items')
+mc.get_stats()[1][1].get('curr_items')
+```
 
 ## 在线伸缩
 
