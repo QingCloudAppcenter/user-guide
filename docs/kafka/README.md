@@ -2,11 +2,11 @@
 
 ## 简介
 
-[Kafka](http://kafka.apache.org/) 是一种高吞吐、低延迟、高可靠的分布式发布订阅消息系统。
+[Kafka](http://kafka.apache.org/) 是一种高吞吐量、低延迟、高可靠的分布式发布订阅消息系统。
 
 `Kafka on QingCloud AppCenter` 将 Kafka 通过云应用的形式在 QingCloud AppCenter 部署，具有如下特性:
 
--  支持横向与纵向扩容
+- 支持横向与纵向扩容
 - 系统自动运维，降低企业使用成本
 - 提供了监控告警功能更好的管理集群
 - 节点上安装了 Kafka-manager，可以管理和监控对多个 Kafka 集群
@@ -133,6 +133,74 @@ Kafka 创建完后，`Kafka on QingCloud AppCenter` 会自动把相关配置加�
 点击 `Preferred Replica Election` 通过 Run 执行：
 
 ![平衡分区](../../images/kafka/rebalance_leader.png)
+
+## kafka 客户端命令行示例简介
+
+### 创建 topic
+
+ 创建一个 topic 为 test ，该 topic 分区为3，副本为1
+
+> kafka-topics.sh  --create --zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/kafka/cl-zom1un35 --replication-factor 1 --partitions 3 --topic test
+
+### 查看 topic
+
+ 查看集群所有 topic
+
+> kafka-topics.sh --list --zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/kafka/cl-zom1un35
+
+### 向 topic 发送消息
+
+ 向 test 发送消息
+
+> kafka-console-producer.sh --broker-list 192.168.3:9092,192.168.0.4:9092,192.168.0.9:9092 --topic test
+
+### 消费 topic 消息
+
+ 消费 test 消息（若没有使用 --from-beginning ， 则从最新的开始消费）
+
+> kafka-console-consumer.sh --bootstrap-server 192.168.3:9092,192.168.0.4:9092,192.168.0.9:9092 --topic test --from-beginning
+
+### 查看 topic 消息分布情况
+
+  查看 test 消息分布情况
+
+>kafka-topics.sh --describe --zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/kafka/cl-zom1un35 --topic test
+
+### 修改 topic
+
+  修改分区
+
+>kafka-topics.sh -zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/kafka/cl-zom1un35 --alter --topic test  partitions 2
+
+删除 topic
+
+>kafka-topics.sh -zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/kafka/cl-zom1un35 --delete --topic test
+
+### 平衡 topic
+
+平衡 topic 分区 leader
+
+>kafka-preferred-replica-election.sh -zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/kafka/cl-zom1un35
+
+### 查看消费者消费情况
+
+检查 topic 消费者消费情况
+
+>kafka-consumer-offset-checker.sh  --zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/kafka/cl-zom1un35 --topic test --group test_group
+
+### 更改 topic 配置参数
+
+更改 topic 配置参数(也可以在创建的时候指定，例如创建时候最后跟上 --config a=b --config x=y)
+
+>kafka-configs.sh --zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/kafka/cl-zom1un35 --entity-type topics --entity-name test  --alter --add-config max.message.bytes=128000
+
+
+## 注意事项
+
+- Kafka 0.10.1 版本之后数据清除策略更新，不再与 segment 文件最新修改时间对比，而是与消息的时间戳对比，数据文件轮滚时间也更新为以消息的时间戳为准。
+- 请尽量合理选择和预留存储资源，合理配置数据存储周期和大小，尽量避免因为磁盘写满而造成的线上故障
+- 开发的时候客户端尽量选择与服务端对应的版本
+- 可以使用 kafka-manager 管理和修改 topic 配置，监控集群，同时您也可以自己安装客户端，使用命令行形式使用集群
 
 
 至此，`Kafka on QingCloud AppCenter` 的介绍到这里就告一个段落了。
