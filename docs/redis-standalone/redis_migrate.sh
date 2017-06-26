@@ -19,7 +19,7 @@ fi
 
 function usage()
 {
-	echo "./redis_migrate -f [源地址:端口号] -t [目标地址:端口号] [-a 源地址密码] [-p 目标地址密码] [-k key]"
+	echo "./redis_migrate -f [源地址:端口号] -t [目标地址:端口号] [-a 源地址密码] [-p 目标地址密码]"
 }
 
 ARGS=`getopt -a -o f:a:t:p:k:h -l from:,auth:,target:,password:,help -- "$@"`
