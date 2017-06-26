@@ -119,6 +119,13 @@ Kafka 创建完后，`Kafka on QingCloud AppCenter` 会自动把相关配置加�
 
   ![集群扩容](../../images/kafka/kafka_cluster_resize.png)
 
+### 跨网访问
+
+青云提供灵活的网络配置， Kafka 在实际使用中会出现 producer，consumer 与 broker 都不在一个网段之中， 这个时候需要在 broker 所在的路由器上配置端口转发，并且需要修改 broker 的 advertised host 与 advertised port 为路由器转发的源地址和源端口。这是因为 Kafka 各节点(broker, producer, consumer) 之间是靠 advertised host 与 advertised port 通讯的。假设路由器的 IP 地址是 207.226.141.61，端口9080转发到 Kafka broker 192.168.0.10端口9092， 点击`配置参数`，`修改属性`， 修改 `advertised.host.name` 为 207.226.141.61，修改 `advertised.port` 为9080 ：
+
+![跨网访问](../../images/kafka/cross_cluster.png)
+
+
 ### kafka-manager 创建 topic
 
 点击 `topic` ， 点击 `Create`,若不单独给 topic 配置参数，会使用集群级别默认参数：
