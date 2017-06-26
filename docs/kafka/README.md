@@ -4,12 +4,15 @@
 
 [Kafka](http://kafka.apache.org/) 是一种高吞吐量、低延迟、高可靠的分布式发布订阅消息系统。
 
+
 `Kafka on QingCloud AppCenter` 将 Kafka 通过云应用的形式在 QingCloud AppCenter 部署，具有如下特性:
 
 - 支持横向与纵向在线伸缩
 - 系统自动运维，降低企业使用成本
 - 提供了监控告警功能更好的管理集群
 - 节点上安装了 Kafka-manager，可以管理和监控对多个 Kafka 集群
+
+>注意：Kafka-manager web 界面目前显示的最新版本为 0.10.1， 支持与 Kafka 大版本的对应。我们以创建 Kafka 实际版本为主，并不会影响到您使用 Kafka 和 Kafka-manager 。
 
 ## 创建 Kafka
 
