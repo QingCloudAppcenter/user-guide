@@ -6,14 +6,14 @@
 
 `Kafka on QingCloud AppCenter` 将 Kafka 通过云应用的形式在 QingCloud AppCenter 部署，具有如下特性:
 
-- 支持横向与纵向扩容
+- 支持横向与纵向在线伸缩
 - 系统自动运维，降低企业使用成本
 - 提供了监控告警功能更好的管理集群
 - 节点上安装了 Kafka-manager，可以管理和监控对多个 Kafka 集群
 
 ## 创建 Kafka
 
-创建 Kafka 集群前，您需要先创建一个 VPC 网络和 Zookeeper 集群,建议 Kafka 与 Zookeeper 在一个私有网络中。
+创建 Kafka 集群前，您需要先创建一个 VPC 网络，并在 QingCloud AppCenter 中创建一个 Zookeeper 集群,其他地方创建的 Zookeeper 集群识别不出来， 建议 Kafka 与 Zookeeper 在一个私有网络中。
 
 > 为了保障数据安全, Kafka 集群需要运行在受管私有网络中。所以在创建一个 Kafka 集群之前，需要创建一个 VPC 和一个受管私有网络，受管私有网络需要加入 VPC，并开启 DHCP 服务（默认开启）。
 
