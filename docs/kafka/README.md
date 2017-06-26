@@ -155,13 +155,13 @@ Kafka 创建完后，`Kafka on QingCloud AppCenter` 会自动把相关配置加�
 
  向 test 发送消息
 
-> kafka-console-producer.sh --broker-list 192.168.3:9092,192.168.0.4:9092,192.168.0.9:9092 --topic test
+> kafka-console-producer.sh --broker-list 192.168.0.3:9092,192.168.0.4:9092,192.168.0.9:9092 --topic test
 
 ### 消费 topic 消息
 
  消费 test 消息（若没有使用 --from-beginning ， 则从最新的开始消费）
 
-> kafka-console-consumer.sh --bootstrap-server 192.168.3:9092,192.168.0.4:9092,192.168.0.9:9092 --topic test --from-beginning
+> kafka-console-consumer.sh --bootstrap-server 192.168.0.3:9092,192.168.0.4:9092,192.168.0.9:9092 --topic test --from-beginning
 
 ### 查看 topic 消息分布情况
 
