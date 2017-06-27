@@ -41,14 +41,17 @@ Redis cluster on QingCloud AppCenter 基于原生的Redis提供了Redis cluster�
 ![](snapshots/overview.png)
 
 ### 配置参数
+
 可以在此修改环境参数，参数修改完成保存后，集群将重启以应用新的参数配置，所以请在服务压力相对较小的时候修改参数。
 ![](snapshots/config.png)
 
 ### 监控告警
+
 可以在此为节点配置告警信息，随时监控您的服务
 ![](snapshots/alert.png)
 
 ## 测试
+
 当缓存服务创建完成之后，我们可以进行连接测试。
 
 ### 1）检查集群状态
@@ -61,7 +64,7 @@ Redis cluster on QingCloud AppCenter 基于原生的Redis提供了Redis cluster�
 
 然后您能看到如下的集群信息
 
-```
+```shell
 Connecting to node 192.168.100.13:6379: OK
 Connecting to node 192.168.100.11:6379: OK
 Connecting to node 192.168.100.10:6379: OK
@@ -207,6 +210,7 @@ Redis 集群服务每个主节点可以支持多个从节点。当读的能力�
 注解 存储容量只能扩容，不支持减少存储容量。在线扩容期间，缓存服务会被重启。
 
 ## 迁移
+
 迁移数据既包括 Redis standalone 之间也包括从 Redis Standalone 到 Redis Cluster。
 
 ### 从 Redis standalone 迁移数据到 Redis cluster
