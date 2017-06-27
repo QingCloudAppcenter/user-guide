@@ -8,5 +8,4 @@
 * [Nextcloud](docs/nextcloud/README.md)
 * [Redis Standalone](docs/redis-standalone/README.md)
 * [ZooKeeper](docs/zk/README.md)
-
-
+* [Tomcat](docs/tomcat/README.md)
