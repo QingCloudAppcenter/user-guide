@@ -70,7 +70,23 @@ CPU，内存，节点数量，实例类型和磁盘大小根据自己实际需�
 
 ![第3步: 服务环境参数设置](../../images/tomcat/basic_env_config.png)
 
-Tomcat 集群的环境参数必填的只有 Tomcat 管理员的用户名和密码，缺省密码为 `qing0pwd`，用于访问 Tomcat Manager 服务。填写完成后如果直接点击 `提交`，就会直接进入第四步部署应用。这种情况下会使用 Tomcat 自带的 **SimpleTcpCluster** 模块，通过内存同步 Session 数据，并且没有部署任何第三方 WAR 文件。
+以上为 Tomcat 集群的环境参数必填项，也可选择使用青云提供的缺省值，缺省密码为 `qing0pwd`，用于访问 Tomcat Manager 服务。填写完成后如果直接点击 `提交`，就会直接进入第四步部署应用。这种情况下会使用 Tomcat 自带的 **SimpleTcpCluster** 模块，通过内存同步 Session 数据，并且没有部署任何第三方 WAR 文件。
+
+**说明：**
+
+1. Tomcat 字符编码方式的配置会被分别设置在 JAVA_OPTS （-Djavax.servlet.request.encoding=UTF-8 -Dfile.encoding=UTF-8） 以及 server.xml 中，前者会作为环境变量被 Tomcat 的启动脚本使用。
+2. 本集群使用 Tomcat 共享线程池。
+3. 如果 WAR 文件的获取方式选择了 tomcat_manager，可以通过通过负载均衡器的地址访问 Tomcat Manager <http://load-balancer-address:8080> ，这时访问的是某一节点的 Tomcat Manager ，输入用户名和密码，上传 WAR 文件完成部署，注意，Tomcat Manger 并不支持集群分发部署，也就是说这个 WAR 现在只是在当前节点部署成功，之后青云提供的监控脚本会发现这个新部署的文件夹，并复制到 Tomcat FarmWarDeployer 监控的目录中，这样 FarmWarDeployer 会通知其他节点，实现分发部署。
+另外，您也可以选择青云合作伙伴提供的 Jenkins 应用服务 <https://appcenter.qingcloud.com/apps/app-jbffg31u> ，运行之后访问 Jenkins 控制台，下载并配置 Jenkins 的 “Deploy to container” 插件，实现分发部署。
+4. 我们会根据您设置的节点物理内存大小自动配置 Java 虚拟机的最小和最大堆栈大小，分别为四分之一和二分之一内存大小，也就是说如果选择单节点 4G 内存，则 xms 为 1G，xmx为 2G。
+
+#### 可选：配置 JAVA_OPTS
+如果您对 Java 虚拟机有自身的配置要求，比如上面提到的最小和最大堆栈大小，可以直接配置 JAVA_OPTS 参数，例如：
+-Djavax.servlet.request.encoding=UTF-8 -Dfile.encoding=UTF-8 -Xms512m -Xmx1024m -XX:NewRatio=1 -XX:ReservedCodeCacheSize=128m
+![可选：配置 JAVA_OPTS](../../images/tomcat/java_opts_config.png)
+
+**注意：**
+您需自己预先校验参数的有效性，如果一旦某些参数无效，可能会导致集群启动失败，另外，JAVA_OPTS 的配置会覆盖环境变量中某些配置，包括字符编码 （javax.servlet.request.encoding 和 file.encoding）以及预分配的 xms 和 xms。
 
 #### 可选：Redis 数据库实现 Session 复制
 
@@ -83,7 +99,7 @@ Redis 数据库的创建可以在控制台中创建
 
 ![Redis 数据库的创建可以在控制台中创建](../../images/tomcat/redis_setup.png)
 
-** 注意：**
+**注意：**
 
 - 当前 Tomcat 集群应用只支持 Redis 单节点
 
@@ -91,6 +107,10 @@ Redis 数据库的创建可以在控制台中创建
 
 将 `MySql 数据库` 选项设置为 `true`，并填写 MySql 数据库的配置信息
 ![可选：MySql 数据库用于存储业务数据](../../images/tomcat/mysql_config.png)
+
+同时需要配置 jdbc 连接池
+
+![可选：MySql 数据库用于存储业务数据](../../images/tomcat/jdbc_config.png)
 
 MySql 数据库的创建可以在控制台中创建
 
@@ -100,7 +120,7 @@ MySql 数据库的创建可以在控制台中创建
 
 #### 可选：使用 QingStor 存放 WAR 文件
 
-如填写了 QingStor 配置信息则认定为选择对象存储服务为 Tomcat 集群上传所需 WAR 文件
+如果 WAR 文件的获取方式选择了 qingstor，请填写了 QingStor 配置信息，这时会认定为选择对象存储服务为 Tomcat 集群上传所需 WAR 文件
 
 ![可选：使用 QingStor 存放 WAR 文件](../../images/tomcat/qingstor_config.png)
 
@@ -109,8 +129,6 @@ MySql 数据库的创建可以在控制台中创建
 目前可选的区域有 `pek3a` 和 `sh1a`，选择不同区域也可使用，但是需要收取额外的公网流量费用。
 
 存储区域需要提前创建好，只需要填写 Bucket 名称即可。这两项如果设置不正确，同样会导致文件无法正常下载。
-
-访问地址是你用来访问这个集群的地址，可以是负载均衡器绑定的公网 IP，也可以是已经设置好 DNS 解析的域名，比如 `https://abc.xyz` 或者 `http://1.2.3.4` 。
 
 WAR 文件名为存储在 QingStor 上的文件名称，带文件类型后缀。
 
