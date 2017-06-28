@@ -6,10 +6,10 @@
 
 `Tomcat Cluster on QingCloud AppCenter` 将 Tomcat 通过云应用的形式在 QingCloud AppCenter 部署，具有如下特性：
 
-- 基于 Tomcat 7.0.78 稳定版本，具体特性可参见 <http://tomcat.apache.org/tomcat-7.0-doc/index.html>
+- 基于 Tomcat 7.0.78 稳定版本，具体特性可参见 [Apache Tomcat 官方文档](http://tomcat.apache.org/tomcat-7.0-doc/index.html)
 - 使用 Tomcat DeltaManger 实现多对多（all-to-all）会话复制(session replication)，支持随 Tomcat 发布的 **SimpleTcpCluster**，通过内存（in-memory）实现 session replicaton，同时也支持通过***单节点*** Redis 数据库存储 session 数据
 - 可选择配置连接 MySql 数据库来存储业务数据 
-- 集成 Tomcat Manager，通过配置 Tomcat 管理员用户名／密码，访问 Tomcat Manager Console 或者 URL 方式完成 WAR 文件部署、启停等动作 <http://tomcat.apache.org/tomcat-7.0-doc/manager-howto.html>，WAR 文件通过 **FarmWarDeployer** 分发到各个节点
+- 集成 Tomcat Manager，通过配置 Tomcat 管理员用户名／密码，访问 Tomcat Manager Console 或者 URL 方式完成 WAR 文件部署、启停等动作，详情请参考 [Manager App HOW-TO](http://tomcat.apache.org/tomcat-7.0-doc/manager-howto.html)，WAR 文件通过 **FarmWarDeployer** 分发到各个节点
 - 对于公有云用户，可使用 QingStor 存储 WAR 文件，在 Tomcat 集群创建时配置相应 QingStor 访问参数，集群启动时自动下载并完成 WAR 文件部署，也可通过集群管理页面菜单多次部署不同 WAR 文件
 - 支持横向与纵向扩容
 - 系统自动运维，降低企业使用成本
