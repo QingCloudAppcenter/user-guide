@@ -28,11 +28,11 @@ Tomcat 节点依赖于青云 QingCloud 提供的负载均衡器服务，我们�
 
 #### 申请公网 IP
 
-![申请公网 IP](../../images/tomcat/apply_eip.png)
-
 如果集群需要在公网上提供服务，我们需要创建一个公网 IP。
 
 如果该公网 IP 还需要绑定域名，还需要进行备案。
+
+![申请公网 IP](../../images/tomcat/apply_eip.png)
 
 #### 创建负载均衡器
 
