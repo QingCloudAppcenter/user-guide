@@ -4,7 +4,7 @@ Redis 是一个使用ANSI C编写的开源、支持网络、基于内存、可�
 
 Redis cluster on QingCloud AppCenter 基于原生的Redis提供了Redis cluster的App，能够在AppCenter进行一键部署，有如下特性：
 
-- 支持一主多从以及多主多从，每个主所在分片 （shard) 平均分摊 16384 个 slots， 增加或删除主节点系统会自动平衡 slots (因为需要迁移数据，时间会有点长)。
+- 支持一主多从以及多主多从，每个主所在分片 (shard) 平均分摊 16384 个 slots， 增加或删除主节点系统会自动平衡 slots (因为需要迁移数据，时间会有点长)。
 - 集群支持 HA, 即当某个主节点异常，它的从节点会自动切换成主节点。
 - 支持集群的横向及纵向伸缩
 - 一键部署
@@ -17,17 +17,20 @@ Redis cluster on QingCloud AppCenter 基于原生的Redis提供了Redis cluster�
 
 ### 1) 选择基本配置
 
-填写集群的名称，描述，选择应用的版本
+填写集群的名称，描述，选择应用的版本。
+
 ![](snapshots/step1.png)
 
 ### 2) 节点配置
 
-配置Redis节点，包括CPU，内存等信息
+配置Redis节点，包括CPU，内存等信息。
+
 ![](snapshots/step2.png)
 
 ### 3) 网络配置
 
 选择服务部署的私有网络，可以选择之前创建的任意网络。
+
 ![](snapshots/step3.png)
 
 ### 4) 环境参数配置
@@ -36,18 +39,20 @@ Redis cluster on QingCloud AppCenter 基于原生的Redis提供了Redis cluster�
 
 ### 创建成功
 
-当Memcached服务创建完成之后，我们可以查看Redis cluster中各节点的运行状态。 
+当Redis cluster服务创建完成之后，我们可以查看Redis cluster中各节点的运行状态。 
 
 ![](snapshots/overview.png)
 
 ### 配置参数
 
 可以在此修改环境参数，参数修改完成保存后，集群将重启以应用新的参数配置，所以请在服务压力相对较小的时候修改参数。
+
 ![](snapshots/config.png)
 
 ### 监控告警
 
-可以在此为节点配置告警信息，随时监控您的服务
+可以在此为节点配置告警信息，随时监控您的服务。
+
 ![](snapshots/alert.png)
 
 ## 测试
