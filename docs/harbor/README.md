@@ -19,7 +19,7 @@ Harbor on QingCloud 将 Harbor 制作成了 App，能直接在 AppCenter 进行�
 
 * 创建 VPC 和关联一个 Vxnet 私有网络，详情见 ([VPC 指南](https://docs.qingcloud.com/guide/vpc.html))
 * 创建负载均衡器
-    * 创建一个监听器为 HTTP，端口为80的负载均衡器，用于 Harbor HTTP 服务的访问入口，负载均衡器前端可为 HTTP 或 HTTPs 协议，并可支持私有或公有负载均衡器，如果为私有则只能用于内网访问，详情见([负载均衡器指南](https://docs.qingcloud.com/guide/loadbalancer.html))。
+    * 创建一个监听器为 HTTP，端口为80的负载均衡器，用于 Harbor HTTP 服务的访问入口，负载均衡器前端可为 HTTP 或 HTTPs 协议( HTTPs 协议请在负载均衡器的 HTTPs 监听器里勾选 “负载均衡器监听协议通过X-Forwarded-Proto头字段获取负载均衡器的监听协议” )，并可支持私有或公有负载均衡器，如果为私有则只能用于内网访问，详情见([负载均衡器指南](https://docs.qingcloud.com/guide/loadbalancer.html))。
 * 配置防火墙规则，允许下行规则 80/TCP 或 443/TCP 端口。
 * 创建 QingStor Bucket
     * Harbor on QingCloud 使用 QingStor 存储镜像文件，Bucket 为 QingStor 用于存储的容器单位，详情见([创建 Bucket](https://docs.qingcloud.com/qingstor/guide/index.html))
@@ -165,6 +165,8 @@ Registry 提供一个标记清理 Image Blob 机制，通过 Registry 本身的 
 * 如何查看日志？
   登陆“日志节点”的 VNC，日志文件在`/var/log/harbor`下面，以天为单位。
 
-
+* 使用 HTTPs 超时了？
+  确认前端负载均衡器的 https 监听器中 “负载均衡器监听协议通过X-Forwarded-Proto头字段获取负载均衡器的监听协议” 已勾选。
+  ![](snapshot/WX20170630-191833@2x.png)
 
 
