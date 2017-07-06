@@ -69,6 +69,7 @@ CPU，内存，节点数量，实例类型和磁盘大小根据自己实际需�
 - 磁盘大小: 100G
 
 ### 第3步: 日志收集节点设置
+
 创建 Tomcat 集群的时候会默认创建一台主机用于收集各个 Tomcat 节点的日志，日志通过 rsyslog 方式发送，Tomcat 基于 log4j-1.2.17 产生日志，直接发送给日志服务器，本地不保留以减少硬盘占用，除 Tomcat 运行环境默认开启的日志，此应用另外开启了 Access 日志以及 Garbage Collection 日志。
 
 ![第3步: 日志收集节点设置](../../images/tomcat/log_config.png)
@@ -76,11 +77,13 @@ CPU，内存，节点数量，实例类型和磁盘大小根据自己实际需�
 日志文件按照主机名统一保存在 /opt/TomcatLogData 目录下，rsyslog 配置文件为 /etc/rsyslog.conf，同时节点提供 ssh 访问权限，用户可根据自身需求调整 rsyslog 的配置，<font color=red>默认用户名密码为 root/zhu1241jie，集群创建后请及时更改密码</font>。
 
 ### 第4步: 网络配置
+
 选择需要加入的私有网络
 
 ![第4步: 网络配置](../../images/tomcat/vpc_choose.png)
 
 ### 第5步: 依赖服务设置
+
 Tomcat 集群可以选择依赖的 Redis（Standalone） 和 MySql 服务实现 Session 复制及业务数据存储，通过依赖服务可以实现参数自动获取，服务变化感知等功能。
 
 #### 可选：Redis 数据库实现 Session 复制
@@ -98,7 +101,7 @@ Redis 数据库应用可以在 AppCenter 控制台中创建
 
 ##### 注意
 
-- 此版本 Tomcat 集群应用只支持 Redis Standalone
+- 此版本 Tomcat 集群应用只支持 Redis Standalone.
 
 #### 可选：MySql 数据库用于存储业务数据
 
@@ -110,7 +113,7 @@ Redis 数据库应用可以在 AppCenter 控制台中创建
 
 ##### 注意
 
- - MySql 应用提供了两个高可用的读写访问地址，分别对应于数据的读写操作，当前 Tomcat 集群默认使用写 IP 地址，用户也可在环境参数中下拉选择读 IP。
+- MySql 应用提供了两个高可用的读写访问地址，分别对应于数据的读写操作，当前 Tomcat 集群默认使用写 IP 地址，用户也可在环境参数中下拉选择读 IP。
 
 MySql 数据库应用可以在 AppCenter 控制台中创建
 
@@ -125,16 +128,17 @@ MySql 数据库应用可以在 AppCenter 控制台中创建
 
 以上为 Tomcat 相关参数，填写完成后如果直接点击 `提交`，就会直接进入部署应用。如依赖服务中没有选择 Redis，会使用 Tomcat 自带的 **SimpleTcpCluster** 模块，通过内存同步 Session 数据，并且没有部署任何第三方 WAR 文件。
 
-#####配置说明
+##### 配置说明
+
 1. Tomcat 用户名密码用于访问 Tomcat Manager 服务，缺省密码为 qing0pwd ，已存在的角色包括 standard，manager-gui，manager-script。
-2. Tomcat 字符编码方式的配置会被分别设置在 JAVA_OPTS （-Djavax.servlet.request.encoding=UTF-8 -Dfile.encoding=UTF-8） 以及 server.xml 中，前者会作为环境变量被 Tomcat 的启动脚本使用。
-3. Tomcat 基于 log4j 1.2.17，默认日志级别为 INFO，用户可下拉选择更改
-4. 本集群使用 Tomcat 共享线程池。
-5. 如果 WAR 文件的获取方式选择了 tomcat_manager，可以通过通过负载均衡器的地址访问 Tomcat Manager <http://load-balancer-address> ，这时访问的是某一节点的 Tomcat Manager ，输入用户名和密码，上传 WAR 文件完成部署。<font color=red>注意，Tomcat Manager 并不支持集群分发部署，也就是说这个 WAR 现在只是在当前节点部署成功，之后青云提供的监控脚本会发现这个新部署的文件夹，并复制到 Tomcat FarmWarDeployer 监控的目录中，这样 FarmWarDeployer 会通知其他节点，实现分发部署。为避免陷入各节点循环复制部署，脚本需比较 WAR 目录下 META-INFO／MANIFEST.MF 文件中的 Manifest-Version，所以请确保使用的 WAR 文件中包含此文件及所需参数</font>。  
-   另外，Tomcat 已添加 manager-script 角色，所以用户也可以选择青云合作伙伴提供的 Jenkins 应用服务 <https://appcenter.qingcloud.com/apps/app-jbffg31u> 。运行之后访问 Jenkins 控制台，下载并配置 Jenkins 的 “Deploy to container” 插件，实现分发部署。
-6. 我们会根据您设置的节点物理内存大小自动配置 Java 虚拟机的最小和最大堆栈大小，分别为四分之一和二分之一内存大小，也就是说如果选择单节点 4G 内存，则 xms 为 1G，xmx为 2G。
-7. Tomcat 使用 OpenJDK 1.8.0_131，默认打开 Garbage Collection，其配置于 Tomcat 启动脚本 catalina.sh 中，配置为 CATALINA_OPTS="-XX:+PrintGCDateStamps -Xloggc:/Users/calvin/Qing/apache-tomcat-7.0.78/logs/tomcat_gc.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=1 -XX:GCLogFileSize=100M" ，日志同样会被转发至日志服务器统一保存。
-8. Tomcat 节点提供 ssh 访问权限，<font color=red>默认用户名密码为 root/zhu1241jie，集群创建后请及时更改密码</font>，同时不应直接修改 Tomcat 目录下的配置文件，而应修改 /etc/confd/templates 下对应配置文件的模版文件，否则集群启动后，Tomcat 目录下修改会被刷新覆盖。
+1. Tomcat 字符编码方式的配置会被分别设置在 JAVA_OPTS （-Djavax.servlet.request.encoding=UTF-8 -Dfile.encoding=UTF-8） 以及 server.xml 中，前者会作为环境变量被 Tomcat 的启动脚本使用。
+1. Tomcat 基于 log4j 1.2.17，默认日志级别为 INFO，用户可下拉选择更改。
+1. 本集群使用 Tomcat 共享线程池。
+1. 如果 WAR 文件的获取方式选择了 tomcat_manager，可以通过通过负载均衡器的地址访问 Tomcat Manager <http://load-balancer-address> ，这时访问的是某一节点的 Tomcat Manager ，输入用户名和密码，上传 WAR 文件完成部署。<font color=red>注意，Tomcat Manager 并不支持集群分发部署，也就是说这个 WAR 现在只是在当前节点部署成功，之后青云提供的监控脚本会发现这个新部署的文件夹，并复制到 Tomcat FarmWarDeployer 监控的目录中，这样 FarmWarDeployer 会通知其他节点，实现分发部署。为避免陷入各节点循环复制部署，脚本需比较 WAR 目录下 META-INFO／MANIFEST.MF 文件中的 Manifest-Version，所以请确保使用的 WAR 文件中包含此文件及所需参数</font>。  
+    另外，Tomcat 已添加 manager-script 角色，所以用户也可以选择青云合作伙伴提供的 Jenkins 应用服务 <https://appcenter.qingcloud.com/apps/app-jbffg31u> 。运行之后访问 Jenkins 控制台，下载并配置 Jenkins 的 “Deploy to container” 插件，实现分发部署。  
+1. 我们会根据您设置的节点物理内存大小自动配置 Java 虚拟机的最小和最大堆栈大小，分别为四分之一和二分之一内存大小，也就是说如果选择单节点 4G 内存，则 xms 为 1G，xmx为 2G。
+1. Tomcat 使用 OpenJDK 1.8.0_131，默认打开 Garbage Collection，其配置于 Tomcat 启动脚本 catalina.sh 中，配置为 CATALINA_OPTS="-XX:+PrintGCDateStamps -Xloggc:/Users/calvin/Qing/apache-tomcat-7.0.78/logs/tomcat_gc.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=1 -XX:GCLogFileSize=100M" ，日志同样会被转发至日志服务器统一保存。
+1. Tomcat 节点提供 ssh 访问权限，<font color=red>默认用户名密码为 root/zhu1241jie，集群创建后请及时更改密码</font>，同时不应直接修改 Tomcat 目录下的配置文件，而应修改 /etc/confd/templates 下对应配置文件的模版文件，否则集群启动后，Tomcat 目录下修改会被刷新覆盖。
 
 #### 可选：配置定制包日志及 JAVA_OPTS
 
@@ -228,6 +232,7 @@ WAR 文件名为存储在 QingStor 上的文件名称，带文件类型后缀。
 ![扩容集群](../../images/tomcat/cluster_scaleup.png)
 
 ## 已知问题
+
 Tomcat 7 及以上版本依赖于 SecureRandom 类为 session id 提供随机数值，使用不同的 JRE 会在服务器启动及运行时造成不同程度的延时，用户可在 JAVA_OPTS 参数中加入如下配置来提高性能：
 `-Djava.security.egd=file:/dev/./urandom`  
 但这同时会带来安全性降低的风险，请根据自身情况酌情选择，具体可参考 <https://wiki.apache.org/tomcat/HowTo/FasterStartUp>
