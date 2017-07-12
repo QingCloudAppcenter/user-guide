@@ -61,7 +61,7 @@ Redis cluster on QingCloud AppCenter 基于原生的Redis提供了Redis cluster�
 
 ### 1）检查集群状态
 
-在同一私网中创建一台 Linux 主机，您可能需要先装一些依赖包 (如Ubuntu下apt-get install tcl ruby　和　gem install redis)， 然后请 下载 Redis 3.x, 解压后进入 Redis src目录，执行以下命令　（假设 Redis cluster 其中一个节点的 IP 为 192.168.100.13, 端口为 6379)。
+在同一私网中创建一台 Linux 主机，您可能需要先装一些依赖包 (如Ubuntu下apt-get install tcl ruby　和　gem install redis)， 然后请 [下载 Redis 3.x](http://download.redis.io/releases/redis-3.0.5.tar.gz), 解压后进入 Redis src目录，执行以下命令　（假设 Redis cluster 其中一个节点的 IP 为 192.168.100.13, 端口为 6379)。
 
 ```shell
 ./redis-trib.rb check 192.168.100.13:6379
@@ -116,7 +116,7 @@ S: 22b3f49a6b87403faeeb1219881e63096802eb6a 192.168.100.15:6379
 
 ### 2）Java 客户端读写数据示例
 
-首先 下载 Jedis 库和 Apache Commons Pool 依赖库。 把下载下来的 commons-pool2-2.0.jar 和 jedis-2.7.3.jar 放到同一目录下如 lib/， 创建 TestRedisCluster.java，内容如下。 然后编译、执行该 Java 程序（假设一个分片的主从节点分别是 192.168.100.10， 192.168.100.13， 端口均为 6379）。
+首先 [下载 Jedis 库和 Apache Commons Pool 依赖库](https://github.com/xetorthio/jedis/wiki/Getting-started)。 把下载下来的 commons-pool2-2.0.jar 和 jedis-2.7.3.jar 放到同一目录下如 lib/， 创建 TestRedisCluster.java，内容如下。 然后编译、执行该 Java 程序（假设一个分片的主从节点分别是 192.168.100.10， 192.168.100.13， 端口均为 6379）。
 
 ```java
 javac -cp :./lib/* TestRedisCluster.java
@@ -164,11 +164,11 @@ public class TestRedisCluster {
 }
 ```
 
->这是示例代码，不承担任何责任。更多的 Redis 客户端请见 Redis 官方网站。
+>这是示例代码，不承担任何责任。更多的 Redis 客户端请见 [Redis 官方网站](http://redis.io/clients)。
 
 ### 3） Hash Tags Keys
 
-Redis 集群采用 CRC16 算法对 key 值哈希到 16384 个 slots 中的一个，因此不同的 key 可能分散到不同的节点中，对于想固定一类 key 值到某一个节点，如按业务分类，可以采用 Hash Tags，下面是从 Redis 文档 摘录的解释。
+Redis 集群采用 CRC16 算法对 key 值哈希到 16384 个 slots 中的一个，因此不同的 key 可能分散到不同的节点中，对于想固定一类 key 值到某一个节点，如按业务分类，可以采用 Hash Tags，下面是从 [Redis 文档](http://redis-documentasion-japanese.readthedocs.org/en/latest/topics/cluster-spec.html) 摘录的解释。
 
 >
 In order to implement hash tags, the hash slot is computed in a different way. Basically if the key contains a “{...}” pattern only the substring between { and } is hashed in order to obtain the hash slot. However since it is possible that there are multiple occurrences of { or } the algorithm is well specified by the following rules:
