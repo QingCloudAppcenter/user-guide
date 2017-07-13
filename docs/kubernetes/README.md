@@ -2,7 +2,7 @@
 
 ## 简介
 
-Kubernetes是一个开源的，用于管理云平台中多个主机上的容器化的应用的调度架构，是一个用于容器集群的自动化部署、扩容以及运维的开源平台。青云QingCloud Kubernetes 服务旨在方便用户在青云平台搭建 Kubernetes 集群。
+Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器化的应用的调度系统，是一个用于容器应用的自动化部署、弹性伸缩、应用升级以及运维等的开源平台。青云QingCloud Kubernetes 服务旨在方便用户在青云平台搭建 Kubernetes 集群。
 
 ## 创建 Kubernetes 集群
 
