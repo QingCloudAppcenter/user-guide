@@ -232,3 +232,19 @@ Redis 3.x　提供了一个从 Redis standalone (包括旧版本 2.8.17) 迁移�
 ```
 
 >在做迁移之前建议对原 Redis standalone 做备份，因为上述操作是对数据进行迁移而不是拷贝。
+
+## 其他
+
+为了更好的管理 Redis 服务，我们默认禁用一些 Redis 的命令，禁用的命令列表如下：
+
+- BGREWRITEAOF
+- BGSAVE
+- DEBUG
+- CONFIG
+- SAVE
+- SHUTDOWN
+- SLAVEOF
+
+您可以通过参数配置页打开 CONFIG 和 SAVE 命令，但我们强烈不推荐您这么做。错误地使用 CONFIG 命令可能会导致服务的不可用，我们建议您在生产环境上使用默认设置来禁用这两个命令。 当您需要打开命令时，设置'打开config和save命令'为１，保存配置，服务会自动重启以生效。
+
+![](snapshots/enable-config.png)
