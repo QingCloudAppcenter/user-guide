@@ -13,9 +13,9 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 ### 第一步：选择基本配置
 
 在创建的对话框中，您需要填写名称 (可选)，选择 Kubernetes 版本号以及选择计费方式
-![](screenshot/屏幕快照 1.png)
+![](screenshot/屏幕快照1.png)
 请根据需要选择Kubernetes 主节点，节点和日志节点的 CPU、节点配置和数量、下图以主节点为例
-![](screenshot/屏幕快照 2.png)
+![](screenshot/屏幕快照2.png)
 选择集群主机所在的私网,私网需要在创建集群前准备好．
 ![](screenshot/屏幕快照3.png)
 填写Kubernetes应用所需参数
