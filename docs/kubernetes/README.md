@@ -47,7 +47,7 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 
 Kubernetes集群创建完成之后可以进行测试。找到跳板机节点，点击vnc图标。
 ![](screenshot/跳板机.png)
-使用ubuntu/k8s 登录。执行
+使用root/k8s 登录。执行
 
 ```shell
 kubectl get pods --all-namespaces
