@@ -72,6 +72,12 @@ nohup kubectl proxy --address='0.0.0.0' --accept-hosts='.*' --disable-filter=tru
 如图
 ![](screenshot/screencapture７.png)
 
+用户可以执行以下命令获得其他服务的proxy地址
+
+```shell
+kubectl cluster-info
+```
+
 用户需要导入以下index来获取所需数据．
 
 * heapster-cpu-*
