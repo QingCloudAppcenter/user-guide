@@ -43,16 +43,18 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 
 ## 测试 Kubernetes
 
+### 使用跳板机
+
 Kubernetes集群创建完成之后可以进行测试。找到跳板机节点，点击vnc图标。
 ![](screenshot/屏幕快照6.png)
-使用ubuntu/zhu1241jie 登录。执行
+使用ubuntu/k8s 登录。执行
 
 ```shell
 kubectl get pods --all-namespaces
 ```
 程序返回所有pod状态，整个集群工作正常。
 
-## 查看集群状态
+### 查看集群状态
 
 k8s集群应用集成了官方的监控组件heapster和dashboard.并提供了一个elasticsearch kibana集群．方便用户查看监控和日志信息．
 
@@ -62,7 +64,7 @@ k8s集群应用集成了官方的监控组件heapster和dashboard.并提供了�
 nohup kubectl proxy --address='0.0.0.0' --accept-hosts='.*' --disable-filter=true &
 ```
 
-登录跳板机所在vpc的VPN后，使用浏览器访问跳板机的8001端口，会自动跳转到dashboard应用．
+登录跳板机所在vpc的VPN后，使用浏览器访问http://跳板机ip:8001/ui，会自动跳转到dashboard应用．
 例如：
 ![](screenshot/screencapture6.png)
 
@@ -95,7 +97,7 @@ MetricsTags.type:node是不同类型实体的标记（例如 pod, node等）
 用户可以先将同一类型数据找出，然后按照需要构建查询．并绘出图表．
 
 
-##　使用青云资源
+###　使用青云资源
 
 在[github项目](https://github.com/QingCloudAppcenter/kubernetes/tree/master/sample/qingcloud)中包含使用青云磁盘，负载均衡器的实例脚本．
 可以在跳板机的/opt/kubernetes目录中找到．可以使用kubectl 加载这些资源定义
@@ -115,6 +117,14 @@ kubectl apply -f xxxx.yaml
 ### 删除节点
 
 当客户端连接并不多的时候您也可以在 Kubernetes 详细页选中需要删除的节点，然后点“删除”按钮删除节点，以节省资源和费用。
+
+### 垂直扩容
+
+如果需要给节点增强配置或降低配置，可以使用扩容集群的功能。
+![](screenshot/截图1.PNG)
+可以在接下来的界面中调整不同角色的容量。
+![](screenshot/捕获2.PNG)
+
 
 ## 注意事项
 
