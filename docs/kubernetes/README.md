@@ -135,4 +135,5 @@ kubectl apply -f xxxx.yaml
 ## 注意事项
 
 1. 节点监控界面中包含当前节点运行的pod数量和容器数量
+1. 由于需要从dockerhub.qingcloud.com下载镜像．请确保集群所在私网能够访问公网．（vpc绑定了公网ip)
 1. 具体使用方法请参考 [官方文档](https://kubernetes.io/docs/home/)
