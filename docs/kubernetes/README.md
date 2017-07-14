@@ -13,13 +13,13 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 ### 第一步：选择基本配置
 
 在创建的对话框中，您需要填写名称 (可选)，选择 Kubernetes 版本号以及选择计费方式
-![](screenshot/屏幕快照1.png)
+![](screenshot/基本配置.png)
 请根据需要选择Kubernetes 主节点，节点和日志节点的 CPU、节点配置和数量、下图以主节点为例
-![](screenshot/屏幕快照2.png)
+![](screenshot/主节点配置.png)
 选择集群主机所在的私网,私网需要在创建集群前准备好．
-![](screenshot/屏幕快照3.png)
+![](screenshot/网络配置.png)
 填写Kubernetes应用所需参数
-![](screenshot/屏幕快照4.png)
+![](screenshot/服务环境配置.png)
 * 为了更好地与青云基础设施集成，Kubernetes应用需要使用您的API Token来创建资源。请在控制台生成[秘钥](https://console.qingcloud.com/access_keys/)
 
 * kubernetes管理的服务都会有一个对应域名，这里可以设置域名的后缀
@@ -28,7 +28,7 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 
 * 这里可以设置k8s API对外暴露的域名。在集群内部可以使用这个域名访问k8s API
 
-![](screenshot/屏幕快照5.png)
+![](screenshot/服务环境配置２.png)
 
 * k8s应用支持使用私有容器仓库，方便使用内部容器仓库的用户,青云提供了[harbor应用](https://appcenter.qingcloud.com/apps/app-2mhyb1ui)可以方便用户部署私有容器仓库．
 
@@ -46,7 +46,7 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 ### 使用跳板机
 
 Kubernetes集群创建完成之后可以进行测试。找到跳板机节点，点击vnc图标。
-![](screenshot/屏幕快照6.png)
+![](screenshot/跳板机.png)
 使用ubuntu/k8s 登录。执行
 
 ```shell
@@ -66,11 +66,11 @@ nohup kubectl proxy --address='0.0.0.0' --accept-hosts='.*' --disable-filter=tru
 
 登录跳板机所在vpc的VPN后，使用浏览器访问http://跳板机ip:8001/ui，会自动跳转到dashboard应用．
 例如：
-![](screenshot/screencapture6.png)
+![](screenshot/dashboard.png)
 
 同样，访问http://跳板机ip:8001/api/v1/proxy/namespaces/kube-system/services/kibana-logging/ 会打开日志服务的kibana
 如图
-![](screenshot/screencapture７.png)
+![](screenshot/kibana.png)
 
 用户可以执行以下命令获得其他服务的proxy地址
 
@@ -127,9 +127,9 @@ kubectl apply -f xxxx.yaml
 ### 垂直扩容
 
 如果需要给节点增强配置或降低配置，可以使用扩容集群的功能。
-![](screenshot/截图1.PNG)
+![](screenshot/扩容集群１.PNG)
 可以在接下来的界面中调整不同角色的容量。
-![](screenshot/捕获2.PNG)
+![](screenshot/扩容集群２.PNG)
 
 
 ## 注意事项
