@@ -22,19 +22,19 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 ![](screenshot/服务环境配置.png)
 * 为了更好地与青云基础设施集成，Kubernetes应用需要使用您的API Token来创建资源。请在控制台生成[秘钥](https://console.qingcloud.com/access_keys/)
 
-* kubernetes管理的服务都会有一个对应域名，这里可以设置域名的后缀
-
 * k8s应用使用青云提供的SDN2.0,创建的Pod都会绑定一个网卡，分配一个私网地址。这里可以设置所使用的私网ID，私网需要预先准备好．如(vxnet-xxxxxxx)
 
-* 这里可以设置k8s API对外暴露的域名。在集群内部可以使用这个域名访问k8s API
+* kubernetes 应用内置了自定义日志监控功能，用户可以查询到所有k8s管理的资源的日志。为了节省空间，日志会定期销毁。这里可以设置保存日志的天数
 
-![](screenshot/服务环境配置２.png)
+* 这里可以设置k8s API的域名，用于生成api server使用的ca证书
+
+![](screenshot/服务环境配置2.png)
 
 * k8s应用支持使用私有容器仓库，方便使用内部容器仓库的用户,青云提供了[harbor应用](https://appcenter.qingcloud.com/apps/app-2mhyb1ui)可以方便用户部署私有容器仓库．
 
 * k8s需要从dockerhub.qingcloud.com下载镜像包含青云定制的k8s服务镜像，因此需要用户填写docherhub.qingcloud.com用户名和密码。这个账户请用户提交工单进行申请
 
-* kubernetes 应用内置了自定义日志监控功能，用户可以查询到所有k8s管理的资源的日志。为了节省空间，日志会定期销毁。这里可以设置保存日志的天数
+* 设置k8s应用的日志级别，之后可以通过kibana查看
 
 ### 第二步：创建成功
 
@@ -106,7 +106,6 @@ MetricsTags.type:node是不同类型实体的标记（例如 pod, node等）
 ###　使用青云资源
 
 在[github项目](https://github.com/QingCloudAppcenter/kubernetes/tree/master/sample/qingcloud)中包含使用青云磁盘，负载均衡器的实例脚本．
-可以在跳板机的/opt/kubernetes目录中找到．可以使用kubectl 加载这些资源定义
 
 ```
 kubectl apply -f xxxx.yaml
