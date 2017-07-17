@@ -20,6 +20,7 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 ![](screenshot/网络配置.png)
 填写Kubernetes应用所需参数
 ![](screenshot/服务环境配置.png)
+
 * 为了更好地与青云基础设施集成，Kubernetes应用需要使用您的API Token来创建资源。请在控制台生成[秘钥](https://console.qingcloud.com/access_keys/)
 
 * k8s应用使用青云提供的SDN2.0,创建的Pod都会绑定一个网卡，分配一个私网地址。这里可以设置所使用的私网ID，私网需要预先准备好．如(vxnet-xxxxxxx)
@@ -52,6 +53,7 @@ Kubernetes集群创建完成之后可以进行测试。找到跳板机节点，�
 ```shell
 kubectl get pods --all-namespaces
 ```
+
 程序返回所有pod状态，整个集群工作正常。
 
 ### 查看集群状态
@@ -94,7 +96,7 @@ heapster的数据结构可以访问http://跳板机ip:8001/api/v1/proxy/namespac
 
 主要的timelion查询如下
 
-```
+```Text
 .es(index='heapster-cpu-*',q="MetricsTags.type:node",split='MetricsTags.host_id:10',timefield='CpuMetricsTimestamp',kibana=true,metric="max:Metrics.cpu/node_utilization.value")
 ```
 
@@ -107,9 +109,10 @@ MetricsTags.type:node是不同类型实体的标记（例如 pod, node等）
 
 在[github项目](https://github.com/QingCloudAppcenter/kubernetes/tree/master/sample/qingcloud)中包含使用青云磁盘，负载均衡器的实例脚本．
 
-```
+```bash
 kubectl apply -f xxxx.yaml
 ```
+
 具体的配置参考[k8s官方文档](https://kubernetes.io/docs/concepts/)
 
 ## 在线伸缩
