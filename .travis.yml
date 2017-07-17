@@ -13,7 +13,6 @@ before_script:
 - export FILENAME="_book/qingcloud-apps-user-guide"
 script:
 - markdownlint --config markdownlint.conf.json docs/*
-- npm install -g extend
 - gitbook install
 - gitbook build . $FILENAME
 - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then openssl aes-256-cbc -K $encrypted_7127281a9724_key -iv $encrypted_7127281a9724_iv
