@@ -119,6 +119,7 @@ MetricsTags.type:node是不同类型实体的标记（例如 pod, node等）
 
 如果需要给节点增强配置或降低配置，可以使用扩容集群的功能。
 ![](screenshot/扩容集群１.PNG)
+
 可以在接下来的界面中调整不同角色的容量。
 ![](screenshot/扩容集群２.PNG)
 
