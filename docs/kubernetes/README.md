@@ -23,7 +23,7 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 
 * 为了更好地与青云基础设施集成，Kubernetes应用需要使用您的API Token来创建资源。请在控制台生成[秘钥](https://console.qingcloud.com/access_keys/)
 
-* Kubernetes 应用使用青云提供的 SDN2.0，创建的 Pod 都会绑定一个网卡，分配一个私网地址。这里可以设置所使用的私网 ID，私网需要预先准备好，如(vxnet-xxxxxxx)。建议给 Pod 设置专用的私网，每个私网可以容纳200多个 ip，如果您需要的容器数量较多，请填写多个，之间用空格切分。
+* Kubernetes 应用使用青云提供的 SDN2.0，创建的 Pod 都会绑定一个网卡，分配一个私网地址。这里可以设置所使用的私网 ID，私网需要预先准备好，如(vxnet-xxxxxxx)。建议给 Pod 设置专用的私网，每个私网可以容纳200多个 IP，如果您需要的容器数量较多，请填写多个，之间用空格切分。
 
 * Kubernetes 应用内置了自定义日志监控功能，用户可以查询到所有 Kubernetes 管理的资源的日志。为了节省空间，日志会定期销毁。这里可以设置保存日志的天数
 
@@ -33,7 +33,7 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 
 * Kubernetes 应用支持使用私有容器仓库，方便使用内部容器仓库的用户,青云提供了[harbor应用](https://appcenter.qingcloud.com/apps/app-2mhyb1ui)可以方便用户部署私有容器仓库
 
-* Kubernetes 需要从 dockerhub.qingcloud.com 下载镜像包含青云定制的 Kubernetes 服务镜像，因此需要用户填写 docherhub.qingcloud.com 用户名和密码。这个账户请用户提交工单进行申请
+* Kubernetes 需要从 dockerhub.qingcloud.com 下载镜像包含青云定制的 Kubernetes 服务镜像，因此需要用户填写 docherhub.qingcloud.com 用户名和密码。系统已经内置了 guest 账号，可以拉取 dockerhub.qingcloud.com 上的公开仓库。如果需要创建和使用自己的仓库，请提交工单申请。
 
 * 设置 Kubernetes 系统的日志级别，之后可以通过 kibana 查看
 
