@@ -81,9 +81,11 @@ CPU，内存，节点数量，实例类型和磁盘大小根据自己实际需�
 
 ![第4步: 网络配置](../../images/tomcat/vpc_choose.png)
 
+Tomcat SimpleTcpCluster 使用网络组播的方式进行节点之间消息通信，如您的 VPC 绑定了防火墙，请确保相关端口放行：45564（UDP BroadCast），4000（TCP Receiver）
+
 ### 第5步: 依赖服务设置
 
-Tomcat 集群可以选择依赖的 Redis（Standalone） 和 MySql 服务实现 Session 复制及业务数据存储，通过依赖服务可以实现参数自动获取，服务变化感知等功能。
+Tomcat 集群可以选择依赖的 Redis（Standalone） 和 MySql 服务实现 Session 复制及业务数据存储，通过依赖服务可以实现参数自动获取，服务变化感知等功能，只能在集群部署之前选择添加，部署之后只能选择删除。
 
 #### 可选：Redis 数据库实现 Session 复制
 
@@ -129,7 +131,7 @@ MySql 数据库应用可以在 AppCenter 控制台中创建
 
 ##### 配置说明
 
-1. Tomcat 用户名密码用于访问 Tomcat 管理员图形界面服务，缺省密码为 qing0pwd ，同时此密码也被应用于关联了角色 manager-script 的内置用户 tomcat，即更改此密码，会同时作用于环境变量中的 Tomcat 用户名以及内置用户 tomcat，<font color=red>所以请不要设置用户名为 tomcat</font>。
+1. Tomcat 用户名密码用于访问 Tomcat 管理员图形界面服务，缺省密码为 qing0pwd ，同时此密码也被应用于关联了角色 manager-script 的内置用户 tomcat，即更改此密码，会同时作用于环境变量中的 Tomcat 用户名以及内置用户 tomcat，<font color=red>所以请不要将用户名设置为 tomcat</font>。
 1. Tomcat 字符编码方式的配置会被分别设置在 JAVA_OPTS （-Djavax.servlet.request.encoding=UTF-8 -Dfile.encoding=UTF-8） 以及 server.xml 中，前者会作为环境变量被 Tomcat 的启动脚本使用。
 1. Tomcat 基于 log4j 1.2.17，默认日志级别为 INFO，用户可下拉选择更改。
 1. 本集群使用 Tomcat 共享线程池。
@@ -226,9 +228,13 @@ WAR 文件名为存储在 QingStor 上的文件名称，带文件类型后缀。
 
 ![重启角色](../../images/tomcat/cluster_restart.png)
 
-点击 `扩容集群` ， 可以在集群性能不足时提高集群的配置：
+点击 `扩容集群` ，可以在集群性能不足时提高集群的配置：
 
 ![扩容集群](../../images/tomcat/cluster_scaleup.png)
+
+点击 `依赖外部服务`信息栏中的删除按钮，可以删除创建集群时添加的 Redis 或者 MySql 服务，相应的 Tomcat 配置会更新，服务会重启：
+
+![扩容集群](../../images/tomcat/links_del.png)
 
 ## 已知问题
 
