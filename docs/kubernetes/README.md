@@ -14,26 +14,26 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 
 在创建的对话框中，您需要填写名称 (可选)，选择 Kubernetes 版本号以及选择计费方式
 ![](screenshot/基本配置.png)
-请根据需要选择Kubernetes 主节点，节点和日志节点的 CPU、节点配置和数量、下图以主节点为例。所有节点的主机资源类型请保持一致，要么都是性能型，要么都是超高性能型
+请根据需要选择 Kubernetes 主节点，节点和日志节点的 CPU、节点配置和数量、下图以主节点为例。所有节点的主机资源类型请保持一致，要么都是性能型，要么都是超高性能型
 ![](screenshot/主节点配置.png)
 选择集群主机所在的私网,私网需要在创建集群前准备好。
 ![](screenshot/网络配置.png)
-填写Kubernetes应用所需参数
+填写 Kubernetes 应用所需参数
 ![](screenshot/服务环境配置.png)
 
 * 为了更好地与青云基础设施集成，Kubernetes应用需要使用您的API Token来创建资源。请在控制台生成[秘钥](https://console.qingcloud.com/access_keys/)
 
-* k8s应用使用青云提供的SDN2.0,创建的Pod都会绑定一个网卡，分配一个私网地址。这里可以设置所使用的私网ID，私网需要预先准备好。如(vxnet-xxxxxxx)
+* Kubernetes 应用使用青云提供的 SDN2.0，创建的 Pod 都会绑定一个网卡，分配一个私网地址。这里可以设置所使用的私网 ID，私网需要预先准备好，如(vxnet-xxxxxxx)。建议给 Pod 设置专用的私网，每个私网可以容纳200多个 ip，如果您需要的容器数量较多，请填写多个，之间用空格切分。
 
-* kubernetes 应用内置了自定义日志监控功能，用户可以查询到所有k8s管理的资源的日志。为了节省空间，日志会定期销毁。这里可以设置保存日志的天数
+* Kubernetes 应用内置了自定义日志监控功能，用户可以查询到所有 Kubernetes 管理的资源的日志。为了节省空间，日志会定期销毁。这里可以设置保存日志的天数
 
-* 这里可以设置k8s API的域名，用于生成api server使用的ca证书
+* 这里可以设置 Kubernetes API的域名，用于生成api server使用的ca证书
 
 ![](screenshot/服务环境配置2.png)
 
 * Kubernetes 应用支持使用私有容器仓库，方便使用内部容器仓库的用户,青云提供了[harbor应用](https://appcenter.qingcloud.com/apps/app-2mhyb1ui)可以方便用户部署私有容器仓库
 
-* Kubernetes 需要从 dockerhub.qingcloud.com 下载镜像包含青云定制的k8s服务镜像，因此需要用户填写 docherhub.qingcloud.com 用户名和密码。这个账户请用户提交工单进行申请
+* Kubernetes 需要从 dockerhub.qingcloud.com 下载镜像包含青云定制的 Kubernetes 服务镜像，因此需要用户填写 docherhub.qingcloud.com 用户名和密码。这个账户请用户提交工单进行申请
 
 * 设置 Kubernetes 系统的日志级别，之后可以通过 kibana 查看
 
@@ -149,13 +149,13 @@ MetricsTags.type:node是不同类型实体的标记（例如 pod, node等）
 
 ### 负载均衡器
 
-Kubernetes on QingCloud 支持将 kubernetes 内部的服务和 QingCloud IaaS 的负载均衡器关联起来，通过负载均衡器将服务暴露给集群外部调用。
+Kubernetes on QingCloud 支持将 Kubernetes 内部的服务和 QingCloud IaaS 的负载均衡器关联起来，通过负载均衡器将服务暴露给集群外部调用。
 
 Service 的 type 设置为 LoadBalancer，然后在 metadata 中增加以下 annotations:
 
-1. service.beta.kubernetes.io/qingcloud-load-balancer-type，负载均衡器的承载能力类型，和 [create_loadbalancer](https://docs.qingcloud.com/api/lb/create_loadbalancer.html) 接口中的 loadbalancer_type 取值范围相同。
-2. service.beta.kubernetes.io/qingcloud-load-balancer-eip-ids，负载均衡器上绑定的 eip id，最多支持4个，这个 annotation 表示要创建的是 “公网” 类型的负载均衡器。 eip 必须是可用的 eip，系统会自动创建负载均衡器。
-3. service.beta.kubernetes.io/qingcloud-load-balancer-vxnet-id，负载均衡器要加入的私有网络 id，表示要创建的是“私网” 类型负载均衡器。
+1. service.beta.kubernetes.io/qingcloud-load-balancer-type ，负载均衡器的承载能力类型，和 [create_loadbalancer](https://docs.qingcloud.com/api/lb/create_loadbalancer.html) 接口中的 loadbalancer_type 取值范围相同。
+2. service.beta.kubernetes.io/qingcloud-load-balancer-eip-ids ，负载均衡器上绑定的 eip ID，最多支持4个，这个 annotation 表示要创建的是 “公网” 类型的负载均衡器。 eip 必须是可用的 eip，系统会自动创建负载均衡器。
+3. service.beta.kubernetes.io/qingcloud-load-balancer-vxnet-id ，负载均衡器要加入的私有网络 ID，表示要创建的是“私网” 类型负载均衡器。
 
 qingcloud-load-balancer-eip-ids 和 qingcloud-load-balancer-vxnet-id 根据负载均衡器的"公网"或者"私网"二选一即可。
 
@@ -211,7 +211,7 @@ Kubernetes on QingCloud 支持将 QingCloud IaaS 上的硬盘直接挂载到 pod
 
 定义 PersistentVolume 时，在 spec 中增加 qingCloudStore，有两个属性
 
-1. volumeID 您在青云控制台上创建一块硬盘，然后将硬盘 id 复制到 这里。
+1. volumeID 您在青云控制台上创建一块硬盘，然后将硬盘 ID 复制到 这里。
 2. fsType 该硬盘挂载后的文件系统格式。
 
 整体如下面的例子：
@@ -256,7 +256,7 @@ spec:
 
 #### 使用 persistentVolumeClaim
 
-通过上面的例子可以看出来，要使用 PersistentVolume 需要预先创建好硬盘，并且配置文件和具体的资源绑定了，不方便迁移。为了解决这个问题 kubernetes 提供了 persistentVolumeClaim，只需要声明 persistentVolume 需求，创建和回收 volume 交给系统。
+通过上面的例子可以看出来，要使用 PersistentVolume 需要预先创建好硬盘，并且配置文件和具体的资源绑定了，不方便迁移。为了解决这个问题 Kubernetes 提供了 persistentVolumeClaim，只需要声明 persistentVolume 需求，创建和回收 volume 交给系统。
 
 定义 StorageClass:
 
@@ -289,7 +289,7 @@ spec:
       storage: 10Gi
 ```
 
-qingcloud-storageclass 已经在 kubernetes on QingCloud 内置，所以不需要用户自己配置，同时 qingcloud-storageclass 是默认的 storageclass，所以 PersistentVolumeClaim 中的 annotations volume.beta.kubernetes.io/storage-class: qingcloud-storageclass，也可以省略。更完整的例子参看 [wordpress 例子](https://github.com/QingCloudAppcenter/kubernetes/blob/master/sample/wordpress-deployment.yaml)。
+qingcloud-storageclass 已经在 Kubernetes on QingCloud 内置，所以不需要用户自己配置，同时 qingcloud-storageclass 是默认的 storageclass，所以 PersistentVolumeClaim 中的 annotations volume.beta.kubernetes.io/storage-class: qingcloud-storageclass，也可以省略。更完整的例子参看 [wordpress 例子](https://github.com/QingCloudAppcenter/kubernetes/blob/master/sample/wordpress-deployment.yaml)。
 
 默认的 qingcloud-storageclass 使用的是性能盘或者超高性能盘，取决于集群节点选择的主机的资源类型(性能型或者超高性能型)，系统会自动根据主机类型进行创建。所以有一个要求就是集群中的所有节点都必须选择一致的资源类型。
 
@@ -311,7 +311,7 @@ qingcloud-storageclass-capacity    kubernetes.io/qingcloud-volume
 Kubernetes on QingCloud 容器网络使用的是 SDN Passthrough 方案，每个 pod 分配的 ip 和主机是同一个 vpc 下的 ip。所以部署容器的时候，会在控制台看到挂载网卡的任务提示出现。这种网络方案让 pod 和主机使用同一层的网络，避免了性能损失，但也有一些限制需要了解：
 
 1. 每个主机当前最多支持 64 个网卡，所以 Kubernetes on QingCloud 限制每个节点上最多 60 个pod。
-2. 每个私有网络是一个 C 段地址，只能支持 200 多个 ip 地址，所以如果集群要支持更多的 pod，创建时需要添加多个私有网络 id。
+2. 每个私有网络是一个 C 段地址，只能支持 200 多个 ip 地址，所以如果集群要支持更多的 pod，创建时需要添加多个私有网络 ID。
 
 ### 更多示例
 
