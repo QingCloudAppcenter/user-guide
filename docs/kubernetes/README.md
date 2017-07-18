@@ -324,6 +324,25 @@ Kubernetes on QingCloud 容器网络使用的是 SDN Passthrough 方案，每个
 
 1. VPC 的地址范围请不要选择 172.17.0.0/16 这个段，因为这个 docker 默认使用这个段，使用这个段会导致网络问题。
 2. 所有节点的主机资源类型请保持一致，要么都是性能型，要么都是超高性能型。
-2. 节点监控界面中包含当前节点运行的 pod 数量和容器数量。
-3. 由于需要从 dockerhub.qingcloud.com 下载镜像，请确保集群所在私网能够访问公网（vpc 绑定了公网 ip)。
-4. 更多 Kubernetes 的使用方法请参考 [ Kubernetes 官方文档](https://kubernetes.io/docs/home/)。
+3. 节点监控界面中包含当前节点运行的 pod 数量和容器数量。
+4. 由于需要从 dockerhub.qingcloud.com 下载镜像，请确保集群所在私网能够访问公网（vpc 绑定了公网 ip)。
+5. 更多 Kubernetes 的使用方法请参考 [ Kubernetes 官方文档](https://kubernetes.io/docs/home/)。
+
+## FAQ
+
+### 如何在集群外部访问 Kubernetes 内的 service？
+
+主要有两个方案：
+
+1. 将 service 通过 LoadBalancer 暴露出来，如果只是私网内使用可以用私网的负载均衡器。这个方案比较通用，建议正式场景使用这个方案。
+2. 设置一条路由，将发给 cluster-ip 的数据包都转发给集群的某个节点(包括 master)。这个相当于将该节点作为网关来转发给 cluster-ip 的数据包。如果还想通过域名访问，可以设置 dns。这个方案不建议作为正式的机制使用。
+
+   ```shell
+    	ip route add 10.96.0.0/16 via $cluster_node_ip
+   ```
+
+    ```reStructuredText
+    	nameserver 10.96.0.10
+    	search default.svc.cluster.local svc.cluster.local cluster.local
+    ```
+
