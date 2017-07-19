@@ -99,9 +99,9 @@ HBase 创建完成之后可以测试其可用性，由于 `HBase 客户端` 节�
 这个测试是通过HBase Shell 命令来完成一个 HBase 表的创建、插入、查找、删除操作。
 
 ```shell
-  $ cd /opt/hbase
+  cd /opt/hbase
 
-  $ bin/hbase shell
+  bin/hbase shell
 
   hbase(main):001:0> create 'test', 'cf'
   0 row(s) in 1.2130 seconds
@@ -148,28 +148,28 @@ HBase 创建完成之后可以测试其可用性，由于 `HBase 客户端` 节�
 测试结果中会有每个线程操作的耗时。
 
 ```shell
-  $ cd /opt/hbase
+  cd /opt/hbase
 
   # 测试随机写，预分区10个 region，使用多线程代替 MapReduce 的方式来并发随机写操作，10个线程，每个线程写10000行。
-  $ bin/hbase pe --nomapred --rows=10000 --presplit=10 randomWrite 10
+  bin/hbase pe --nomapred --rows=10000 --presplit=10 randomWrite 10
 
   # 测试顺序写，预分区10个 region，使用多线程代替 MapReduce 的方式来并发顺序写操作，10个线程，每个线程写10000行。
-  $ bin/hbase pe --nomapred --rows=10000 --presplit=10 sequentialWrite 10
+  bin/hbase pe --nomapred --rows=10000 --presplit=10 sequentialWrite 10
 
   # 测试基于 row    的自增操作，使用多线程代替 MapReduce 的方式来并发自增操作，10个线程，每个线程 increment 10000次。
-  $ bin/hbase pe --rows=10000 --nomapred increment 10
+  bin/hbase pe --rows=10000 --nomapred increment 10
 
   # 测试基于row的追加操作，使用多线程代替 MapReduce 的方式来并发追加操作，10个线程，每个线程 append 10000次。
-  $ bin/hbase pe --rows=10000 --nomapred append 10
+  bin/hbase pe --rows=10000 --nomapred append 10
 
   # 测试随机读，使用多线程代替 MapReduce 的方式来并发随机读操作，10个线程，每个线程读10000行
-  $ bin/hbase pe --nomapred --rows=10000 randomRead 10
+  bin/hbase pe --nomapred --rows=10000 randomRead 10
 
   # 测试顺序读，使用多线程代替 MapReduce 的方式来并发顺序读操作，10个线程，每个线程读10000行
-  $ bin/hbase pe --nomapred --rows=10000 sequentialRead 10
+  bin/hbase pe --nomapred --rows=10000 sequentialRead 10
 
   # 测试范围scan操作，使用多线程代替 MapReduce 的方式来并发范围 scan 操作，10个线程，每个线程 scan 10000次，每次范围返回最大100行。
-  $ bin/hbase pe --rows=10000 --nomapred scanRange100 10
+  bin/hbase pe --rows=10000 --nomapred scanRange100 10
 ```
 
 ### 测试3
@@ -182,11 +182,11 @@ HBase 创建完成之后可以测试其可用性，由于 `HBase 客户端` 节�
 
 使用 MapReduce 导入数据有三种方案：
 
-  - 一、直接书写 MapReduce 使用 HBase 提供的 JAVA API 从 HDFS 导入到 HBase 表。
+- 一、直接书写 MapReduce 使用 HBase 提供的 JAVA API 从 HDFS 导入到 HBase 表。
 
-  - 二、书写 MapReduce 将 HDFS 中数据转化为 HFile 格式，再使用 HBase 的 BulkLoad 工具导入到 HBase 表。
+- 二、书写 MapReduce 将 HDFS 中数据转化为 HFile 格式，再使用 HBase 的 BulkLoad 工具导入到 HBase 表。
 
-  - 三、使用 HBase ImportTsv 工具将格式化的 HDFS 数据导入到 HBase 表。
+- 三、使用 HBase ImportTsv 工具将格式化的 HDFS 数据导入到 HBase 表。
 
 > 三种方案各有优缺点，方案一只需要一步操作，可自由规整数据，更为简单灵活，但直接写入 HBase 表会对线上服务有一定的性能影响。方案二和方案三则将导入步骤一分为二，耗时工作提前做好，确保对线上服务影响做到最小。
 若要导入的数据已经是格式化的数据（有固定的分隔符），不需要自己实现 MapReduce 做进一步数据清洗，直接采用方案三；若数据并未格式化仍需规整则采用方案二。
@@ -194,9 +194,9 @@ HBase 创建完成之后可以测试其可用性，由于 `HBase 客户端` 节�
 以下方案中均使用 HBase 表 test_import，包含一个column family：content，可通过 HBase Shell 预先建好表
 
 ```shell
-  $ cd /opt/hbase
+  cd /opt/hbase
 
-  $ bin/hbase shell
+  bin/hbase shell
 
   hbase(main):001:0> create 'test_import', 'content'
   0 row(s) in 1.2130 seconds
@@ -324,9 +324,9 @@ hbase-tools-1.0.0.jar 是将上述代码打成的jar包，APP_HOME 是 jar 包�
 依次执行下述命令：
 
 ```shell
-  $ cd /opt/hadoop
+  cd /opt/hadoop
 
-  $ bin/hadoop jar $APP_HOME/hbase-tools-1.0.0.jar com.qingcloud.hbase.ImportByMR /user/inputPath
+  bin/hadoop jar $APP_HOME/hbase-tools-1.0.0.jar com.qingcloud.hbase.ImportByMR /user/inputPath
 ```
 
 执行成功后可简单通过测试一中的 HBase Shell 来验证数据。
@@ -403,15 +403,15 @@ hbase-tools-1.0.0.jar 是将上述代码打成的 jar 包，APP_HOME 是 jar 包
 /user/outputPath 是 MapReduce 生成的 HFile 格式的结果。test_import 是 HBase 表名。依次执行下述命令：
 
 ```shell
-  $ cd /opt/hadoop
+  cd /opt/hadoop
 
-  $ bin/hdfs dfs -rmr /user/outputPath
+  bin/hdfs dfs -rmr /user/outputPath
 
-  $ export HADOOP_CLASSPATH=`/opt/hbase/bin/hbase classpath`
+  export HADOOP_CLASSPATH=`/opt/hbase/bin/hbase classpath`
 
-  $ bin/hadoop jar $APP_HOME/hbase-tools-1.0.0.jar com.qingcloud.hbase.ImportByBulkLoad /user/inputPath /user/outputPath
+  bin/hadoop jar $APP_HOME/hbase-tools-1.0.0.jar com.qingcloud.hbase.ImportByBulkLoad /user/inputPath /user/outputPath
 
-  $ bin/hadoop jar /opt/hbase/lib/hbase-server-<VERSION>.jar completebulkload /user/outputPath test_import
+  bin/hadoop jar /opt/hbase/lib/hbase-server-<VERSION>.jar completebulkload /user/outputPath test_import
 ```
 
 执行成功后可简单通过测试一中的 HBase Shell 来验证数据。
@@ -420,25 +420,25 @@ hbase-tools-1.0.0.jar 是将上述代码打成的 jar 包，APP_HOME 是 jar 包
 /user/outputPath 是 HFile 格式的暂存结果。test_import是HBase表名。依次执行下述命令：
 
 ```shell
-  $ cd /opt/hadoop
+  cd /opt/hadoop
 
-  $ bin/hdfs dfs -rmr /user/outputPath
+  bin/hdfs dfs -rmr /user/outputPath
 
-  $ export HADOOP_CLASSPATH=`/opt/hbase/bin/hbase classpath`
+  export HADOOP_CLASSPATH=`/opt/hbase/bin/hbase classpath`
 
-  $ bin/hadoop jar /opt/hbase/lib/hbase-server-<VERSION>.jar importtsv -Dimporttsv.columns=HBASE_ROW_KEY,content:a -Dimporttsv.bulk.output=/user/outputPath test_import /user/inputPath
+  bin/hadoop jar /opt/hbase/lib/hbase-server-<VERSION>.jar importtsv -Dimporttsv.columns=HBASE_ROW_KEY,content:a -Dimporttsv.bulk.output=/user/outputPath test_import /user/inputPath
 ```
 
 或
 
 ```shell
-  $ cd /opt/hadoop
+  cd /opt/hadoop
 
-  $ bin/hdfs dfs -rmr /user/outputPath
+  bin/hdfs dfs -rmr /user/outputPath
 
-  $ cd /opt/hbase
+  cd /opt/hbase
 
-  $ bin/hbase org.apache.hadoop.hbase.mapreduce.ImportTsv -Dimporttsv.columns=HBASE_ROW_KEY,content:a -Dimporttsv.bulk.output=/user/outputPath test_import /user/inputPath
+  bin/hbase org.apache.hadoop.hbase.mapreduce.ImportTsv -Dimporttsv.columns=HBASE_ROW_KEY,content:a -Dimporttsv.bulk.output=/user/outputPath test_import /user/inputPath
 ```
 
 执行成功后可简单通过测试一中的 HBase Shell 来验证数据。
@@ -453,10 +453,10 @@ hbase-tools-1.0.0.jar 是将上述代码打成的 jar 包，APP_HOME 是 jar 包
 测试简单的 sql
 
 ```shell
-  $ cd /opt/phoenix
+  cd /opt/phoenix
 
   # 测试时需手动填写 Zookeeper 连接，该地址可通过 HBase 详情页左侧基本属性列表中获得，去掉端口
-  $ bin/psql.py 192.168.0.4,192.168.0.3,192.168.0.2:/hbase/cl-r2t3jzjo examples/WEB_STAT.sql examples/WEB_STAT.csv examples/WEB_STAT_QUERIES.sql
+  bin/psql.py 192.168.0.4,192.168.0.3,192.168.0.2:/hbase/cl-r2t3jzjo examples/WEB_STAT.sql examples/WEB_STAT.csv examples/WEB_STAT_QUERIES.sql
 ```
 
 测试 ACID 事务，该测试需要开启两个终端按时间交互式执行，在commit之前另一终端是无法select得到新修改的数据的：
@@ -464,9 +464,9 @@ hbase-tools-1.0.0.jar 是将上述代码打成的 jar 包，APP_HOME 是 jar 包
 终端一
 
 ```shell
-  $ cd /opt/phoenix
+  cd /opt/phoenix
 
-  $ bin/sqlline.py 192.168.0.4,192.168.0.3,192.168.0.2:/hbase/cl-r2t3jzjo
+  bin/sqlline.py 192.168.0.4,192.168.0.3,192.168.0.2:/hbase/cl-r2t3jzjo
 
   0: jdbc:phoenix:> CREATE TABLE my_table (k BIGINT PRIMARY KEY, v VARCHAR) TRANSACTIONAL=true;
   No rows affected (1.506 seconds)
@@ -503,9 +503,9 @@ hbase-tools-1.0.0.jar 是将上述代码打成的 jar 包，APP_HOME 是 jar 包
 开启终端二
 
 ```shell
-  $ cd /opt/phoenix
+  cd /opt/phoenix
 
-  $ bin/sqlline.py
+  bin/sqlline.py
 
   0: jdbc:phoenix:> SELECT * FROM my_table;
   +----+----+
@@ -587,8 +587,8 @@ hbase-tools-1.0.0.jar 是将上述代码打成的 jar 包，APP_HOME 是 jar 包
 同时，HBase 和 HDFS 提供了丰富的监控信息。如果需要通过公网访问这些信息您需要先申请一个公网 IP 绑定在路由器上，在路由器上设置端口转发，同时打开防火墙相应的下行端口。
 `HBase 主节点` 默认端口 `16010` ， `HDFS 主节点` 默认端口是 `50070` 。为方便查看 HBase UI，请参考 [VPN 隧道指南](https://docs.qingcloud.com/guide/vpn.html) 配置VPN，VPN 建立后可查看下述界面。
 
-* http://<HBase Master Node private IP>:16010
-* http://<HDFS Master Node private IP>:50070
+* http:// `HBase Master Node private IP` :16010
+* http:// `HDFS Master Node private IP` :50070
 
 ![hbase](../../images/hbase/hbase_monitor.png)
 
