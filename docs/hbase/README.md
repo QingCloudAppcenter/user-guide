@@ -587,8 +587,8 @@ hbase-tools-1.0.0.jar 是将上述代码打成的 jar 包，APP_HOME 是 jar 包
 同时，HBase 和 HDFS 提供了丰富的监控信息。如果需要通过公网访问这些信息您需要先申请一个公网 IP 绑定在路由器上，在路由器上设置端口转发，同时打开防火墙相应的下行端口。
 `HBase 主节点` 默认端口 `16010` ， `HDFS 主节点` 默认端口是 `50070` 。为方便查看 HBase UI，请参考 [VPN 隧道指南](https://docs.qingcloud.com/guide/vpn.html) 配置VPN，VPN 建立后可查看下述界面。
 
-* http:// `HBase Master Node private IP` :16010
-* http:// `HDFS Master Node private IP` :50070
+- http:// `HBase Master Node private IP` :16010
+- http:// `HDFS Master Node private IP` :50070
 
 ![hbase](../../images/hbase/hbase_monitor.png)
 
