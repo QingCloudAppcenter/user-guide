@@ -9,5 +9,6 @@
 * [Redis Cluster](docs/redis-cluster/README.md)
 * [Redis Standalone](docs/redis-standalone/README.md)
 * [ZooKeeper](docs/zk/README.md)
+* [HBase](docs/hbase/README.md)
 
 
