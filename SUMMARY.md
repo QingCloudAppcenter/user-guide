@@ -2,7 +2,9 @@
 
 * [etcd](docs/etcd/README.md)
 * [Harbor](docs/harbor/README.md)
+* [HBase](docs/hbase/README.md)
 * [Kafka](docs/kafka/README.md)
+* [Kubernetes](docs/kubernetes/README.md)
 * [Memcached](docs/memcached/README.md)
 * [MySQL Plus](docs/rds/README.md)
 * [Nextcloud](docs/nextcloud/README.md)
