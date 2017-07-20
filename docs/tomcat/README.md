@@ -73,7 +73,7 @@ CPU，内存，节点数量，实例类型和磁盘大小根据自己实际需�
 
 ![第3步: 日志收集节点设置](../../images/tomcat/log_config.png)
 
-日志文件按照主机名统一保存在 /opt/TomcatLogData 目录下，rsyslog 配置文件为 /etc/rsyslog.conf，同时节点提供 ssh 访问权限，用户可根据自身需求调整 rsyslog 的配置，<font color=red>默认用户名密码为 root/zhu1241jie，集群创建后请及时更改密码</font>。
+日志文件按照主机名统一保存在挂在磁盘 /data/TomcatLogData 目录下，rsyslog 配置文件为 /etc/rsyslog.conf，同时节点提供 ssh 访问权限，用户可根据自身需求调整 rsyslog 的配置，<font color=red>默认用户名密码为 root/zhu1241jie，集群创建后请及时更改密码</font>。
 
 ### 第4步: 网络配置
 
