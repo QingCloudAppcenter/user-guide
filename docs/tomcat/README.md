@@ -135,8 +135,9 @@ MySql 数据库应用可以在 AppCenter 控制台中创建
 1. Tomcat 字符编码方式的配置会被分别设置在 JAVA_OPTS （-Djavax.servlet.request.encoding=UTF-8 -Dfile.encoding=UTF-8） 以及 server.xml 中，前者会作为环境变量被 Tomcat 的启动脚本使用。
 1. Tomcat 基于 log4j 1.2.17，默认日志级别为 INFO，用户可下拉选择更改。
 1. 本集群使用 Tomcat 共享线程池。
-1. 如果 WAR 文件的获取方式选择了 tomcat_manager，可以通过通过负载均衡器的地址访问 Tomcat Manager <http://load-balancer-address> ，这时访问的是某一节点的 Tomcat Manager ，输入用户名和密码，上传 WAR 文件完成部署。<font color=red>注意，Tomcat Manager 并不支持集群分发部署，也就是说这个 WAR 现在只是在当前节点部署成功，之后青云提供的监控脚本会发现这个新部署的文件夹，并复制到 Tomcat FarmWarDeployer 监控的目录中，这样 FarmWarDeployer 会通知其他节点，实现分发部署。为避免陷入各节点循环复制部署，脚本需比较 WAR 目录下 META-INFO／MANIFEST.MF 文件中的 Manifest-Version，所以请确保使用的 WAR 文件中包含此文件及所需参数</font>。原生 tomcat 上传文件限制为 52M，本应用已去处此限制，但用户应根据实际情况减小 WAR 文件大小以减少等待时间。  
+1. 如果 WAR 文件的获取方式选择了 Tomcat Manager，可以通过通过负载均衡器的地址访问 Tomcat Manager <http://load-balancer-address> ，这时访问的是某一节点的 Tomcat Manager ，输入用户名和密码，上传 WAR 文件完成部署。<font color=red>注意，Tomcat Manager 并不支持集群分发部署，也就是说这个 WAR 现在只是在当前节点部署成功，之后青云提供的监控脚本会发现这个新部署的文件夹，并复制到 Tomcat FarmWarDeployer 监控的目录中，这样 FarmWarDeployer 会通知其他节点，实现分发部署。为避免陷入各节点循环复制部署，脚本需比较 WAR 目录下 META-INFO／MANIFEST.MF 文件中的 Manifest-Version，所以请确保使用的 WAR 文件中包含此文件及所需参数</font>。原生 tomcat 上传文件限制为 52M，本应用已去处此限制，但用户应根据实际情况减小 WAR 文件大小以减少等待时间。  
     另外，Tomcat 已添加 manager-script 角色，所以用户也可以选择青云合作伙伴提供的 Jenkins 应用服务 <https://appcenter.qingcloud.com/apps/app-jbffg31u> 。运行之后访问 Jenkins 控制台，下载并配置 Jenkins 的 “Deploy to container” 插件，配置用户名为 tomcat，密码为环境变量中的密码，以此实现分发部署。  
+    <font color=red>在当前集群部署的 WAR 文件不支持自动部署到新添加的节点，使用 Tomcat Manager 的用户可以通过 undeploy & deploy 动作完成推送 WAR 文件到所有节点，使用 qingstor 的用户可以在集群控制菜单中通过 `重新部署 WAR` 将文件推送到各节点</font>。  
 1. 我们会根据您设置的节点物理内存大小自动配置 Java 虚拟机的最小和最大堆栈大小，分别为四分之一和二分之一内存大小，也就是说如果选择单节点 4G 内存，则 xms 为 1G，xmx为 2G。
 1. Tomcat 使用 OpenJDK 1.8.0_131，默认打开 Garbage Collection，其配置于 Tomcat 启动脚本 catalina.sh 中，配置为 CATALINA_OPTS="-XX:+PrintGCDateStamps -Xloggc:/opt/apache-tomcat-7.0.78/logs/tomcat_gc.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=1 -XX:GCLogFileSize=100M" ，日志同样会被转发至日志服务器统一保存。
 1. Tomcat 节点提供 ssh 访问权限，<font color=red>默认用户名密码为 root/zhu1241jie，集群创建后请及时更改密码</font>，同时不应直接修改 Tomcat 目录下的配置文件，而应修改 /etc/confd/templates 下对应配置文件的模版文件，否则集群启动后，Tomcat 目录下修改会被刷新覆盖。
