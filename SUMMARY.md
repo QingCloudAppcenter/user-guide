@@ -5,6 +5,7 @@
 * [Kafka](docs/kafka/README.md)
 * [Memcached](docs/memcached/README.md)
 * [MySQL Plus](docs/rds/README.md)
+* [MongoDB Replication](docs/mongodb-replication/README.md)
 * [Nextcloud](docs/nextcloud/README.md)
 * [Redis Cluster](docs/redis-cluster/README.md)
 * [Redis Standalone](docs/redis-standalone/README.md)
