@@ -328,7 +328,7 @@ YARN及HDFS进程最大占用内存
 ![YARN heap size](../../images/SparkMR/hdfs_yarn_heap_size.png)
 
 ## 场景十三、配置Hadoop代理用户
-可通过如下配置参数配置Hadoop代理用户机器hosts和groups：
+可通过如下配置参数配置Hadoop代理用户及其所能代理的hosts和groups：
 ![Hadoop代理用户](../../images/SparkMR/hadoop_proxy_user.png)
 
 ## 场景十四、YARN log收集
@@ -433,7 +433,7 @@ SparkMR提供了60个左右的配置参数，可以通过 `配置参数` 来定�
 - **datanode.HADOOP_HEAPSIZE**: Datanode daemon进程最大可用堆内存大小(MB)，默认值为1000. 该值上限为总内存-1024。
 - **dfs.namenode.handler.count**: Name node节点服务线程数。
 - **dfs.datanode.handler.count**: Data node节点服务线程数。
-- **dfs.replication": HDFS副本数。
+- **dfs.replication**: HDFS副本数。
 - **fs.trash.interval**: 控制Trash检查点目录过多少分钟后被删除。
 - **yarn.resourcemanager.scheduler.class**: YARN ResourceManager调度器，默认为CapacityScheduler，可选FairScheduler。如果选择FairScheduler，需要上传自定义的fair-scheduler.xml到HDFS的/tmp/hadoop-yarn/目录，然后右键点击集群选择更新调度器。如需对CapacityScheduler的默认行为进行更改，同样需要上传自定义的capacity-scheduler.xml到HDFS的/tmp/hadoop-yarn/目录，然后更新调度器。
 - **yarn.resourcemanager.client.thread-count**: 处理applications manager请求的线程数。
