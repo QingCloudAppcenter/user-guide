@@ -70,4 +70,182 @@
 
 阅读并同意青云 APP Center 用户协议之后即可开始部署应用。
 
+## SparkMR使用场景
+
+## 查看服务详情
+![查看服务详情](../../images/SparkMR/cluster_detail.png)
+创建成功后，点击集群列表页面相应集群可查看集群详情。可以看到集群分为HDFS主节点、YARN主节点、从节点和Bigdata client四种角色。其中用户可以直接访问client节点，并通过该节点与集群交互如提交Hadoop/Spark job、查看/上传/下载HDFS文件等。
+
+> 如在Spark Standalone模式下(包括spark-shell和spark-submit)运行的spark job需要读取本地文件，则需要将spark-env.sh中的`export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop`注释掉
+如需以Spark on YARN模式运行spark job，则需要将该环境变量打开
+
+## 场景一、以Spark-shell模式运行Spark job
+- Scala
+```shell
+cd /opt/spark	
+bin/spark-shell --master spark://192.168.0.8:7077
+
+val textFile = spark.read.textFile("/opt/spark/README.md")
+textFile.count()
+textFile.filter(line => line.contains("Spark")).count()
+```
+- Python
+```shell
+cd /opt/spark
+bin/pyspark --master spark://192.168.0.8:7077
+
+textFile = spark.read.text("/opt/spark/README.md")
+textFile.count()
+textFile.filter(textFile.value.contains("Spark")).count()
+```
+
+- R
+```shell
+cd /opt/spark
+bin/sparkR --master spark://192.168.0.8:7077
+
+df <- as.DataFrame(faithful)
+head(df)
+people <- read.df("./examples/src/main/resources/people.json", "json")
+printSchema(people)
+```
+## 场景二、以Spark Standalone模式运行Spark job
+- Scala
+```shell
+cd /opt/spark	
+
+bin/spark-submit --class org.apache.spark.examples.SparkPi --master spark://192.168.0.8:7077 examples/jars/spark-examples_2.11-2.2.0.jar 100
+```
+- Python
+```shell
+cd /opt/spark
+
+bin/spark-submit --master spark://192.168.0.8:7077 examples/src/main/python/pi.py 100
+```
+> 可以在配置参数页面切换Python版本
+![切换Python版本](../../images/SparkMR/switch_python.png)
+
+- R
+```shell
+cd /opt/spark
+
+bin/spark-submit --master spark://192.168.0.8:7077 examples/src/main/r/data-manipulation.R examples/src/main/resources/people.txt
+```
+
+## 场景三、以Spark on YARN模式运行Spark job
+- Scala
+```shell
+cd /opt/spark
+
+bin/spark-submit --class org.apache.spark.examples.SparkPi --master yarn --deploy-mode cluster --num-executors 3 --executor-cores 1 --executor-memory 1g examples/jars/spark-examples_2.11-2.2.0.jar 100
+```
+- Python
+```shell
+cd /opt/spark
+
+bin/spark-submit --master yarn --deploy-mode client examples/src/main/python/pi.py 100
+```
+
+- R
+```shell
+cd /opt/spark
+
+bin/spark-submit --master yarn --deploy-mode cluster /opt/spark/examples/src/main/r/ml/kmeans.R
+```
+
+## 场景四、SparkMR与QingStor集成
+QingStor 对象存储为用户提供可无限扩展的通用数据存储服务，具有安全可靠、简单易用、高性能、低成本等特点。用户可将数据上传至 QingStor 对象存储中，以供数据分析。由于 QingStor 对象存储兼容 AWS S3 API，因此 Spark与Hadoop都可以通过 AWS S3 API 与 QingStor 对象存储高效集成，以满足更多的大数据计算和存储场景。有关 QingStor 的更多内容，请参考[QingStor 对象存储用户指南] (https://docs.qingcloud.com/qingstor/guide/index.html)
+>目前QingStor 对象存储的开放了sh1a 和 pek3a两个区，后续将开放更多的分区，敬请期待。
+
+如需与QingStor对象存储集成，需要首先在配置参数页面填写如下信息：
+![配置QingStor](../../images/SparkMR/qingstor-setting.png)
+
+
+>有两种方式可以启动 Spark job： 通过 spark-shell 交互式运行和通过 spark-submit 提交 job 到 Spark集群运行，这两种方式都需要通过选项 "--jars $SPARK_S3" 来指定使用 S3 API相关的 jar 包。
+
+假设您在 QingStor 上的 bucket 为 my-bucket, 下面以 spark-shell 为例， 列出常见的 Spark 与 QingStor 集成场景。
+
+- 在 Spark 中读取到 HDFS 上的文件后将其存储到 QingStor 中
+```shell
+# 首先需要将本地的一个测试文件上传到spark集群的HDFS存储节点上：
+cd /opt/hadoop
+bin/hdfs dfs -mkdir /input
+bin/hdfs dfs -put /opt/spark/README.md /input/
+
+# 然后启动 spark-shell, 输入并执行如下代码将会读取 HDFS 上的 README.md 文件, 然后将其存为QingStor中"my-bucket"下的 test 文件：
+cd /opt/spark
+bin/spark-shell --master spark://<yarn-master-ip>:7077 --jars $SPARK_S3
+
+val qs_file = sc.textFile("hdfs://<hdfs-master-ip>:9000/input/README.md")
+qs_file.saveAsTextFile("s3a://my-bucket/test")
+```
+- 在 Spark 中读取 QingStor 上的文件，处理过后再存储到 HDFS 文件系统中
+```shell
+val qs_file = sc.textFile("s3a://my-bucket/test")
+qs_file.count()
+qs_file.saveAsTextFile("hdfs://<hdfs-master-ip>:9000/output/")
+```
+
+- 在 Spark 中读取 QingStor 上的文件， 经过处理后将结果存回 QingStor
+```shell
+#如下代码将会读取 QingStor 中 my-bucket 下的 test 文件， 从中选出包含字符串 "Spark" 的行， 最后将结果存储到 my-bucket 下的 qingstor-output 文件中
+val qs_file = sc.textFile("s3a://my-bucket/test").filter(line => line.contains("Spark"))
+qs_file.saveAsTextFile("s3a://my-bucket/output1")
+```
+
+- 在 Spark 中创建元素值为 1 到 1000 的数组， 找出其中的奇数并对其求平方， 最后将结果存储到 QingStor 上的文件中
+```shell
+val data = for (i <- 1 to 1000) yield i
+sc.parallelize(data).filter(_%2 != 0).map(x=>x*x).saveAsTextFile("s3a://my-bucket/output2")
+```
+## 场景一、
+- 运行Scala Spark job
+```shell
+cd /opt/spark
+
+```
+- 运行Python Spark job
+```shell
+cd /opt/spark
+
+```
+## 场景一、
+- 运行Scala Spark job
+```shell
+cd /opt/spark
+
+```
+- 运行Python Spark job
+```shell
+cd /opt/spark
+
+```
+## 场景一、
+
+## 场景一、
+
+## 场景一、
+
+## 场景一、
+
+## 场景一、
+
+## 场景一、
+
+## 在线伸缩
+
+### 增加节点
+
+### 删除节点
+
+### 纵向伸缩
+
+## 监控告警
+
 ### 创建成功
+
+## 配置参数
+
+### 修改配置参数
+
+### 常用配置项
