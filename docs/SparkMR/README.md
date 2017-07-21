@@ -122,7 +122,7 @@ cd /opt/spark
 
 bin/spark-submit --master spark://192.168.0.8:7077 examples/src/main/python/pi.py 100
 ```
-> 可以在配置参数页面切换Python版本
+可以在配置参数页面切换Python版本
 ![切换Python版本](../../images/SparkMR/switch_python.png)
 
 - R
@@ -153,12 +153,54 @@ cd /opt/spark
 bin/spark-submit --master yarn --deploy-mode cluster /opt/spark/examples/src/main/r/ml/kmeans.R
 ```
 
-## 场景四、SparkMR与QingStor集成
+## 场景四、运行hadoop测试程序，统计文件中单词出现的次数
+```shell
+cd /opt/hadoop
+bin/hdfs dfs -mkdir /input
+bin/hdfs dfs -put etc/hadoop/* /input
+bin/hdfs dfs -ls /input
+
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar wordcount /input /output
+bin/hdfs dfs -cat /output/part-r-00000
+```
+
+## 场景五、Hadoop 官方的 Benchmark 性能基准测试，测试的是 HDFS 分布式I/O读写的速度/吞吐率，依次执行下列命令
+```shell
+cd /opt/hadoop
+# 使用6个 Map 任务并行向 HDFS 里6个文件里分别写入 1GB 的数据
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.7.3-tests.jar TestDFSIO -write -nrFiles 6 -size 1GB
+
+# 使用6个 Map 任务并行从 HDFS 里6个文件里分别读取 1GB 的数据
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.7.3-tests.jar TestDFSIO -read -nrFiles 6 -size 1GB
+
+# 清除以上生成的数据
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.7.3-tests.jar TestDFSIO -clean
+
+您能看到 HDFS 每秒读写文件速度，以及吞吐量的具体数值。
+```
+
+## 场景六、Hadoop 官方的 Benchmark 性能基准测试，测试的是大文件内容的排序，依次执行下列命令：
+```shell
+cd /opt/hadoop
+# 生成1000万行数据到 /teraInput 路径中
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar teragen 10000000 /teraInput
+
+# 将/teraInput 中生成的1000万行数据排序后存入到 /teraOutput 路径中
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar terasort /teraInput /teraOutput
+
+# 针对已排序的 /teraOutput 中的数据，验证每一行的数值要小于下一行
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar teravalidate -D mapred.reduce.tasks=8 /teraOutput /teraValidate
+
+# 查看验证的结果
+bin/hdfs dfs -cat /teraValidate/part-r-00000
+```
+
+## 场景七、SparkMR与QingStor集成
 QingStor 对象存储为用户提供可无限扩展的通用数据存储服务，具有安全可靠、简单易用、高性能、低成本等特点。用户可将数据上传至 QingStor 对象存储中，以供数据分析。由于 QingStor 对象存储兼容 AWS S3 API，因此 Spark与Hadoop都可以通过 AWS S3 API 与 QingStor 对象存储高效集成，以满足更多的大数据计算和存储场景。有关 QingStor 的更多内容，请参考[QingStor 对象存储用户指南] (https://docs.qingcloud.com/qingstor/guide/index.html)
 >目前QingStor 对象存储的开放了sh1a 和 pek3a两个区，后续将开放更多的分区，敬请期待。
 
 如需与QingStor对象存储集成，需要首先在配置参数页面填写如下信息：
-![配置QingStor](../../images/SparkMR/qingstor-setting.png)
+![配置QingStor](../../images/SparkMR/qingstor_setting.png)
 
 
 >有两种方式可以启动 Spark job： 通过 spark-shell 交互式运行和通过 spark-submit 提交 job 到 Spark集群运行，这两种方式都需要通过选项 "--jars $SPARK_S3" 来指定使用 S3 API相关的 jar 包。
@@ -198,55 +240,94 @@ qs_file.saveAsTextFile("s3a://my-bucket/output1")
 val data = for (i <- 1 to 1000) yield i
 sc.parallelize(data).filter(_%2 != 0).map(x=>x*x).saveAsTextFile("s3a://my-bucket/output2")
 ```
-## 场景五、运行hadoop测试程序，统计文件中单词出现的次数
+
+- 本地文件和对象存储之间的上传下载
 ```shell
-cd /opt/hadoop
-bin/hdfs dfs -mkdir /input
-bin/hdfs dfs -put etc/hadoop/* /input
-bin/hdfs dfs -ls /input
-
-bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar wordcount /input /output
-bin/hdfs dfs -cat /output/part-r-00000
-```
-## 场景六、Hadoop 官方的 Benchmark 性能基准测试，测试的是 HDFS 分布式I/O读写的速度/吞吐率，依次执行下列命令
-```shell
-cd /opt/hadoop
-# 使用6个 Map 任务并行向 HDFS 里6个文件里分别写入 1GB 的数据
-bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.7.3-tests.jar TestDFSIO -write -nrFiles 6 -size 1GB
-
-# 使用6个 Map 任务并行从 HDFS 里6个文件里分别读取 1GB 的数据
-bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.7.3-tests.jar TestDFSIO -read -nrFiles 6 -size 1GB
-
-# 清除以上生成的数据
-bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.7.3-tests.jar TestDFSIO -clean
-
-您能看到 HDFS 每秒读写文件速度，以及吞吐量的具体数值。
-```
-## 场景七、Hadoop 官方的 Benchmark 性能基准测试，测试的是大文件内容的排序，依次执行下列命令：
-```shell
-cd /opt/hadoop
-# 生成1000万行数据到 /teraInput 路径中
-bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar teragen 10000000 /teraInput
-
-# 将/teraInput 中生成的1000万行数据排序后存入到 /teraOutput 路径中
-bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar terasort /teraInput /teraOutput
-
-# 针对已排序的 /teraOutput 中的数据，验证每一行的数值要小于下一行
-bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar teravalidate -D mapred.reduce.tasks=8 /teraOutput /teraValidate
-
-# 查看验证的结果
-bin/hdfs dfs -cat /teraValidate/part-r-00000
+ cd /usr/opt/hadoop
+# 从Client 主机本地上传文件到 QingStor 对象存储
+ bin/hdfs dfs -put LICENSE.txt s3a://your_bucket/
+ 
+ # 将文件从 QingStor 对象存储下载到Client 主机本地
+bin/hdfs dfs -get s3a://your_bucket/LICENSE.txt
 ```
 
-## 场景一、
+- HDFS文件系统和对象存储之间的数据传输
+```shell
+ cd /usr/opt/hadoop
+# 将文件从 QingStor 对象存储拷贝到 HDFS 文件系统
+bin/hadoop distcp -libjars $HADOOP_S3 s3a://your_bucket/LICENSE.txt /LICENSE.txt
+ 
+# 将文件从 HDFS 文件系统拷贝到 QingStor 对象存储存储空间中
+bin/hadoop distcp -libjars $HADOOP_S3 /LICENSE.txt s3a://your_bucket/your_folder/
+```
 
-## 场景一、
+- 将对象存储作为MapReduce job的输入/输出
+```shell
+ cd /usr/opt/hadoop
+ 
+# 将 QingStor 对象存储中的文件作为 MapReduce 的输入，计算结果输出到 HDFS 文件系统中
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar wordcount -libjars $HADOOP_S3 s3a://your_bucket/LICENSE.txt /test_output
 
-## 场景一、
+# 将 QingStor 对象存储中的文件作为 MapReduce 的输入，计算结果依然输出到 QingStor 对象存储的存储空间中
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar wordcount -libjars $HADOOP_S3 s3a://your_bucket/LICENSE.txt s3a://your_bucket/your_folder/
 
-## 场景一、
+# 将 HDFS 中的文件作为 MapReduce 的输入，计算结果输出到 QingStor 对象存储的存储空间中
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar wordcount -libjars $HADOOP_S3 /LICENSE.txt s3a://your_bucket/
 
-## 场景一、
+```
+
+## 场景八、更新自定义YARN调度器
+YARN支持两种调度器CapacityScheduler（默认）和FairScheduler。
+为了支持用户更多自定义调度器的需求，SparkMR支持用户上传自定义调度器，步骤如下：
+1. 自定义CapacityScheduler capacity-scheduler.xml或者FairScheduler fair-scheduler.xml（文件名必须为capacity-scheduler.xml或者fair-scheduler.xml）
+2. 将这两个自定义调度器上传至HDFS的/tmp/hadoop-yarn/目录
+3. 右键点击集群，选择`自定义服务`，点击`更新调度器`
+![更新调度器](../../images/SparkMR/update_scheduler.png)
+4. 在配置参数页面切换到相应调度器
+![选择调度器](../../images/SparkMR/select_scheduler.png)
+
+## 场景九、更新自定义Spark应用内调度器
+Spark支持两种应用内调度器FIFO（默认）和FAIR。
+为了支持用户自定义Spark应用内FAIR调度器的需求，SparkMR支持用户上传自定义的FAIR调度器，步骤如下：
+1. 自定义Spark应用内FAIR调度器spark-fair-scheduler.xml（文件名必须为spark-fair-scheduler.xml）
+2. 将这两个自定义调度器上传至HDFS的/tmp/hadoop-yarn/目录
+3. 右键点击集群，选择`自定义服务`，点击`更新调度器`
+4. 在配置参数页面切换到相应调度器
+![选择调度器](../../images/SparkMR/select_spark_scheduler.png)
+
+## 场景十、选择Resource Calculator
+SparkMR支持用户选择YARN调度器中用于计量资源的ResourceCalculator。默认的DefaultResourseCalculator在分配资源时只考虑内存，而DominantResourceCalculator则利用Dominant-resource来综合考量多维度的资源如内存，CPU等。可在配置参数页面选择：
+![选择资源计量器](../../images/SparkMR/select_resource_calculator.png)
+
+## 场景十一、开启/关闭 Spark Standalone模式
+用户可以选择是否开启Spark Standalone模式（默认开启）。
+- 开启后用户可以以Spark Standalone模式提交Spark应用
+- 无论开启或关闭Spark Standalone模式用户都能以Spark on YARN模式提交Spark应用
+- 如用户仅以Spark on YARN模式提交Spark应用，则可以选择关闭Spark Standalone模式以释放资源。
+![开启关闭standalone](../../images/SparkMR/switch_standalone.png)
+
+## 场景十二、控制Spark、HDFS、YARN占用的内存
+- Spark Standalone模式的Spark master进程和YARN ResourceManager进程都运行在YARN主节点上。
+- Spark Standalone模式的Spark worker进程和HDFS datanode以及YARN NodeManager进程都运行在从节点上
+- 可通过如下参数配置各个进程最大占用的内存：
+
+Spark进程最大占用内存
+![Spark进程占用内存](../../images/SparkMR/spark_daemon_memory.png)
+
+YARN及HDFS进程最大占用内存
+![YARN heap size](../../images/SparkMR/hdfs_yarn_heap_size.png)
+
+## 场景十三、配置Hadoop代理用户
+可通过如下配置参数配置Hadoop代理用户机器hosts和groups：
+![Hadoop代理用户](../../images/SparkMR/hadoop_proxy_user.png)
+
+## 场景十四、YARN log收集
+SparkMR支持将YARN log收集到HDFS指定目录，并可指定保持时间、保持目录等，可在配置参数页面配置：
+![YARN log收集](../../images/SparkMR/yarn_log_aggregation.png)
+
+## 场景十五、Spark log清理
+可通过如下配置参数控制Spark Standalone模式下Spark worker节点的log清理设置：
+![Spark log清理](../../images/SparkMR/spark_log_setting.png)
 
 ## 在线伸缩
 
