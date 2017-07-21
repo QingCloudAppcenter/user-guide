@@ -243,7 +243,7 @@ sc.parallelize(data).filter(_%2 != 0).map(x=>x*x).saveAsTextFile("s3a://my-bucke
 
 - 本地文件和对象存储之间的上传下载
 ```shell
- cd /usr/opt/hadoop
+cd /usr/opt/hadoop
 # 从Client 主机本地上传文件到 QingStor 对象存储
  bin/hdfs dfs -put LICENSE.txt s3a://your_bucket/
  
@@ -253,7 +253,7 @@ bin/hdfs dfs -get s3a://your_bucket/LICENSE.txt
 
 - HDFS文件系统和对象存储之间的数据传输
 ```shell
- cd /usr/opt/hadoop
+cd /usr/opt/hadoop
 # 将文件从 QingStor 对象存储拷贝到 HDFS 文件系统
 bin/hadoop distcp -libjars $HADOOP_S3 s3a://your_bucket/LICENSE.txt /LICENSE.txt
  
@@ -263,7 +263,7 @@ bin/hadoop distcp -libjars $HADOOP_S3 /LICENSE.txt s3a://your_bucket/your_folder
 
 - 将对象存储作为MapReduce job的输入/输出
 ```shell
- cd /usr/opt/hadoop
+cd /usr/opt/hadoop
  
 # 将 QingStor 对象存储中的文件作为 MapReduce 的输入，计算结果输出到 HDFS 文件系统中
 bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar wordcount -libjars $HADOOP_S3 s3a://your_bucket/LICENSE.txt /test_output
@@ -332,17 +332,130 @@ SparkMR支持将YARN log收集到HDFS指定目录，并可指定保持时间、�
 ## 在线伸缩
 
 ### 增加节点
+可以在SparkMR详情页点击 `新增节点` 按钮增加 `从节点` 或 `bigdata client`，可以对每个新增节点指定 IP 或选择自动分配。
+![增加节点](../../images/SparkMR/add_node.png)
 
 ### 删除节点
+可以在 SparkMR 详情页选中需要删除的节点，然后点击 `删除` 按钮，只能一次删除一个，并且必须等到上个节点删除后且 decommission 结束才能删除下一个节点，否则数据会丢失。删除节点过程中会锁定SparkMR集群不让对其进行其它生命周期操作。
+
+- HDFS的decommission状态可以从 HDFS Name Node 的 50070 端口提供的监控信息观察到。Decommission 是在复制即将删除节点上的数据到别的节点上，如果您的数据量比较大，这个过程会比较长。因为青云的 HDFS 副本因子默认为 2，所以当您的SparkMR从节点数为2的时候就不能再删除节点。同时要预先知道其它节点的总硬盘空间足够拷贝删除节点的内容，才能进行删除。
+
+- YARN的decommission会进行的相对较快，删除节点后会在比较短的时间内在YARN主节点的8088端口观察到集群的CPU及内存资源的下降
+
+> `YARN主节点` 和 `HDFS 主节点` 不允许删除，一次删除多个 `从节点` 相关操作会失败，右上角会有提示。
+
+![删除节点](../../images/SparkMR/delete_node.png)
 
 ### 纵向伸缩
-
+SparkMR允许分别对各种角色的节点进行纵向的扩容及缩容。
+![纵向伸缩](../../images/SparkMR/scale_up_down.png)
 ## 监控告警
+### 资源级别的监控与告警
+我们对SparkMR集群的每个节点提供了资源级别的监控和告警服务，包括 CPU 使用率、内存使用率、硬盘使用率等。
 
-### 创建成功
+### Hadoop和Spark原生的监控
+YARN、HDFS和Spark提供了丰富的监控信息。如果需要通过公网访问这些信息您需要先申请一个公网 IP 绑定在路由器上，在路由器上设置端口转发，同时打开防火墙相应的下行端口。
+
+`YARN主节点` 默认端口 `8088` ， `HDFS 主节点` 默认端口是 `50070`，Spark主节点和YARN主节点是同一个，其默认端口是`8080` 。
+
+为方便查看 SparkMR UI，请参考 [VPN 隧道指南](https://docs.qingcloud.com/guide/vpn.html) 配置VPN，VPN 建立后可查看下述界面。
+
+- http://< YARN-MASTER-IP >:8088
+![YARN](../../images/SparkMR/yarn_monitoring.png)
+
+- http://< HDFS-MASTER-IP >:50070
+![YARN](../../images/SparkMR/hdfs_monitoring.png)
+
+- http://< YARN-MASTER-IP >:8080
+![YARN](../../images/SparkMR/spark_monitoring.png)
+
+### 服务级别的监控与告警
+为了帮助用户更好的管理和维护SparkMR集群，我们提供了部分针对 YARN、 HDFS以及Spark服务级别的监控：
+
+- YARN服务监控，包括YARN管理的各NodeManager状态、运行中的YARN应用、YARN应用状态、YARN集群总内存、YARN集群virtual cores、YARN containers、NodeManger内存等。
+![YARN](../../images/SparkMR/cluster-detail.png)
+
+![YARN](../../images/SparkMR/yarn-applications.png)
+
+![YARN](../../images/SparkMR/yarn-resources.png)
+
+![YARN](../../images/SparkMR/slave-yarn.png)
+
+- HDFS服务监控，包括DFS文件状态、DFS空间占比、DFS容量、HDFS data node状态、HDFS存储空间、DFS块及垃圾回收信息等。
+![HDFS](../../images/SparkMR/hdfs-master.png)
+
+![HDFS](../../images/SparkMR/hdfs-master2.png)
+
+![HDFS](../../images/SparkMR/slave-storage.png)
+
+- Spark服务监控，包括Spark Standalone模式worker节点状态、spark applications状态、worker节点计算及存储资源等。
+![HDFS](../../images/SparkMR/spark-standalone.png)
+
+![HDFS](../../images/SparkMR/slave-spark-standalone.png)
 
 ## 配置参数
+SparkMR提供了60个左右的配置参数，可以通过 `配置参数` 来定制SparkMR服务。
 
 ### 修改配置参数
+在 SparkMR 详情页，点击 `配置参数` Tab 页，点击 `修改属性`，修改完后，需要进行 "保存"。如图所示：
+
+![配置参数](../../images/SparkMR/env_modify.png)
 
 ### 常用配置项
+- **QingStor**: 是否将QingStor与Hadoop及Spark集成，如需集成则必须输入相应的access_key及secret_key。
+- **QingStor_zone**: 指定QingStor的分区，目前开放了pek3a和sh1a。 其他分区何时开放请关注SparkMR用户指南。
+- **access_key**: 指定QingStor的access_key。
+- **secret_key**: 指定QingStor的secret_key。
+- **enable_spark_standalone**: 是否开启Spark Standalone模式。开启后将可以以Spark Standalone模式提交Spark应用；无论开启或关闭都可以以Spark on Yarn模式提交Spark应用。
+- **spark.master.SPARK_DAEMON_MEMORY**: Spark master进程(Standalone模式)占用内存(MB)。该值上限定为总内存-1024。
+- **spark.worker.SPARK_DAEMON_MEMORY**: Spark worker进程(Standalone模式)占用内存(MB)。该值上限定为总内存-1024。
+- **PYSPARK_PYTHON**: 指定Python Spark程序所用的Python版本，目前支持Anaconda发行版的Python 2.7.13和3.6.1。两个Python版本对应的Anaconda发行版数据科学库numpy, scikit-learn, scipy, Pandas, NLTK和Matplotlib也包含在内。
+- **spark.worker.cleanup.enabled**: 定期清理应用work目录，运行中的application不会被清理。。
+- **spark.worker.cleanup.interval**: 清理应用work目录的时间间隔，以秒为单位，默认为28800秒（8小时）。
+- **spark.worker.cleanup.appDataTtl**: 保留worker上应用work目录的时间，以秒为单位，默认为86400秒(24 小时)。
+- **spark.scheduler.mode**: Spark应用内调度模式，针对Spark应用内不同线程提交的可同时运行的任务。
+- **hadoop.proxyuser**: Hadoop代理用户。
+- **hadoop.proxyuser.hosts**: Hadoop代理用户能代理哪些hosts。
+- **hadoop.proxyuser.groups**: Hadoop代理用户能代理指定host中的哪些groups。
+- **resource_manager.YARN_HEAPSIZE**: ResourceManager最大可用堆内存大小(MB)，如果指定1000，则ResourceManager将可利用当前所有空闲内存。
+- **node_manager.YARN_HEAPSIZE**: NodeManager最大可用堆内存大小(MB)，该值上限为总内存的一半。
+- **datanode.HADOOP_HEAPSIZE**: Datanode daemon进程最大可用堆内存大小(MB)，默认值为1000. 该值上限为总内存-1024。
+- **dfs.namenode.handler.count**: Name node节点服务线程数。
+- **dfs.datanode.handler.count**: Data node节点服务线程数。
+- **dfs.replication": HDFS副本数。
+- **fs.trash.interval**: 控制Trash检查点目录过多少分钟后被删除。
+- **yarn.resourcemanager.scheduler.class**: YARN ResourceManager调度器，默认为CapacityScheduler，可选FairScheduler。如果选择FairScheduler，需要上传自定义的fair-scheduler.xml到HDFS的/tmp/hadoop-yarn/目录，然后右键点击集群选择更新调度器。如需对CapacityScheduler的默认行为进行更改，同样需要上传自定义的capacity-scheduler.xml到HDFS的/tmp/hadoop-yarn/目录，然后更新调度器。
+- **yarn.resourcemanager.client.thread-count**: 处理applications manager请求的线程数。
+- **yarn.resourcemanager.amlauncher.thread-count**: 启动/清理ApplicationMaster的线程数。
+- **yarn.resourcemanager.scheduler.client.thread-count**: 处理scheduler接口请求的线程数。
+- **yarn.resourcemanager.resource-tracker.client.thread-count**: 处理resource tracker请求的线程数。
+- **yarn.resourcemanager.admin.client.thread-count**: 处理ResourceManager管理接口请求的线程数。
+- **yarn.nodemanager.container-manager.thread-count**: 分配给Container Manager用的线程数。
+- **yarn.nodemanager.delete.thread-count**: 用于清理工作的线程数。
+- **yarn.nodemanager.localizer.client.thread-count**: 用于处理localization请求的线程数。
+- **yarn.nodemanager.localizer.fetch.thread-count**: 用于处理localization fetching请求的线程数。
+- **yarn.nodemanager.pmem-check-enabled**: 是否需要为container检查物理内存限制。
+- **yarn.nodemanager.vmem-check-enabled**: 是否需要为container检查虚拟内存限制。
+- **yarn.nodemanager.vmem-pmem-ratio**: NodeManager中虚拟内存与物理内存的比率。
+- **yarn.scheduler.minimum-allocation-mb**: ResourceManager中针对每个container请求内存的最小分配值(MB). 低于该值的内存请求将会抛出InvalidResourceRequestException异常。
+- **yarn.scheduler.maximum-allocation-mb**: ResourceManager中针对每个container请求内存的最大分配值(MB). 高于该值的内存请求将会抛出InvalidResourceRequestException异常。
+- **yarn.scheduler.minimum-allocation-vcores**:ResourceManager中针对每个container请求virtual CPU cores的最小分配值。 低于该值的请求将会抛出InvalidResourceRequestException异常。
+- **yarn.scheduler.maximum-allocation-vcores**: ResourceManager中针对每个container请求virtual CPU cores的最大分配值。 高于该值的请求将会抛出InvalidResourceRequestException异常。
+- **yarn.scheduler.capacity.maximum-applications**: 可同时处在活跃状态(包括running和pending)的应用的最大数量。
+- **yarn.scheduler.capacity.maximum-am-resource-percent**: ApplicationMaster进程的最大百分比。
+- **yarn.scheduler.capacity.resource-calculator**: 调度器中用于计量资源的ResourceCalculator的实现。默认的DefaultResourseCalculator只考虑内存，而DominantResourceCalculator则利用Dominant-resource来综合考量多维度的资源如内存，CPU等。
+- **yarn.scheduler.fair.user-as-default-queue**: 以下yarn.scheduler.fair.*相关选项只有在FairScheduler被使用时才生效。在资源请求中没有指定队列名字的时候，是否使用username作为默认的队列名。如果此选项被设置为false或者未设置，所有job都将共享一个名为default的队列。
+- **yarn.scheduler.fair.preemption**: 是否应用preemption。
+- **yarn.scheduler.fair.preemption.cluster-utilization-threshold**: 超过指定集群资源利用率后将会激活preemption. 资源利用率是已用资源与资源容量的比率。
+- **yarn.scheduler.fair.sizebasedweight**: 是否根据应用的大小分配资源，而不是对所有应用无视大小分配同样的资源。
+- **yarn.scheduler.fair.assignmultiple**: 是否允许在一次心跳中指定多个container。
+- **yarn.scheduler.fair.max.assign**: 如果assignmultiple为true，在一次心跳中可指定的最大container数量。设置为-1表示无限制。
+- **yarn.scheduler.fair.locality.threshold.node**: 对于请求某特定节点上container的应用，设定该值指定一个可错失的得到别的节点中container的机会。错失次数超过该值，该请求将得到别的节点的container. 以集群大小百分比的形式指定，-1表示不错失任何调度机会。
+- **yarn.scheduler.fair.locality.threshold.rack**: 对于请求某特定rack上container的应用，设定该值指定一个可错失的得到别的rack中container的机会。错失次数超过该值，该请求将得到别的rack的container. 以集群大小百分比的形式指定，-1表示不错失任何调度机会。
+- **yarn.scheduler.fair.allow-undeclared-pools**: 如果该值设置为true,每次应用提交后都会创建一个新的队列。如果设置为false，当某应用没有在分配分请求中指定队列的时候，该应用都会被放到default队列中。如果在请求中制定了队列分配策略，则该属性将被忽略。
+- **yarn.scheduler.fair.update-interval-ms**: 重新锁住调度器重新计算fair shares和请求以及检查是否有资源可以被用于preemption的时间间隔。
+- **yarn.log-aggregation-enable**: 是否开启YARN log的集中存储。
+- **yarn.log-aggregation.retain-seconds**: 集中存储的log将被保存多久（秒）。
+- **yarn.log-aggregation.retain-check-interval-seconds**: 多长时间（秒）检查一次集中存储的log是否到期可以清理。如果设置为0或负数，则该值将会被设置为yarn.log-aggregation.retain-seconds的十分之一。如果该值过小可能会导致频繁想name node发送请求。
+- **yarn.nodemanager.remote-app-log-dir**: 集中存储的log将被保存在那，默认为HDFS的/tmp/logs目录。
+- **yarn.nodemanager.remote-app-log-dir-suffix**: 集中存储的log将会被放在{yarn.nodemanager.remote-app-log-dir}/${user}/{本参数}中。
