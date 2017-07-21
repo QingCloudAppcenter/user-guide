@@ -198,29 +198,45 @@ qs_file.saveAsTextFile("s3a://my-bucket/output1")
 val data = for (i <- 1 to 1000) yield i
 sc.parallelize(data).filter(_%2 != 0).map(x=>x*x).saveAsTextFile("s3a://my-bucket/output2")
 ```
-## 场景一、
-- 运行Scala Spark job
+## 场景五、运行hadoop测试程序，统计文件中单词出现的次数
 ```shell
-cd /opt/spark
+cd /opt/hadoop
+bin/hdfs dfs -mkdir /input
+bin/hdfs dfs -put etc/hadoop/* /input
+bin/hdfs dfs -ls /input
 
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar wordcount /input /output
+bin/hdfs dfs -cat /output/part-r-00000
 ```
-- 运行Python Spark job
+## 场景六、Hadoop 官方的 Benchmark 性能基准测试，测试的是 HDFS 分布式I/O读写的速度/吞吐率，依次执行下列命令
 ```shell
-cd /opt/spark
+cd /opt/hadoop
+# 使用6个 Map 任务并行向 HDFS 里6个文件里分别写入 1GB 的数据
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.7.3-tests.jar TestDFSIO -write -nrFiles 6 -size 1GB
 
+# 使用6个 Map 任务并行从 HDFS 里6个文件里分别读取 1GB 的数据
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.7.3-tests.jar TestDFSIO -read -nrFiles 6 -size 1GB
+
+# 清除以上生成的数据
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.7.3-tests.jar TestDFSIO -clean
+
+您能看到 HDFS 每秒读写文件速度，以及吞吐量的具体数值。
 ```
-## 场景一、
-- 运行Scala Spark job
+## 场景七、Hadoop 官方的 Benchmark 性能基准测试，测试的是大文件内容的排序，依次执行下列命令：
 ```shell
-cd /opt/spark
+cd /opt/hadoop
+# 生成1000万行数据到 /teraInput 路径中
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar teragen 10000000 /teraInput
 
-```
-- 运行Python Spark job
-```shell
-cd /opt/spark
+# 将/teraInput 中生成的1000万行数据排序后存入到 /teraOutput 路径中
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar terasort /teraInput /teraOutput
 
+# 针对已排序的 /teraOutput 中的数据，验证每一行的数值要小于下一行
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar teravalidate -D mapred.reduce.tasks=8 /teraOutput /teraValidate
+
+# 查看验证的结果
+bin/hdfs dfs -cat /teraValidate/part-r-00000
 ```
-## 场景一、
 
 ## 场景一、
 
