@@ -1,0 +1,128 @@
+[
+  {
+    "_id": "fe9e49f0-675f-11e7-8d1b-43defc092616",
+    "_type": "dashboard",
+    "_source": {
+      "title": "default dashboard",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"col\":1,\"columns\":[\"kubernetes.pod_name\",\"kubernetes.namespace_name\",\"kubernetes.docker_id\",\"log\",\"stream\",\"time\"],\"id\":\"06f892b0-675e-11e7-bd1c-1fa8f0a90023\",\"panelIndex\":1,\"row\":1,\"size_x\":12,\"size_y\":7,\"sort\":[\"@timestamp\",\"desc\"],\"type\":\"search\"},{\"col\":7,\"id\":\"d8ca68e0-675e-11e7-a25f-3ff994c3cf12\",\"panelIndex\":2,\"row\":8,\"size_x\":6,\"size_y\":3,\"type\":\"visualization\"},{\"col\":1,\"id\":\"ecaf07d0-675e-11e7-a25f-3ff994c3cf12\",\"panelIndex\":3,\"row\":8,\"size_x\":6,\"size_y\":3,\"type\":\"visualization\"},{\"col\":7,\"id\":\"8792ac20-675f-11e7-a25f-3ff994c3cf12\",\"panelIndex\":4,\"row\":11,\"size_x\":6,\"size_y\":3,\"type\":\"visualization\"},{\"col\":1,\"id\":\"4aeab7e0-675f-11e7-a25f-3ff994c3cf12\",\"panelIndex\":5,\"row\":11,\"size_x\":6,\"size_y\":3,\"type\":\"visualization\"}]",
+      "optionsJSON": "{\"darkTheme\":false}",
+      "uiStateJSON": "{}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}}}],\"highlightAll\":true,\"version\":true}"
+      }
+    }
+  },
+  {
+    "_id": "06f892b0-675e-11e7-bd1c-1fa8f0a90023",
+    "_type": "search",
+    "_source": {
+      "title": "log message",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "kubernetes.pod_name",
+        "kubernetes.namespace_name",
+        "kubernetes.docker_id",
+        "log",
+        "stream",
+        "time"
+      ],
+      "sort": [
+        "@timestamp",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash-*\",\"highlightAll\":true,\"version\":true,\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}},\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "b8c9a920-675e-11e7-a25f-3ff994c3cf12",
+    "_type": "visualization",
+    "_source": {
+      "title": "cpu usage per node",
+      "visState": "{\"type\":\"timelion\",\"title\":\"cpu usage per node\",\"params\":{\"expression\":\".es(index='heapster-cpu-*',q=\\\"MetricsTags.type:node\\\",split='MetricsTags.host_id:10',timefield='CpuMetricsTimestamp',kibana=true,metric=\\\"max:Metrics.cpu/usage.value\\\")\",\"interval\":\"1m\"}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{}"
+      }
+    }
+  },
+  {
+    "_id": "d8ca68e0-675e-11e7-a25f-3ff994c3cf12",
+    "_type": "visualization",
+    "_source": {
+      "title": "cpu utilization per node",
+      "visState": "{\"type\":\"timelion\",\"title\":\"cpu utilization per node\",\"params\":{\"expression\":\".es(index='heapster-cpu-*',q=\\\"MetricsTags.type:node\\\",split='MetricsTags.host_id:10',timefield='CpuMetricsTimestamp',kibana=true,metric=\\\"max:Metrics.cpu/node_utilization.value\\\")\",\"interval\":\"1m\"}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{}"
+      }
+    }
+  },
+  {
+    "_id": "ecaf07d0-675e-11e7-a25f-3ff994c3cf12",
+    "_type": "visualization",
+    "_source": {
+      "title": "memory utilization per node",
+      "visState": "{\"type\":\"timelion\",\"title\":\"memory utilization per node\",\"params\":{\"expression\":\".es(index='heapster-memory-*',q=\\\"MetricsTags.type:node\\\",split='MetricsTags.host_id:10',timefield='MemoryMetricsTimestamp',kibana=true,metric=\\\"max:Metrics.memory/node_utilization.value\\\")\",\"interval\":\"1m\"}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{}"
+      }
+    }
+  },
+  {
+    "_id": "128e7710-675f-11e7-a25f-3ff994c3cf12",
+    "_type": "visualization",
+    "_source": {
+      "title": "memory usage per node",
+      "visState": "{\"type\":\"timelion\",\"title\":\"memory usage per node\",\"params\":{\"expression\":\".es(index='heapster-memory-*',q=\\\"MetricsTags.type:node\\\",split='MetricsTags.host_id:10',timefield='MemoryMetricsTimestamp',kibana=true,metric=\\\"max:Metrics.memory/usage.value\\\")\",\"interval\":\"1m\"}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{}"
+      }
+    }
+  },
+  {
+    "_id": "4aeab7e0-675f-11e7-a25f-3ff994c3cf12",
+    "_type": "visualization",
+    "_source": {
+      "title": "network usage per node",
+      "visState": "{\"type\":\"timelion\",\"title\":\"network usage per node\",\"params\":{\"expression\":\".es(index='heapster-network-*',q=\\\"MetricsTags.type:node\\\",split='MetricsTags.host_id:10',timefield='NetworkMetricsTimestamp',kibana=true,metric=\\\"max:Metrics.network/rx_rate.value\\\")\",\"interval\":\"1m\"}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{}"
+      }
+    }
+  },
+  {
+    "_id": "8792ac20-675f-11e7-a25f-3ff994c3cf12",
+    "_type": "visualization",
+    "_source": {
+      "title": "filesystem usage per node",
+      "visState": "{\"type\":\"timelion\",\"title\":\"filesystem usage per node\",\"params\":{\"expression\":\".es(index='heapster-filesystem-*',q=\\\"MetricsTags.type:node\\\",split='MetricsTags.host_id:10',timefield='FilesystemMetricsTimestamp',kibana=true,metric=\\\"max:Metrics.filesystem/usage.value\\\")\",\"interval\":\"1m\"}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{}"
+      }
+    }
+  }
+]
