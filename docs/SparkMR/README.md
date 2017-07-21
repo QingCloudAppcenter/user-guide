@@ -55,6 +55,7 @@
 ![第5步：Client节点设置](../../images/SparkMR/client_config.png)
 
 填写Client节点 CPU、内存、节点类型、数据盘类型及大小等配置信息。Client节点为可选，如不需要可设置`节点数量`为0。建议选配Client节点，否则某些功能无法使用（除非手动下载相关软件包并配置好）。
+> Client节点为用户可访问的节点，可以用它来访问HDFS，和集群交互如提交job等。该节点用户名为ubuntu，初始密码为p12cHANgepwD。
 
 ### 第6步：网络设置
 
