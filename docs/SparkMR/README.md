@@ -14,7 +14,7 @@
 - 为了方便用户提交Python Spark应用，提供了Anaconda发行版的Python 2.7.13和Python 3.6.1 。用户可以选择Python Spark应用的运行环境，支持在Python2和Python3之间进行切换。
 - 为了方便用户开发Python Spark机器学习类的应用， 分别在Anaconda发行版的Python2和Python3内提供了Anaconda发行版的数据科学包numpy, scikit-learn, scipy, Pandas, NLTK and Matplotlib 。
 - 为了方便用户开发Spark R应用，提供了R语言运行时。
-- 支持上传自定义的Spark应用内调度器Fair Schudeler，并支持spark应用内调度模式在FIFO和FARI切换
+- 支持上传自定义的Spark应用内调度器Fair Schudeler，并支持spark应用内调度模式在FIFO和FAIR切换
 - 支持上传自定义的YARN调度器CapacityScheduler和FairScheduler，并支持在CapacityScheduler和FairScheduler之间进行切换
 - 支持用户选择YARN调度器中用于计量资源的ResourceCalculator。默认的DefaultResourseCalculator在分配资源时只考虑内存，而DominantResourceCalculator则利用Dominant-resource来综合考量多维度的资源如内存，CPU等。
 - 配置参数增加到近60个，定制服务更方便
@@ -86,7 +86,7 @@
 
 创建成功后，点击集群列表页面相应集群可查看集群详情。可以看到集群分为HDFS主节点、YARN主节点、从节点和Bigdata client四种角色。其中用户可以直接访问client节点，并通过该节点与集群交互如提交Hadoop/Spark job、查看/上传/下载HDFS文件等。
 
-> 如在Spark Standalone模式下(包括spark-shell和spark-submit)运行的spark job需要读取本地文件，则需要将spark-env.sh中的`export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop`注释掉
+> 如在Spark Standalone模式下(包括spark-shell和spark-submit)运行的spark job需要读取本地文件，则需要将spark-env.sh中的`export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop`注释掉；
 如需以Spark on YARN模式运行spark job，则需要将该环境变量打开
 
 ## 场景一、以Spark-shell模式运行Spark job
@@ -351,7 +351,7 @@ SparkMR支持将YARN log收集到HDFS指定目录，并可指定保持时间、�
 
 - HDFS的decommission状态可以从 HDFS Name Node 的 50070 端口提供的监控信息观察到。Decommission 是在复制即将删除节点上的数据到别的节点上，如果您的数据量比较大，这个过程会比较长。因为青云的 HDFS 副本因子默认为 2，所以当您的SparkMR从节点数为2的时候就不能再删除节点。同时要预先知道其它节点的总硬盘空间足够拷贝删除节点的内容，才能进行删除。
 
-- YARN的decommission会进行的相对较快，删除节点后会在比较短的时间内在YARN主节点的8088端口观察到集群的CPU及内存资源的下降
+- YARN的decommission会相对较快，删除节点后会在比较短的时间内在YARN主节点的8088端口观察到集群的CPU及内存资源的下降
 
 > `YARN主节点` 和 `HDFS 主节点` 不允许删除，一次删除多个 `从节点` 相关操作会失败，右上角会有提示。
 
@@ -381,10 +381,10 @@ YARN、HDFS和Spark提供了丰富的监控信息。如果需要通过公网访�
 - http://< YARN-MASTER-IP >:8080
 ![YARN](../../images/SparkMR/spark_monitoring.png)
 
-### 服务级别的监控与告警
-为了帮助用户更好的管理和维护SparkMR集群，我们提供了部分针对 YARN、 HDFS以及Spark服务级别的监控：
+### 服务级别分角色的监控与告警
+为了帮助用户更好的管理和维护SparkMR集群，我们提供了部分针对 YARN、 HDFS以及Spark服务级别分角色的监控：
 
-- YARN服务监控，包括YARN管理的各NodeManager状态、运行中的YARN应用、YARN应用状态、YARN集群总内存、YARN集群virtual cores、YARN containers、NodeManger内存等。
+- YARN服务监控，包括YARN管理的各NodeManager节点状态、运行中的YARN应用、YARN应用状态、YARN集群总内存、YARN集群virtual cores、YARN containers、NodeManger节点内存等。
 ![YARN](../../images/SparkMR/cluster-detail.png)
 
 ![YARN](../../images/SparkMR/yarn-applications.png)
@@ -393,20 +393,20 @@ YARN、HDFS和Spark提供了丰富的监控信息。如果需要通过公网访�
 
 ![YARN](../../images/SparkMR/slave-yarn.png)
 
-- HDFS服务监控，包括DFS文件状态、DFS空间占比、DFS容量、HDFS data node状态、HDFS存储空间、DFS块及垃圾回收信息等。
+- HDFS服务监控，包括DFS文件状态、DFS空间占比、DFS容量、各DataNode状态、HDFS存储空间、DFS块及垃圾回收信息等。
 ![HDFS](../../images/SparkMR/hdfs-master.png)
 
 ![HDFS](../../images/SparkMR/hdfs-master2.png)
 
 ![HDFS](../../images/SparkMR/slave-storage.png)
 
-- Spark服务监控，包括Spark Standalone模式worker节点状态、spark applications状态、worker节点计算及存储资源等。
+- Spark服务监控，包括Spark Standalone模式下worker节点状态、spark applications状态、各worker节点计算及存储资源等。
 ![HDFS](../../images/SparkMR/spark-standalone.png)
 
 ![HDFS](../../images/SparkMR/slave-spark-standalone.png)
 
 ## 配置参数
-SparkMR提供了60个左右的配置参数，可以通过 `配置参数` 来定制SparkMR服务。
+SparkMR提供了60个左右的配置参数，可以通过 `配置参数` 来定制个性化的SparkMR服务并进行调优。
 
 ### 修改配置参数
 在 SparkMR 详情页，点击 `配置参数` Tab 页，点击 `修改属性`，修改完后，需要进行 "保存"。如图所示：
