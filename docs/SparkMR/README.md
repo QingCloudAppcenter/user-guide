@@ -1,4 +1,5 @@
 # SparkMR on QingCloud AppCenter 用户指南
+
 ## 简介
 
 *SparkMR on QingCloud AppCenter* 将 *Apache Hadoop* 和 *Apache Spark* 集成到同一个集群服务中，以AppCenter云应用的形式交付给用户使用。
@@ -10,7 +11,9 @@
 - *Apache Hadoop*  提供的MapReduce、YARN、HDFS等功能
 - *Apache Spark* 提供的Spark streaming、Spark SQL、DataFrame and DataSet、Structed Streaming、MLlib、GraphX、SparkR等功能
 - 同时支持Spark Standalone和Spark on YARN两种模式。
+
 >用户可以选择是否开启Spark Standalone模式（默认开启）。开启后用户可以以Spark Standalone模式提交Spark应用；而无论开启或关闭Spark Standalone模式用户都能以Spark on YARN模式提交Spark应用。如用户仅以Spark on YARN模式提交Spark应用，则可以选择关闭Spark Standalone模式以释放资源。
+
 - 为了方便用户提交Python Spark应用，提供了Anaconda发行版的Python 2.7.13和Python 3.6.1 。用户可以选择Python Spark应用的运行环境，支持在Python2和Python3之间进行切换。
 - 为了方便用户开发Python Spark机器学习类的应用， 分别在Anaconda发行版的Python2和Python3内提供了Anaconda发行版的数据科学包numpy, scikit-learn, scipy, Pandas, NLTK and Matplotlib 。
 - 为了方便用户开发Spark R应用，提供了R语言运行时。
@@ -82,6 +85,7 @@
 ## SparkMR使用场景
 
 ## 查看服务详情
+
 ![查看服务详情](../../images/SparkMR/cluster_detail.png)
 
 创建成功后，点击集群列表页面相应集群可查看集群详情。可以看到集群分为HDFS主节点、YARN主节点、从节点和Bigdata client四种角色。其中用户可以直接访问client节点，并通过该节点与集群交互如提交Hadoop/Spark job、查看/上传/下载HDFS文件等。
@@ -90,7 +94,9 @@
 如需以Spark on YARN模式运行spark job，则需要将该环境变量打开
 
 ## 场景一、以Spark-shell模式运行Spark job
+
 - Scala
+
 ```shell
 cd /opt/spark	
 bin/spark-shell --master spark://192.168.0.8:7077
@@ -99,7 +105,9 @@ val textFile = spark.read.textFile("/opt/spark/README.md")
 textFile.count()
 textFile.filter(line => line.contains("Spark")).count()
 ```
+
 - Python
+
 ```shell
 cd /opt/spark
 bin/pyspark --master spark://192.168.0.8:7077
@@ -110,6 +118,7 @@ textFile.filter(textFile.value.contains("Spark")).count()
 ```
 
 - R
+
 ```shell
 cd /opt/spark
 bin/sparkR --master spark://192.168.0.8:7077
@@ -119,23 +128,30 @@ head(df)
 people <- read.df("./examples/src/main/resources/people.json", "json")
 printSchema(people)
 ```
+
 ## 场景二、以Spark Standalone模式运行Spark job
+
 - Scala
+
 ```shell
 cd /opt/spark	
 
 bin/spark-submit --class org.apache.spark.examples.SparkPi --master spark://192.168.0.8:7077 examples/jars/spark-examples_2.11-2.2.0.jar 100
 ```
+
 - Python
+
 ```shell
 cd /opt/spark
 
 bin/spark-submit --master spark://192.168.0.8:7077 examples/src/main/python/pi.py 100
 ```
+
 可以在配置参数页面切换Python版本
 ![切换Python版本](../../images/SparkMR/switch_python.png)
 
 - R
+
 ```shell
 cd /opt/spark
 
@@ -143,13 +159,17 @@ bin/spark-submit --master spark://192.168.0.8:7077 examples/src/main/r/data-mani
 ```
 
 ## 场景三、以Spark on YARN模式运行Spark job
+
 - Scala
+
 ```shell
 cd /opt/spark
 
 bin/spark-submit --class org.apache.spark.examples.SparkPi --master yarn --deploy-mode cluster --num-executors 3 --executor-cores 1 --executor-memory 1g examples/jars/spark-examples_2.11-2.2.0.jar 100
 ```
+
 - Python
+
 ```shell
 cd /opt/spark
 
@@ -157,6 +177,7 @@ bin/spark-submit --master yarn --deploy-mode client examples/src/main/python/pi.
 ```
 
 - R
+
 ```shell
 cd /opt/spark
 
@@ -164,6 +185,7 @@ bin/spark-submit --master yarn --deploy-mode cluster /opt/spark/examples/src/mai
 ```
 
 ## 场景四、运行hadoop测试程序，统计文件中单词出现的次数
+
 ```shell
 cd /opt/hadoop
 bin/hdfs dfs -mkdir /input
@@ -175,37 +197,49 @@ bin/hdfs dfs -cat /output/part-r-00000
 ```
 
 ## 场景五、Hadoop 官方的 Benchmark 性能基准测试，测试的是 HDFS 分布式I/O读写的速度/吞吐率，依次执行下列命令
+
 ```shell
 cd /opt/hadoop
+
 # 使用6个 Map 任务并行向 HDFS 里6个文件里分别写入 1GB 的数据
+
 bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.7.3-tests.jar TestDFSIO -write -nrFiles 6 -size 1GB
 
 # 使用6个 Map 任务并行从 HDFS 里6个文件里分别读取 1GB 的数据
+
 bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.7.3-tests.jar TestDFSIO -read -nrFiles 6 -size 1GB
 
 # 清除以上生成的数据
+
 bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.7.3-tests.jar TestDFSIO -clean
 
 您能看到 HDFS 每秒读写文件速度，以及吞吐量的具体数值。
 ```
 
 ## 场景六、Hadoop 官方的 Benchmark 性能基准测试，测试的是大文件内容的排序，依次执行下列命令：
+
 ```shell
 cd /opt/hadoop
+
 # 生成1000万行数据到 /teraInput 路径中
+
 bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar teragen 10000000 /teraInput
 
 # 将/teraInput 中生成的1000万行数据排序后存入到 /teraOutput 路径中
+
 bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar terasort /teraInput /teraOutput
 
 # 针对已排序的 /teraOutput 中的数据，验证每一行的数值要小于下一行
+
 bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar teravalidate -D mapred.reduce.tasks=8 /teraOutput /teraValidate
 
 # 查看验证的结果
+
 bin/hdfs dfs -cat /teraValidate/part-r-00000
 ```
 
 ## 场景七、SparkMR与QingStor集成
+
 QingStor 对象存储为用户提供可无限扩展的通用数据存储服务，具有安全可靠、简单易用、高性能、低成本等特点。用户可将数据上传至 QingStor 对象存储中，以供数据分析。由于 QingStor 对象存储兼容 AWS S3 API，因此 Spark与Hadoop都可以通过 AWS S3 API 与 QingStor 对象存储高效集成，以满足更多的大数据计算和存储场景。有关 QingStor 的更多内容，请参考[QingStor 对象存储用户指南] (https://docs.qingcloud.com/qingstor/guide/index.html)
 >目前QingStor 对象存储的开放了sh1a 和 pek3a两个区，后续将开放更多的分区，敬请期待。
 
@@ -218,6 +252,7 @@ QingStor 对象存储为用户提供可无限扩展的通用数据存储服务�
 假设您在 QingStor 上的 bucket 为 my-bucket, 下面以 spark-shell 为例， 列出常见的 Spark 与 QingStor 集成场景。
 
 - 在 Spark 中读取到 HDFS 上的文件后将其存储到 QingStor 中
+
 ```shell
 # 首先需要将本地的一个测试文件上传到spark集群的HDFS存储节点上：
 cd /opt/hadoop
@@ -231,7 +266,9 @@ bin/spark-shell --master spark://<yarn-master-ip>:7077 --jars $SPARK_S3
 val qs_file = sc.textFile("hdfs://<hdfs-master-ip>:9000/input/README.md")
 qs_file.saveAsTextFile("s3a://my-bucket/test")
 ```
+
 - 在 Spark 中读取 QingStor 上的文件，处理过后再存储到 HDFS 文件系统中
+
 ```shell
 val qs_file = sc.textFile("s3a://my-bucket/test")
 qs_file.count()
@@ -239,6 +276,7 @@ qs_file.saveAsTextFile("hdfs://<hdfs-master-ip>:9000/output/")
 ```
 
 - 在 Spark 中读取 QingStor 上的文件， 经过处理后将结果存回 QingStor
+
 ```shell
 #如下代码将会读取 QingStor 中 my-bucket 下的 test 文件， 从中选出包含字符串 "Spark" 的行， 最后将结果存储到 my-bucket 下的 qingstor-output 文件中
 val qs_file = sc.textFile("s3a://my-bucket/test").filter(line => line.contains("Spark"))
@@ -246,12 +284,14 @@ qs_file.saveAsTextFile("s3a://my-bucket/output1")
 ```
 
 - 在 Spark 中创建元素值为 1 到 1000 的数组， 找出其中的奇数并对其求平方， 最后将结果存储到 QingStor 上的文件中
+
 ```shell
 val data = for (i <- 1 to 1000) yield i
 sc.parallelize(data).filter(_%2 != 0).map(x=>x*x).saveAsTextFile("s3a://my-bucket/output2")
 ```
 
 - 本地文件和对象存储之间的上传下载
+
 ```shell
 cd /usr/opt/hadoop
 # 从Client 主机本地上传文件到 QingStor 对象存储
@@ -262,6 +302,7 @@ bin/hdfs dfs -get s3a://your_bucket/LICENSE.txt
 ```
 
 - HDFS文件系统和对象存储之间的数据传输
+
 ```shell
 cd /usr/opt/hadoop
 # 将文件从 QingStor 对象存储拷贝到 HDFS 文件系统
@@ -272,6 +313,7 @@ bin/hadoop distcp -libjars $HADOOP_S3 /LICENSE.txt s3a://your_bucket/your_folder
 ```
 
 - 将对象存储作为MapReduce job的输入/输出
+
 ```shell
 cd /usr/opt/hadoop
  
@@ -287,37 +329,49 @@ bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar wordco
 ```
 
 ## 场景八、更新自定义YARN调度器
+
 YARN支持两种调度器CapacityScheduler（默认）和FairScheduler。
 为了支持用户更多自定义调度器的需求，SparkMR支持用户上传自定义调度器，步骤如下：
+
 1. 自定义CapacityScheduler capacity-scheduler.xml或者FairScheduler fair-scheduler.xml（文件名必须为capacity-scheduler.xml或者fair-scheduler.xml）
 2. 将这两个自定义调度器上传至HDFS的/tmp/hadoop-yarn/目录
 3. 右键点击集群，选择`自定义服务`，点击`更新调度器`
+
 ![更新调度器](../../images/SparkMR/update_scheduler.png)
 
 4. 在配置参数页面切换到相应调度器
+
 ![选择调度器](../../images/SparkMR/select_scheduler.png)
 
 ## 场景九、更新自定义Spark应用内调度器
+
 Spark支持两种应用内调度器FIFO（默认）和FAIR。
 为了支持用户自定义Spark应用内FAIR调度器的需求，SparkMR支持用户上传自定义的FAIR调度器，步骤如下：
+
 1. 自定义Spark应用内FAIR调度器spark-fair-scheduler.xml（文件名必须为spark-fair-scheduler.xml）
 2. 将这两个自定义调度器上传至HDFS的/tmp/hadoop-yarn/目录
 3. 右键点击集群，选择`自定义服务`，点击`更新调度器`
 4. 在配置参数页面切换到相应调度器
+
 ![选择调度器](../../images/SparkMR/select_spark_scheduler.png)
 
 ## 场景十、选择Resource Calculator
+
 SparkMR支持用户选择YARN调度器中用于计量资源的ResourceCalculator。默认的DefaultResourseCalculator在分配资源时只考虑内存，而DominantResourceCalculator则利用Dominant-resource来综合考量多维度的资源如内存，CPU等。可在配置参数页面选择：
 ![选择资源计量器](../../images/SparkMR/select_resource_calculator.png)
 
 ## 场景十一、开启/关闭 Spark Standalone模式
+
 用户可以选择是否开启Spark Standalone模式（默认开启）。
+
 - 开启后用户可以以Spark Standalone模式提交Spark应用
 - 无论开启或关闭Spark Standalone模式用户都能以Spark on YARN模式提交Spark应用
 - 如用户仅以Spark on YARN模式提交Spark应用，则可以选择关闭Spark Standalone模式以释放资源。
+
 ![开启关闭standalone](../../images/SparkMR/switch_standalone.png)
 
 ## 场景十二、控制Spark、HDFS、YARN占用的内存
+
 - Spark Standalone模式的Spark master进程和YARN ResourceManager进程都运行在YARN主节点上。
 - Spark Standalone模式的Spark worker进程和HDFS datanode以及YARN NodeManager进程都运行在从节点上
 - 可通过如下参数配置各个进程最大占用的内存：
@@ -329,24 +383,29 @@ YARN及HDFS进程最大占用内存
 ![YARN heap size](../../images/SparkMR/hdfs_yarn_heap_size.png)
 
 ## 场景十三、配置Hadoop代理用户
+
 可通过如下配置参数配置Hadoop代理用户及其所能代理的hosts和groups：
 ![Hadoop代理用户](../../images/SparkMR/hadoop_proxy_user.png)
 
 ## 场景十四、YARN log收集
+
 SparkMR支持将YARN log收集到HDFS指定目录，并可指定保持时间、保持目录等，可在配置参数页面配置：
 ![YARN log收集](../../images/SparkMR/yarn_log_aggregation.png)
 
 ## 场景十五、Spark log清理
+
 可通过如下配置参数控制Spark Standalone模式下Spark worker节点的log清理设置：
 ![Spark log清理](../../images/SparkMR/spark_log_setting.png)
 
 ## 在线伸缩
 
 ### 增加节点
+
 可以在SparkMR详情页点击 `新增节点` 按钮增加 `从节点` 或 `bigdata client`，可以对每个新增节点指定 IP 或选择自动分配。
 ![增加节点](../../images/SparkMR/add_node.png)
 
 ### 删除节点
+
 可以在 SparkMR 详情页选中需要删除的节点，然后点击 `删除` 按钮，只能一次删除一个，并且必须等到上个节点删除后且 decommission 结束才能删除下一个节点，否则数据会丢失。删除节点过程中会锁定SparkMR集群不让对其进行其它生命周期操作。
 
 - HDFS的decommission状态可以从 HDFS Name Node 的 50070 端口提供的监控信息观察到。Decommission 是在复制即将删除节点上的数据到别的节点上，如果您的数据量比较大，这个过程会比较长。因为青云的 HDFS 副本因子默认为 2，所以当您的SparkMR从节点数为2的时候就不能再删除节点。同时要预先知道其它节点的总硬盘空间足够拷贝删除节点的内容，才能进行删除。
@@ -358,14 +417,18 @@ SparkMR支持将YARN log收集到HDFS指定目录，并可指定保持时间、�
 ![删除节点](../../images/SparkMR/delete_node.png)
 
 ### 纵向伸缩
+
 SparkMR允许分别对各种角色的节点进行纵向的扩容及缩容。
 ![纵向伸缩](../../images/SparkMR/scale_up_down.png)
 
 ## 监控告警
+
 ### 资源级别的监控与告警
+
 我们对SparkMR集群的每个节点提供了资源级别的监控和告警服务，包括 CPU 使用率、内存使用率、硬盘使用率等。
 
 ### Hadoop和Spark原生的监控
+
 YARN、HDFS和Spark提供了丰富的监控信息。如果需要通过公网访问这些信息您需要先申请一个公网 IP 绑定在路由器上，在路由器上设置端口转发，同时打开防火墙相应的下行端口。
 
 `YARN主节点` 默认端口 `8088` ， `HDFS 主节点` 默认端口是 `50070`，Spark主节点和YARN主节点是同一个，其默认端口是`8080` 。
@@ -373,18 +436,23 @@ YARN、HDFS和Spark提供了丰富的监控信息。如果需要通过公网访�
 为方便查看 SparkMR UI，请参考 [VPN 隧道指南](https://docs.qingcloud.com/guide/vpn.html) 配置VPN，VPN 建立后可查看下述界面。
 
 - http://< YARN-MASTER-IP >:8088
+
 ![YARN](../../images/SparkMR/yarn_monitoring.png)
 
 - http://< HDFS-MASTER-IP >:50070
+
 ![YARN](../../images/SparkMR/hdfs_monitoring.png)
 
 - http://< YARN-MASTER-IP >:8080
+
 ![YARN](../../images/SparkMR/spark_monitoring.png)
 
 ### 服务级别分角色的监控与告警
+
 为了帮助用户更好的管理和维护SparkMR集群，我们提供了部分针对 YARN、 HDFS以及Spark服务级别分角色的监控：
 
 - YARN服务监控，包括YARN管理的各NodeManager节点状态、运行中的YARN应用、YARN应用状态、YARN集群总内存、YARN集群virtual cores、YARN containers、NodeManger节点内存等。
+
 ![YARN](../../images/SparkMR/cluster-detail.png)
 
 ![YARN](../../images/SparkMR/yarn-applications.png)
@@ -394,6 +462,7 @@ YARN、HDFS和Spark提供了丰富的监控信息。如果需要通过公网访�
 ![YARN](../../images/SparkMR/slave-yarn.png)
 
 - HDFS服务监控，包括DFS文件状态、DFS空间占比、DFS容量、各DataNode状态、HDFS存储空间、DFS块及垃圾回收信息等。
+
 ![HDFS](../../images/SparkMR/hdfs-master.png)
 
 ![HDFS](../../images/SparkMR/hdfs-master2.png)
@@ -401,19 +470,23 @@ YARN、HDFS和Spark提供了丰富的监控信息。如果需要通过公网访�
 ![HDFS](../../images/SparkMR/slave-storage.png)
 
 - Spark服务监控，包括Spark Standalone模式下worker节点状态、spark applications状态、各worker节点计算及存储资源等。
+
 ![HDFS](../../images/SparkMR/spark-standalone.png)
 
 ![HDFS](../../images/SparkMR/slave-spark-standalone.png)
 
 ## 配置参数
+
 SparkMR提供了60个左右的配置参数，可以通过 `配置参数` 来定制个性化的SparkMR服务并进行调优。
 
 ### 修改配置参数
+
 在 SparkMR 详情页，点击 `配置参数` Tab 页，点击 `修改属性`，修改完后，需要进行 "保存"。如图所示：
 
 ![配置参数](../../images/SparkMR/env_modify.png)
 
 ### 常用配置项
+
 - **QingStor**: 是否将QingStor与Hadoop及Spark集成，如需集成则必须输入相应的access_key及secret_key。
 - **QingStor_zone**: 指定QingStor的分区，目前开放了pek3a和sh1a。 其他分区何时开放请关注SparkMR用户指南。
 - **access_key**: 指定QingStor的access_key。
