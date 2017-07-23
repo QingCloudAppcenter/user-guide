@@ -25,7 +25,7 @@
 - Hadoop、Spark与QingStor集成
 - 指定依赖服务，自动添加依赖服务中的所有节点到SparkMR所有节点的hosts文件中
 - 支持水平与垂直扩容
-- 可选client节点（为了使用上述全部功能，建议client节点为必选），全自动配置无需任何手动操作。
+- 可选Client节点（为了使用上述全部功能，建议Client节点为必选），全自动配置无需任何手动操作。
 
 ## 部署SparkMR服务
 
@@ -88,7 +88,7 @@
 
 ![查看服务详情](../../images/SparkMR/cluster_detail.png)
 
-创建成功后，点击集群列表页面相应集群可查看集群详情。可以看到集群分为HDFS主节点、YARN主节点、从节点和Bigdata client四种角色。其中用户可以直接访问client节点，并通过该节点与集群交互如提交Hadoop/Spark job、查看/上传/下载HDFS文件等。
+创建成功后，点击集群列表页面相应集群可查看集群详情。可以看到集群分为HDFS主节点、YARN主节点、从节点和Client节点四种角色。其中用户可以直接访问client节点，并通过该节点与集群交互如提交Hadoop/Spark job、查看/上传/下载HDFS文件等。
 
 > 如在Spark Standalone模式下(包括spark-shell和spark-submit)运行的spark job需要读取本地文件，则需要将spark-env.sh中的`export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop`注释掉；
 如需以Spark on YARN模式运行spark job，则需要将该环境变量打开
@@ -397,7 +397,7 @@ SparkMR支持将YARN log收集到HDFS指定目录，并可指定保持时间、�
 
 ### 增加节点
 
-可以在SparkMR详情页点击 `新增节点` 按钮增加 `从节点` 或 `bigdata client`，可以对每个新增节点指定 IP 或选择自动分配。
+可以在SparkMR详情页点击 `新增节点` 按钮增加 `从节点` 或 `Client节点`，可以对每个新增节点指定 IP 或选择自动分配。
 ![增加节点](../../images/SparkMR/add_node.png)
 
 ### 删除节点
