@@ -202,15 +202,12 @@ bin/hdfs dfs -cat /output/part-r-00000
 cd /opt/hadoop
 
 # 使用6个 Map 任务并行向 HDFS 里6个文件里分别写入 1GB 的数据
-
 bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.7.3-tests.jar TestDFSIO -write -nrFiles 6 -size 1GB
 
 # 使用6个 Map 任务并行从 HDFS 里6个文件里分别读取 1GB 的数据
-
 bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.7.3-tests.jar TestDFSIO -read -nrFiles 6 -size 1GB
 
 # 清除以上生成的数据
-
 bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.7.3-tests.jar TestDFSIO -clean
 
 您能看到 HDFS 每秒读写文件速度，以及吞吐量的具体数值。
@@ -222,19 +219,15 @@ bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.7.3-te
 cd /opt/hadoop
 
 # 生成1000万行数据到 /teraInput 路径中
-
 bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar teragen 10000000 /teraInput
 
 # 将/teraInput 中生成的1000万行数据排序后存入到 /teraOutput 路径中
-
 bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar terasort /teraInput /teraOutput
 
 # 针对已排序的 /teraOutput 中的数据，验证每一行的数值要小于下一行
-
 bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar teravalidate -D mapred.reduce.tasks=8 /teraOutput /teraValidate
 
 # 查看验证的结果
-
 bin/hdfs dfs -cat /teraValidate/part-r-00000
 ```
 
@@ -295,9 +288,9 @@ sc.parallelize(data).filter(_%2 != 0).map(x=>x*x).saveAsTextFile("s3a://my-bucke
 ```shell
 cd /usr/opt/hadoop
 # 从Client 主机本地上传文件到 QingStor 对象存储
- bin/hdfs dfs -put LICENSE.txt s3a://your_bucket/
+bin/hdfs dfs -put LICENSE.txt s3a://your_bucket/
  
- # 将文件从 QingStor 对象存储下载到Client 主机本地
+# 将文件从 QingStor 对象存储下载到Client 主机本地
 bin/hdfs dfs -get s3a://your_bucket/LICENSE.txt
 ```
 
