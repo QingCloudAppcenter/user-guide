@@ -58,7 +58,7 @@
 ![第5步：Client节点设置](../../images/SparkMR/client_config.png)
 
 填写Client节点 CPU、内存、节点类型、数据盘类型及大小等配置信息。Client节点为可选，如不需要可设置`节点数量`为0。建议选配Client节点，否则某些功能无法使用（除非手动下载相关软件包并配置好）。
-> Client节点为用户可访问的节点，可以用它来访问HDFS，和集群交互如提交job等。该节点用户名为ubuntu，初始密码为p12cHANgepwD。
+> Client节点为用户可访问的节点，可以用它来访问HDFS，和集群交互如提交job等。该节点用户名为ubuntu，初始密码为p12cHANgepwD 。
 
 ### 第6步：网络设置
 
@@ -92,6 +92,9 @@
 
 > 如在Spark Standalone模式下(包括spark-shell和spark-submit)运行的spark job需要读取本地文件，则需要将spark-env.sh中的`export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop`注释掉；
 如需以Spark on YARN模式运行spark job，则需要将该环境变量打开
+
+
+> 下属场景均在root用户下测试通过
 
 ## 场景一、以Spark-shell模式运行Spark job
 
