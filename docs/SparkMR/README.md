@@ -12,7 +12,7 @@
 - *Apache Spark* 提供的Spark streaming、Spark SQL、DataFrame and DataSet、Structed Streaming、MLlib、GraphX、SparkR等功能
 - 同时支持Spark Standalone和Spark on YARN两种模式。
 
->用户可以选择是否开启Spark Standalone模式（默认开启）。开启后用户可以以Spark Standalone模式提交Spark应用；而无论开启或关闭Spark Standalone模式用户都能以Spark on YARN模式提交Spark应用。如用户仅以Spark on YARN模式提交Spark应用，则可以选择关闭Spark Standalone模式以释放资源。
+>用户可以选择是否开启Spark Standalone模式（默认开启）。开启后用户可以以Spark Standalone模式提交Spark应用；关闭后用户可以Spark on YARN模式提交Spark应用。如仅以Spark on YARN模式提交Spark应用或者仅使用hadoop相关功能，则可以选择关闭Spark Standalone模式以释放资源。
 
 - 为了方便用户提交Python Spark应用，提供了Anaconda发行版的Python 2.7.13和Python 3.6.1 。用户可以选择Python Spark应用的运行环境，支持在Python2和Python3之间进行切换。
 - 为了方便用户开发Python Spark机器学习类的应用， 分别在Anaconda发行版的Python2和Python3内提供了Anaconda发行版的数据科学包numpy, scikit-learn, scipy, Pandas, NLTK and Matplotlib 。
@@ -89,10 +89,6 @@
 ![查看服务详情](../../images/SparkMR/cluster_detail.png)
 
 创建成功后，点击集群列表页面相应集群可查看集群详情。可以看到集群分为HDFS主节点、YARN主节点、从节点和Client节点四种角色。其中用户可以直接访问client节点，并通过该节点与集群交互如提交Hadoop/Spark job、查看/上传/下载HDFS文件等。
-
-> 如在Spark Standalone模式下(包括spark-shell和spark-submit)运行的spark job需要读取本地文件，则需要将spark-env.sh中的`export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop`注释掉；
-如需以Spark on YARN模式运行spark job，则需要将该环境变量打开
-
 
 > 下属场景均在root用户下测试通过
 
@@ -331,9 +327,11 @@ YARN支持两种调度器CapacityScheduler（默认）和FairScheduler。
 
 1. 自定义CapacityScheduler capacity-scheduler.xml或者FairScheduler fair-scheduler.xml（文件名必须为capacity-scheduler.xml或者fair-scheduler.xml）
 2. 将这两个自定义调度器上传至HDFS的/tmp/hadoop-yarn/目录
-3. 右键点击集群，选择`自定义服务`，点击`更新调度器`
+3. 右键点击集群，选择`自定义服务`，点击`更新调度器`，选择`YARN主节点`，点击`提交`
 
 ![更新调度器](../../images/SparkMR/update_scheduler.png)
+
+![更新调度器](../../images/SparkMR/update_scheduler_submit.png)
 
 4. 在配置参数页面切换到相应调度器
 
@@ -346,7 +344,7 @@ Spark支持两种应用内调度器FIFO（默认）和FAIR。
 
 1. 自定义Spark应用内FAIR调度器spark-fair-scheduler.xml（文件名必须为spark-fair-scheduler.xml）
 2. 将这两个自定义调度器上传至HDFS的/tmp/hadoop-yarn/目录
-3. 右键点击集群，选择`自定义服务`，点击`更新调度器`
+3. 右键点击集群，选择`自定义服务`，点击`更新调度器`，选择`YARN主节点`，点击`提交`
 4. 在配置参数页面切换到相应调度器
 
 ![选择调度器](../../images/SparkMR/select_spark_scheduler.png)
@@ -361,8 +359,8 @@ SparkMR支持用户选择YARN调度器中用于计量资源的ResourceCalculator
 用户可以选择是否开启Spark Standalone模式（默认开启）。
 
 - 开启后用户可以以Spark Standalone模式提交Spark应用
-- 无论开启或关闭Spark Standalone模式用户都能以Spark on YARN模式提交Spark应用
-- 如用户仅以Spark on YARN模式提交Spark应用，则可以选择关闭Spark Standalone模式以释放资源。
+- 关闭后用户可以以Spark on YARN模式提交Spark应用
+- 如仅以Spark on YARN模式提交Spark应用或者仅使用hadoop相关功能，则可以选择关闭Spark Standalone模式以释放资源。
 
 ![开启关闭standalone](../../images/SparkMR/switch_standalone.png)
 
