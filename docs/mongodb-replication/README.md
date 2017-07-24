@@ -100,7 +100,7 @@ mongo mongodb://test_user1:Pwd001@192.168.100.10,192.168.100.11,192.168.100.12/d
 - 无法删除主节点
 - 无法删除 `qc_sid` 为 1 的节点
 
-> `qc_sid` 可以使用 mongo 连接之后通过 `rs.conf().members` 命令查看。`qc_sid` 为 1 的节点的选举优先级被我们设置为 2，所以这个节点通常是主节点。
+> `qc_sid` 可以使用 root 用户通过 mongo 连接之后执行 `rs.conf().members` 命令查看。`qc_sid` 为 1 的节点的选举优先级被我们设置为 2，所以这个节点通常是主节点。
 
 ![](snapshots/add_nodes.png)
 
@@ -176,6 +176,8 @@ mongodump --archive --username=user001 --password=Pwd001 --authenticationDatabas
 ## 基准测试
 
 我们用 [Yahoo! Cloud Serving Benchmark](https://github.com/brianfrankcooper/YCSB/tree/master/mongodb) 工具套件进行了基准测试，下面分别是各配置的测试结果。
+
+> YCSB 不支持用户名密码登录，下面的结果是在关闭认证后测试得到的，仅供参考。由于安全原因，我们禁止您关闭 MongoDB 的认证，建议在实际性能评估时以模拟正式场景为准。
 
 - 1核2G 100G 超高性能型硬盘
 
