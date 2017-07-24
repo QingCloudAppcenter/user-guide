@@ -337,6 +337,8 @@ YARN支持两种调度器CapacityScheduler（默认）和FairScheduler。
 
 ![选择调度器](../../images/SparkMR/select_scheduler.png)
 
+> 注：如果更新的自定义调度器和配置参数里yarn.resourcemanager.scheduler.class类型一致，则需要切换到另一种类型的调度器，保存设置后，再切换回来重新保存以达到重启集群使新的自定义调度器生效的目的。
+
 ## 场景九、更新自定义Spark应用内调度器
 
 Spark支持两种应用内调度器FIFO（默认）和FAIR。
@@ -348,6 +350,7 @@ Spark支持两种应用内调度器FIFO（默认）和FAIR。
 4. 在配置参数页面切换到相应调度器
 
 ![选择调度器](../../images/SparkMR/select_spark_scheduler.png)
+
 
 ## 场景十、选择Resource Calculator
 
