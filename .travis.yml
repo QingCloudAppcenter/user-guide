@@ -8,7 +8,9 @@ cache:
 install:
 - npm install -g gitbook-cli
 - npm install -g markdownlint-cli
-- sudo -H pip install qsctl
+- sudo pip install -U urllib3
+- sudo pip install -U requests
+- sudo pip install -U qsctl
 before_script:
 - export FILENAME="_book/qingcloud-apps-user-guide"
 script:
