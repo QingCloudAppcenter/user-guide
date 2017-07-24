@@ -112,10 +112,6 @@ Redis 数据库应用可以在 AppCenter 控制台中创建
 
 ![可选：MySql 数据库用于存储业务数据](../../images/tomcat/mysql_config.png)
 
-##### 注意
-
-- MySql 应用提供了两个高可用的读写访问地址，分别对应于数据的读写操作，当前 Tomcat 集群默认使用写 IP 地址，用户也可在环境参数中下拉选择读 IP。
-
 MySql 数据库应用可以在 AppCenter 控制台中创建
 
 `AppCenter -> 浏览应用 -> QingCloud MySql Plus -> 部署到 QingCloud`，之后选择区域及填写所需参数提交即可。
