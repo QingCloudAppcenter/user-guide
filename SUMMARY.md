@@ -10,5 +10,6 @@
 * [Nextcloud](docs/nextcloud/README.md)
 * [Redis Cluster](docs/redis-cluster/README.md)
 * [Redis Standalone](docs/redis-standalone/README.md)
+* [SparkMR](docs/SparkMR/README.md)
 * [Tomcat](docs/tomcat/README.md)
 * [ZooKeeper](docs/zk/README.md)
