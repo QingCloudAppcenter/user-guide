@@ -338,6 +338,7 @@ YARN支持两种调度器CapacityScheduler（默认）和FairScheduler。
 ![选择调度器](../../images/SparkMR/select_scheduler.png)
 
 > 注：如果更新的自定义调度器和配置参数里yarn.resourcemanager.scheduler.class类型一致，则需要切换到另一种类型的调度器，保存设置后，再切换回来重新保存以达到重启集群使新的自定义调度器生效的目的。
+> 例如：自定义的调度器为capacity-scheduler.xml，上传这个文件到HDFS并更新调度器后，因yarn.resourcemanager.scheduler.class也是CapacityScheduler，为了使得新的capacity-scheduler.xml生效，需要在配置参数页面切换yarn.resourcemanager.scheduler.class到FairScheduler，保存设置后再切换到CapacityScheduler，然后再次保存设置。
 
 ## 场景九、更新自定义Spark应用内调度器
 
