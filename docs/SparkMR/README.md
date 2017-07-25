@@ -19,7 +19,6 @@
 - 为了方便用户开发Spark R应用，提供了R语言运行时。
 - 支持上传自定义的Spark应用内调度器Fair Schudeler，并支持spark应用内调度模式在FIFO和FAIR切换
 - 支持上传自定义的YARN调度器CapacityScheduler和FairScheduler，并支持在CapacityScheduler和FairScheduler之间进行切换
-- 支持用户选择YARN调度器中用于计量资源的ResourceCalculator。默认的DefaultResourseCalculator在分配资源时只考虑内存，而DominantResourceCalculator则利用Dominant-resource来综合考量多维度的资源如内存，CPU等。
 - 配置参数增加到近60个，定制服务更方便
 - 针对HDFS、YARN和Spark服务级别的监控告警、健康检查与服务自动恢复
 - Hadoop、Spark与QingStor集成
@@ -348,6 +347,7 @@ YARN支持两种调度器CapacityScheduler（默认）和FairScheduler。
 > 注：如果更新的自定义调度器和配置参数里yarn.resourcemanager.scheduler.class类型一致，则需要切换到另一种类型的调度器，保存设置后，再切换回来重新保存以达到重启集群使新的自定义调度器生效的目的。
 > 例如：自定义的调度器为capacity-scheduler.xml，上传这个文件到HDFS并更新调度器后，因yarn.resourcemanager.scheduler.class也是CapacityScheduler，为了使得新的capacity-scheduler.xml生效，需要在配置参数页面切换yarn.resourcemanager.scheduler.class到FairScheduler，保存设置后再切换到CapacityScheduler，然后再次保存设置。
 
+
 ## 场景九、更新自定义Spark应用内调度器
 
 Spark支持两种应用内调度器FIFO（默认）和FAIR。
@@ -360,13 +360,7 @@ Spark支持两种应用内调度器FIFO（默认）和FAIR。
 
 ![选择调度器](../../images/SparkMR/select_spark_scheduler.png)
 
-
-## 场景十、选择Resource Calculator
-
-SparkMR支持用户选择YARN调度器中用于计量资源的ResourceCalculator。默认的DefaultResourseCalculator在分配资源时只考虑内存，而DominantResourceCalculator则利用Dominant-resource来综合考量多维度的资源如内存，CPU等。可在配置参数页面选择：
-![选择资源计量器](../../images/SparkMR/select_resource_calculator.png)
-
-## 场景十一、开启/关闭 Spark Standalone模式
+## 场景十、开启/关闭 Spark Standalone模式
 
 用户可以选择是否开启Spark Standalone模式（默认开启）。
 
@@ -376,7 +370,7 @@ SparkMR支持用户选择YARN调度器中用于计量资源的ResourceCalculator
 
 ![开启关闭standalone](../../images/SparkMR/switch_standalone.png)
 
-## 场景十二、控制Spark、HDFS、YARN占用的内存
+## 场景十一、控制Spark、HDFS、YARN占用的内存
 
 - Spark Standalone模式的Spark master进程和YARN ResourceManager进程都运行在YARN主节点上。
 - Spark Standalone模式的Spark worker进程和HDFS datanode以及YARN NodeManager进程都运行在从节点上
@@ -388,17 +382,17 @@ Spark进程最大占用内存
 YARN及HDFS进程最大占用内存
 ![YARN heap size](../../images/SparkMR/hdfs_yarn_heap_size.png)
 
-## 场景十三、配置Hadoop代理用户
+## 场景十二、配置Hadoop代理用户
 
 可通过如下配置参数配置Hadoop代理用户及其所能代理的hosts和groups：
 ![Hadoop代理用户](../../images/SparkMR/hadoop_proxy_user.png)
 
-## 场景十四、YARN log收集
+## 场景十三、YARN log收集
 
 SparkMR支持将YARN log收集到HDFS指定目录，并可指定保持时间、保持目录等，可在配置参数页面配置：
 ![YARN log收集](../../images/SparkMR/yarn_log_aggregation.png)
 
-## 场景十五、Spark log清理
+## 场景十四、Spark log清理
 
 可通过如下配置参数控制Spark Standalone模式下Spark worker节点的log清理设置：
 ![Spark log清理](../../images/SparkMR/spark_log_setting.png)
@@ -532,9 +526,6 @@ SparkMR提供了60个左右的配置参数，可以通过 `配置参数` 来定�
 - **yarn.scheduler.maximum-allocation-mb**: ResourceManager中针对每个container请求内存的最大分配值(MB). 高于该值的内存请求将会抛出InvalidResourceRequestException异常。
 - **yarn.scheduler.minimum-allocation-vcores**:ResourceManager中针对每个container请求virtual CPU cores的最小分配值。 低于该值的请求将会抛出InvalidResourceRequestException异常。
 - **yarn.scheduler.maximum-allocation-vcores**: ResourceManager中针对每个container请求virtual CPU cores的最大分配值。 高于该值的请求将会抛出InvalidResourceRequestException异常。
-- **yarn.scheduler.capacity.maximum-applications**: 可同时处在活跃状态(包括running和pending)的应用的最大数量。
-- **yarn.scheduler.capacity.maximum-am-resource-percent**: ApplicationMaster进程的最大百分比。
-- **yarn.scheduler.capacity.resource-calculator**: 调度器中用于计量资源的ResourceCalculator的实现。默认的DefaultResourseCalculator只考虑内存，而DominantResourceCalculator则利用Dominant-resource来综合考量多维度的资源如内存，CPU等。
 - **yarn.scheduler.fair.user-as-default-queue**: 以下yarn.scheduler.fair.*相关选项只有在FairScheduler被使用时才生效。在资源请求中没有指定队列名字的时候，是否使用username作为默认的队列名。如果此选项被设置为false或者未设置，所有job都将共享一个名为default的队列。
 - **yarn.scheduler.fair.preemption**: 是否应用preemption。
 - **yarn.scheduler.fair.preemption.cluster-utilization-threshold**: 超过指定集群资源利用率后将会激活preemption. 资源利用率是已用资源与资源容量的比率。
