@@ -96,6 +96,8 @@
 
 ## 场景一、以Spark-shell模式运行Spark job
 
+> 需设置`enable_spark_standalone`为true
+
 - Scala
 
 ```shell
@@ -132,6 +134,8 @@ printSchema(people)
 
 ## 场景二、以Spark Standalone模式运行Spark job
 
+> 需设置`enable_spark_standalone`为true
+
 - Scala
 
 ```shell
@@ -160,6 +164,8 @@ bin/spark-submit --master spark://192.168.0.8:7077 examples/src/main/r/data-mani
 ```
 
 ## 场景三、以Spark on YARN模式运行Spark job
+
+> 需设置`enable_spark_standalone`为false
 
 - Scala
 
