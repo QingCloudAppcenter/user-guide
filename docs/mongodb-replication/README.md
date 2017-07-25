@@ -48,14 +48,20 @@ foobar:PRIMARY>
 
 > 创建集群时输入的用户名对应的是 readWriteAnyDatabase 权限的普通账号，无法创建用户。如果需要创建用户，请使用 root 账号，密码与你输入的密码相同。连接时请使用 3.4 以上的版本。
 
-下面演示如何在 `db1` 中，创建一个用户名`test_user1`，密码为`Pwd001`，具有`readWrite`权限的用户。
+下面演示如何在 `db1` 中，创建一个用户名`test_user1`，密码为`Pwd001`，具有`readWrite`权限的用户。首先，使用 root 账号进行连接：
+
+```shell
+mongo mongodb://root:Pwd000@192.168.100.10,192.168.100.11,192.168.100.12/admin?replicaSet=foobar
+```
+
+连接成功后执行如下的命令：
 
 ```javascript
 use db1;
 db.createUser({ user: "test_user1", pwd: "Pwd001", roles: [ "readWrite" ]});
 ```
 
-创建后可以使用如下命令以`test_user1`身份连接到`db1`中。
+创建成功后可以`Ctrl+C`退回到 shell 中，使用如下命令以`test_user1`身份连接到`db1`。
 
 ```shell
 mongo mongodb://test_user1:Pwd001@192.168.100.10,192.168.100.11,192.168.100.12/db1?replicaSet=foobar
