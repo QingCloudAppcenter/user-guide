@@ -8,7 +8,7 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 
 在青云上，您可以很方便的创建和管理一个 Kubernetes 集群。青云的 Kubernetes 集群支持横向在线伸缩，同时具有自我诊断功能，即当系统发现某节点坏死时在控制台显示状态。 另外我们还提供了监控告警等功能来帮助您更好的管理集群。集群将运行于私有网络内，结合青云提供的高性能硬盘，在保障高性能的同时兼顾您的数据安全。
 
-> 为了保障数据安全， Kubernetes 集群需要运行在受管私有网络中。所以在创建一个 Kubernetes 集群之前，需要创建一个 VPC 和一个受管私有网络，受管私有网络需要加入 VPC，并开启 DHCP 服务（默认开启）。VPC 的地址范围请不要选择 172.17.0.0/16 这个段，因为这个 docker 默认使用这个段，使用这个段会导致网络问题。
+> 为了保障数据安全， Kubernetes 集群需要运行在受管私有网络中。所以在创建一个 Kubernetes 集群之前，需要创建一个 VPC 和一个受管私有网络，受管私有网络需要加入 VPC，并开启 DHCP 服务（默认开启）。VPC 的地址范围请不要选择 172.17.0.0/16 这个段，因为这个 docker 默认使用这个段，使用这个段会导致网络问题。另外 VPC **需要绑定公网 IP**，因为 Kubernetes 需要调用 QingCloud IaaS API 以及拉取镜像。
 
 ### 第一步：选择基本配置
 
@@ -21,9 +21,9 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 填写 Kubernetes 应用所需参数
 ![](screenshot/服务环境配置.png)
 
-* 为了更好地与青云基础设施集成，Kubernetes应用需要使用您的API Token来创建资源。请在控制台生成[秘钥](https://console.qingcloud.com/access_keys/)
+* 为了更好地与青云基础设施集成，Kubernetes 应用需要使用您的 API 秘钥来调用 QingCloud IaaS API。请在控制台生成[秘钥](https://console.qingcloud.com/access_keys/)。
 
-* Kubernetes 应用使用青云提供的 SDN2.0，创建的 Pod 都会绑定一个网卡，分配一个私网地址。这里可以设置所使用的私网 ID，私网需要预先准备好，如(vxnet-xxxxxxx)。建议给 Pod 设置专用的私网，每个私网可以容纳200多个 IP，如果您需要的容器数量较多，请填写多个，之间用空格切分。
+* Kubernetes 应用使用青云提供的 SDN2.0，创建的 Pod 都会绑定一个网卡，分配一个私网地址。这里可以设置所使用的私网 ID，私网需要预先准备好，如(vxnet-xxxxxxx)。建议给 Pod 设置专用的私网，每个私网可以容纳200多个 IP，如果您需要的容器数量较多，请填写多个，之间用空格切分。**Pod 的 vxnet 请不要复用 Kubernetes 所在的 vxnet**。
 
 * Kubernetes 应用内置了自定义日志监控功能，用户可以查询到所有 Kubernetes 管理的资源的日志。为了节省空间，日志会定期销毁。这里可以设置保存日志的天数
 
@@ -325,8 +325,9 @@ Kubernetes on QingCloud 容器网络使用的是 SDN Passthrough 方案，每个
 1. VPC 的地址范围请不要选择 172.17.0.0/16 这个段，因为这个 docker 默认使用这个段，使用这个段会导致网络问题。
 2. 所有节点的主机资源类型请保持一致，要么都是性能型，要么都是超高性能型。
 3. 节点监控界面中包含当前节点运行的 pod 数量和容器数量。
-4. 由于需要从 dockerhub.qingcloud.com 下载镜像，请确保集群所在私网能够访问公网（vpc 绑定了公网 ip)。
-5. 更多 Kubernetes 的使用方法请参考 [ Kubernetes 官方文档](https://kubernetes.io/docs/home/)。
+4. 由于需要调用 QingCloud IaaS API 以及拉取镜像，请确保集群所在私网能够访问公网（**VPC 绑定了公网 IP**)。
+5. 私有网络负载均衡器的 vxnet 请选择 kubernetes 集群所在的 vxnet，不要和 pod 的 vxnet 混用。
+6. 更多 Kubernetes 的使用方法请参考 [ Kubernetes 官方文档](https://kubernetes.io/docs/home/)。
 
 ## FAQ
 
@@ -346,3 +347,18 @@ Kubernetes on QingCloud 容器网络使用的是 SDN Passthrough 方案，每个
     	search default.svc.cluster.local svc.cluster.local cluster.local
     ```
 
+
+### 集群为什么启动失败或者超时，不能正常工作
+
+1. 确认 VPC 是否绑定了公网。
+2. 确认您的 API 秘钥是否填写正确。 
+
+如果以上两项都没有问题，请提交工单和我们联系。
+
+### 负载均衡器（LoadBalancer）为什么不能正常工作
+
+1. 确认 Service 可以通过 Cluster IP 访问。
+2. 确认 Service 可以通过 NodePort 访问。
+3. 如果是私有网络的负载均衡器，请确认负载均衡器的私有网络ID（vxnet）没有复用 pod 所在的私有网络。
+4. 如果使用的是 80 端口，请确认您的账号通过了认证（最好 IP 通过备案）。
+   ​
