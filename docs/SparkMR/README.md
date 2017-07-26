@@ -18,6 +18,7 @@
 - 为了方便用户开发Python Spark机器学习类的应用， 分别在Anaconda发行版的Python2和Python3内提供了Anaconda发行版的数据科学包numpy, scikit-learn, scipy, Pandas, NLTK and Matplotlib 。
 - 为了方便用户开发Spark R应用，提供了R语言运行时。
 - 支持上传自定义的Spark应用内调度器Fair Schudeler，并支持spark应用内调度模式在FIFO和FAIR切换
+- 支持用户自定义Hadoop代理用户及其能够代理哪些hosts和这些hosts中的哪些groups
 - 支持上传自定义的YARN调度器CapacityScheduler和FairScheduler，并支持在CapacityScheduler和FairScheduler之间进行切换
 - 配置参数增加到近60个，定制服务更方便
 - 针对HDFS、YARN和Spark服务级别的监控告警、健康检查与服务自动恢复
