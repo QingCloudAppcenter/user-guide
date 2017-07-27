@@ -428,6 +428,7 @@ bin/spark-submit --master yarn --deploy-mode client examples/src/main/python/pi.
 ```
 
 - 第六步：查看YARN applications UI页面，可以看到虽然是在root用户下提交的job，但是user都显示为ubuntu
+
 ![YARN applications UI](../../images/SparkMR/yarn_ui_proxy.png)
 
 ## 场景十三：YARN log收集
