@@ -5,7 +5,7 @@
 * [HBase](docs/hbase/README.md)
 * [Kafka](docs/kafka/README.md)
 * [Kubernetes](docs/kubernetes/README.md)
-	* [Helloword 教程](docs/kubernetes/tutorials/helloword.md) 
+	* [Helloworld 教程](docs/kubernetes/tutorials/helloworld.md) 
 	* [Wordpress 教程](docs/kubernetes/tutorials/wordpress.md) 
 * [Memcached](docs/memcached/README.md)
 * [MongoDB Replication](docs/mongodb-replication/README.md)
