@@ -397,6 +397,7 @@ YARN及HDFS进程最大占用内存
 本场景将root设置为代理用户，并在root用户下模拟用户ubuntu提交job：
 
 - 第一步：可通过如下配置参数配置Hadoop代理用户及其所能代理的hosts和groups，配置root为proxyuser，该用户能代理任意host中任意group内的用户：
+
 ![Hadoop代理用户](../../images/SparkMR/hadoop_proxy_user.png)
 
 > hosts或groups中填写* 代表任意host或任意group。hosts和groups中也可以填写以逗号分割的host name/ip或者group名。详见hadoop官方文档[Proxy user setting](http://hadoop.apache.org/docs/r2.7.3/hadoop-project-dist/hadoop-common/Superusers.html)
@@ -407,6 +408,7 @@ YARN及HDFS进程最大占用内存
 /opt/hadoop/bin/hdfs dfs -mkdir -p /user/ubuntu/
 /opt/hadoop/bin/hdfs dfs -chown -R ubuntu:ubuntu /user/ubuntu/
 ```
+
 - 第三步：设置要代理的是哪个用户，此处是root用户要代理ubuntu，所以设为ubuntu
 
 `export HADOOP_PROXY_USER=ubuntu`
