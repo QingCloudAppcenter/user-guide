@@ -254,9 +254,9 @@ spec:
       fsType: ext4
 ```
 
-#### 使用 persistentVolumeClaim
+#### 使用 PersistentVolumeClaim
 
-通过上面的例子可以看出来，要使用 PersistentVolume 需要预先创建好硬盘，并且配置文件和具体的资源绑定了，不方便迁移。为了解决这个问题 Kubernetes 提供了 persistentVolumeClaim，只需要声明 persistentVolume 需求，创建和回收 volume 交给系统。
+通过上面的例子可以看出来，要使用 PersistentVolume 需要预先创建好硬盘，并且配置文件和具体的资源绑定了，不方便迁移。为了解决这个问题 Kubernetes 提供了 PersistentVolumeClaim，只需要声明 PersistentVolume 需求，创建和回收 volume 交给系统。
 
 定义 StorageClass:
 
@@ -289,7 +289,7 @@ spec:
       storage: 10Gi
 ```
 
-qingcloud-storageclass 已经在 Kubernetes on QingCloud 内置，所以不需要用户自己配置，同时 qingcloud-storageclass 是默认的 storageclass，所以 PersistentVolumeClaim 中的 annotations volume.beta.kubernetes.io/storage-class: qingcloud-storageclass，也可以省略。更完整的例子参看 [wordpress 例子](https://github.com/QingCloudAppcenter/kubernetes/blob/master/sample/wordpress-deployment.yaml)。
+qingcloud-storageclass 已经在 Kubernetes on QingCloud 内置，所以不需要用户自己配置，同时 qingcloud-storageclass 是默认的 storageclass，所以 PersistentVolumeClaim 中的 annotations volume.beta.kubernetes.io/storage-class: qingcloud-storageclass，也可以省略。更完整的例子参看后面教程中的 wordpress 例子。
 
 默认的 qingcloud-storageclass 使用的是性能盘或者超高性能盘，取决于集群节点选择的主机的资源类型(性能型或者超高性能型)，系统会自动根据主机类型进行创建。所以有一个要求就是集群中的所有节点都必须选择一致的资源类型。
 
@@ -306,12 +306,19 @@ qingcloud-storageclass-capacity    kubernetes.io/qingcloud-volume
 
 命令查看系统中已有的 storageclass，也可以定义自己的 storageclass。
 
+>注意：无论是性能盘还是容量盘，volume 的 acccessModes 请设置为 **ReadWriteOnce**
+
 ### 网络
 
 Kubernetes on QingCloud 容器网络使用的是 SDN Passthrough 方案，每个 pod 分配的 ip 和主机是同一个 vpc 下的 ip。所以部署容器的时候，会在控制台看到挂载网卡的任务提示出现。这种网络方案让 pod 和主机使用同一层的网络，避免了性能损失，但也有一些限制需要了解：
 
 1. 每个主机当前最多支持 64 个网卡，所以 Kubernetes on QingCloud 限制每个节点上最多 60 个pod。
 2. 每个私有网络是一个 C 段地址，只能支持 200 多个 ip 地址，所以如果集群要支持更多的 pod，创建时需要添加多个私有网络 ID。
+
+## 教程
+
+1. [使用 QingCloud LoadBalancer 部署 Helloworld Service](tutorials/helloworld.md)
+2. [使用 QingCloud LoadBalancer 以及 PersistentVolumeClaim 部署 Wordpress](tutorials/wordpress.md)
 
 ### 更多示例
 
