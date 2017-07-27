@@ -8,7 +8,7 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 
 在青云上，您可以很方便的创建和管理一个 Kubernetes 集群。青云的 Kubernetes 集群支持横向在线伸缩，同时具有自我诊断功能，即当系统发现某节点坏死时在控制台显示状态。 另外我们还提供了监控告警等功能来帮助您更好的管理集群。集群将运行于私有网络内，结合青云提供的高性能硬盘，在保障高性能的同时兼顾您的数据安全。
 
-> 为了保障数据安全, Kubernetes 集群需要运行在受管私有网络中。所以在创建一个 Kubernetes 集群之前，需要创建一个 VPC 和一个受管私有网络，受管私有网络需要加入 VPC，并开启 DHCP 服务（默认开启）。VPC 的地址范围请不要选择 172.17.0.0/16 这个段，因为这个 docker 默认使用这个段，使用这个段会导致网络问题。
+> 为了保障数据安全， Kubernetes 集群需要运行在受管私有网络中。所以在创建一个 Kubernetes 集群之前，需要创建一个 VPC 和一个受管私有网络，受管私有网络需要加入 VPC，并开启 DHCP 服务（默认开启）。VPC 的地址范围请不要选择 172.17.0.0/16 这个段，因为这个 docker 默认使用这个段，使用这个段会导致网络问题。另外 VPC **需要绑定公网 IP**，因为 Kubernetes 需要调用 QingCloud IaaS API 以及拉取镜像。
 
 ### 第一步：选择基本配置
 
@@ -16,14 +16,14 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 ![](screenshot/基本配置.png)
 请根据需要选择 Kubernetes 主节点，节点和日志节点的 CPU、节点配置和数量、下图以主节点为例。所有节点的主机资源类型请保持一致，要么都是性能型，要么都是超高性能型
 ![](screenshot/主节点配置.png)
-选择集群主机所在的私网,私网需要在创建集群前准备好。
+选择集群主机所在的私网，私网需要在创建集群前准备好。
 ![](screenshot/网络配置.png)
 填写 Kubernetes 应用所需参数
 ![](screenshot/服务环境配置.png)
 
-* 为了更好地与青云基础设施集成，Kubernetes应用需要使用您的API Token来创建资源。请在控制台生成[秘钥](https://console.qingcloud.com/access_keys/)
+* 为了更好地与青云基础设施集成，Kubernetes 应用需要使用您的 API 秘钥来调用 QingCloud IaaS API。请在控制台生成[秘钥](https://console.qingcloud.com/access_keys/)。
 
-* Kubernetes 应用使用青云提供的 SDN2.0，创建的 Pod 都会绑定一个网卡，分配一个私网地址。这里可以设置所使用的私网 ID，私网需要预先准备好，如(vxnet-xxxxxxx)。建议给 Pod 设置专用的私网，每个私网可以容纳200多个 IP，如果您需要的容器数量较多，请填写多个，之间用空格切分。
+* Kubernetes 应用使用青云提供的 SDN2.0，创建的 Pod 都会绑定一个网卡，分配一个私网地址。这里可以设置所使用的私网 ID，私网需要预先准备好，如(vxnet-xxxxxxx)。建议给 Pod 设置专用的私网，每个私网可以容纳200多个 IP，如果您需要的容器数量较多，请填写多个，之间用空格切分。**Pod 的 vxnet 请不要复用 Kubernetes 所在的 vxnet**。
 
 * Kubernetes 应用内置了自定义日志监控功能，用户可以查询到所有 Kubernetes 管理的资源的日志。为了节省空间，日志会定期销毁。这里可以设置保存日志的天数
 
@@ -31,7 +31,7 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 
 ![](screenshot/服务环境配置2.png)
 
-* Kubernetes 应用支持使用私有容器仓库，方便使用内部容器仓库的用户,青云提供了[harbor应用](https://appcenter.qingcloud.com/apps/app-2mhyb1ui)可以方便用户部署私有容器仓库
+* Kubernetes 应用支持使用私有容器仓库，方便使用内部容器仓库的用户，青云提供了[harbor应用](https://appcenter.qingcloud.com/apps/app-2mhyb1ui)可以方便用户部署私有容器仓库
 
 * Kubernetes 需要从 dockerhub.qingcloud.com 下载镜像包含青云定制的 Kubernetes 服务镜像，因此需要用户填写 docherhub.qingcloud.com 用户名和密码。系统已经内置了 guest 账号，可以拉取 dockerhub.qingcloud.com 上的公开仓库。如果需要创建和使用自己的仓库，请提交工单申请。
 
@@ -114,7 +114,7 @@ kubectl cluster-info
 
 heapster的数据结构可以访问 http://客户端节点ip:8001/api/v1/proxy/namespaces/kube-system/services/elasticsearch-logging/_cat/indices 获得
 
-我们提供了一些预置的模板,可以在[这里](screenshot/export.json)下载
+我们提供了一些预置的模板，可以在[这里](screenshot/export.json)下载
 
 主要的timelion查询如下
 
@@ -123,7 +123,7 @@ heapster的数据结构可以访问 http://客户端节点ip:8001/api/v1/proxy/n
 ```
 
 heapster-cpu- 是 heapster-的别称。可以通过_type来加以区分。
-MetricsTags.type:node是不同类型实体的标记（例如 pod, node等）
+MetricsTags.type:node是不同类型实体的标记（例如 pod， node等）
 用户可以先将同一类型数据找出，然后按照需要构建查询。并绘出图表。
 
 ## 在线伸缩
@@ -254,9 +254,9 @@ spec:
       fsType: ext4
 ```
 
-#### 使用 persistentVolumeClaim
+#### 使用 PersistentVolumeClaim
 
-通过上面的例子可以看出来，要使用 PersistentVolume 需要预先创建好硬盘，并且配置文件和具体的资源绑定了，不方便迁移。为了解决这个问题 Kubernetes 提供了 persistentVolumeClaim，只需要声明 persistentVolume 需求，创建和回收 volume 交给系统。
+通过上面的例子可以看出来，要使用 PersistentVolume 需要预先创建好硬盘，并且配置文件和具体的资源绑定了，不方便迁移。为了解决这个问题 Kubernetes 提供了 PersistentVolumeClaim，只需要声明 PersistentVolume 需求，创建和回收 volume 交给系统。
 
 定义 StorageClass:
 
@@ -289,7 +289,7 @@ spec:
       storage: 10Gi
 ```
 
-qingcloud-storageclass 已经在 Kubernetes on QingCloud 内置，所以不需要用户自己配置，同时 qingcloud-storageclass 是默认的 storageclass，所以 PersistentVolumeClaim 中的 annotations volume.beta.kubernetes.io/storage-class: qingcloud-storageclass，也可以省略。更完整的例子参看 [wordpress 例子](https://github.com/QingCloudAppcenter/kubernetes/blob/master/sample/wordpress-deployment.yaml)。
+qingcloud-storageclass 已经在 Kubernetes on QingCloud 内置，所以不需要用户自己配置，同时 qingcloud-storageclass 是默认的 storageclass，所以 PersistentVolumeClaim 中的 annotations volume.beta.kubernetes.io/storage-class: qingcloud-storageclass，也可以省略。更完整的例子参看后面教程中的 wordpress 例子。
 
 默认的 qingcloud-storageclass 使用的是性能盘或者超高性能盘，取决于集群节点选择的主机的资源类型(性能型或者超高性能型)，系统会自动根据主机类型进行创建。所以有一个要求就是集群中的所有节点都必须选择一致的资源类型。
 
@@ -306,12 +306,19 @@ qingcloud-storageclass-capacity    kubernetes.io/qingcloud-volume
 
 命令查看系统中已有的 storageclass，也可以定义自己的 storageclass。
 
+>注意：无论是性能盘还是容量盘，volume 的 acccessModes 请设置为 **ReadWriteOnce**
+
 ### 网络
 
 Kubernetes on QingCloud 容器网络使用的是 SDN Passthrough 方案，每个 pod 分配的 ip 和主机是同一个 vpc 下的 ip。所以部署容器的时候，会在控制台看到挂载网卡的任务提示出现。这种网络方案让 pod 和主机使用同一层的网络，避免了性能损失，但也有一些限制需要了解：
 
 1. 每个主机当前最多支持 64 个网卡，所以 Kubernetes on QingCloud 限制每个节点上最多 60 个pod。
 2. 每个私有网络是一个 C 段地址，只能支持 200 多个 ip 地址，所以如果集群要支持更多的 pod，创建时需要添加多个私有网络 ID。
+
+## 教程
+
+1. [使用 QingCloud LoadBalancer 部署 Helloworld Service](tutorials/helloworld.md)
+2. [使用 QingCloud LoadBalancer 以及 PersistentVolumeClaim 部署 Wordpress](tutorials/wordpress.md)
 
 ### 更多示例
 
@@ -325,8 +332,9 @@ Kubernetes on QingCloud 容器网络使用的是 SDN Passthrough 方案，每个
 1. VPC 的地址范围请不要选择 172.17.0.0/16 这个段，因为这个 docker 默认使用这个段，使用这个段会导致网络问题。
 2. 所有节点的主机资源类型请保持一致，要么都是性能型，要么都是超高性能型。
 3. 节点监控界面中包含当前节点运行的 pod 数量和容器数量。
-4. 由于需要从 dockerhub.qingcloud.com 下载镜像，请确保集群所在私网能够访问公网（vpc 绑定了公网 ip)。
-5. 更多 Kubernetes 的使用方法请参考 [ Kubernetes 官方文档](https://kubernetes.io/docs/home/)。
+4. 由于需要调用 QingCloud IaaS API 以及拉取镜像，请确保集群所在私网能够访问公网（**VPC 绑定了公网 IP**)。
+5. 私有网络负载均衡器的 vxnet 请选择 kubernetes 集群所在的 vxnet，不要和 pod 的 vxnet 混用。
+6. 更多 Kubernetes 的使用方法请参考 [ Kubernetes 官方文档](https://kubernetes.io/docs/home/)。
 
 ## FAQ
 
@@ -346,3 +354,18 @@ Kubernetes on QingCloud 容器网络使用的是 SDN Passthrough 方案，每个
     	search default.svc.cluster.local svc.cluster.local cluster.local
     ```
 
+
+### 集群为什么启动失败或者超时，不能正常工作
+
+1. 确认 VPC 是否绑定了公网。
+2. 确认您的 API 秘钥是否填写正确。 
+
+如果以上两项都没有问题，请提交工单和我们联系。
+
+### 负载均衡器（LoadBalancer）为什么不能正常工作
+
+1. 确认 Service 可以通过 Cluster IP 访问。
+2. 确认 Service 可以通过 NodePort 访问。
+3. 如果是私有网络的负载均衡器，请确认负载均衡器的私有网络ID（vxnet）没有复用 pod 所在的私有网络。
+4. 如果使用的是 80 端口，请确认您的账号通过了认证（最好 IP 通过备案）。
+   ​
