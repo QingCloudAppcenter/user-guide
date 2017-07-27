@@ -209,6 +209,7 @@ spec:
 
 ```shell
 kubectl delete -f wordpress-deployment.yaml
+kubectl delete secret/mysql-pass
 ```
 
 ## 常见问题
