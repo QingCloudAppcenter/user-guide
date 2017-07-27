@@ -18,6 +18,7 @@
 - 为了方便用户开发Python Spark机器学习类的应用， 分别在Anaconda发行版的Python2和Python3内提供了Anaconda发行版的数据科学包numpy, scikit-learn, scipy, Pandas, NLTK and Matplotlib 。
 - 为了方便用户开发Spark R应用，提供了R语言运行时。
 - 支持上传自定义的Spark应用内调度器Fair Schudeler，并支持spark应用内调度模式在FIFO和FAIR切换
+- 支持用户自定义Hadoop代理用户及其能够代理哪些hosts和这些hosts中的哪些groups
 - 支持上传自定义的YARN调度器CapacityScheduler和FairScheduler，并支持在CapacityScheduler和FairScheduler之间进行切换
 - 配置参数增加到近60个，定制服务更方便
 - 针对HDFS、YARN和Spark服务级别的监控告警、健康检查与服务自动恢复
@@ -94,7 +95,9 @@
 > 以下场景均在root用户下测试通过
 
 > 如以非root用户比如用户ubuntu运行Spark on YARN job，需要首先运行如下命令：
+
 > `/opt/hadoop/bin/hdfs dfs -mkdir -p /user/ubuntu/`
+
 > `/opt/hadoop/bin/hdfs dfs -chown -R ubuntu:ubuntu  /user/ubuntu/`
 
 > 如以非root用户运行MapReduce job或者上传文件到HDFS，也需要具有相应目录的读写权限
@@ -373,6 +376,7 @@ Spark支持两种应用内调度器FIFO（默认）和FAIR。
 - 开启后用户可以以Spark Standalone模式提交Spark应用
 - 关闭后用户可以以Spark on YARN模式提交Spark应用
 - 如仅以Spark on YARN模式提交Spark应用或者仅使用hadoop相关功能，则可以选择关闭Spark Standalone模式以释放资源。
+- 此选项最好不要和其他配置参数项一起改，单独改动此项然后保存设置是推荐的作法。
 
 ![开启关闭standalone](../../images/SparkMR/switch_standalone.png)
 
