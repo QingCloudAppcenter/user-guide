@@ -3,19 +3,19 @@
 ## 简介
 
 *SparkMR on QingCloud AppCenter* 将 *Apache Hadoop* 和 *Apache Spark* 集成到同一个集群服务中，以AppCenter云应用的形式交付给用户使用。
->目前支持的Hadoop和Spark版本分别是 *Apache Hadoop 2.7.3* 和 *Apache Spark 2.2.0*  。
+>目前支持的Hadoop和Spark版本分别是 *Apache Hadoop 2.7.3* 和 *Apache Spark 2.2.0* 
 
 
 ### *SparkMR* 的主要功能
 
 - *Apache Hadoop*  提供的MapReduce、YARN、HDFS等功能
 - *Apache Spark* 提供的Spark streaming、Spark SQL、DataFrame and DataSet、Structed Streaming、MLlib、GraphX、SparkR等功能
-- 同时支持Spark Standalone和Spark on YARN两种模式。
+- 同时支持Spark Standalone和Spark on YARN两种模式
 
->用户可以选择是否开启Spark Standalone模式（默认开启）。开启后用户可以以Spark Standalone模式提交Spark应用；关闭后用户可以Spark on YARN模式提交Spark应用。如仅以Spark on YARN模式提交Spark应用或者仅使用hadoop相关功能，则可以选择关闭Spark Standalone模式以释放资源。此选项最好不要和其他配置参数项一起改，单独改动此项然后保存设置是推荐的作法。
+>用户可以选择是否开启Spark Standalone模式（默认开启）。开启后用户可以以Spark Standalone模式提交Spark应用；关闭后用户可以Spark on YARN模式提交Spark应用。如仅以Spark on YARN模式提交Spark应用或者仅使用hadoop相关功能，则可以选择关闭Spark Standalone模式以释放资源。此选项最好不要和其他配置参数项一起改，单独改动此项然后保存设置是推荐的作法
 
-- 为了方便用户提交Python Spark应用，提供了Anaconda发行版的Python 2.7.13和Python 3.6.1 。用户可以选择Python Spark应用的运行环境，支持在Python2和Python3之间进行切换。
-- 为了方便用户开发Python Spark机器学习类的应用， 分别在Anaconda发行版的Python2和Python3内提供了Anaconda发行版的数据科学包numpy, scikit-learn, scipy, Pandas, NLTK and Matplotlib 。
+- 为了方便用户提交Python Spark应用，提供了Anaconda发行版的Python 2.7.13和Python 3.6.1 。用户可以选择Python Spark应用的运行环境，支持在Python2和Python3之间进行切换
+- 为了方便用户开发Python Spark机器学习类的应用， 分别在Anaconda发行版的Python2和Python3内提供了Anaconda发行版的数据科学包numpy, scikit-learn, scipy, Pandas, NLTK and Matplotlib 
 - 为了方便用户开发Spark R应用，提供了R语言运行时。
 - 支持上传自定义的Spark应用内调度器Fair Schudeler，并支持spark应用内调度模式在FIFO和FAIR切换
 - 支持用户自定义Hadoop代理用户及其能够代理哪些hosts和这些hosts中的哪些groups
@@ -25,7 +25,7 @@
 - Hadoop、Spark与QingStor集成
 - 指定依赖服务，自动添加依赖服务中的所有节点到SparkMR所有节点的hosts文件中
 - 支持水平与垂直扩容
-- 可选Client节点（为了使用上述全部功能，建议Client节点为必选），全自动配置无需任何手动操作。
+- 可选Client节点（为了使用上述全部功能，建议Client节点为必选），全自动配置无需任何手动操作
 
 ## 部署SparkMR服务
 
@@ -64,15 +64,15 @@
 
 ![第6步：网络设置](../../images/SparkMR/network_config.png)
 
-出于安全考虑，所有的集群都需要部署在私有网络中，选择自己创建的已连接路由器的私有网络中。
+出于安全考虑，所有的集群都需要部署在私有网络中，选择自己创建的已连接路由器的私有网络中
 
 ### 第7步：依赖服务设置
 
 ![第7步：依赖服务设置](../../images/SparkMR/dependency_config.png)
 
-选择所依赖的服务可以将其中所有节点加入本服务所有节点的hosts文件中。
+选择所依赖的服务可以将其中所有节点加入本服务所有节点的hosts文件中。HBase与Hadoop或者Spark集成的场景经常会有这种需求，选定依赖HBase集群即可自动添加hosts，无需由工程师在后台手动添加。
 
-> 目前只能在SparkMR服务创建时指定依赖服务，创建之后就无法指定。后续版本更新会添加在SparkMR服务创建后添加依赖服务的功能。
+> 目前只能在SparkMR服务创建时指定依赖服务，创建之后就无法指定。后续版本更新会添加在SparkMR服务创建后添加依赖服务的功能
 
 ### 第8步：服务环境参数设置
 
@@ -246,7 +246,7 @@ bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar terava
 bin/hdfs dfs -cat /teraValidate/part-r-00000
 ```
 
-## 场景七：SparkMR与QingStor集成
+## 场景七：SparkMR与青云对象存储QingStor集成
 
 QingStor 对象存储为用户提供可无限扩展的通用数据存储服务，具有安全可靠、简单易用、高性能、低成本等特点。用户可将数据上传至 QingStor 对象存储中，以供数据分析。由于 QingStor 对象存储兼容 AWS S3 API，因此 Spark与Hadoop都可以通过 AWS S3 API 与 QingStor 对象存储高效集成，以满足更多的大数据计算和存储场景。有关 QingStor 的更多内容，请参考[QingStor 对象存储用户指南] (https://docs.qingcloud.com/qingstor/guide/index.html)
 >目前QingStor 对象存储的开放了sh1a 和 pek3a两个区，后续将开放更多的分区，敬请期待。
