@@ -86,11 +86,11 @@
 
 ## SparkMR使用场景
 
-## 查看服务详情
+### 查看服务详情
 
 ![查看服务详情](../../images/SparkMR/cluster_detail.png)
 
-创建成功后，点击集群列表页面相应集群可查看集群详情。可以看到集群分为HDFS主节点、YARN主节点、从节点和Client节点四种角色。其中用户可以直接访问client节点，并通过该节点与集群交互如提交Hadoop/Spark job、查看/上传/下载HDFS文件等。
+创建成功后，点击集群列表页面相应集群可查看集群详情。可以看到集群分为HDFS主节点、YARN主节点、从节点和Client节点四种角色。其中YARN主节点（YARN Master）同时也是Spark Standalone模式下的Spark主节点(Spark Master)；用户可以直接访问client节点，并通过该节点与集群交互如提交Hadoop/Spark job、查看/上传/下载HDFS文件等。
 
 > 以下场景均在root用户下测试通过
 
@@ -102,7 +102,8 @@
 
 > 如以非root用户运行MapReduce job或者上传文件到HDFS，也需要具有相应目录的读写权限
 
-## 场景一： 以Spark-shell模式运行Spark job
+
+### 场景一： 以Spark-shell模式运行Spark job
 
 > 需设置`enable_spark_standalone`为true
 
@@ -110,7 +111,7 @@
 
 ```shell
 cd /opt/spark	
-bin/spark-shell --master spark://192.168.0.8:7077
+bin/spark-shell --master spark://<YARN-MASTER-IP>:7077
 
 val textFile = spark.read.textFile("/opt/spark/README.md")
 textFile.count()
@@ -121,7 +122,7 @@ textFile.filter(line => line.contains("Spark")).count()
 
 ```shell
 cd /opt/spark
-bin/pyspark --master spark://192.168.0.8:7077
+bin/pyspark --master spark://<YARN-MASTER-IP>:7077
 
 textFile = spark.read.text("/opt/spark/README.md")
 textFile.count()
@@ -132,7 +133,7 @@ textFile.filter(textFile.value.contains("Spark")).count()
 
 ```shell
 cd /opt/spark
-bin/sparkR --master spark://192.168.0.8:7077
+bin/sparkR --master spark://<YARN-MASTER-IP>:7077
 
 df <- as.DataFrame(faithful)
 head(df)
@@ -140,7 +141,7 @@ people <- read.df("./examples/src/main/resources/people.json", "json")
 printSchema(people)
 ```
 
-## 场景二：以Spark Standalone模式运行Spark job
+### 场景二：以Spark Standalone模式运行Spark job
 
 > 需设置`enable_spark_standalone`为true
 
@@ -149,7 +150,7 @@ printSchema(people)
 ```shell
 cd /opt/spark	
 
-bin/spark-submit --class org.apache.spark.examples.SparkPi --master spark://192.168.0.8:7077 examples/jars/spark-examples_2.11-2.2.0.jar 100
+bin/spark-submit --class org.apache.spark.examples.SparkPi --master spark://<YARN-MASTER-IP>:7077 examples/jars/spark-examples_2.11-2.2.0.jar 100
 ```
 
 - Python
@@ -157,7 +158,7 @@ bin/spark-submit --class org.apache.spark.examples.SparkPi --master spark://192.
 ```shell
 cd /opt/spark
 
-bin/spark-submit --master spark://192.168.0.8:7077 examples/src/main/python/pi.py 100
+bin/spark-submit --master spark://<YARN-MASTER-IP>:7077 examples/src/main/python/pi.py 100
 ```
 
 可以在配置参数页面切换Python版本
@@ -171,7 +172,7 @@ cd /opt/spark
 bin/spark-submit --master spark://192.168.0.8:7077 examples/src/main/r/data-manipulation.R examples/src/main/resources/people.txt
 ```
 
-## 场景三：以Spark on YARN模式运行Spark job
+### 场景三：以Spark on YARN模式运行Spark job
 
 > 需设置`enable_spark_standalone`为false
 
@@ -199,7 +200,7 @@ cd /opt/spark
 bin/spark-submit --master yarn --deploy-mode cluster /opt/spark/examples/src/main/r/ml/kmeans.R
 ```
 
-## 场景四：运行hadoop测试程序，统计文件中单词出现的次数
+### 场景四：运行hadoop测试程序，统计文件中单词出现的次数
 
 ```shell
 cd /opt/hadoop
@@ -211,7 +212,7 @@ bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar wordco
 bin/hdfs dfs -cat /output/part-r-00000
 ```
 
-## 场景五：Hadoop 官方的 Benchmark 性能基准测试，测试的是 HDFS 分布式I/O读写的速度/吞吐率，依次执行下列命令
+### 场景五：Hadoop 官方的 Benchmark 性能基准测试，测试的是 HDFS 分布式I/O读写的速度/吞吐率，依次执行下列命令
 
 ```shell
 cd /opt/hadoop
@@ -228,7 +229,7 @@ bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.7.3-te
 您能看到 HDFS 每秒读写文件速度，以及吞吐量的具体数值。
 ```
 
-## 场景六：Hadoop 官方的 Benchmark 性能基准测试，测试的是大文件内容的排序，依次执行下列命令：
+### 场景六：Hadoop 官方的 Benchmark 性能基准测试，测试的是大文件内容的排序，依次执行下列命令：
 
 ```shell
 cd /opt/hadoop
@@ -246,7 +247,7 @@ bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar terava
 bin/hdfs dfs -cat /teraValidate/part-r-00000
 ```
 
-## 场景七：SparkMR与青云对象存储QingStor集成
+### 场景七：SparkMR与青云对象存储QingStor集成
 
 QingStor 对象存储为用户提供可无限扩展的通用数据存储服务，具有安全可靠、简单易用、高性能、低成本等特点。用户可将数据上传至 QingStor 对象存储中，以供数据分析。由于 QingStor 对象存储兼容 AWS S3 API，因此 Spark与Hadoop都可以通过 AWS S3 API 与 QingStor 对象存储高效集成，以满足更多的大数据计算和存储场景。有关 QingStor 的更多内容，请参考[QingStor 对象存储用户指南] (https://docs.qingcloud.com/qingstor/guide/index.html)
 >目前QingStor 对象存储的开放了sh1a 和 pek3a两个区，后续将开放更多的分区，敬请期待。
@@ -336,7 +337,7 @@ bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar wordco
 
 ```
 
-## 场景八：更新自定义YARN调度器
+### 场景八：更新自定义YARN调度器
 
 YARN支持两种调度器CapacityScheduler（默认）和FairScheduler。
 为了支持用户更多自定义调度器的需求，SparkMR支持用户上传自定义调度器，步骤如下：
@@ -356,8 +357,7 @@ YARN支持两种调度器CapacityScheduler（默认）和FairScheduler。
 > 注：如果更新的自定义调度器和配置参数里yarn.resourcemanager.scheduler.class类型一致，则需要切换到另一种类型的调度器，保存设置后，再切换回来重新保存以达到重启集群使新的自定义调度器生效的目的。
 > 例如：自定义的调度器为capacity-scheduler.xml，上传这个文件到HDFS并更新调度器后，因yarn.resourcemanager.scheduler.class也是CapacityScheduler，为了使得新的capacity-scheduler.xml生效，需要在配置参数页面切换yarn.resourcemanager.scheduler.class到FairScheduler，保存设置后再切换到CapacityScheduler，然后再次保存设置。
 
-
-## 场景九：更新自定义Spark应用内调度器
+### 场景九：更新自定义Spark应用内调度器
 
 Spark支持两种应用内调度器FIFO（默认）和FAIR。
 为了支持用户自定义Spark应用内FAIR调度器的需求，SparkMR支持用户上传自定义的FAIR调度器，步骤如下：
@@ -369,7 +369,7 @@ Spark支持两种应用内调度器FIFO（默认）和FAIR。
 
 ![选择调度器](../../images/SparkMR/select_spark_scheduler.png)
 
-## 场景十：开启/关闭 Spark Standalone模式
+### 场景十：开启/关闭 Spark Standalone模式
 
 用户可以选择是否开启Spark Standalone模式（默认开启）。
 
@@ -380,7 +380,7 @@ Spark支持两种应用内调度器FIFO（默认）和FAIR。
 
 ![开启关闭standalone](../../images/SparkMR/switch_standalone.png)
 
-## 场景十一：控制Spark、HDFS、YARN占用的内存
+### 场景十一：控制Spark、HDFS、YARN占用的内存
 
 - Spark Standalone模式的Spark master进程和YARN ResourceManager进程都运行在YARN主节点上。
 - Spark Standalone模式的Spark worker进程和HDFS datanode以及YARN NodeManager进程都运行在从节点上
@@ -392,7 +392,7 @@ Spark进程最大占用内存
 YARN及HDFS进程最大占用内存
 ![YARN heap size](../../images/SparkMR/hdfs_yarn_heap_size.png)
 
-## 场景十二：以Hadoop代理用户运行MapReduce和Spark on YARN job
+### 场景十二：以Hadoop代理用户运行MapReduce和Spark on YARN job
 
 本场景将root设置为代理用户，并在root用户下模拟用户ubuntu提交job：
 
@@ -431,12 +431,12 @@ bin/spark-submit --master yarn --deploy-mode client examples/src/main/python/pi.
 
 ![YARN applications UI](../../images/SparkMR/yarn_ui_proxy.png)
 
-## 场景十三：YARN log收集
+### 场景十三：YARN log收集
 
 SparkMR支持将YARN log收集到HDFS指定目录，并可指定保持时间、保持目录等，可在配置参数页面配置：
 ![YARN log收集](../../images/SparkMR/yarn_log_aggregation.png)
 
-## 场景十四：Spark log清理
+### 场景十四：Spark log清理
 
 可通过如下配置参数控制Spark Standalone模式下Spark worker节点的log清理设置：
 ![Spark log清理](../../images/SparkMR/spark_log_setting.png)
