@@ -102,7 +102,6 @@
 
 > 如以非root用户运行MapReduce job或者上传文件到HDFS，也需要具有相应目录的读写权限
 
-
 ### 场景一： 以Spark-shell模式运行Spark job
 
 > 需设置`enable_spark_standalone`为true
@@ -169,7 +168,7 @@ bin/spark-submit --master spark://<YARN-MASTER-IP>:7077 examples/src/main/python
 ```shell
 cd /opt/spark
 
-bin/spark-submit --master spark://192.168.0.8:7077 examples/src/main/r/data-manipulation.R examples/src/main/resources/people.txt
+bin/spark-submit --master spark://<YARN-MASTER-IP>:7077 examples/src/main/r/data-manipulation.R examples/src/main/resources/people.txt
 ```
 
 ### 场景三：以Spark on YARN模式运行Spark job
