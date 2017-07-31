@@ -168,7 +168,7 @@ bin/spark-submit --master spark://<YARN-MASTER-IP>:7077 examples/src/main/python
 ```shell
 cd /opt/spark
 
-bin/spark-submit --master spark://192.168.0.8:7077 examples/src/main/r/data-manipulation.R examples/src/main/resources/people.txt
+bin/spark-submit --master spark://<YARN-MASTER-IP>:7077 examples/src/main/r/data-manipulation.R examples/src/main/resources/people.txt
 ```
 
 ### 场景三：以Spark on YARN模式运行Spark job
