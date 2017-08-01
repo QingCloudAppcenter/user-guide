@@ -212,7 +212,7 @@ Haproxy 节点监控管理：
 
 ### 授权用户访问 vhost
 
->curl  -i  -u guest:guest -H "content-type:application/json" -XPUT http://192.168.0.253:15672/api/permissions/foo/guest -d  {"configure":".*","write":".*","read":".*"}
+>curl  -i  -u guest:guest -H "content-type:application/json" -XPUT http://192.168.0.253:15672/api/permissions/foo/guest -d  {"configure":".\*","write":".\*","read":".\*"}
 
 ### 创建一个 queue ，发送消息，并消费消息
 
