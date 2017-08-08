@@ -116,6 +116,26 @@ Haproxy 节点监控管理：
   ![集群扩容](../../images/rabbitmq/resize_cluster1.png)
 
 
+## rabbitmq_management 使用示例简介
+
+### 创建一个队列
+
+![创建一个 queue ](../../images/rabbitmq/create_queue.png)
+
+>创建一个队列，指定队列所在的节点，设置队列是否持久化，如果未设置持久化，集群重启会导致队列消失
+
+### 投递消息
+
+![投递消息 ](../../images/rabbitmq/publish_message.png)
+
+>投递消息，设置消息是否持久化，设置为2时候代表持久化，默认不持久化，如果未设置持久化，集群重启消息消失
+
+### 消费消息
+
+![消费消息 ](../../images/rabbitmq/get_message.png)
+
+>获取消息，并设置队列消息是否可以重复获取，是否需要 base64 编码
+
 ## rabbitmqcli 命令示例简介
 
 官网参考地址：https://www.rabbitmq.com/man/rabbitmqctl.1.man.html
@@ -179,7 +199,7 @@ Haproxy 节点监控管理：
 - 修改 rabbitmqadmin文件 default_options 中的 hostname 为 任意 RabbitMQ 节点 或者 Haproxy 节点 ip 或者 Keepalived vip，若修改了guest 用户，还需要修改 default_options 中用户名和密码配置。
 
 
-### 定义一个 queue
+### 定义一个 queue（durable=true 仅仅表示该队列持久化，并不表示队列中的消息已经持久化）
 
 > ./rabbitmqadmin declare queue name=test  durable=true
 
@@ -194,7 +214,6 @@ Haproxy 节点监控管理：
 ### 查看 consumers
 
 > ./rabbitmqadmin  list consumers
-
 
 
 ### 发送一条消息
@@ -235,6 +254,16 @@ Haproxy 节点监控管理：
 - 推荐使用 web 界面来设置，比较方便
 - 熟悉的话,也可以使用 HTTP API
 
+## 注意事项说明
+
+RabbitMQ 支持消息的持久化，也就是数据写在磁盘上，为了数据安全考虑，大多数用户可能都会选择持久化。消息队列持久化包括3个部分：
+
+- exchange 持久化，在声明时指定 durable => 1 （true）
+- queue 持久化，在声明时指定 durable => 1     (true)
+- 消息持久化，在投递时指定 delivery_mode => 2（1 是非持久化）
+
+如果 exchange 和 queue 都是持久化的，那么它们之间的 binding 也是持久化的。如果exchange 和 queue 两者之间有一个持久化，一个非持久化，就不允许建立绑定。即使设置了持久化，也不能百分百保证消息不会丢失。有很小的概率在 RabbitMQ 接受到消息后，还没来得及写到磁盘，就发生重启了，所以写消息的时候尽量不要重启节点，例如：新增减少磁盘节点、修改参数、扩容伸缩集群都会导致集群的重启。如果需要加强的安全保证，可以把发布消息的代码封装在事务里。
+如果您的消息需要持久化，请务必保证 queue 是持久化的，并在投递消息的时候设置 delivery_mode =2。
 
 至此，`RabbitMQ on QingCloud AppCenter` 的介绍到这里就告一个段落了。
 
