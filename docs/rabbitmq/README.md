@@ -115,9 +115,6 @@ Haproxy 节点监控管理：
 
   ![集群扩容](../../images/rabbitmq/resize_cluster1.png)
 
-## 推荐使用 RabbitMQ web 管理集群、创建队列、路由等
-
-    每个节点都安装好了此插件，ip:15672，默认帐号密码: guest/guest, 登录后查看集群
 
 ## rabbitmqcli 命令示例简介
 
