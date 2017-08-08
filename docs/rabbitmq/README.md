@@ -2,18 +2,18 @@
 
 ## 简介
 
-[RabbitMQ](https://www.rabbitmq.com/) 实现了 AMQP 协议 ,具有可靠性、灵活的路由、事务、高可用的队列、消息排序、可视化管理工具等功能，服务器端用 Erlang 语言编写,天生具备高可用和高并发的特性。
+[RabbitMQ](https://www.rabbitmq.com/) 实现了 AMQP 协议，具有可靠性、灵活的路由、事务、高可用的队列、消息排序、可视化管理工具等功能，服务器端用 Erlang 语言编写，天生具备高可用和高并发的特性。
 
 
 `RabbitMQ on QingCloud AppCenter` 将 RabbitMQ 通过云应用的形式在 QingCloud AppCenter 部署，具有如下特性:
 
 - 支持横向与纵向在线伸缩
 - 系统自动运维，降低企业使用成本
-- 提供了监控告警功能更好的管理集群
+- 提供了监控告警功能，更好地管理集群
 - 与 Haproxy+Keepalived 集成，具备高可用负载均衡特性
 - 开箱即用，支持 AMQP、MQTT、STOMP、WebSockets 等多种丰富协议
 
->注意：集群创建后，默认监控管理界面登录帐号：guest/guest 角色为超级管理员，另外青云内部会创建一个 monitor 用户用于监控，请勿删除与修改 monitor 用户。Haproxy+Keepalived 节点创建后，监控管理界面默认端口为8100，登录帐号为：haproxy/haproxy 可以通过配置参数修改 。RabbitMQ client 节点登录帐号为: root/rabbitmq 。
+>注意：集群创建后，默认监控管理界面登录帐号：guest/guest，角色为超级管理员，另外青云内部会创建一个 monitor 用户用于监控，请勿删除与修改 monitor 用户。Haproxy+Keepalived 节点创建后，监控管理界面默认端口为8100，登录帐号为：haproxy/haproxy，可以通过配置参数修改 。RabbitMQ client 节点登录帐号为: root/rabbitmq 。
 
 ## 创建 RabbitMQ
 
