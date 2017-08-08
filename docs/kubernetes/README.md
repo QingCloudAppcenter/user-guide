@@ -104,13 +104,16 @@ nohup kubectl proxy --address='0.0.0.0' --accept-hosts='.*' --disable-filter=tru
 kubectl cluster-info
 ```
 
-用户需要导入以下index来获取所需数据。
+用户需要导入以下index来获取所需数据。数据都是以时间为基准，需要输入index名称的匹配模式和数据的时间戳．输入index匹配模式后，在时间戳下拉框中选择对应的字段然后点击创建即可．
 
-* heapster-cpu-*
-* heapster-memory-*
-* heapster-filesystem-*
-* heapster-network-*
-* logstash-*
+index         | timestamp
+------------- | -------------
+heapster-cpu-* | CpuMetricsTimestamp
+heapster-memory-* | MemoryMetricsTimestamp
+heapster-filesystem-* | FilesystemMetricsTimestamp
+heapster-network-* | NetworkMetricsTimestamp
+logstash-* | @timestamp
+
 
 具体配置请参考[官方文档](https://www.elastic.co/guide/en/kibana/current/discover.html)
 
