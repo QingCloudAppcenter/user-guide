@@ -162,11 +162,19 @@ Haproxy 节点监控管理：
 
 ### 在 RabbitMQ 管理界面下载
 
-- 例如 Keepalived VIP 为 192.168.0.253
+## client 节点上自带 rabbitmqadmin 工具
+
+> 注意：rabbitmqadmin 工具已经在 client 节点上配置好了，可以直接使用，若修改了guest 用户，需要自己修改 default_options 中用户名和密码配置。
+
+## 自己下载或者自定义配置 rabbitmqadmin 工具方法
+
+> 注意：可以选择任意 RabbitMQ 节点 或者 Haproxy 节点 ip 或者  Keepalived vip 操作 使用。
+
+- 例如 Keepalived VIP 为 192.168.0.253 (也可以是任意 RabbitMQ 节点 或者 Haproxy 节点 ip)
 - wget http://192.168.0.253:15672/cli/rabbitmqadmin
 - file rabbitmqadmin
 - chmod +x rabbitmqadmin
-- 修改 localhost 为192.168.0.253
+- 修改 rabbitmqadmin文件 default_options 中的 hostname 为 任意 RabbitMQ 节点 或者 Haproxy 节点 ip 或者 Keepalived vip，若修改了guest 用户，还需要修改 default_options 中用户名和密码配置。
 
 
 ### 定义一个 queue
