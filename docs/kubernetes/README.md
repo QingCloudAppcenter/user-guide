@@ -10,7 +10,7 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 
 ### 准备工作
 
-为了保障数据安全， Kubernetes 集群需要运行在受管私有网络中。所以在创建一个 Kubernetes 集群之前，需要创建一个 VPC 和一个受管私有网络，受管私有网络需要加入 VPC，并开启 DHCP 服务（默认开启）。VPC 的地址范围请不要选择 172.17.0.0/16 这个段，因为这个 docker 默认使用这个段，使用这个段会导致网络问题。另外 VPC **需要绑定公网 IP**，因为 Kubernetes 需要调用 QingCloud IaaS API 以及拉取镜像。
+为了保障数据安全， Kubernetes 集群需要运行在受管私有网络中。所以在创建一个 Kubernetes 集群之前，需要创建一个 VPC 和一个受管私有网络，受管私有网络需要加入 VPC，并开启 DHCP 服务（默认开启）。VPC 的地址范围请不要选择 172.17.0.0/16 这个段，因为这个 docker 默认使用这个段，使用这个段会导致网络问题。另外 VPC <font color=red>**需要绑定公网 IP**</font>，因为 Kubernetes 需要调用 QingCloud IaaS API 以及拉取镜像。
 
 ### 第一步：选择基本配置
 
@@ -25,7 +25,7 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 
 * 为了更好地与青云基础设施集成，Kubernetes 应用需要使用您的 API 秘钥来调用 QingCloud IaaS API。请在控制台生成[秘钥](https://console.qingcloud.com/access_keys/)。
 
-* Kubernetes 应用使用青云提供的 SDN2.0，创建的 Pod 都会绑定一个网卡，分配一个私网地址。这里可以设置所使用的私网 ID，私网需要预先准备好，如(vxnet-xxxxxxx)。建议给 Pod 设置专用的私网，每个私网可以容纳200多个 IP，如果您需要的容器数量较多，请填写多个，之间用空格切分。**Pod 的 vxnet 请不要复用 Kubernetes 所在的 vxnet**。
+* Kubernetes 应用使用青云提供的 SDN2.0，创建的 Pod 都会绑定一个网卡，分配一个私网地址。这里可以设置所使用的私网 ID，私网需要预先准备好，如(vxnet-xxxxxxx)。建议给 Pod 设置专用的私网，每个私网可以容纳200多个 IP，如果您需要的容器数量较多，请填写多个，之间用空格切分。<font color=red>**Pod 的 vxnet 请不要复用 Kubernetes 所在的 vxnet，且应和 Kubernetes 集群所在的私网在同一 VPC 中**</font>。
 
 * Kubernetes 应用内置了自定义日志监控功能，用户可以查询到所有 Kubernetes 管理的资源的日志。为了节省空间，日志会定期销毁。这里可以设置保存日志的天数
 
