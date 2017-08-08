@@ -13,7 +13,6 @@
 - 与 Haproxy+Keepalived 集成，具备高可用负载均衡特性
 - 开箱即用，支持 AMQP、MQTT、STOMP、WebSockets 等多种丰富协议
 
->注意：集群创建后，默认监控管理界面登录帐号：guest/guest，角色为超级管理员，另外青云内部会创建一个 monitor 用户用于监控，请勿删除与修改 monitor 用户。Haproxy+Keepalived 节点创建后，监控管理界面默认端口为8100，登录帐号为：haproxy/haproxy，可以通过配置参数修改 。RabbitMQ client 节点登录帐号为: root/rabbitmq 。
 
 ## 创建 RabbitMQ
 
@@ -69,6 +68,12 @@ CPU，内存，节点数量，主机类型和磁盘大小根据自己实际需�
 
 
 ## 集群使用
+
+### 使用 RabbitMQ 和 Haproxy web 监控管理工具可以很方便管理集群
+
+- RabbitMQ 每个节点都安装好了 rabbitmq_management 插件，登录方式：http://节点ip:15672， 登录帐号：guest/guest， 该角色为超级管理员，另外青云内部会创建一个 monitor 用户用于监控，请勿删除与修改 monitor 用户（如果创建了 Haproxy 节点，建议使用 http://vip:15672 或者使用 http://haproxy节点ip:15672 登录管理集群）
+- 默认Haproxy+Keepalived 节点创建后，监控管理界面默认端口为8100，登录方式：http://vip:8100 或者使用 http://haproxy节点ip:8100， 登录帐号为：haproxy/haproxy， 可以通过配置参数修改端口和用户
+- RabbitMQ client 节点登录帐号为: root/rabbitmq
 
 ### 集群信息
 
