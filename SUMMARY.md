@@ -9,6 +9,7 @@
 	* [Wordpress 教程](docs/kubernetes/tutorials/wordpress.md) 
 * [Memcached](docs/memcached/README.md)
 * [MongoDB Replication](docs/mongodb-replication/README.md)
+* [Multi-nodes Docker](docs/multi-nodes-docker/README.md)
 * [MySQL Plus](docs/rds/README.md)
 * [Nextcloud](docs/nextcloud/README.md)
 * [Redis Cluster](docs/redis-cluster/README.md)
