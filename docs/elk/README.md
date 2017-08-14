@@ -1,18 +1,14 @@
 # ELK on QingCloud AppCenter 用户指南
 
-
 ## 简介
 
+_ELK_ 是 _ElasticSearch_ 、 _Kibana_ 和 _Logstash_ 这三个软件集合的简称, _ElasticSearch_ 是一个实时分布式搜索和分析引擎， _Kibana_ 则为 _ElasticSearch_提供了强大的可视化界面， _Logstash_ 为用户提供数据采集、转换、优化和输出的能力。 _ELK_ 目前被广泛应用于实时日志处理、全文搜索和数据分析等领域。
 
-*ELK* 是 *ElasticSearch* 、 *Kibana* 和 *Logstash* 这三个软件集合的简称, *ElasticSearch* 是一个实时分布式搜索和分析引擎， *Kibana* 则为 *ElasticSearch*提供了强大的可视化界面， *Logstash* 为用户提供数据采集、转换、优化和输出的能力。 *ELK* 目前被广泛应用于实时日志处理、全文搜索和数据分析等领域。
+_ELK on QingCloud_ 将 _ElasticSearch_ 、_Kibana_ 和 _Logstash_ 集成到同一个集群服务中，以AppCenter云应用的形式交付给用户使用。
 
-
-*ELK on QingCloud* 将 *ElasticSearch* 、*Kibana* 和 *Logstash* 集成到同一个集群服务中，以AppCenter云应用的形式交付给用户使用。
->目前 *ELK on QingCloud* 支持的 *ElasticSearch* 、*Kibana* 和 *Logstash* 版本是 5.5.1
-
+> 目前 _ELK on QingCloud_ 支持的 _ElasticSearch_ 、_Kibana_ 和 _Logstash_ 版本是 5.5.1
 
 ### ELK on QingCloud 的特点
-
 
 * 一键集群安装部署
 * 支持节点横向和纵向扩容
@@ -23,7 +19,6 @@
 * Logstash提供自定义插件能力
 * 提供ES Head，ElasticHD节点，方便用户通过浏览器使用ES
 * 集群关键指标监控
-
 
 ## 部署ELK服务
 
@@ -99,7 +94,7 @@ VPC部署示意图如下：
 
 ![访问字典文件示意图](../../images/elk/access_dic.png)
 
-第二步，在集群列表页面中切换到配置参数标签页，选择"ElasticSearch节点"进行参数配置，设置remote_ext_dict设置项为用户自定义字典的可访问url (如示例中为http://192.168.0.7/custom.dic) 后保存,然后重启集群中的ElasticSearch节点。
+第二步，在集群列表页面中切换到配置参数标签页，选择"ElasticSearch节点"进行参数配置，设置remote\_ext\_dict设置项为用户自定义字典的可访问url \(如示例中为[http://192.168.0.7/custom.dic](http://192.168.0.7/custom.dic)\) 后保存,然后重启集群中的ElasticSearch节点。
 
 第三步，测试中文分词功能。
 
@@ -195,7 +190,6 @@ curl -XPOST http://$HOST:9200/index/fulltext/_search  -d'
 '
 
 printf "\n\n"
-
 ```
 
 第四步，查看中文分词结果，结果如下图红色部分所示既为成功。即"中国"、"青云"、"优帆科技"被当做固定的中文分词表示。
@@ -206,23 +200,25 @@ printf "\n\n"
 
 ### 场景二：ElasticSearch集群慢索引、慢搜索日志查看
 
-第一步，在集群列表页面的ElasticSearch节点上点击节点ID右侧的显示器图标，打开Web终端。输入默认用户名(ubuntu)、密码(p12cHANgepwD)，进入shell。
+第一步，在集群列表页面的ElasticSearch节点上点击节点ID右侧的显示器图标，打开Web终端。输入默认用户名\(ubuntu\)、密码\(p12cHANgepwD\)，进入shell。
 
 第二步，进入`/data/elasticsearch/logs`目录，形如`<cl-z3pj0axe>_index_indexing_slowlog.log`的日志为慢索引日志，形如`<cl-z3pj0axe>_index_search_slowlog.log`的日志为慢搜索日志，用户需将`<cl-z3pj0axe>`替换为自己的集群ID。
 
 ### 场景三：Logstash自定义插件支持
 
-第一步，在集群列表页面的Logstash节点上点击节点ID右侧的显示器图标，打开Web终端。输入默认用户名(ubuntu)、密码(p12cHANgepwD)，进入shell。
+第一步，在集群列表页面的Logstash节点上点击节点ID右侧的显示器图标，打开Web终端。输入默认用户名\(ubuntu\)、密码\(p12cHANgepwD\)，进入shell。
 
 第二步，在shell中执行`sudo docker ps`，查看Logstash的Container ID，然后执行`sudo docker exec -it <c9c0b43c6847> logstash-plugin generate --type <filter> --name <abcd> --path /data/logstash/plugins`，其中将`<c9c0b43c6847>`替换为你的 Logstash的Container ID，`<filter>`替换为你想要定制的插件的类型，类型包括`{input, filter, codec, output}`，`<abcd>`替换为你要开发的插件的名称。执行成功后显示如图所示。
 
 ![查看Container ID](../../images/elk/logstash_container.png)
 
+
+
 ![生成插件](../../images/elk/plugin_generate.png)
 
 第三步，进入`/data/logstash/plugins`目录，找到新生成的插件目录，修改插件以符合用户的业务需求。
 
-第四步，在集群列表页面中切换到配置参数标签页，选择"Logstash节点"进行参数配置，点击"修改属性"，根据你的插件类型及参数修改相应的配置项，如示例中，将`filter_conf_content`修改为`	abcd {}`，根据你插件所在位置修改`gemfile_append_content`，插件位置前缀必须是`/data/logstash/plugins`，如示例中，将`gemfile_append_content`修改为`gem "logstash-filter-abcd", :path => "/data/logstash/plugins/logstash-filter-abcd"`，修改后保存即可，如下图为示例中配置的展示。
+第四步，在集群列表页面中切换到配置参数标签页，选择"Logstash节点"进行参数配置，点击"修改属性"，根据你的插件类型及参数修改相应的配置项，如示例中，将`filter_conf_content`修改为`abcd {}`，根据你插件所在位置修改`gemfile_append_content`，插件位置前缀必须是`/data/logstash/plugins`，如示例中，将`gemfile_append_content`修改为`gem "logstash-filter-abcd", :path => "/data/logstash/plugins/logstash-filter-abcd"`，修改后保存即可，如下图为示例中配置的展示。
 
 ![Logstash参数配置](../../images/elk/logstash_env.png)
 
@@ -232,12 +228,11 @@ printf "\n\n"
 
 ![日志展示](../../images/elk/log_display.png)
 
-
 ## 在线伸缩
 
 ### 增加节点
 
-可以在ELK详情页点击 `新增节点` 按钮可以增加 `ElasticSearch 节点`、`Kibana 节点`、`Logstash 节点`、`ES Head 节点` 或 `ElasticHD 节点`的数量，可以对每个新增节点指定 IP 或选择自动分配。
+可以在ELK详情页点击 `新增节点` 按钮可以增加 `ElasticSearch 节点`、`Kibana 节点`、`Logstash 节点`、`ES Head 节点` 或 `ElasticHD 节点`的数量，可以对每个新增节点指定 IP 或选择自动分配。  
 ![增加节点](../../images/elk/add_node.png)
 
 ### 删除节点
@@ -248,7 +243,7 @@ printf "\n\n"
 
 ### 纵向伸缩
 
-SparkMR允许分别对各种角色的节点进行纵向的扩容及缩容。
+SparkMR允许分别对各种角色的节点进行纵向的扩容及缩容。  
 ![纵向伸缩](../../images/elk/scale_up_down.png)
 
 ## 监控告警
@@ -270,5 +265,4 @@ ELK提供了近20个配置参数，可以通过 `配置参数` 来定制个性�
 在 ELK 详情页，点击 `配置参数` Tab 页，切换到`ElasticSearch节点`或`Logstash节点`，点击 `修改属性`，修改完后，需要进行 "保存"。如图所示：
 
 ![配置参数](../../images/elk/env_modify.png)
-
 
