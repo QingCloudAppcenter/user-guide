@@ -29,49 +29,49 @@
 
 ### 第1步：基本设置
 
-![第1步：基本设置](../../images/ELK/basic_config.png)
+![第1步：基本设置](../../images/elk/basic_config.png)
 
 填写服务`名称`和`描述`，选择版本
 
 ### 第2步：ElasticSearch节点设置
 
-![第2步：ElasticSearch节点设置](../../images/ELK/es_node_config.png)
+![第2步：ElasticSearch节点设置](../../images/elk/es_node_config.png)
 
 填写 ElasticSearch 节点CPU、内存、节点数量、主机类型及数据盘大小等配置信息。
 
 ### 第3步：Kibana节点设置
 
-![第3步：Kibana节点设置](../../images/ELK/kbn_node_config.png)
+![第3步：Kibana节点设置](../../images/elk/kbn_node_config.png)
 
 填写 Kibana 节点CPU、内存、节点数量及主机类型等配置信息。
 
 ### 第4步：Logstash节点设置
 
-![第4步：Logstash节点设置](../../images/ELK/lst_node_config.png)
+![第4步：Logstash节点设置](../../images/elk/lst_node_config.png)
 
 填写 Logstash 节点CPU、内存、节点数量、主机类型及数据盘大小等配置信息。
 
 ### 第5步：ES Head节点设置
 
-![第5步：ES Head节点设置](../../images/ELK/esh_node_config.png)
+![第5步：ES Head节点设置](../../images/elk/esh_node_config.png)
 
 填写 ES Head 节点CPU、内存、节点数量及主机类型等配置信息。
 
 ### 第6步：ElasticHD节点设置
 
-![第6步：ElasticHD节点设置](../../images/ELK/eshd_node_config.png)
+![第6步：ElasticHD节点设置](../../images/elk/eshd_node_config.png)
 
 填写 ElasticHD 节点CPU、内存、节点数量及主机类型等配置信息。
 
 ### 第7步：网络设置
 
-![第7步：网络设置](../../images/ELK/network_config.png)
+![第7步：网络设置](../../images/elk/network_config.png)
 
 出于安全考虑，所有的集群都需要部署在私有网络中，请选择自己创建的已连接路由器的私有网络
 
 ### 第8步：服务环境参数设置
 
-![第8步：服务环境参数设置](../../images/ELK/env_config.png)
+![第8步：服务环境参数设置](../../images/elk/env_config.png)
 
 提供了近20个服务环境参数可以配置。可以点击`展开配置`对所有配置项进行修改，也可使用默认值并在集群创建后按需进行修改。
 
@@ -83,7 +83,7 @@
 
 ### 查看服务详情
 
-![查看服务详情](../../images/ELK/cluster_detail.png)
+![查看服务详情](../../images/elk/cluster_detail.png)
 
 创建成功后，点击集群列表页面相应集群可查看集群详情。可以看到集群分为ElasticSearch节点、Kibana节点、Logstash节点、ES Head节点和ElasticHD节点五种角色。其中ElasticSearch节点为集群化部署方式，节点数至少为3，默认为3节点；其他节点可通过增加节点数的方式来满足上层应用的故障转移需求。ElasticSearch节点可提供远程扩展字典及热更新，Logstash节点提供用户自定义插件能力，具体使用方法将在下文中详述。
 
@@ -93,11 +93,11 @@
 
 VPC部署示意图如下：
 
-![VPC部署示意图](../../images/ELK/cluster_chinese.png)
+![VPC部署示意图](../../images/elk/cluster_chinese.png)
 
 访问字典文件示意图如下：
 
-![访问字典文件示意图](../../images/ELK/access_dic.png)
+![访问字典文件示意图](../../images/elk/access_dic.png)
 
 第二步，在集群列表页面中切换到配置参数标签页，选择"ElasticSearch节点"进行参数配置，设置remote_ext_dict设置项为用户自定义字典的可访问url（如示例中为http://192.168.0.7/custom.dic）后保存,然后重启集群中的ElasticSearch节点。
 
@@ -200,7 +200,7 @@ printf "\n\n"
 
 第四步，查看中文分词结果，结果如下图红色部分所示既为成功。即"中国"、"青云"、"优帆科技"被当做固定的中文分词表示。
 
-![中文分词结果示意图](../../images/ELK/chinese_split.png)
+![中文分词结果示意图](../../images/elk/chinese_split.png)
 
 第五步，更新用户自定义字典，ElasticSearch会自动检测http响应头中的Last-Modified和ETag的变化，来进行分词字典的热更新。
 
@@ -216,21 +216,21 @@ printf "\n\n"
 
 第二步，在shell中执行`sudo docker ps`，查看Logstash的Container ID，然后执行`sudo docker exec -it <c9c0b43c6847> logstash-plugin generate --type <filter> --name <abcd> --path /data/logstash/plugins`，其中将`<c9c0b43c6847>`替换为你的 Logstash的Container ID，`<filter>`替换为你想要定制的插件的类型，类型包括`{input, filter, codec, output}`，`<abcd>`替换为你要开发的插件的名称。执行成功后显示如图所示。
 
-![查看Container ID](../../images/ELK/logstash_container.png)
+![查看Container ID](../../images/elk/logstash_container.png)
 
-![生成插件](../../images/ELK/plugin_generate.png)
+![生成插件](../../images/elk/plugin_generate.png)
 
 第三步，进入`/data/logstash/plugins`目录，找到新生成的插件目录，修改插件以符合用户的业务需求。
 
 第四步，在集群列表页面中切换到配置参数标签页，选择"Logstash节点"进行参数配置，点击"修改属性"，根据你的插件类型及参数修改相应的配置项，如示例中，将`filter_conf_content`修改为`	abcd {}`，根据你插件所在位置修改`gemfile_append_content`，插件位置前缀必须是`/data/logstash/plugins`，如示例中，将`gemfile_append_content`修改为`gem "logstash-filter-abcd", :path => "/data/logstash/plugins/logstash-filter-abcd"`，修改后保存即可，如下图为示例中配置的展示。
 
-![Logstash参数配置](../../images/ELK/logstash_env.png)
+![Logstash参数配置](../../images/elk/logstash_env.png)
 
 第五步，测试插件是否如预期工作，Logstash节点默认配置了http input插件，可通过此插件开启的9700端口进行测试，执行`curl -d "qingcloud" 127.0.0.1:9700`将一条日志发往Logstash，在浏览器中访问Kibana节点提供的Web界面，默认进入配置索引模式界面，如图，直接点击Create即可，点击左侧的Discover菜单项，显示近期接收到的日志，如图，示例中的`logstash_filter_abcd`成功将原消息中的`qingcloud`替换为了`Hello World!`，说明插件配置生效。
 
-![配置index](../../images/ELK/config_index.png)
+![配置index](../../images/elk/config_index.png)
 
-![日志展示](../../images/ELK/log_display.png)
+![日志展示](../../images/elk/log_display.png)
 
 
 ## 在线伸缩
@@ -238,7 +238,7 @@ printf "\n\n"
 ### 增加节点
 
 可以在ELK详情页点击 `新增节点` 按钮可以增加 `ElasticSearch 节点`、`Kibana 节点`、`Logstash 节点`、`ES Head 节点` 或 `ElasticHD 节点`的数量，可以对每个新增节点指定 IP 或选择自动分配。
-![增加节点](../../images/ELK/add_node.png)
+![增加节点](../../images/elk/add_node.png)
 
 ### 删除节点
 
@@ -249,7 +249,7 @@ printf "\n\n"
 ### 纵向伸缩
 
 SparkMR允许分别对各种角色的节点进行纵向的扩容及缩容。
-![纵向伸缩](../../images/ELK/scale_up_down.png)
+![纵向伸缩](../../images/elk/scale_up_down.png)
 
 ## 监控告警
 
@@ -269,6 +269,6 @@ ELK提供了近20个配置参数，可以通过 `配置参数` 来定制个性�
 
 在 ELK 详情页，点击 `配置参数` Tab 页，切换到`ElasticSearch节点`或`Logstash节点`，点击 `修改属性`，修改完后，需要进行 "保存"。如图所示：
 
-![配置参数](../../images/ELK/env_modify.png)
+![配置参数](../../images/elk/env_modify.png)
 
 
