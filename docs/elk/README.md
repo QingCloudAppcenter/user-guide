@@ -99,7 +99,7 @@ VPC部署示意图如下：
 
 ![访问字典文件示意图](../../images/elk/access_dic.png)
 
-第二步，在集群列表页面中切换到配置参数标签页，选择"ElasticSearch节点"进行参数配置，设置remote_ext_dict设置项为用户自定义字典的可访问url（如示例中为http://192.168.0.7/custom.dic）后保存,然后重启集群中的ElasticSearch节点。
+第二步，在集群列表页面中切换到配置参数标签页，选择"ElasticSearch节点"进行参数配置，设置remote_ext_dict设置项为用户自定义字典的可访问url(如示例中为http://192.168.0.7/custom.dic)后保存,然后重启集群中的ElasticSearch节点。
 
 第三步，测试中文分词功能。
 
