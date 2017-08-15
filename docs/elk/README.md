@@ -215,7 +215,6 @@ printf "\n\n"
 ![查看Container ID](../../images/elk/logstash_container.png)
 
 
-
 ![生成插件](../../images/elk/plugin_generate.png)
 
 第三步，进入`/data/logstash/plugins`目录，找到新生成的插件目录，修改插件以符合用户的业务需求。
