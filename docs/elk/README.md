@@ -214,7 +214,6 @@ printf "\n\n"
 
 ![查看Container ID](../../images/elk/logstash_container.png)
 
-
 ![生成插件](../../images/elk/plugin_generate.png)
 
 第三步，进入`/data/logstash/plugins`目录，找到新生成的插件目录，修改插件以符合用户的业务需求。
@@ -244,7 +243,7 @@ printf "\n\n"
 
 ### 纵向伸缩
 
-SparkMR允许分别对各种角色的节点进行纵向的扩容及缩容。  
+ELK允许分别对各种角色的节点进行纵向的扩容及缩容。  
 ![纵向伸缩](../../images/elk/scale_up_down.png)
 
 ## 监控告警
