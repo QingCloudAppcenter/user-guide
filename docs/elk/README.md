@@ -256,6 +256,12 @@ ELK允许分别对各种角色的节点进行纵向的扩容及缩容。
 
 为了帮助用户更好的管理和维护ELK集群，我们提供了部分针对ElasticSearch集群的监控，可通过点击任意ElasticSearch节点右侧的监控按钮来查看。
 
+![监控示意图1](../../images/elk/elk_monitor1.png)
+
+![监控示意图2](../../images/elk/elk_monitor2.png)
+
+![监控示意图3](../../images/elk/elk_monitor3.png)
+
 ## 配置参数
 
 ELK提供了近20个配置参数，可以通过 `配置参数` 来定制个性化的ELK服务并进行调优。
