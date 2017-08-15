@@ -198,6 +198,8 @@ printf "\n\n"
 
 第五步，更新用户自定义字典，ElasticSearch会自动检测http响应头中的Last-Modified和ETag的变化，来进行分词字典的热更新。
 
+> 更多细节请关注[IK Analysis plugin](https://github.com/medcl/elasticsearch-analysis-ik)
+
 ### 场景二：ElasticSearch集群慢索引、慢搜索日志查看
 
 第一步，在集群列表页面的ElasticSearch节点上点击节点ID右侧的显示器图标，打开Web终端。输入默认用户名\(ubuntu\)、密码\(p12cHANgepwD\)，进入shell。
