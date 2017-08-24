@@ -46,18 +46,6 @@ _ELK on QingCloud_ 将 _ElasticSearch_ 、_Kibana_ 和 _Logstash_ 集成到同�
 
 填写 Logstash 节点CPU、内存、节点数量、主机类型及数据盘大小等配置信息。
 
-### 第5步：ES Head节点设置
-
-![第5步：ES Head节点设置](../../images/elk/esh_node_config.png)
-
-填写 ES Head 节点CPU、内存、节点数量及主机类型等配置信息。
-
-### 第6步：ElasticHD节点设置
-
-![第6步：ElasticHD节点设置](../../images/elk/eshd_node_config.png)
-
-填写 ElasticHD 节点CPU、内存、节点数量及主机类型等配置信息。
-
 ### 第7步：网络设置
 
 ![第7步：网络设置](../../images/elk/network_config.png)
