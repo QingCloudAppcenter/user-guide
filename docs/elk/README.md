@@ -6,7 +6,7 @@ _ELK_ 是 _ElasticSearch_ 、 _Kibana_ 和 _Logstash_ 这三个软件集合的�
 
 _ELK on QingCloud_ 将 _ElasticSearch_ 、_Kibana_ 和 _Logstash_ 集成到同一个集群服务中，以AppCenter云应用的形式交付给用户使用。
 
-> 目前 _ELK on QingCloud_ 支持的 _ElasticSearch_ 、_Kibana_ 和 _Logstash_ 版本是 5.5.1
+> 目前 _ELK on QingCloud_ 支持 _ElasticSearch 5.5.1_ 、_Kibana_ 5.5.1 和 _Logstash 5.4.3_
 
 ### ELK on QingCloud 的特点
 
