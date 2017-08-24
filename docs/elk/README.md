@@ -74,11 +74,8 @@ _ELK on QingCloud_ 将 _ElasticSearch_ 、_Kibana_ 和 _Logstash_ 集成到同�
 
 第一步，在集群列表页面的Logstash节点上点击节点ID右侧的显示器图标，打开Web终端。输入默认用户名\(ubuntu\)、密码\(p12cHANgepwD\)，进入shell。
 
-第二步，进入`/data/elasticsearch/dicts`目录，将用户自定义扩展字典放入其中，确保用户可通过url下载到相应的字典文件。
+第二步，临时更改`/etc/ssh/sshd_config`中的`PasswordAuthentication`配置项为`yes`，重启ssh服务，然后即可使用任意支持sftp的软件上传自定义字典，为方便管理请将用户自定义扩展字典放入`/data/elasticsearch/dicts`目录，上传完成后可恢复ssh配置。
 
-VPC部署示意图如下：
-
-![VPC部署示意图](../../images/elk/cluster_chinese.png)
 
 访问字典文件示意图如下：
 
