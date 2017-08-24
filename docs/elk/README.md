@@ -72,7 +72,9 @@ _ELK on QingCloud_ 将 _ElasticSearch_ 、_Kibana_ 和 _Logstash_ 集成到同�
 
 ### 场景一：ElasticSearch中文自定义分词使用方法
 
-第一步，在ELK集群所在私有网络中创建一台用于提供http文件下载服务的主机（或任意ElasticSearch节点可访问到的主机），在其上安装nginx等可用于提供http文件下载功能的软件，将用户自定义扩展字典放入其中，确保用户可通过url下载到相应的字典文件。
+第一步，在集群列表页面的Logstash节点上点击节点ID右侧的显示器图标，打开Web终端。输入默认用户名\(ubuntu\)、密码\(p12cHANgepwD\)，进入shell。
+
+第二步，进入`/data/elasticsearch/dicts`目录，将用户自定义扩展字典放入其中，确保用户可通过url下载到相应的字典文件。
 
 VPC部署示意图如下：
 
