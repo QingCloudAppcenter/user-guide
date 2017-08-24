@@ -12,7 +12,7 @@ _ELK on QingCloud_ 将 _ElasticSearch_ 、_Kibana_ 和 _Logstash_ 集成到同�
 
 * 一键集群安装部署
 * 支持节点横向和纵向扩容
-* ES集成官方S3、HDFS存储仓库插件支持
+* ES集成官方S3存储仓库插件支持，可通过标准S3接口与QingStor集成
 * ES集成官方Python、JavaScript脚本插件支持
 * ES集成IK Analysis中文分词插件，并提供远程自定义词典
 * Kibana集成Caddy，提供ES节点失效时的故障转移能力
