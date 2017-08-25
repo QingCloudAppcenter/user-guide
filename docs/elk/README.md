@@ -2,7 +2,7 @@
 
 ## 简介
 
-_ELK_ 是 _ElasticSearch_ 、 _Kibana_ 和 _Logstash_ 这三个软件集合的简称, _ElasticSearch_ 是一个实时分布式搜索和分析引擎， _Kibana_ 则为 _ElasticSearch_提供了强大的可视化界面， _Logstash_ 为用户提供数据采集、转换、优化和输出的能力。 _ELK_ 目前被广泛应用于实时日志处理、全文搜索和数据分析等领域。
+_ELK_ 是 _ElasticSearch_ 、 _Kibana_ 和 _Logstash_ 这三个软件集合的简称, _ElasticSearch_ 是一个实时分布式搜索和分析引擎， _Kibana_ 则为 _ElasticSearch_ 提供了强大的可视化界面， _Logstash_ 为用户提供数据采集、转换、优化和输出的能力。 _ELK_ 目前被广泛应用于实时日志处理、全文搜索和数据分析等领域。
 
 _ELK on QingCloud_ 将 _ElasticSearch_ 、_Kibana_ 和 _Logstash_ 集成到同一个集群服务中，以AppCenter云应用的形式交付给用户使用。
 
@@ -12,11 +12,11 @@ _ELK on QingCloud_ 将 _ElasticSearch_ 、_Kibana_ 和 _Logstash_ 集成到同�
 
 * 一键集群安装部署
 * 支持节点横向和纵向扩容
-* ES集成官方S3存储仓库插件支持，可通过标准S3接口与QingStor集成
-* ES集成官方Python、JavaScript脚本插件支持
 * ES集成IK Analysis中文分词插件，并提供远程自定义词典
-* Kibana集成Caddy，提供ES节点失效时的故障转移能力
+* ES集成官方S3存储仓库插件支持，可通过标准S3接口与青云对象存储QingStor集成
+* Logstash集成青云对象存储QingStor的input插件
 * Logstash提供自定义插件能力
+* Kibana集成Caddy，提供ES节点失效时的故障转移能力
 * 提供ES Head，ElasticHD可视化插件，方便用户通过浏览器使用ES
 * 集群关键指标监控
 
@@ -72,23 +72,20 @@ _ELK on QingCloud_ 将 _ElasticSearch_ 、_Kibana_ 和 _Logstash_ 集成到同�
 
 ### 场景一：ElasticSearch中文自定义分词使用方法
 
-第一步，在集群列表页面的Logstash节点上点击节点ID右侧的显示器图标，打开Web终端。输入默认用户名\(ubuntu\)、密码\(p12cHANgepwD\)，进入shell。
+第一步，在集群详情页面找到任意Logstash节点的IP地址。
 
-第二步，临时更改`/etc/ssh/sshd_config`中的`PasswordAuthentication`配置项为`yes`，重启ssh服务，然后即可使用任意支持sftp的软件上传自定义字典，为方便管理请将用户自定义扩展字典放入`/data/elasticsearch/dicts`目录，上传完成后可恢复ssh配置。
+第二步，通过`curl -T <字典文件> http://<Logstash节点IP>/dicts/`命令上传用户自定义字典。上传成功后可通过访问`http://<Logstash节点IP>/dicts/`来查看字典文件。
 
+![查看字典文件示意图](../../images/elk/access_dic.png)
 
-访问字典文件示意图如下：
-
-![访问字典文件示意图](../../images/elk/access_dic.png)
-
-第二步，在集群列表页面中切换到配置参数标签页，选择"ElasticSearch节点"进行参数配置，设置remote\_ext\_dict设置项为用户自定义字典的可访问url \(如示例中为[http://192.168.0.7/custom.dic](http://192.168.0.7/custom.dic)\) 后保存,然后重启集群中的ElasticSearch节点。
+第二步，在集群详情页面中切换到配置参数标签页，选择"ElasticSearch节点"进行参数配置，设置remote\_ext\_dict设置项为用户自定义字典的可访问url (如示例中为http://192.168.0.13/dicts/mydict.dic) 后保存,然后重启集群中的ElasticSearch节点。
 
 第三步，测试中文分词功能。
 
-使用如下bash脚本测试中文分词功能，请将192.168.0.14替换为集群中任意ElasticSearch节点的IP地址。
+使用如下bash脚本测试中文分词功能，请将192.168.0.10替换为集群中任意ElasticSearch节点的IP地址。
 
 ```bash
-HOST=192.168.0.14
+HOST=192.168.0.10
 
 # 创建 index 索引
 curl -XPUT http://$HOST:9200/index
@@ -187,13 +184,147 @@ printf "\n\n"
 
 > 更多细节请关注[IK Analysis plugin](https://github.com/medcl/elasticsearch-analysis-ik)
 
-### 场景二：ElasticSearch集群慢索引、慢搜索日志查看
+### 场景二：ElasticSearch Snapshot 与 QingStor 对象存储集成
 
-第一步，在集群列表页面的ElasticSearch节点上点击节点ID右侧的显示器图标，打开Web终端。输入默认用户名\(ubuntu\)、密码\(p12cHANgepwD\)，进入shell。
+QingStor对象存储为用户提供了云端可无限扩展的通用数据存储服务，具有安全可靠、简单易用、高性能、低成本等特点。 用户可以将数据、日志、静态资源等多种文件类型，通过多种方式上传至QingStor对象存储中，以满足日常数据存储、归档、分析等需求。 为了更好的满足用户的需求，青云提供了ElasticSearch、Logstash等与QingStor对象存储的集成功能。
 
-第二步，进入`/data/elasticsearch/logs`目录，形如`<cl-z3pj0axe>_index_indexing_slowlog.log`的日志为慢索引日志，形如`<cl-z3pj0axe>_index_search_slowlog.log`的日志为慢搜索日志，用户需将`<cl-z3pj0axe>`替换为自己的集群ID。
+Elasticsearch可以通过快照（snapshot）将指定index甚至整个cluster的数据存储到某远端仓库（repository）, 并能从该远端仓库存储的快照中恢复数据。 因Elasticsearch可以指定Amazon S3作为远程仓库，而QingStor又兼容AWS S3 API, 所以青云提供的Elasticsearch服务可以通过AWS Cloud Plugin与QingStor对象存储集成以便生成快照将数据存储到到QingStor中，并可以在必要时从中恢复。
 
-### 场景三：Logstash自定义插件支持
+一、要在Elasticsearch中创建snapshot，首先要创建一个repository
+
+```bash
+curl -XPUT 'http://192.168.0.10:9200/_snapshot/my_es_repos/' -d'
+{
+  "type": "s3",
+  "settings": {
+    "endpoint": "s3.pek3a.qingstor.com",
+    "access_key": "<YourAccessKey>",
+    "secret_key": "<YourSecretKey>",
+    "bucket": "my_qingstor_bucket"
+  }
+}
+'
+```
+
+上述命令必须指定的几个关键参数包括：
+
+```
+集群节点地址           192.168.0.10
+repository            my_es_repos
+endpoint              s3.pek3a.qingstor.com (以北京3区为例，其他区需将pek3a改为相应名称如sh1a，gd1等)
+access_key            青云账号关联的access_key
+secret_key            青云账号关联的secret_key
+bucket                QingStor上bucket名称my_qingstor_bucket（如果不存在将创建出来）
+```
+
+二、创建了repository后，可通过如下命令获取、删除repository：
+
+```bash
+获取指定repository信息
+curl -XGET 'http://192.168.0.10:9200/_snapshot/my_es_repos/'
+
+获取满足特定条件的repository信息
+curl -XGET 'http://192.168.0.10:9200/_snapshot/repo*,*backup*'
+
+获取所有repository信息
+curl -XGET 'http://192.168.0.10:9200/_snapshot/_all/'
+
+删除repository
+curl -XDELETE 'http://192.168.0.10:9200/_snapshot/my_es_repos'
+```
+
+三、创建了repository后，用如下命令即可创建名为snapshot1的快照（该快照将会存放在之前指定的QingStor的bucket my_qingstor_bucket中）：
+
+```bash
+创建包含集群所有index的snapshot
+curl -XPUT 'http://192.168.0.10:9200/_snapshot/my_es_repos/snapshot1?wait_for_completion=true'
+
+创建包含集群指定index(此处为index_1,index_2)的snapshot
+curl -XPUT 'http://192.168.0.10:9200/_snapshot/s3_repos_es_1/snapshot1?wait_for_completion=true' -d'
+{
+  "indices": "index_1,index_2",
+  "ignore_unavailable": true,
+  "include_global_state": false
+}
+'
+wait_for_completion为true，该命令将会在快照创建完成返回
+wait_for_completion为false，该命令将会在快照初始化完成就返回
+```
+
+四、创建了快照后，可以通过如下命令查看、删除快照
+
+```bash
+查看指定repository中某snapshot信息
+curl -XGET 'http://192.168.0.10:9200/_snapshot/my_es_repos/snapshot1'
+
+查看指定repository中所有snapshot信息
+curl -XGET 'http://192.168.0.10:9200/_snapshot/my_es_repos/_all'
+
+删除snapshot
+curl -XDELETE 'http://192.168.0.10:9200/_snapshot/my_es_repos/snapshot1'
+```
+
+五、可以通过如下命令恢复存储的在QingStor的快照到Elasticsearch集群：
+
+```bash
+恢复包含集群所有index的snapshot
+curl -XPOST 'http://192.168.0.10:9200/_snapshot/s3_repos_es_1/snapshot1/_restore'
+
+恢复包含集群指定index(此处为index_1,index_2)的snapshot
+curl -XPOST 'http://192.168.0.10:9200/_snapshot/s3_repos_es_1/snapshot1/_restore' -d'
+{
+  "indices": "index_1,index_2",
+  "ignore_unavailable": true,
+  "include_global_state": false,
+  "rename_pattern": "index_(.+)",
+  "rename_replacement": "restored_index_$1"
+}
+'
+要恢复的index必须是集群中处于关闭状态的index, 处于打开状态的index将会提示无法恢复
+```
+
+六、恢复快照到另一个不同的集群，用户可以用这种方法在不同集群之间通过QingStor导入导出数据：
+
+```bash
+存储在snapshot中的信息不是和某个具体的集群或集群名字绑定的，因此可以把在一个集群中产生的快照恢复到另一个集群中去。
+
+恢复到一个新集群前需要做的是在新的集群中生成和老的集群同样repository（必须使用同样的参数，具体方法请参考第一小节）。 需要注意的是，新集群的版本必须和老集群一致或者更新。
+
+在新的集群创建好与老集群相同的repository后，就可以通过第五节中提到的命令（需要把ip地址192.168.0.10改成新集群里节点的地址）将老集群的数据恢复到新集群上去。
+```
+
+> 注解 更详细的有关集群快照的生成和恢复的信息请参考[Elasticsearch官方文档](https://www.elastic.co/guide/en/elasticsearch/reference/5.5/modules-snapshots.html)
+
+### 场景三：ElasticSearch集群慢索引、慢搜索日志查看
+
+第一步，在集群列表页面，在ELK集群上点击右键选择 **自定义服务** > **收集ES慢日志**，然后选择 **ElasticSearch节点** 点击提交。
+
+第二步，任务执行成功后可通过浏览器访问`http://<Logstash节点IP>/slowlog/`查看对应ES节点的慢日志。
+
+> 注解 如存在多个Logstash节点请在集群详情页面切换到参数配置界面，配置ElasticSearch节点的logstash_node_ip配置项。
+
+### 场景四：Logstash-input-qingstor插件使用方式
+
+ELK on QingCloud的 Logstash 默认集成了 Logstash-input-qingstor插件，用户只需要简单的配置即可使用。用插件之前请先在 青云控制台 申请 [Access Key](https://console.qingcloud.com/access_keys/) 和  [创建Bucket](https://docs.qingcloud.com/qingstor/guide/index.html#id2)。
+
+第一步，在集群详情页面，切换到参数配置页面，选择Logstash节点，修改`input_conf_content`配置项为如下，点击保存。
+
+```
+qingstor {
+    access_key_id => "your_access_key_id"
+    secret_access_key => "your_secret_access_key"
+    bucket => "bucket_name"
+    region => "pek3a"
+}
+```
+
+> 请根据你的具体配置替换上面的配置
+
+第二步，保存成功后请在你配置的bucket上上传日志文件。
+
+第三步，使用浏览器打开`http://<Logstash节点IP>:5601/`，配置index pattern后，既可在Discover查看到导入的日志。
+
+### 场景五：Logstash自定义插件支持
 
 第一步，在集群列表页面的Logstash节点上点击节点ID右侧的显示器图标，打开Web终端。输入默认用户名\(ubuntu\)、密码\(p12cHANgepwD\)，进入shell。
 
@@ -215,22 +346,33 @@ printf "\n\n"
 
 ![日志展示](../../images/elk/log_display.png)
 
+### 场景六：Kibana简要使用说明
+
+在浏览器中打开`http://<Logstash节点IP>:5601/`，首先会提示创建index pattern，默认情况下，Kibana 认为你要访问的是通过 Logstash 导入 Elasticsearch 的数据。这时候你可以用默认的 logstash-* 作为你的 index pattern。
+
+> 如果显示 "Unable to fetch mapping. Do you have indices matching the pattern?"，可通过Logstash节点上默认开启http插件发送一条日志，命令如下`curl -d "ELK on QingCloud" http://<Logstash节点IP>:9700/`
+
+Index pattern创建成功后可点击Discover查看导入的日志。
+
+> 关于Kibana更多的使用方式，请参考[官方文档](https://www.elastic.co/guide/en/kibana/5.5/index.html)
+
+
 ## 在线伸缩
 
 ### 增加节点
 
-可以在ELK详情页点击 `新增节点` 按钮可以增加 `ElasticSearch 节点`、`Kibana 节点`、`Logstash 节点`、`ES Head 节点` 或 `ElasticHD 节点`的数量，可以对每个新增节点指定 IP 或选择自动分配。  
+可以在ELK详情页点击 `新增节点` 按钮可以增加 `ElasticSearch 节点`、`Kibana 节点` 或 `Logstash 节点`的数量，可以对每个新增节点指定 IP 或选择自动分配。
 ![增加节点](../../images/elk/add_node.png)
 
 ### 删除节点
 
 可以在 ELK 详情页选中需要删除的节点，然后点击 `删除` 按钮，只能一次删除一个，并且必须等到上个节点删除后且ElasticSearch集群完成recover操作后才能删除下一个节点，否则数据可能会丢失。删除节点过程中会锁定ELK集群不让对其进行其它生命周期操作。
 
-> 删除集群中的ElasticSearch节点需等待集群recover操作完成，集群恢复到Green状态，可通过访问任意ElasticSearch节点的9200端口来获得集群状态，示例命令为`curl http://192.168.0.5:9200/_cluster/stats`，请将192.168.0.5替换为你的ELK集群中的任意ElasticSearch节点IP。也可以通过浏览器访问ES Head节点的9100端口或ElasticHD节点的9800端口来查看集群状态。
+> 删除集群中的ElasticSearch节点需等待集群recover操作完成，集群恢复到Green状态，可通过访问任意ElasticSearch节点的9200端口来获得集群状态，示例命令为`curl http://192.168.0.5:9200/_cluster/stats`，请将192.168.0.5替换为你的ELK集群中的任意ElasticSearch节点IP。也可以通过浏览器访问Kibana节点的9100端口提供的ES Head界面或Kibana节点的9800端口提供的ElasticHD界面来查看集群状态。
 
 ### 纵向伸缩
 
-ELK允许分别对各种角色的节点进行纵向的扩容及缩容。  
+ELK允许分别对各种角色的节点进行纵向的扩容及缩容。
 ![纵向伸缩](../../images/elk/scale_up_down.png)
 
 ## 监控告警
@@ -259,3 +401,9 @@ ELK提供了近20个配置参数，可以通过 `配置参数` 来定制个性�
 
 ![配置参数](../../images/elk/env_modify.png)
 
+## 注意事项
+使用 Elasticsearch 需要注意的一些事项
+
+### 安全
+
+Elasticsearch 本身的 API 没有提供安全机制，同时 Elasticsearch 的 API 的功能非常强大，所以强烈不建议通过公网将 Elasticsearch 直接暴露出去，Elasticsearch 需要在应用或者 API 网关后面。 针对Elasticsearch的攻击频发，因此建议用户通过VPN的方式而不是端口转发的方式访问集群节点，配置青云VPN的方法详见 [用户指南](https://docs.qingcloud.com/guide/vpn.html) 。
