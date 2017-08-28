@@ -6,7 +6,7 @@ _ELK_ 是 _ElasticSearch_ 、 _Kibana_ 和 _Logstash_ 这三个软件集合的�
 
 _ELK on QingCloud_ 将 _ElasticSearch_ 、_Kibana_ 和 _Logstash_ 集成到同一个集群服务中，以AppCenter云应用的形式交付给用户使用。
 
-> 目前 _ELK on QingCloud_ 支持 _ElasticSearch 5.5.1_ 、_Kibana_ 5.5.1 和 _Logstash 5.4.3_
+> 目前 _ELK on QingCloud_ 支持 _ElasticSearch 5.5.1_ 、_Kibana 5.5.1_ 和 _Logstash 5.4.3_
 
 ### ELK on QingCloud 的特点
 
@@ -324,7 +324,51 @@ qingstor {
 
 第三步，使用浏览器打开`http://<Logstash节点IP>:5601/`，配置index pattern后，既可在Discover查看到导入的日志。
 
-### 场景五：Logstash自定义插件支持
+### 场景五：Logstash插件安装使用方法
+
+> 此处以logstash-output-influxdb插件的安装为例，其他插件安装方式类似
+
+第一步，在集群列表页面的Logstash节点上点击节点ID右侧的显示器图标，打开Web终端。输入默认用户名\(ubuntu\)、密码\(p12cHANgepwD\)，进入shell。
+
+第二步，进入`/data/logstash/plugins`目录，运行`git clone https://github.com/logstash-plugins/logstash-output-influxdb.git`下载logstash-output-influxdb插件。
+
+第三步，在集群详情页面，切换到参数配置页面，选择Logstash节点，修改`gemfile_append_content`配置项为如下，点击保存。
+
+```
+gem "logstash-output-influxdb", :path => "/data/logstash/plugins/logstash-output-influxdb"
+```
+
+第四步，打开之前的Web终端，执行`sudo docker exec -it <b8b0db543f98> logstash-plugin install --no-verify`
+
+> 请将<b8b0db543f98>替换为你的logstash的容器ID，可通过命令`sudo docker ps`查看
+
+第五步，在集群详情页面，切换到参数配置页面，选择Logstash节点，修改`output_conf_content`配置项为如下，点击保存。
+
+```
+influxdb {
+        data_points => {
+          "duration" => "%{data.event.duration}"
+        }
+        host => '192.168.0.7'
+        password => ''
+        user => ''
+        db => 'elk'
+}
+```
+
+> 请参考相关插件的配置参数进行必要的修改，logstash-output-influxdb相关的配置参数请参考其[文档](https://www.elastic.co/guide/en/logstash/current/plugins-outputs-influxdb.html#plugins-outputs-influxdb-use_event_fields_for_data_points)
+
+第六步，运行如下命令重启Logstash。
+
+```
+docker exec -it <b8b0db543f98> bash /opt/logstash/bin/dorestart.sh
+```
+
+> 请将<b8b0db543f98>替换为你的logstash的容器ID，可通过命令`sudo docker ps`查看
+
+第七步，测试插件是否如预期工作，Logstash节点默认配置了http input插件，可通过此插件开启的9700端口进行测试，执行`curl -d "qingcloud" 127.0.0.1:9700`将一条日志发往Logstash，如成功，则influxdb中将新增一条point，说明插件配置生效，如发现influxdb中没有新增point，请查看logstash日志，位置为`/data/logstash/logs`。
+
+### 场景六：Logstash自定义插件支持
 
 第一步，在集群列表页面的Logstash节点上点击节点ID右侧的显示器图标，打开Web终端。输入默认用户名\(ubuntu\)、密码\(p12cHANgepwD\)，进入shell。
 
@@ -346,7 +390,7 @@ qingstor {
 
 ![日志展示](../../images/elk/log_display.png)
 
-### 场景六：Kibana简要使用说明
+### 场景七：Kibana简要使用说明
 
 在浏览器中打开`http://<Logstash节点IP>:5601/`，首先会提示创建index pattern，默认情况下，Kibana 认为你要访问的是通过 Logstash 导入 Elasticsearch 的数据。这时候你可以用默认的 logstash-* 作为你的 index pattern。
 
