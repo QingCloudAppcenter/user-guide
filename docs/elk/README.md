@@ -12,7 +12,7 @@ _ELK on QingCloud_ 将 _ElasticSearch_ 、_Kibana_ 和 _Logstash_ 集成到同�
 
 * 一键集群安装部署
 * 支持节点横向和纵向扩容
-* ES集成IK Analysis中文分词插件，并提供远程自定义词典
+* ES集成IK Analysis中文分词插件，集成结巴分词和IK自带的搜狗的词库，并提供远程自定义词典能力
 * ES集成官方S3存储仓库插件支持，可通过标准S3接口与青云对象存储QingStor集成
 * Logstash集成青云对象存储QingStor的input插件
 * Logstash提供自定义插件能力
@@ -392,7 +392,7 @@ docker exec -it <b8b0db543f98> bash /opt/logstash/bin/dorestart.sh
 
 ### 场景七：Kibana简要使用说明
 
-在浏览器中打开`http://<Logstash节点IP>:5601/`，首先会提示创建index pattern，默认情况下，Kibana 认为你要访问的是通过 Logstash 导入 Elasticsearch 的数据。这时候你可以用默认的 logstash-* 作为你的 index pattern。
+在浏览器中打开`http://<Kibana节点IP>:5601/`，首先会提示创建index pattern，默认情况下，Kibana 认为你要访问的是通过 Logstash 导入 Elasticsearch 的数据。这时候你可以用默认的 logstash-* 作为你的 index pattern。
 
 > 如果显示 "Unable to fetch mapping. Do you have indices matching the pattern?"，可通过Logstash节点上默认开启http插件发送一条日志，命令如下`curl -d "ELK on QingCloud" http://<Logstash节点IP>:9700/`
 
