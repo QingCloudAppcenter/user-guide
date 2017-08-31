@@ -12,11 +12,11 @@ _ELK on QingCloud_ 将 _ElasticSearch_ 、_Kibana_ 和 _Logstash_ 集成到同�
 
 * 一键集群安装部署
 * 支持节点横向和纵向扩容
-* ES集成IK Analysis中文分词插件，集成结巴分词和IK自带的搜狗的词库，并提供远程自定义词典能力
-* ES集成官方S3存储仓库插件支持，可通过标准S3接口与青云对象存储QingStor集成
+* ElasticSearch集成了IK Analysis中文分词插件，并为该插件提供了结巴分词的词库和IK自带的搜狗词库，同时还支持用户上传自定义词典
+* ElasticSearch集成官方S3存储仓库插件支持，可通过标准S3接口与青云对象存储QingStor集成
 * Logstash集成青云对象存储QingStor的input插件
 * Logstash提供自定义插件能力
-* Kibana集成Caddy，提供ES节点失效时的故障转移能力
+* Kibana集成Caddy，提供ElasticSearch节点失效时的故障转移能力
 * 提供ES Head，ElasticHD可视化插件，方便用户通过浏览器使用ES
 * 集群关键指标监控
 
@@ -295,17 +295,17 @@ curl -XPOST 'http://192.168.0.10:9200/_snapshot/s3_repos_es_1/snapshot1/_restore
 
 > 注解 更详细的有关集群快照的生成和恢复的信息请参考[Elasticsearch官方文档](https://www.elastic.co/guide/en/elasticsearch/reference/5.5/modules-snapshots.html)
 
-### 场景三：ElasticSearch集群慢索引、慢搜索日志查看
+### 场景三：ElasticSearch集群日志查看
 
-第一步，在集群列表页面，在ELK集群上点击右键选择 **自定义服务** > **收集ES慢日志**，然后选择 **ElasticSearch节点** 点击提交。
+第一步，在集群列表页面，在ELK集群上点击右键选择 **自定义服务** > **收集ES日志**，然后选择 **ElasticSearch节点** 点击提交。
 
-第二步，任务执行成功后可通过浏览器访问`http://<Logstash节点IP>/slowlog/`查看对应ES节点的慢日志。
+第二步，任务执行成功后可通过浏览器访问`http://<Logstash节点IP>/logs/`查看对应ES节点的日志。
 
 > 注解 如存在多个Logstash节点请在集群详情页面切换到参数配置界面，配置ElasticSearch节点的logstash_node_ip配置项。
 
 ### 场景四：Logstash-input-qingstor插件使用方式
 
-ELK on QingCloud的 Logstash 默认集成了 Logstash-input-qingstor插件，用户只需要简单的配置即可使用。用插件之前请先在 青云控制台 申请 [Access Key](https://console.qingcloud.com/access_keys/) 和  [创建Bucket](https://docs.qingcloud.com/qingstor/guide/index.html#id2)。
+ELK on QingCloud 的 Logstash 默认集成了 Logstash-input-qingstor 插件，用户只需要简单的配置即可使用。用插件之前请先在 青云控制台 申请 [Access Key](https://console.qingcloud.com/access_keys/) 和  [创建Bucket](https://docs.qingcloud.com/qingstor/guide/index.html#id2)。
 
 第一步，在集群详情页面，切换到参数配置页面，选择Logstash节点，修改`input_conf_content`配置项为如下，点击保存。
 
@@ -318,7 +318,7 @@ qingstor {
 }
 ```
 
-> 请根据你的具体配置替换上面的配置
+> 请根据你的具体配置替换上面的配置，其他配置参数详情请参见[手册](https://github.com/yunify/logstash-output-qingstor/blob/master/docs/index.asciidoc)
 
 第二步，保存成功后请在你配置的bucket上上传日志文件。
 
@@ -361,7 +361,7 @@ influxdb {
 第六步，运行如下命令重启Logstash。
 
 ```
-docker exec -it <b8b0db543f98> bash /opt/logstash/bin/dorestart.sh
+sudo docker exec -it <b8b0db543f98> bash /opt/logstash/bin/dorestart.sh
 ```
 
 > 请将<b8b0db543f98>替换为你的logstash的容器ID，可通过命令`sudo docker ps`查看
@@ -390,7 +390,21 @@ docker exec -it <b8b0db543f98> bash /opt/logstash/bin/dorestart.sh
 
 ![日志展示](../../images/elk/log_display.png)
 
-### 场景七：Kibana简要使用说明
+### 场景七：Logstash 自定义启动配置文件
+
+默认情况下，logstash的启动配置文件会根据 **配置参数** 中 **Logstash节点** 的 input_conf_content、filter_conf_content、output_conf_content配置项自动生成，生成后存放在Logstash节点的`/data/logstash/config/logstash.conf.sample`，在logstash启动前，将logstash.conf.sample拷贝成logstash.conf。如果用户想自定义logstash.conf配置文件，只需要在`/data/logstash/config/`目录创建logstash.conf.lock文件，此时logstash.conf.sample依然会根据 **配置参数** 来生成，但并不会在启动前，用logstash.conf.sample文件覆盖logstash.conf文件。
+
+用户通过上述方法修改logstash.conf配置文件后，需通过以下命令重启logstash服务。
+
+```
+sudo docker exec -it <b8b0db543f98> restart.sh
+```
+
+> 请将<b8b0db543f98>替换为你的logstash的容器ID，可通过命令`sudo docker ps`查看
+
+如显示`[=[Restart]=] Can't lock the file.`，则表示其他操作正在执行，请稍后再次尝试重启命令。
+
+### 场景八：Kibana简要使用说明
 
 在浏览器中打开`http://<Kibana节点IP>:5601/`，首先会提示创建index pattern，默认情况下，Kibana 认为你要访问的是通过 Logstash 导入 Elasticsearch 的数据。这时候你可以用默认的 logstash-* 作为你的 index pattern。
 
