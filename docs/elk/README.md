@@ -318,9 +318,9 @@ qingstor {
 }
 ```
 
-> 请根据你的具体配置替换上面的配置，其他配置参数详情请参见[手册](https://github.com/yunify/logstash-output-qingstor/blob/master/docs/index.asciidoc)
+> 请根据您的具体配置替换上面的配置，其他配置参数详情请参见[手册](https://github.com/yunify/logstash-output-qingstor/blob/master/docs/index.asciidoc)
 
-第二步，保存成功后请在你配置的bucket上上传日志文件。
+第二步，保存成功后请在您配置的bucket上上传日志文件。
 
 第三步，使用浏览器打开`http://<Logstash节点IP>:5601/`，配置index pattern后，既可在Discover查看到导入的日志。
 
@@ -340,7 +340,7 @@ gem "logstash-output-influxdb", :path => "/data/logstash/plugins/logstash-output
 
 第四步，打开之前的Web终端，执行`sudo docker exec -it <b8b0db543f98> logstash-plugin install --no-verify`
 
-> 请将<b8b0db543f98>替换为你的logstash的容器ID，可通过命令`sudo docker ps`查看
+> 请将`<b8b0db543f98>`替换为您的logstash的容器ID，可通过命令`sudo docker ps`查看
 
 第五步，在集群详情页面，切换到参数配置页面，选择Logstash节点，修改`output_conf_content`配置项为如下，点击保存。
 
@@ -356,15 +356,13 @@ influxdb {
 }
 ```
 
-> 请参考相关插件的配置参数进行必要的修改，logstash-output-influxdb相关的配置参数请参考其[文档](https://www.elastic.co/guide/en/logstash/current/plugins-outputs-influxdb.html#plugins-outputs-influxdb-use_event_fields_for_data_points)
+> 请参考相关插件的配置参数进行必要的修改，logstash-output-influxdb相关的配置参数请参考其[文档](https://www.elastic.co/guide/en/logstash/5.5/plugins-outputs-influxdb.html)
 
-第六步，运行如下命令重启Logstash。
+> 如您有多个Logstash节点，请在所有Logstash节点上执行第1、2、4步骤。
 
-```
-sudo docker exec -it <b8b0db543f98> bash /opt/logstash/bin/dorestart.sh
-```
+第六步，重启Logstash节点。
 
-> 请将<b8b0db543f98>替换为你的logstash的容器ID，可通过命令`sudo docker ps`查看
+在集群列表页面右键点击您的ELK集群，点击重启，选择Logstash节点，点击提交，此时Logstash节点将会重启。
 
 第七步，测试插件是否如预期工作，Logstash节点默认配置了http input插件，可通过此插件开启的9700端口进行测试，执行`curl -d "qingcloud" 127.0.0.1:9700`将一条日志发往Logstash，如成功，则influxdb中将新增一条point，说明插件配置生效，如发现influxdb中没有新增point，请查看logstash日志，位置为`/data/logstash/logs`。
 
@@ -372,7 +370,7 @@ sudo docker exec -it <b8b0db543f98> bash /opt/logstash/bin/dorestart.sh
 
 第一步，在集群列表页面的Logstash节点上点击节点ID右侧的显示器图标，打开Web终端。输入默认用户名\(ubuntu\)、密码\(p12cHANgepwD\)，进入shell。
 
-第二步，在shell中执行`sudo docker ps`，查看Logstash的Container ID，然后执行`sudo docker exec -it <c9c0b43c6847> logstash-plugin generate --type <filter> --name <abcd> --path /data/logstash/plugins`，其中将`<c9c0b43c6847>`替换为你的 Logstash的Container ID，`<filter>`替换为你想要定制的插件的类型，类型包括`{input, filter, codec, output}`，`<abcd>`替换为你要开发的插件的名称。执行成功后显示如图所示。
+第二步，在shell中执行`sudo docker ps`，查看Logstash的Container ID，然后执行`sudo docker exec -it <c9c0b43c6847> logstash-plugin generate --type <filter> --name <abcd> --path /data/logstash/plugins`，其中将`<c9c0b43c6847>`替换为您的 Logstash的Container ID，`<filter>`替换为您想要定制的插件的类型，类型包括`{input, filter, codec, output}`，`<abcd>`替换为您要开发的插件的名称。执行成功后显示如图所示。
 
 ![查看Container ID](../../images/elk/logstash_container.png)
 
@@ -380,7 +378,9 @@ sudo docker exec -it <b8b0db543f98> bash /opt/logstash/bin/dorestart.sh
 
 第三步，进入`/data/logstash/plugins`目录，找到新生成的插件目录，修改插件以符合用户的业务需求。
 
-第四步，在集群列表页面中切换到配置参数标签页，选择"Logstash节点"进行参数配置，点击"修改属性"，根据你的插件类型及参数修改相应的配置项，如示例中，将`filter_conf_content`修改为`abcd {}`，根据你插件所在位置修改`gemfile_append_content`，插件位置前缀必须是`/data/logstash/plugins`，如示例中，将`gemfile_append_content`修改为`gem "logstash-filter-abcd", :path => "/data/logstash/plugins/logstash-filter-abcd"`，修改后保存即可，如下图为示例中配置的展示。
+第四步，在集群列表页面中切换到配置参数标签页，选择"Logstash节点"进行参数配置，点击"修改属性"，根据您的插件类型及参数修改相应的配置项，如示例中，将`filter_conf_content`修改为`abcd {}`，根据您插件所在位置修改`gemfile_append_content`，插件位置前缀必须是`/data/logstash/plugins`，如示例中，将`gemfile_append_content`修改为`gem "logstash-filter-abcd", :path => "/data/logstash/plugins/logstash-filter-abcd"`，修改后保存即可，如下图为示例中配置的展示。
+
+> 如您有多个Logstash节点，请在所有Logstash节点上执行第1、2、3步骤。
 
 ![Logstash参数配置](../../images/elk/logstash_env.png)
 
@@ -400,13 +400,13 @@ sudo docker exec -it <b8b0db543f98> bash /opt/logstash/bin/dorestart.sh
 sudo docker exec -it <b8b0db543f98> restart.sh
 ```
 
-> 请将<b8b0db543f98>替换为你的logstash的容器ID，可通过命令`sudo docker ps`查看
+> 请将`<b8b0db543f98>`替换为您的logstash的容器ID，可通过命令`sudo docker ps`查看
 
 如显示`[=[Restart]=] Can't lock the file.`，则表示其他操作正在执行，请稍后再次尝试重启命令。
 
 ### 场景八：Kibana简要使用说明
 
-在浏览器中打开`http://<Kibana节点IP>:5601/`，首先会提示创建index pattern，默认情况下，Kibana 认为你要访问的是通过 Logstash 导入 Elasticsearch 的数据。这时候你可以用默认的 logstash-* 作为你的 index pattern。
+在浏览器中打开`http://<Kibana节点IP>:5601/`，首先会提示创建index pattern，默认情况下，Kibana 认为您要访问的是通过 Logstash 导入 Elasticsearch 的数据。这时候您可以用默认的 logstash-* 作为您的 index pattern。
 
 > 如果显示 "Unable to fetch mapping. Do you have indices matching the pattern?"，可通过Logstash节点上默认开启http插件发送一条日志，命令如下`curl -d "ELK on QingCloud" http://<Logstash节点IP>:9700/`
 
@@ -414,6 +414,13 @@ Index pattern创建成功后可点击Discover查看导入的日志。
 
 > 关于Kibana更多的使用方式，请参考[官方文档](https://www.elastic.co/guide/en/kibana/5.5/index.html)
 
+### 场景九：集群组件说明
+
+_ELK on QingCloud_ 为用户提供了以下组件，用以服务集群其他组件或直接为用户提供服务。
+
+* [head](http://mobz.github.io/elasticsearch-head/) 提供一个Elasticsearch cluster的web控制台，用户可以在这个控制台里很方便的查看集群拓扑架构、监控集群状态，进行节点和索引级别的各种操作，以及进行数据的浏览、查询、分析等。在浏览器输入网址 `http://<Kibana节点IP>:9100/` 即可使用该插件提供的集群控制台。进入后请输入`http://<任意ElasticSearch节点IP>:9200/`后，点击连接即可查看ElasticSearch集群状态。
+* [ElasticHD](https://github.com/farmerx/ElasticHD) Elasticsearch是一个ElasticSearch可视化管理工具, 支持ES监控、实时搜索，Index template快捷替换修改，索引列表信息查看，SQL converts to DSL等功能。在浏览器输入网址 `http://<Kibana节点IP>:9800/` 即可使用该插件提供的集群控制台。
+* [Caddy](https://caddyserver.com/) Caddy 是一个支持 HTTP/2 的跨平台 Web 服务器，使用和配置都非常简单。 _ELK on QingCloud_ 使用Caddy是为Kibana提供ElasticSearch节点失效时的故障转移能力，并且为在Logstash节点上上传字典提供便利，同时使得ElasticSearch的日志查看变得更加方便。集群中Caddy运行在Kibana节点的9200端口和Logstash节点的80端口。
 
 ## 在线伸缩
 
@@ -426,7 +433,7 @@ Index pattern创建成功后可点击Discover查看导入的日志。
 
 可以在 ELK 详情页选中需要删除的节点，然后点击 `删除` 按钮，只能一次删除一个，并且必须等到上个节点删除后且ElasticSearch集群完成recover操作后才能删除下一个节点，否则数据可能会丢失。删除节点过程中会锁定ELK集群不让对其进行其它生命周期操作。
 
-> 删除集群中的ElasticSearch节点需等待集群recover操作完成，集群恢复到Green状态，可通过访问任意ElasticSearch节点的9200端口来获得集群状态，示例命令为`curl http://192.168.0.5:9200/_cluster/stats`，请将192.168.0.5替换为你的ELK集群中的任意ElasticSearch节点IP。也可以通过浏览器访问Kibana节点的9100端口提供的ES Head界面或Kibana节点的9800端口提供的ElasticHD界面来查看集群状态。
+> 删除集群中的ElasticSearch节点需等待集群recover操作完成，集群恢复到Green状态，可通过访问任意ElasticSearch节点的9200端口来获得集群状态，示例命令为`curl http://192.168.0.5:9200/_cluster/stats`，请将192.168.0.5替换为您的ELK集群中的任意ElasticSearch节点IP。也可以通过浏览器访问Kibana节点的9100端口提供的ES Head界面或Kibana节点的9800端口提供的ElasticHD界面来查看集群状态。
 
 ### 纵向伸缩
 
