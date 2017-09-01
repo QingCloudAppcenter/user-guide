@@ -78,7 +78,7 @@ _ELK on QingCloud_ 将 _ElasticSearch_ 、_Kibana_ 和 _Logstash_ 集成到同�
 
 ![查看字典文件示意图](../../images/elk/access_dic.png)
 
-第二步，在集群详情页面中切换到配置参数标签页，选择"ElasticSearch节点"进行参数配置，设置remote\_ext\_dict设置项为用户自定义字典的可访问url (如示例中为http://192.168.0.13/dicts/mydict.dic) 后保存,然后重启集群中的ElasticSearch节点。
+第二步，在集群详情页面中切换到配置参数标签页，选择"ElasticSearch节点"进行参数配置，设置`remote_ext_dict`设置项为用户自定义字典的可访问url (如示例中为http://192.168.0.13/dicts/mydict.dic) 后保存,然后重启集群中的ElasticSearch节点。
 
 第三步，测试中文分词功能。
 
@@ -233,7 +233,7 @@ curl -XGET 'http://192.168.0.10:9200/_snapshot/_all/'
 curl -XDELETE 'http://192.168.0.10:9200/_snapshot/my_es_repos'
 ```
 
-三、创建了repository后，用如下命令即可创建名为snapshot1的快照（该快照将会存放在之前指定的QingStor的bucket my_qingstor_bucket中）：
+三、创建了repository后，用如下命令即可创建名为snapshot1的快照（该快照将会存放在之前指定的QingStor的bucket `my_qingstor_bucket`中）：
 
 ```bash
 创建包含集群所有index的snapshot
@@ -301,7 +301,7 @@ curl -XPOST 'http://192.168.0.10:9200/_snapshot/s3_repos_es_1/snapshot1/_restore
 
 第二步，任务执行成功后可通过浏览器访问`http://<Logstash节点IP>/logs/`查看对应ES节点的日志。
 
-> 注解 如存在多个Logstash节点请在集群详情页面切换到参数配置界面，配置ElasticSearch节点的logstash_node_ip配置项。
+> 注解 如存在多个Logstash节点请在集群详情页面切换到参数配置界面，配置ElasticSearch节点的`logstash_node_ip`配置项。
 
 ### 场景四：Logstash-input-qingstor插件使用方式
 
@@ -392,7 +392,7 @@ influxdb {
 
 ### 场景七：Logstash 自定义启动配置文件
 
-默认情况下，logstash的启动配置文件会根据 **配置参数** 中 **Logstash节点** 的 input_conf_content、filter_conf_content、output_conf_content配置项自动生成，生成后存放在Logstash节点的`/data/logstash/config/logstash.conf.sample`，在logstash启动前，将logstash.conf.sample拷贝成logstash.conf。如果用户想自定义logstash.conf配置文件，只需要在`/data/logstash/config/`目录创建logstash.conf.lock文件，此时logstash.conf.sample依然会根据 **配置参数** 来生成，但并不会在启动前，用logstash.conf.sample文件覆盖logstash.conf文件。
+默认情况下，logstash的启动配置文件会根据 **配置参数** 中 **Logstash节点** 的 `input_conf_content、filter_conf_content、output_conf_content`配置项自动生成，生成后存放在Logstash节点的`/data/logstash/config/logstash.conf.sample`，在logstash启动前，将logstash.conf.sample拷贝成logstash.conf。如果用户想自定义logstash.conf配置文件，只需要在`/data/logstash/config/`目录创建logstash.conf.lock文件，此时logstash.conf.sample依然会根据 **配置参数** 来生成，但并不会在启动前，用logstash.conf.sample文件覆盖logstash.conf文件。
 
 用户通过上述方法修改logstash.conf配置文件后，需通过以下命令重启logstash服务。
 
