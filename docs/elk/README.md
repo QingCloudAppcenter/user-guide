@@ -70,7 +70,7 @@ _ELK on QingCloud_ 将 _ElasticSearch_ 、_Kibana_ 和 _Logstash_ 集成到同�
 
 创建成功后，点击集群列表页面相应集群可查看集群详情。可以看到集群分为ElasticSearch节点、Kibana节点和Logstash节点三种角色。其中ElasticSearch节点为集群化部署方式，节点数至少为3，默认为3节点；Logstash节点可通过增加节点数的方式来满足上层应用的故障转移需求。ElasticSearch节点可提供远程扩展字典及热更新，Logstash节点提供用户自定义插件能力，具体使用方法将在下文中详述。
 
-### 场景一：ElasticSearch中文自定义分词使用方法
+### 场景一：上传用户自定义词典
 
 第一步，在集群详情页面找到任意Logstash节点的IP地址。
 
@@ -78,7 +78,9 @@ _ELK on QingCloud_ 将 _ElasticSearch_ 、_Kibana_ 和 _Logstash_ 集成到同�
 
 ![查看字典文件示意图](../../images/elk/access_dic.png)
 
-第二步，在集群详情页面中切换到配置参数标签页，选择"ElasticSearch节点"进行参数配置，设置`remote_ext_dict`设置项为用户自定义字典的可访问url (如示例中为http://192.168.0.13/dicts/mydict.dic) 后保存,然后重启集群中的ElasticSearch节点。
+第二步，在集群详情页面中切换到配置参数标签页，选择"ElasticSearch节点"进行参数配置，设置`remote_ext_dict`设置项为用户自定义字典的可访问url (如示例中为http://192.168.0.13/dicts/mydict.dic) 后保存, 然后在集群列表页面重启集群中的ElasticSearch节点。
+
+> 注意！再次强调请在配置保存之后，在集群列表页面手动重启集群中的ElasticSearch节点。
 
 第三步，测试中文分词功能。
 
@@ -197,7 +199,7 @@ curl -XPUT 'http://192.168.0.10:9200/_snapshot/my_es_repos/' -d'
 {
   "type": "s3",
   "settings": {
-    "endpoint": "s3.pek3a.qingstor.com",
+    "endpoint": "s3.pek3a.qingstor.com", 
     "access_key": "<YourAccessKey>",
     "secret_key": "<YourSecretKey>",
     "bucket": "my_qingstor_bucket"
@@ -211,7 +213,7 @@ curl -XPUT 'http://192.168.0.10:9200/_snapshot/my_es_repos/' -d'
 ```
 集群节点地址           192.168.0.10
 repository            my_es_repos
-endpoint              s3.pek3a.qingstor.com (以北京3区为例，其他区需将pek3a改为相应名称如sh1a，gd1等)
+endpoint              s3.pek3a.qingstor.com (以北京3区为例，其他区需将pek3a改为相应名称如sh1a等)
 access_key            青云账号关联的access_key
 secret_key            青云账号关联的secret_key
 bucket                QingStor上bucket名称my_qingstor_bucket（如果不存在将创建出来）
@@ -358,7 +360,7 @@ influxdb {
 
 > 请参考相关插件的配置参数进行必要的修改，logstash-output-influxdb相关的配置参数请参考其[文档](https://www.elastic.co/guide/en/logstash/5.5/plugins-outputs-influxdb.html)
 
-> 如您有多个Logstash节点，请在所有Logstash节点上执行第1、2、4步骤。
+> 注意！如您有多个Logstash节点，请在所有Logstash节点上执行第1、2、4步骤，确保所有Logstash节点成功安装相关插件，不然状态会显示不正常。
 
 第六步，重启Logstash节点。
 
@@ -380,7 +382,7 @@ influxdb {
 
 第四步，在集群列表页面中切换到配置参数标签页，选择"Logstash节点"进行参数配置，点击"修改属性"，根据您的插件类型及参数修改相应的配置项，如示例中，将`filter_conf_content`修改为`abcd {}`，根据您插件所在位置修改`gemfile_append_content`，插件位置前缀必须是`/data/logstash/plugins`，如示例中，将`gemfile_append_content`修改为`gem "logstash-filter-abcd", :path => "/data/logstash/plugins/logstash-filter-abcd"`，修改后保存即可，如下图为示例中配置的展示。
 
-> 如您有多个Logstash节点，请在所有Logstash节点上执行第1、2、3步骤。
+> 注意！如您有多个Logstash节点，请在所有Logstash节点上执行第1、2、3步骤，确保所有Logstash节点成功安装相关插件，不然状态会显示不正常。
 
 ![Logstash参数配置](../../images/elk/logstash_env.png)
 
@@ -392,7 +394,7 @@ influxdb {
 
 ### 场景七：Logstash 自定义启动配置文件
 
-默认情况下，logstash的启动配置文件会根据 **配置参数** 中 **Logstash节点** 的 `input_conf_content、filter_conf_content、output_conf_content`配置项自动生成，生成后存放在Logstash节点的`/data/logstash/config/logstash.conf.sample`，在logstash启动前，将logstash.conf.sample拷贝成logstash.conf。如果用户想自定义logstash.conf配置文件，只需要在`/data/logstash/config/`目录创建logstash.conf.lock文件，此时logstash.conf.sample依然会根据 **配置参数** 来生成，但并不会在启动前，用logstash.conf.sample文件覆盖logstash.conf文件。
+默认情况下，logstash的启动配置文件会根据 **配置参数** 中 **Logstash节点** 的 `input_conf_content、filter_conf_content、output_conf_content`配置项自动生成，生成后存放在Logstash节点的`/data/logstash/config/logstash.conf.sample`，在logstash启动前，将logstash.conf.sample拷贝成logstash.conf。通过配置参数设置的logstash会应用同样配置到所有logstash节点，如果用户想自定义logstash.conf配置文件，只需要在`/data/logstash/config/`目录创建logstash.conf.lock文件，此时logstash.conf.sample依然会根据 **配置参数** 来生成，但并不会在启动前，用logstash.conf.sample文件覆盖logstash.conf文件。
 
 用户通过上述方法修改logstash.conf配置文件后，需通过以下命令重启logstash服务。
 
