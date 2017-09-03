@@ -14,7 +14,7 @@ _ELK on QingCloud_ 将 _ElasticSearch_ 、_Kibana_ 和 _Logstash_ 集成到同�
 * 支持节点横向和纵向扩容
 * ElasticSearch集成了IK Analysis中文分词插件，并为该插件提供了结巴分词的词库和IK自带的搜狗词库，同时还支持用户上传自定义词典
 * ElasticSearch集成官方S3存储仓库插件支持，可通过标准S3接口与青云对象存储QingStor集成
-* Logstash集成青云对象存储QingStor的input插件
+* Logstash集成青云对象存储QingStor的input/ouput插件
 * Logstash提供自定义插件能力
 * Kibana集成Caddy，提供ElasticSearch节点失效时的故障转移能力
 * 提供ES Head，ElasticHD可视化插件，方便用户通过浏览器使用ES
@@ -305,9 +305,11 @@ curl -XPOST 'http://192.168.0.10:9200/_snapshot/s3_repos_es_1/snapshot1/_restore
 
 > 注解 如存在多个Logstash节点请在集群详情页面切换到参数配置界面，配置ElasticSearch节点的`logstash_node_ip`配置项。
 
-### 场景四：Logstash-input-qingstor插件使用方式
+### 场景四：Logstash-input/output-qingstor插件使用方式
 
-ELK on QingCloud 的 Logstash 默认集成了 Logstash-input-qingstor 插件，用户只需要简单的配置即可使用。用插件之前请先在 青云控制台 申请 [Access Key](https://console.qingcloud.com/access_keys/) 和  [创建Bucket](https://docs.qingcloud.com/qingstor/guide/index.html#id2)。
+ELK on QingCloud 的 Logstash 默认集成了 `Logstash-input/output-qingstor` 插件，用户只需要简单的配置即可使用。用插件之前请先在 青云控制台 申请 [Access Key](https://console.qingcloud.com/access_keys/) 和  [创建Bucket](https://docs.qingcloud.com/qingstor/guide/index.html#id2)。
+
+> 下面以input插件为例说明。
 
 第一步，在集群详情页面，切换到参数配置页面，选择Logstash节点，修改`input_conf_content`配置项为如下，点击保存。
 
@@ -325,6 +327,8 @@ qingstor {
 第二步，保存成功后请在您配置的bucket上上传日志文件。
 
 第三步，使用浏览器打开`http://<Logstash节点IP>:5601/`，配置index pattern后，既可在Discover查看到导入的日志。
+
+> 关于`Logstash-input/output-qingstor`插件的更多细节信息请查看[相关文档](https://docs.qingcloud.com/qingstor/third_party_integration/index.html)
 
 ### 场景五：Logstash插件安装使用方法
 
@@ -394,7 +398,7 @@ influxdb {
 
 ### 场景七：Logstash 自定义启动配置文件
 
-默认情况下，logstash的启动配置文件会根据 **配置参数** 中 **Logstash节点** 的 `input_conf_content、filter_conf_content、output_conf_content`配置项自动生成，生成后存放在Logstash节点的`/data/logstash/config/logstash.conf.sample`，在logstash启动前，将logstash.conf.sample拷贝成logstash.conf。通过配置参数设置的logstash会应用同样配置到所有logstash节点，如果用户想自定义logstash.conf配置文件，只需要在`/data/logstash/config/`目录创建logstash.conf.lock文件，此时logstash.conf.sample依然会根据 **配置参数** 来生成，但并不会在启动前，用logstash.conf.sample文件覆盖logstash.conf文件。
+默认情况下，logstash的启动配置文件会根据 **配置参数** 中 **Logstash节点** 的 `input_conf_content、filter_conf_content、output_conf_content、output_es_content `配置项自动生成，生成后存放在Logstash节点的`/data/logstash/config/logstash.conf.sample`，在logstash启动前，将logstash.conf.sample拷贝成logstash.conf。通过配置参数设置的logstash会应用同样配置到所有logstash节点，如果用户想自定义logstash.conf配置文件，只需在`/data/logstash/config/`目录创建logstash.conf.lock文件，此时logstash.conf.sample依然会根据 **配置参数** 来生成，但并不会在启动前，用logstash.conf.sample文件覆盖logstash.conf文件。
 
 用户通过上述方法修改logstash.conf配置文件后，需通过以下命令重启logstash服务。
 
@@ -469,6 +473,7 @@ ELK提供了近20个配置参数，可以通过 `配置参数` 来定制个性�
 ![配置参数](../../images/elk/env_modify.png)
 
 ## 注意事项
+
 使用 Elasticsearch 需要注意的一些事项
 
 ### 安全
