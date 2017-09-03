@@ -210,7 +210,7 @@ curl -XPUT 'http://192.168.0.10:9200/_snapshot/my_es_repos/' -d'
 
 上述命令必须指定的几个关键参数包括：
 
-```
+```bash
 集群节点地址           192.168.0.10
 repository            my_es_repos
 endpoint              s3.pek3a.qingstor.com (以北京3区为例，其他区需将pek3a改为相应名称如sh1a等)
@@ -311,7 +311,7 @@ ELK on QingCloud 的 Logstash 默认集成了 Logstash-input-qingstor 插件，�
 
 第一步，在集群详情页面，切换到参数配置页面，选择Logstash节点，修改`input_conf_content`配置项为如下，点击保存。
 
-```
+```ruby
 qingstor {
     access_key_id => "your_access_key_id"
     secret_access_key => "your_secret_access_key"
@@ -336,7 +336,7 @@ qingstor {
 
 第三步，在集群详情页面，切换到参数配置页面，选择Logstash节点，修改`gemfile_append_content`配置项为如下，点击保存。
 
-```
+```ruby
 gem "logstash-output-influxdb", :path => "/data/logstash/plugins/logstash-output-influxdb"
 ```
 
@@ -346,7 +346,7 @@ gem "logstash-output-influxdb", :path => "/data/logstash/plugins/logstash-output
 
 第五步，在集群详情页面，切换到参数配置页面，选择Logstash节点，修改`output_conf_content`配置项为如下，点击保存。
 
-```
+```ruby
 influxdb {
         data_points => {
           "duration" => "%{data.event.duration}"
@@ -398,7 +398,7 @@ influxdb {
 
 用户通过上述方法修改logstash.conf配置文件后，需通过以下命令重启logstash服务。
 
-```
+```bash
 sudo docker exec -it <b8b0db543f98> restart.sh
 ```
 
@@ -469,6 +469,7 @@ ELK提供了近20个配置参数，可以通过 `配置参数` 来定制个性�
 ![配置参数](../../images/elk/env_modify.png)
 
 ## 注意事项
+
 使用 Elasticsearch 需要注意的一些事项
 
 ### 安全
