@@ -468,9 +468,11 @@ ELK提供了近20个配置参数，可以通过 `配置参数` 来定制个性�
 
 ### 修改配置参数
 
-在 ELK 详情页，点击 `配置参数` Tab 页，切换到`ElasticSearch节点`或`Logstash节点`，点击 `修改属性`，修改完后，需要进行 "保存"。如图所示：
+在 ELK 详情页，点击 `配置参数` Tab 页，切换到`ElasticSearch节点`、`Kibana节点`或`Logstash节点`，点击 `修改属性`，修改完后，需要进行 "保存"。如图所示：
 
 ![配置参数](../../images/elk/env_modify.png)
+
+> 注意！ElasticSearch、Logstash节点相关配置修改后需手动重启。
 
 ## 注意事项
 
