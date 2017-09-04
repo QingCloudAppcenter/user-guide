@@ -326,6 +326,29 @@ qingstor {
 
 第三步，使用浏览器打开`http://<Logstash节点IP>:5601/`，配置index pattern后，既可在Discover查看到导入的日志。
 
+> Logstash默认的output是ElasticSearch， 并自动配置好了ElasticSearch集群的hosts选项。如果需要在output到ElasticSearch的过程中指定其他参数， 可以在`output_es_content`中指定，比如：
+
+```ruby
+	action => "update"
+	index => "my-first-index"
+```
+
+> 如还需output到其他位置，可以通过`output_conf_content`指定，比如通过`Logstash-output-qingstor`插件将数据output到QingStor对象存储：
+
+```ruby
+qingstor {
+    codec => "json"
+    access_key_id => <your-access_key_id>
+    secret_access_key => <your-secret-access_key>
+    bucket => <bucket-name>
+    region => "pek3a"
+    encoding => "gzip"
+    rotation_strategy => "size_and_time"
+    file_size => 10485760
+    file_time => 60
+}
+```
+
 > 关于`Logstash-input/output-qingstor`插件的更多细节信息请查看[相关文档](https://docs.qingcloud.com/qingstor/third_party_integration/index.html)
 
 ### 场景五：Logstash插件安装使用方法
