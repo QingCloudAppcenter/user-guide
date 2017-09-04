@@ -106,13 +106,13 @@ kubectl cluster-info
 
 用户需要导入以下index来获取所需数据。数据都是以时间为基准，需要输入index名称的匹配模式和数据的时间戳．输入index匹配模式后，在时间戳下拉框中选择对应的字段然后点击创建即可．
 
-index         | timestamp
-------------- | -------------
-heapster-cpu-* | CpuMetricsTimestamp
-heapster-memory-* | MemoryMetricsTimestamp
-heapster-filesystem-* | FilesystemMetricsTimestamp
-heapster-network-* | NetworkMetricsTimestamp
-logstash-* | @timestamp
+| index                 | timestamp                  |
+| --------------------- | -------------------------- |
+| heapster-cpu-*        | CpuMetricsTimestamp        |
+| heapster-memory-*     | MemoryMetricsTimestamp     |
+| heapster-filesystem-* | FilesystemMetricsTimestamp |
+| heapster-network-*    | NetworkMetricsTimestamp    |
+| logstash-*            | @timestamp                 |
 
 
 具体配置请参考[官方文档](https://www.elastic.co/guide/en/kibana/current/discover.html)
@@ -238,7 +238,7 @@ spec:
         fsType: ext4
 ```
 
-在 pod 中使用的例子：
+在 pod 中使用的例子（Kubernetes1.5）：
 
 ```yaml
 apiVersion: v1
@@ -257,6 +257,29 @@ spec:
     qingCloudStore:
       volumeID: vol-xxxxx
       fsType: ext4
+```
+
+在 pod 中使用的例子（Kubernetes1.7）：
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pd
+spec:
+  containers:
+  - image: dockerhub.qingcloud.com/docker/nginx
+    name: test-container
+    volumeMounts:
+    - name: html-volume
+      mountPath: "/usr/share/nginx/html"
+  volumes:
+  - name: html-volume
+    flexVolume:
+      driver: "qingcloud/flex-volume"
+      fsType: "ext4"
+      options:
+        volumeID: "vol-xxxx"
 ```
 
 #### 使用 PersistentVolumeClaim
