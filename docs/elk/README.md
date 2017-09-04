@@ -6,10 +6,11 @@ _ELK_ 是 _ElasticSearch_ 、 _Kibana_ 和 _Logstash_ 这三个软件集合的�
 
 ### ELK on QingCloud 功能概览
 
-* ELK on QingCloud 集成 ElasticSearch、Kibana 与 Logstash 到同一个服务中（后两者为可选），ELK 版本全新升级到5.0，其中 ElasticSearch、Kibana 版本为5.5.1，Logstash 版本为5.4.3。
-* 为 ElasticSearch 提供了更强大的分词功能支持，集成了 IK Analysis 中文分词插件，并为该插件提供了结巴分词的词库和 IK 自带的搜狗词库，同时还支持用户上传自定义词典。
-* ElasticSearch 与 青云对象存储 QingStor 集成。ElasticSearch 集成了官方 S3 Repository 插件，可通过标准 S3 接口与青云对象存储 QingStor 集成，以便生成 snapshot 并将其存储到到 QingStor 中，并可以在必要时从中恢复。
-* Logstash 集成了青云对象存储 QingStor 的 logstash input/ouput插件
+* ELK on QingCloud 集成 ElasticSearch、Kibana 与 Logstash 到同一个服务中（后两者为可选）
+* ELK 版本全新升级到5.0，其中 ElasticSearch、Kibana 版本为5.5.1，Logstash 版本为5.4.3
+* 为 ElasticSearch 提供了更强大的分词功能支持，集成了 IK Analysis 中文分词插件，并为该插件提供了结巴分词的词库和 IK 自带的搜狗词库，同时还支持用户上传自定义词典
+* ElasticSearch 与 青云对象存储 QingStor 集成。ElasticSearch 集成了官方 S3 Repository 插件，可通过标准 S3 接口与青云对象存储 QingStor 集成，以便生成 snapshot 并将其存储到到 QingStor 中，并可以在必要时从中恢复
+* Logstash 集成了青云对象存储 QingStor 的 logstash input/ouput插件。用户可以很方便地从 QingStor 对象存储通过 Logstash-input-qingstor 插件输入数据到 ElasticSearch 或者通过 Logstash-output-qingstor 插件从ElasticSearch导出数据到 QingStor 对象存储
 * Logstash 提供自定义插件能力
 * Kibana 集成 Caddy，提供 ElasticSearch 节点失效时的故障转移能力
 * 提供ES Head，ElasticHD可视化插件，方便用户通过浏览器使用 ElasticSearch
