@@ -14,6 +14,7 @@ ELK on QingCloud 集成 ElasticSearch、Kibana 与 Logstash 到同一个服务�
 * Logstash 提供自定义插件能力
 * Kibana 集成 Caddy，提供 ElasticSearch 节点失效时的故障转移能力
 * 提供ES Head，ElasticHD可视化插件，方便用户通过浏览器使用 ElasticSearch
+* 可收集ElasticSearch集群各节点日志到logstash节点，方便定位问题
 * 集群关键指标监控
 * 一键集群安装部署
 * 支持节点横向和纵向扩容
