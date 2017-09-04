@@ -2,23 +2,21 @@
 
 ## 简介
 
-_ELK_ 是 _ElasticSearch_ 、 _Kibana_ 和 _Logstash_ 这三个软件集合的简称, _ElasticSearch_ 是一个实时分布式搜索和分析引擎， _Kibana_ 则为 _ElasticSearch_ 提供了强大的可视化界面， _Logstash_ 为用户提供数据采集、转换、优化和输出的能力。 _ELK_ 目前被广泛应用于实时日志处理、全文搜索和数据分析等领域。
+_ELK_ 是 _ElasticSearch_ 、 _Kibana_ 和 _Logstash_ 这三个软件集合的简称， _ElasticSearch_ 是一个实时分布式搜索和分析引擎， _Kibana_ 则为 _ElasticSearch_ 提供了强大的可视化界面， _Logstash_ 为用户提供数据采集、转换、优化和输出的能力。 _ELK_ 目前被广泛应用于实时日志处理、全文搜索和数据分析等领域。
 
-_ELK on QingCloud_ 将 _ElasticSearch_ 、_Kibana_ 和 _Logstash_ 集成到同一个集群服务中，以AppCenter云应用的形式交付给用户使用。
+### ELK on QingCloud 功能概览
 
-> 目前 _ELK on QingCloud_ 支持 _ElasticSearch 5.5.1_ 、_Kibana 5.5.1_ 和 _Logstash 5.4.3_
+ELK on QingCloud 集成 ElasticSearch、Kibana 与 Logstash 到同一个服务中（后两者为可选），ELK 版本全新升级到5.0，其中 ElasticSearch、Kibana 版本为5.5.1，Logstash 版本为5.4.3。
 
-### ELK on QingCloud 的特点
-
+* 为 ElasticSearch 提供了更强大的分词功能支持，集成了 IK Analysis 中文分词插件，并为该插件提供了结巴分词的词库和 IK 自带的搜狗词库，同时还支持用户上传自定义词典。
+* ElasticSearch 与 青云对象存储 QingStor 集成。ElasticSearch 集成了官方 S3 Repository 插件，可通过标准 S3 接口与青云对象存储 QingStor 集成，以便生成 snapshot 并将其存储到到 QingStor 中，并可以在必要时从中恢复。
+* Logstash 集成了青云对象存储 QingStor 的 logstash input/ouput插件
+* Logstash 提供自定义插件能力
+* Kibana 集成 Caddy，提供 ElasticSearch 节点失效时的故障转移能力
+* 提供ES Head，ElasticHD可视化插件，方便用户通过浏览器使用 ElasticSearch
+* 集群关键指标监控
 * 一键集群安装部署
 * 支持节点横向和纵向扩容
-* ElasticSearch集成了IK Analysis中文分词插件，并为该插件提供了结巴分词的词库和IK自带的搜狗词库，同时还支持用户上传自定义词典
-* ElasticSearch集成官方S3存储仓库插件支持，可通过标准S3接口与青云对象存储QingStor集成
-* Logstash集成青云对象存储QingStor的input/ouput插件
-* Logstash提供自定义插件能力
-* Kibana集成Caddy，提供ElasticSearch节点失效时的故障转移能力
-* 提供ES Head，ElasticHD可视化插件，方便用户通过浏览器使用ES
-* 集群关键指标监控
 
 ## 部署ELK服务
 
@@ -186,11 +184,11 @@ printf "\n\n"
 
 > 更多细节请关注[IK Analysis plugin](https://github.com/medcl/elasticsearch-analysis-ik)
 
-### 场景二：ElasticSearch Snapshot 与 QingStor 对象存储集成
+### 场景二：ElasticSearch 与 QingStor 对象存储集成
 
 QingStor对象存储为用户提供了云端可无限扩展的通用数据存储服务，具有安全可靠、简单易用、高性能、低成本等特点。 用户可以将数据、日志、静态资源等多种文件类型，通过多种方式上传至QingStor对象存储中，以满足日常数据存储、归档、分析等需求。 为了更好的满足用户的需求，青云提供了ElasticSearch、Logstash等与QingStor对象存储的集成功能。
 
-Elasticsearch可以通过快照（snapshot）将指定index甚至整个cluster的数据存储到某远端仓库（repository）, 并能从该远端仓库存储的快照中恢复数据。 因Elasticsearch可以指定Amazon S3作为远程仓库，而QingStor又兼容AWS S3 API, 所以青云提供的Elasticsearch服务可以通过AWS Cloud Plugin与QingStor对象存储集成以便生成快照将数据存储到到QingStor中，并可以在必要时从中恢复。
+Elasticsearch可以通过快照（snapshot）将指定index甚至整个cluster的数据存储到某远端仓库（repository）, 并能从该远端仓库存储的快照中恢复数据。 因Elasticsearch可以指定Amazon S3作为远程仓库，而QingStor又兼容AWS S3 API, 所以青云提供的Elasticsearch服务可以通过S3 Repository Plugin与QingStor对象存储集成以便生成快照将数据存储到到QingStor中，并可以在必要时从中恢复。
 
 一、要在Elasticsearch中创建snapshot，首先要创建一个repository
 
@@ -344,9 +342,9 @@ qingstor {
 gem "logstash-output-influxdb", :path => "/data/logstash/plugins/logstash-output-influxdb"
 ```
 
-第四步，打开之前的Web终端，执行`sudo docker exec -it <b8b0db543f98> logstash-plugin install --no-verify`
+第四步，打开之前的Web终端，执行`sudo docker exec -it <docker container id> logstash-plugin install --no-verify`
 
-> 请将`<b8b0db543f98>`替换为您的logstash的容器ID，可通过命令`sudo docker ps`查看
+> 请将`<docker container id>`替换为您的logstash的容器ID，可通过命令`sudo docker ps`查看
 
 第五步，在集群详情页面，切换到参数配置页面，选择Logstash节点，修改`output_conf_content`配置项为如下，点击保存。
 
@@ -376,7 +374,7 @@ influxdb {
 
 第一步，在集群列表页面的Logstash节点上点击节点ID右侧的显示器图标，打开Web终端。输入默认用户名\(ubuntu\)、密码\(p12cHANgepwD\)，进入shell。
 
-第二步，在shell中执行`sudo docker ps`，查看Logstash的Container ID，然后执行`sudo docker exec -it <c9c0b43c6847> logstash-plugin generate --type <filter> --name <abcd> --path /data/logstash/plugins`，其中将`<c9c0b43c6847>`替换为您的 Logstash的Container ID，`<filter>`替换为您想要定制的插件的类型，类型包括`{input, filter, codec, output}`，`<abcd>`替换为您要开发的插件的名称。执行成功后显示如图所示。
+第二步，在shell中执行`sudo docker ps`，查看Logstash的Container ID，然后执行`sudo docker exec -it <docker container id> logstash-plugin generate --type <filter> --name <abcd> --path /data/logstash/plugins`，其中将`<docker container id>`替换为您的 Logstash的Container ID，`<filter>`替换为您想要定制的插件的类型，类型包括`{input, filter, codec, output}`，`<abcd>`替换为您要开发的插件的名称。执行成功后显示如图所示。
 
 ![查看Container ID](../../images/elk/logstash_container.png)
 
@@ -403,10 +401,10 @@ influxdb {
 用户通过上述方法修改logstash.conf配置文件后，需通过以下命令重启logstash服务。
 
 ```bash
-sudo docker exec -it <b8b0db543f98> restart.sh
+sudo docker exec -it <docker container id> restart.sh
 ```
 
-> 请将`<b8b0db543f98>`替换为您的logstash的容器ID，可通过命令`sudo docker ps`查看
+> 请将`<docker container id>`替换为您的logstash的容器ID，可通过命令`sudo docker ps`查看
 
 如显示`[=[Restart]=] Can't lock the file.`，则表示其他操作正在执行，请稍后再次尝试重启命令。
 
