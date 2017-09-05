@@ -162,7 +162,7 @@ Service 的 type 设置为 LoadBalancer，然后在 metadata 中增加以下 ann
 2. service.beta.kubernetes.io/qingcloud-load-balancer-eip-ids ，负载均衡器上绑定的 eip ID，最多支持4个，这个 annotation 表示要创建的是 “公网” 类型的负载均衡器。 eip 必须是可用的 eip，系统会自动创建负载均衡器。
 3. service.beta.kubernetes.io/qingcloud-load-balancer-vxnet-id ，负载均衡器要加入的私有网络 ID，表示要创建的是“私网” 类型负载均衡器。
 
-qingcloud-load-balancer-eip-ids 和 qingcloud-load-balancer-vxnet-id 根据负载均衡器的"公网"或者"私网"二选一即可。
+qingcloud-load-balancer-eip-ids 和 qingcloud-load-balancer-vxnet-id 根据负载均衡器的"公网"或者"私网"二选一即可。如果指定了 LoadBalancer 的 Service，但没有配置 annotations 或者 annotations 下面没有具体的负载均衡器的参数，则会默认创建“私网”类型的负载均衡器，并关联当前 Kubernetes 集群所在的私网
 
 整体如下面的例子：
 
@@ -209,6 +209,7 @@ helloworld-internal   10.96.145.22   192.168.0.5     80:30221/TCP   3d
 ```
 
 公网的负载均衡器的 EXTERNAL-IP 显示的是负载均衡器绑定的 eip 的 ip 地址，私网负载均衡器的 EXTERNAL-IP 显示的是均衡器的私网 ip。
+如配置了多个 port（监听器），则须给每个 port 指定 name 参数，否则 Service Spec 文件会验证失败导致无法部署 service
 
 ### 存储
 
