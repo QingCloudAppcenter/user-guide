@@ -5,15 +5,15 @@
 1. 先在 QingCloud 上部署一套 Kubernetes 集群。
 2. 配置好 kubectl 环境，或者直接登陆到客户端（client）节点上进行操作。
 3. 准备好一个可用的公网  IP (EIP) 地址，并复制 ID。
-4. 将 Kubernetes 所在的私有网络（vxnet）的 ID 复制出来。
+
 
 ```shell
 git clone https://github.com/QingCloudAppcenter/kubernetes.git
 cd kubernetes/sample
-./deploy-helloworld.sh -e eip-xxx -v vxnet-xxx
+./deploy-helloworld.sh -e eip-xxx
 ```
 
-将上面的参数中的 eip 以及 vxnet 替换成我们前面准备好的 ID。
+将上面的参数中的 eip 替换成我们前面准备好的 ID。
 
 执行后将输出：
 
@@ -120,9 +120,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: helloworld-internal
-  annotations:
-    service.beta.kubernetes.io/qingcloud-load-balancer-vxnet-id: "${VXNET}"
-    service.beta.kubernetes.io/qingcloud-load-balancer-type: "0"
 spec:
   ports:
     - port: 80
@@ -134,7 +131,7 @@ spec:
 
 上例中的 helloworld service，首先定义了一个 Deployment，replicas 为 2，也就是部署后会有两个 pod 实例，container spec 中指定了 image 地址以及端口。
 
-然后定义了两个 service，类型都是 LoadBalancer，不过一个指定了 qingcloud-load-balancer-eip-ids，另外一个指定了 qingcloud-load-balancer-vxnet-id，所以创建后一个会是公网的 LoadBalancer，另外一个会是私网的 LoadBalancer。
+然后定义了两个 service，类型都是 LoadBalancer，不过一个指定了 qingcloud-load-balancer-eip-ids，另外一个没有配置 annotations，所以创建后一个会是公网类型的 LoadBalancer，另外一个会是默认的私网类型的 LoadBalancer，使用的是当前集群所在的私网。
 
 ## 删除
 
