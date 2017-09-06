@@ -194,6 +194,7 @@ spec:
     app: helloworld
   type: LoadBalancer
 ```
+
 可以看到 helloworld-internal 没有指定 qingcloud-load-balancer-eip-ids 和 qingcloud-load-balancer-vxnet-id，所以默认创建"私网"类型的负载均衡器，并使用当前集群所在的私网。
 
 通过 kubectl 可以查看 service 的状态：
