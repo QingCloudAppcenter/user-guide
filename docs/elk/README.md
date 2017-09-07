@@ -329,7 +329,7 @@ qingstor {
 
 第二步，保存成功后请在您配置的bucket上上传日志文件。
 
-第三步，使用浏览器打开`http://<Logstash节点IP>:5601/`，配置index pattern后，既可在Discover查看到导入的日志。
+第三步，使用浏览器打开`http://<Kibana节点IP>:5601/`，配置index pattern后，既可在Discover查看到导入的日志。
 
 > Logstash默认的output是ElasticSearch， 并自动配置好了ElasticSearch集群的hosts选项。如果需要在output到ElasticSearch的过程中指定其他参数， 可以在`output_es_content`中指定，比如：
 
