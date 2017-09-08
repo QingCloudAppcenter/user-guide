@@ -69,7 +69,19 @@ _ELK_ 是 _ElasticSearch_ 、 _Kibana_ 和 _Logstash_ 这三个软件集合的�
 
 创建成功后，点击集群列表页面相应集群可查看集群详情。可以看到集群分为ElasticSearch节点、Kibana节点和Logstash节点三种角色。其中ElasticSearch节点为集群化部署方式，节点数至少为3，默认为3节点；Logstash节点可通过增加节点数的方式来满足上层应用的故障转移需求。ElasticSearch节点可提供远程扩展字典及热更新，Logstash节点提供用户自定义插件能力，具体使用方法将在下文中详述。
 
-### 场景一：中文日志搜索场景
+### 场景一：英文日志搜索场景
+
+第一步，在集群详情页面找到任意Logstash节点的IP地址。Logstash节点默认配置了http input插件，可通过此插件开启的9700端口进行测试，执行`curl -d "[09-07 15:57:26]: call_es_api [:10105/_cluster/health] Exception [error: [Errno -5] No address associated with hostname], try to sleep 10 second." http://<Logstash节点IP>:9700`将一条模拟日志发往Logstash。
+
+第二步，在浏览器中访问Kibana节点提供的Web界面，默认进入配置索引模式界面，如图，直接点击Create即可。
+
+![配置index](../../images/elk/config_index.png)
+
+点击左侧的Discover菜单项，显示近期接收到的日志，在搜索栏中输入“error”，点击右侧的“搜索”按钮。如图，“error”被高亮显示，测试成功。
+
+![配置index](../../images/elk/en_search_result.png)
+
+### 场景二：中文日志搜索场景
 
 第一步，在集群详情页面找到任意Logstash节点的IP地址。
 
@@ -94,7 +106,7 @@ template => "/data/elasticsearch/dicts/logstash.json"
 
 ![配置index](../../images/elk/search_result.png)
 
-### 场景二：使用 IK Analysis 插件进行中文分词
+### 场景三：使用 IK Analysis 插件进行中文分词
 
 为了在 ElasticSearch 中获取更好的中文分词效果，ELK on QingCloud 集成了 IK Analysis 中文分词插件，并为该插件提供了结巴分词的词库和 IK 自带的搜狗词库，同时还支持用户上传自定义词典。IK Analysis 插件用法请参考 [IK Analysis plugin](https://github.com/medcl/elasticsearch-analysis-ik)。
 
@@ -212,7 +224,7 @@ printf "\n\n"
 
 第六步，更新用户自定义字典，ElasticSearch会自动检测http响应头中的Last-Modified和ETag的变化，来进行分词字典的热更新。
 
-### 场景三：ElasticSearch 与 QingStor 对象存储集成
+### 场景四：ElasticSearch 与 QingStor 对象存储集成
 
 QingStor对象存储为用户提供了云端可无限扩展的通用数据存储服务，具有安全可靠、简单易用、高性能、低成本等特点。 用户可以将数据、日志、静态资源等多种文件类型，通过多种方式上传至QingStor对象存储中，以满足日常数据存储、归档、分析等需求。 为了更好的满足用户的需求，青云提供了ElasticSearch、Logstash等与QingStor对象存储的集成功能。
 
@@ -323,7 +335,7 @@ curl -XPOST 'http://192.168.0.10:9200/_snapshot/s3_repos_es_1/snapshot1/_restore
 
 > 注解 更详细的有关集群快照的生成和恢复的信息请参考[Elasticsearch官方文档](https://www.elastic.co/guide/en/elasticsearch/reference/5.5/modules-snapshots.html)
 
-### 场景四：ElasticSearch集群日志查看
+### 场景五：ElasticSearch集群日志查看
 
 第一步，在集群列表页面，在ELK集群上点击右键选择 **自定义服务** > **收集ES日志**，然后选择 **ElasticSearch节点** 点击提交。
 
@@ -333,7 +345,7 @@ curl -XPOST 'http://192.168.0.10:9200/_snapshot/s3_repos_es_1/snapshot1/_restore
 
 > 注解 如存在多个Logstash节点请在集群详情页面切换到参数配置界面，配置ElasticSearch节点的`logstash_node_ip`配置项。
 
-### 场景五：Logstash-input/output-qingstor插件使用方式
+### 场景六：Logstash-input/output-qingstor插件使用方式
 
 Logstash 集成了青云对象存储 QingStor 的 logstash input/ouput插件。用户可以很方便地从 QingStor 对象存储通过 Logstash-input-qingstor 插件输入数据到 ElasticSearch 或者通过 Logstash-output-qingstor 插件从ElasticSearch导出数据到 QingStor 对象存储。使用插件之前请先在 青云控制台 申请 [Access Key](https://console.qingcloud.com/access_keys/) 和  [创建Bucket](https://docs.qingcloud.com/qingstor/guide/index.html#id2)。
 
@@ -381,7 +393,7 @@ qingstor {
 
 > 关于`Logstash-input/output-qingstor`插件的更多细节信息请查看[相关文档](https://docs.qingcloud.com/qingstor/third_party_integration/index.html)
 
-### 场景六：Logstash插件安装使用方法
+### 场景七：Logstash插件安装使用方法
 
 > 此处以logstash-output-influxdb插件的安装为例，其他插件安装方式类似
 
@@ -423,7 +435,7 @@ influxdb {
 
 第七步，测试插件是否如预期工作，Logstash节点默认配置了http input插件，可通过此插件开启的9700端口进行测试，执行`curl -d "qingcloud" 127.0.0.1:9700`将一条日志发往Logstash，如成功，则influxdb中将新增一条point，说明插件配置生效，如发现influxdb中没有新增point，请查看logstash日志，位置为`/data/logstash/logs`。
 
-### 场景七：Logstash自定义插件支持
+### 场景八：Logstash自定义插件支持
 
 第一步，在集群列表页面的Logstash节点上点击节点ID右侧的显示器图标，打开Web终端。输入默认用户名\(ubuntu\)、密码\(p12cHANgepwD\)，进入shell。
 
@@ -447,7 +459,7 @@ influxdb {
 
 ![日志展示](../../images/elk/log_display.png)
 
-### 场景八：Logstash 自定义启动配置文件
+### 场景九：Logstash 自定义启动配置文件
 
 默认情况下，logstash的启动配置文件会根据 **配置参数** 中 **Logstash节点** 的 `input_conf_content、filter_conf_content、output_conf_content、output_es_content `配置项自动生成，生成后存放在Logstash节点的`/data/logstash/config/logstash.conf.sample`，在logstash启动前，将logstash.conf.sample拷贝成logstash.conf。通过配置参数设置的logstash会应用同样配置到所有logstash节点，如果用户想自定义logstash.conf配置文件，只需在`/data/logstash/config/`目录创建logstash.conf.lock文件，此时logstash.conf.sample依然会根据 **配置参数** 来生成，但并不会在启动前，用logstash.conf.sample文件覆盖logstash.conf文件。
 
@@ -461,7 +473,7 @@ sudo docker exec -it <docker container id> restart.sh
 
 如显示`[=[Restart]=] Can't lock the file.`，则表示其他操作正在执行，请稍后再次尝试重启命令。
 
-### 场景九：Kibana简要使用说明
+### 场景十：Kibana简要使用说明
 
 在浏览器中打开`http://<Kibana节点IP>:5601/`，首先会提示创建index pattern，默认情况下，Kibana 认为您要访问的是通过 Logstash 导入 Elasticsearch 的数据。这时候您可以用默认的 logstash-* 作为您的 index pattern。
 
@@ -471,7 +483,7 @@ Index pattern创建成功后可点击Discover查看导入的日志。
 
 > 关于Kibana更多的使用方式，请参考[官方文档](https://www.elastic.co/guide/en/kibana/5.5/index.html)
 
-### 场景十：集群组件说明
+### 场景十一：集群组件说明
 
 _ELK on QingCloud_ 为用户提供了以下组件，用以服务集群其他组件或直接为用户提供服务。
 
