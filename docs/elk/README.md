@@ -12,7 +12,7 @@ _ELK_ 是 _ElasticSearch_ 、 _Kibana_ 和 _Logstash_ 这三个软件集合的�
 * ElasticSearch 与 青云对象存储 QingStor 集成。ElasticSearch 集成了官方 S3 Repository 插件，可通过标准 S3 接口与青云对象存储 QingStor 集成，以便生成 snapshot 并将其存储到到 QingStor 中，并可以在必要时从中恢复
 * Logstash 集成了青云对象存储 QingStor 的 logstash input/ouput插件。用户可以很方便地从 QingStor 对象存储通过 Logstash-input-qingstor 插件输入数据到 ElasticSearch 或者通过 Logstash-output-qingstor 插件从ElasticSearch导出数据到 QingStor 对象存储
 * Logstash 提供自定义插件能力
-* Kibana 集成 Caddy，提供 ElasticSearch 节点失效时的故障转移能力
+* Kibana 集成 Nginx，提供 ElasticSearch 节点失效时的故障转移能力
 * 提供ES Head，ElasticHD可视化插件，方便用户通过浏览器使用 ElasticSearch
 * 可收集ElasticSearch集群各节点日志到logstash节点，方便定位问题
 * 集群关键指标监控
@@ -488,8 +488,10 @@ Index pattern创建成功后可点击Discover查看导入的日志。
 _ELK on QingCloud_ 为用户提供了以下组件，用以服务集群其他组件或直接为用户提供服务。
 
 * [head](http://mobz.github.io/elasticsearch-head/) 提供一个Elasticsearch cluster的web控制台，用户可以在这个控制台里很方便的查看集群拓扑架构、监控集群状态，进行节点和索引级别的各种操作，以及进行数据的浏览、查询、分析等。在浏览器输入网址 `http://<Kibana节点IP>:9100/` 即可使用该插件提供的集群控制台。进入后请输入`http://<任意ElasticSearch节点IP>:9200/`后，点击连接即可查看ElasticSearch集群状态。
-* [ElasticHD](https://github.com/farmerx/ElasticHD) Elasticsearch是一个ElasticSearch可视化管理工具, 支持ES监控、实时搜索，Index template快捷替换修改，索引列表信息查看，SQL converts to DSL等功能。在浏览器输入网址 `http://<Kibana节点IP>:9800/` 即可使用该插件提供的集群控制台。
-* [Caddy](https://caddyserver.com/) Caddy 是一个支持 HTTP/2 的跨平台 Web 服务器，使用和配置都非常简单。 _ELK on QingCloud_ 使用Caddy是为Kibana提供ElasticSearch节点失效时的故障转移能力，并且为在Logstash节点上上传字典提供便利，同时使得ElasticSearch的日志查看变得更加方便。集群中Caddy运行在Kibana节点的9200端口和Logstash节点的80端口。
+* [ElasticHD](https://github.com/farmerx/ElasticHD) 是一个ElasticSearch可视化管理工具, 支持ES监控、实时搜索，Index template快捷替换修改，索引列表信息查看，SQL converts to DSL等功能。在浏览器输入网址 `http://<Kibana节点IP>:9800/` 即可使用该插件提供的集群控制台。
+* [Caddy](https://caddyserver.com/) 是一个支持 HTTP/2 的跨平台 Web 服务器，使用和配置都非常简单。 _ELK on QingCloud_ 使用Caddy是为在Logstash节点上上传字典提供便利，同时使得ElasticSearch的日志查看变得更加方便。集群中Caddy运行在Logstash节点的80端口。
+* [Nginx](https://nginx.org/) 是一个Web服务器，也可以用作反向代理，负载平衡器和HTTP缓存。 _ELK on QingCloud_ 使用Nginx是为Kibana提供ElasticSearch节点失效时的故障转移能力。集群中Nginx运行在Kibana节点的9200端口。
+
 
 ## 在线伸缩
 
