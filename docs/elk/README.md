@@ -4,9 +4,10 @@
 
 _ELK_ 是 _ElasticSearch_ 、 _Kibana_ 和 _Logstash_ 这三个软件集合的简称， _ElasticSearch_ 是一个实时分布式搜索和分析引擎， _Kibana_ 则为 _ElasticSearch_ 提供了强大的可视化界面， _Logstash_ 为用户提供数据采集、转换、优化和输出的能力。 _ELK_ 目前被广泛应用于实时日志处理、全文搜索和数据分析等领域。
 
+ELK on QingCloud 集成 ElasticSearch、Kibana 与 Logstash 到同一个服务中（后两者为可选），对三者进行了很好的集成后以AppCenter云应用的形式交付给用户使用。
+
 ### ELK on QingCloud 功能概览
 
-* ELK on QingCloud 集成 ElasticSearch、Kibana 与 Logstash 到同一个服务中（后两者为可选）
 * ELK 版本全新升级到5.0，其中 ElasticSearch、Kibana 版本为5.5.1，Logstash 版本为5.4.3
 * 为 ElasticSearch 提供了更强大的分词功能支持，集成了 IK Analysis 中文分词插件，并为该插件提供了结巴分词的词库和 IK 自带的搜狗词库，同时还支持用户上传自定义词典
 * ElasticSearch 与 青云对象存储 QingStor 集成。ElasticSearch 集成了官方 S3 Repository 插件，可通过标准 S3 接口与青云对象存储 QingStor 集成，以便生成 snapshot 并将其存储到到 QingStor 中，并可以在必要时从中恢复
@@ -69,6 +70,10 @@ _ELK_ 是 _ElasticSearch_ 、 _Kibana_ 和 _Logstash_ 这三个软件集合的�
 
 创建成功后，点击集群列表页面相应集群可查看集群详情。可以看到集群分为ElasticSearch节点、Kibana节点和Logstash节点三种角色。其中ElasticSearch节点为集群化部署方式，节点数至少为3，默认为3节点；Logstash节点可通过增加节点数的方式来满足上层应用的故障转移需求。ElasticSearch节点可提供远程扩展字典及热更新，Logstash节点提供用户自定义插件能力，具体使用方法将在下文中详述。
 
+>ELK常被用于日志收集，存储，检索及分析领域，场景一和场景二将详解 ELK on QingCloud 在这方面的应用
+>为了方便测试，这两个场景选择了logstash http input插件输入日志数据，在实际应用中用户可以选择多种logstash input插件从各种数据源获取日志数据，比如文件、log4j、syslog、QingStor对象存储、Kafka等
+>此外，logstash默认将日志输出到ElasticSearch中，用户可以通过output_es_content配置项，对这个输出过程进行定制。用户还可以通过output_conf_content配置项，选择将日志输出到除了ElasticSearch之外的其他位置，比如QingStor对象存储
+
 ### 场景一：英文日志搜索场景
 
 第一步，在集群详情页面找到任意Logstash节点的IP地址。Logstash节点默认配置了http input插件，可通过此插件开启的9700端口进行测试，执行`curl -d "[09-07 15:57:26]: call_es_api [:10105/_cluster/health] Exception [error: [Errno -5] No address associated with hostname], try to sleep 10 second." http://<Logstash节点IP>:9700`将一条模拟日志发往Logstash。
@@ -105,6 +110,8 @@ template => "/data/elasticsearch/dicts/logstash.json"
 点击左侧的Discover菜单项，显示近期接收到的日志，在搜索栏中输入“中国”，点击右侧的“搜索”按钮。如图，“中国”被高亮显示并且中间没有空格分隔，测试成功。
 
 ![配置index](../../images/elk/search_result.png)
+
+> 在中文环境使用ELK，一个很重要的功能就是中文分词。ELK on QingCloud 在这方面也进行了增强，场景三将为您详解
 
 ### 场景三：使用 IK Analysis 插件进行中文分词
 
@@ -223,6 +230,8 @@ printf "\n\n"
 ![中文分词结果示意图](../../images/elk/chinese_split.png)
 
 第六步，更新用户自定义字典，ElasticSearch会自动检测http响应头中的Last-Modified和ETag的变化，来进行分词字典的热更新。
+
+>对象存储逐渐成为云端重要的存储方案，场景四将描述如何将ElasticSearch与QingStor对象存储进行集成，场景六将介绍如何将logstash通过input与output插件与QingStor对象存储集成
 
 ### 场景四：ElasticSearch 与 QingStor 对象存储集成
 
@@ -344,6 +353,10 @@ curl -XPOST 'http://192.168.0.10:9200/_snapshot/s3_repos_es_1/snapshot1/_restore
 第二步，任务执行成功后可通过浏览器访问`http://<Logstash节点IP>/logs/`查看对应ES节点的日志。
 
 > 注解 如存在多个Logstash节点请在集群详情页面切换到参数配置界面，配置ElasticSearch节点的`logstash_node_ip`配置项。
+
+
+>场景六～九将介绍如何对 ELK on QingCloud 中的logstash进行个性化定制及使用
+>场景十将介绍Kibana的使用方法
 
 ### 场景六：Logstash-input/output-qingstor插件使用方式
 
@@ -482,6 +495,8 @@ sudo docker exec -it <docker container id> restart.sh
 Index pattern创建成功后可点击Discover查看导入的日志。
 
 > 关于Kibana更多的使用方式，请参考[官方文档](https://www.elastic.co/guide/en/kibana/5.5/index.html)
+
+>用户还可以选择Head或者ElasticHD插件，来对集群进行可视化管理、监控及使用
 
 ### 场景十一：集群组件说明
 
