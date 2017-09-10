@@ -85,7 +85,7 @@ _ELK_ 是 _ElasticSearch_ 、 _Kibana_ 和 _Logstash_ 这三个软件集合的�
 
 第一步，在集群详情页面找到任意Logstash节点的IP地址。
 
-第二步，下载用于指定ik分词器的[模板文件](https://github.com/QingCloudAppcenter/user-guide/blob/master/docs/elk/logstash.json)。
+第二步，下载用于指定ik分词器的[模板文件](https://pek3a.qingstor.com/appcenter/user-guide/elk/logstash.json)。
 
 第三步，通过`curl -T <模板文件> http://<Logstash节点IP>/dicts/`命令上传模板文件。上传成功后可通过访问`http://<Logstash节点IP>/dicts/`来查看模板文件。
 
