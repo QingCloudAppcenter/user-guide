@@ -33,11 +33,11 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 
 ![](screenshot/服务环境配置2.png)
 
-* Kubernetes 应用支持使用私有容器仓库，方便使用内部容器仓库的用户，青云提供了[harbor应用](https://appcenter.qingcloud.com/apps/app-2mhyb1ui)可以方便用户部署私有容器仓库
-
+* Registry mirrors Docker hub 官方镜像仓库的 mirror 地址，默认是 docker hub 官方提供的中国区的 mirror。
+* Insecure registries Kubernetes 应用支持使用私有容器仓库，方便使用内部容器仓库的用户，青云提供了[harbor应用](https://appcenter.qingcloud.com/apps/app-2mhyb1ui)可以方便用户部署私有容器仓库。如果私有容器仓库没有支持 https，需要将 registry 的 ip 地址填写在这里（如果端口是非 80 端口，也需要填写，格式 ip:port)。
 * Kubernetes 需要从 dockerhub.qingcloud.com 下载镜像包含青云定制的 Kubernetes 服务镜像，因此需要用户填写 docherhub.qingcloud.com 用户名和密码。系统已经内置了 guest 账号，可以拉取 dockerhub.qingcloud.com 上的公开仓库。如果需要创建和使用自己的仓库，请提交工单申请。
-
-* 设置 Kubernetes 系统的日志级别，之后可以通过 kibana 查看
+* 设置 Kubernetes 系统的日志级别，之后可以通过 kibana 查看。
+* 如果用户需要自己对 Kubernetes 的日志或者容器输出的日志进行自定义处理，可以自己搭建 Fluent 或者 Fluent-bit 服务，将服务地址填写到这里，系统会自动将日志转发到填写的日志服务地址上。
 
 ### 第二步：创建成功
 
@@ -373,14 +373,14 @@ Kubernetes on QingCloud 容器网络使用的是 SDN Passthrough 方案，每个
 1. 将 service 通过 LoadBalancer 暴露出来，如果只是私网内使用可以用私网的负载均衡器。这个方案比较通用，建议正式场景使用这个方案。
 2. 设置一条路由，将发给 cluster-ip 的数据包都转发给集群的某个节点(包括 master)。这个相当于将该节点作为网关来转发给 cluster-ip 的数据包。如果还想通过域名访问，可以设置 dns。这个方案不建议作为正式的机制使用。
 
-   ```shell
-    	ip route add 10.96.0.0/16 via $cluster_node_ip
-   ```
+```shell
+    ip route add 10.96.0.0/16 via $cluster_node_ip
+```
 
-    ```reStructuredText
-    	nameserver 10.96.0.10
-    	search default.svc.cluster.local svc.cluster.local cluster.local
-    ```
+```reStructuredText
+   	nameserver 10.96.0.10
+    search default.svc.cluster.local svc.cluster.local cluster.local
+```
 
 
 ### 集群为什么启动失败或者超时，不能正常工作
@@ -393,7 +393,76 @@ Kubernetes on QingCloud 容器网络使用的是 SDN Passthrough 方案，每个
 ### 负载均衡器（LoadBalancer）为什么不能正常工作
 
 1. 确认 Service 可以通过 Cluster IP 访问。
+
 2. 确认 Service 可以通过 NodePort 访问。
+
 3. 如果是私有网络的负载均衡器，请确认负载均衡器的私有网络ID（vxnet）没有复用 pod 所在的私有网络。
+
 4. 如果使用的是 80 端口，请确认您的账号通过了认证（最好 IP 通过备案）。
-   ​
+
+### 如何在应用中输出 json 格式的日志，并被 Elasticsearch 按字段索引
+
+Kubernetes On QingCloud 的 fluent-bit 服务默认开启了 json 格式探测设置，如果应用输出的日志是 json 字符串，会自动解析为 json 并展开，索引到 Elasticsearch 中。
+注意：
+1. 必须整条日志都是 json 才可以，日志库会自动增加时间等信息，导致输出不是完整的 json，可以直接用各语言的输出到控制台的类库进行日志输出。
+2. 具体可参考 [helloworld 例子](tutorials/helloworld.md)中的日志输出。
+
+### 如何自定义处理 Kubernetes 以及应用的日志？
+
+Kubernetes On QingCloud 提供了日志收集功能，自动将应用的日志收集到 Elasticsearch 中进行存储，并提供 Kibana 进行查询，但有时候用户需要对日志进行自定义处理。我们提供了配置项，用户可以将日志转发到自己的日志收集服务，当前支持 [Fluent 或者 Fluent-bit](http://fluentbit.io/documentation/0.12/output/forward.html)。我们提供了一个 fluent-bit 的 [示例](https://github.com/QingCloudAppcenter/kubernetes/tree/k8s-1.7/sample/fluentbit) ，可以直接在集群客户端节点上运行查看效果，具体步骤：
+
+1. 登陆客户端节点，启动 fluent-bit forward server
+
+  ```console
+  		cd /opt/kubernetes/sample/fluentbit/
+  		sh run.sh
+  ```
+
+2. 修改集群配置中的 fluent 转发服务，填入 clientip:24224
+  系统会自动逐台重启 fluent-bit agent，等一会就会在控制台看到转发过来的日志。
+
+注意：如果开启了这项设置，请确保日志转发服务能正常工作，否则会影响 fluent-bit agent 的日志收集。
+
+### 日志不能被收集怎么办？
+
+如果发现应用的日志没有被收集到系统内置的 Elasticsearch 中或者自己的转发服务中，可能是 fluent-bit agent 出问题了。可以执行以下命令，将 fluent-bit 的 daemonset 删除，触发系统重新部署。
+
+
+```  console
+kubectl delete ds/fluent-bit -n kube-system
+```
+
+### 如何使用私有仓库
+
+ Kubernetes on QingCloud 支持使用用户想使用自己部署的 registry 服务
+
+1. 如果私有 registry 服务没有启用 https，则需要将 registry 的 ip:port 填写到集群设置的 Insecure registries 设置选项里。
+
+2. 如果私有仓库需要用户名密码验证，当前尚未提供添加第三方集群的 registry 账号的机制，不过可以通过 Kubernetes 的 secret 机制来管理 registry 账号。
+
+具体的操作步骤：
+
+1. 创建 secret，根据自己的情况修改 myregistrykey 和 myregistryserver
+
+   ```console
+   kubectl create secret docker-registry myregistrykey --docker-username=username --docker-password=password --docker-email=email --docker-server=myregistryserver.com
+   ```
+
+2. 通过 imagePullSecrets 在配置文件中引用
+
+  ```yaml
+  apiVersion: v1
+  kind: Pod
+  metadata:
+      name: private-reg
+    spec:
+      containers:
+        - name: private-reg-container
+      image: <your-private-image>
+      imagePullSecrets:
+        - name: myregistrykey
+  ```
+
+
+
+
