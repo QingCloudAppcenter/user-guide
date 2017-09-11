@@ -206,7 +206,7 @@ pg_dump和psql读写管道的能力使得直接从一个服务器转储一个数
  `pg_dump -h host1 dbname | psql -h host2 dbname `  
 例如：
 
-```
+```bash
 export PGPASSWORD=pgqingcloud1234
 pg_dump -U pgqingcloud -h 192.168.100.21 pgqingcloud -w | psql -d pgqingcloud -U root -h 192.168.100.23 -W
 ```
@@ -246,7 +246,7 @@ FROM pg_available_extensions WHERE name LIKE 'postgis%' or name LIKE 'address%';
 
 **新建基于postgis的Database my_spatial_db的脚本**  
 
-```
+```bash
 sudo su postgres
 createdb template_postgis  
 --create template based on postgis  
@@ -263,7 +263,7 @@ createdb -T template_postgis my_spatial_db
 
 在主节点上执行以下sql，新建test table并插入数据
 
-```
+```sql
 create table t_user (id int primary key,val varchar(30));
 insert into t_user  values(1,'Raito');  
 insert into t_user  values(2,'Emily');
@@ -272,7 +272,7 @@ select * from t_user;
 
 在从节点上执行以下sql，查看该表数据，查看数据是否和主节点一致。
 
-```
+```sql
 select * from t_user;
 ```
 
@@ -280,7 +280,7 @@ select * from t_user;
 
 在从节点上执行写操作，查看是否能执行成功。
 
-```
+```sql
 create table t_user1 (id int primary key,val varchar(30));
 insert into t_user1  values(1,'Raito');  
 ```  
