@@ -164,7 +164,7 @@ pgclient节点VNC登录的用户名是postgres，密码是PG1314!qy, 登录后�
   ![登录PG client节点](../../images/postgresql/pgclientlogin.png)
 
 
-### 2.2 登录postgresql DB.  
+### 2.2 登录postgresql DB
 
 在pg client节点上，通过psql的方式，用建集群步骤中定义的用户名和密码，连接到自定义的postgresql database。  
 输入命令：`psql -U pgqingcloud -h 192.168.100.11 -d pgqingcloud`  
@@ -205,10 +205,12 @@ pg_dump和psql读写管道的能力使得直接从一个服务器转储一个数
 命令：  
  `pg_dump -h host1 dbname | psql -h host2 dbname `  
 例如：
+
 ```
 export PGPASSWORD=pgqingcloud1234
 pg_dump -U pgqingcloud -h 192.168.100.21 pgqingcloud -w | psql -d pgqingcloud -U root -h 192.168.100.23 -W
 ```
+
 ![数据导入](../../images/postgresql/pg_importdataonline.png)
 
 **数据check**  
@@ -243,6 +245,7 @@ FROM pg_available_extensions WHERE name LIKE 'postgis%' or name LIKE 'address%';
 ![查看安装的postgis插件](../../images/postgresql/postgis_full_version.png)
 
 **新建基于postgis的Database my_spatial_db的脚本**  
+
 ```
 sudo su postgres
 createdb template_postgis  
@@ -259,23 +262,29 @@ createdb -T template_postgis my_spatial_db
 ### 2.6 一主一从流复制Data check  
 
 在主节点上执行以下sql，新建test table并插入数据
+
 ```
 create table t_user (id int primary key,val varchar(30));
 insert into t_user  values(1,'Raito');  
 insert into t_user  values(2,'Emily');
 select * from t_user;
 ```
+
 在从节点上执行以下sql，查看该表数据，查看数据是否和主节点一致。
+
 ```
 select * from t_user;
 ```
+
 ### 2.6 查看从节点readonly功能  
 
 在从节点上执行写操作，查看是否能执行成功。
+
 ```
 create table t_user1 (id int primary key,val varchar(30));
 insert into t_user1  values(1,'Raito');  
 ```  
+
 数据库会返回如下错误，表示从节点只提供读服务。
 ![查看从节点readonly功能](../../images/postgresql/pgsc_readonly.png)
 
