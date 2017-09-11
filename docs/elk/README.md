@@ -354,7 +354,6 @@ curl -XPOST 'http://192.168.0.10:9200/_snapshot/s3_repos_es_1/snapshot1/_restore
 
 > 注解 如存在多个Logstash节点请在集群详情页面切换到参数配置界面，配置ElasticSearch节点的`logstash_node_ip`配置项。
 
-
 >场景六～九将介绍如何对 ELK on QingCloud 中的logstash进行个性化定制及使用
 >场景十将介绍Kibana的使用方法
 
@@ -506,7 +505,6 @@ _ELK on QingCloud_ 为用户提供了以下组件，用以服务集群其他组�
 * [ElasticHD](https://github.com/farmerx/ElasticHD) 是一个ElasticSearch可视化管理工具, 支持ES监控、实时搜索，Index template快捷替换修改，索引列表信息查看，SQL converts to DSL等功能。在浏览器输入网址 `http://<Kibana节点IP>:9800/` 即可使用该插件提供的集群控制台。
 * [Caddy](https://caddyserver.com/) 是一个支持 HTTP/2 的跨平台 Web 服务器，使用和配置都非常简单。 _ELK on QingCloud_ 使用Caddy是为在Logstash节点上上传字典提供便利，同时使得ElasticSearch的日志查看变得更加方便。集群中Caddy运行在Logstash节点的80端口。
 * [Nginx](https://nginx.org/) 是一个Web服务器，也可以用作反向代理，负载平衡器和HTTP缓存。 _ELK on QingCloud_ 使用Nginx是为Kibana提供ElasticSearch节点失效时的故障转移能力。集群中Nginx运行在Kibana节点的9200端口。
-
 
 ## 在线伸缩
 
