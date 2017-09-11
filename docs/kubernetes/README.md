@@ -404,6 +404,7 @@ Kubernetes on QingCloud 容器网络使用的是 SDN Passthrough 方案，每个
 
 Kubernetes On QingCloud 的 fluent-bit 服务默认开启了 json 格式探测设置，如果应用输出的日志是 json 字符串，会自动解析为 json 并展开，索引到 Elasticsearch 中。
 注意：
+
 1. 必须整条日志都是 json 才可以，日志库会自动增加时间等信息，导致输出不是完整的 json，可以直接用各语言的输出到控制台的类库进行日志输出。
 2. 具体可参考 [helloworld 例子](tutorials/helloworld.md)中的日志输出。
 
