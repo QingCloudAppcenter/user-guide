@@ -1,4 +1,4 @@
-# PostgreSQL on QingCloud AppCenter 用户手册
+# PostgreSQL on QingCloud 用户手册
 
 ## 描述
 
@@ -162,34 +162,46 @@ pgclient节点VNC登录的用户名是postgres，密码是PG1314!qy, 登录后�
   ![数据导出](../../images/postgresql/pg_datadump.png)
 
 **数据导入**  
-方式一：从文件导入数据
-命令：`psql -d databaename(数据库名) -U username(用户名) (-h 需要导入数据的DB的IP) -f < 路径/文件名.sql`
+方式一：从文件导入数据    
+命令：  
+`psql -d databaename(数据库名) -U username(用户名) (-h 需要导入数据的DB的IP) -f < 路径/文件名.sql`  
 注意这里导入的时候请使用root用户，以防止权限不够导入数据有问题。     
 如果有需要，导入数据时先创建数据库再用psql导入：    
 `createdb newdatabase;`  
 这里直接导入用户在创建集群时创建的数据库名称pgqingcloud  
-例如：`sql -d pgqingcloud -U root -h 192.168.100.11 -f /tmp/pgdatabk.sql`  
+例如：  
+`psql -d pgqingcloud -U root -h 192.168.100.11 -f /tmp/pgdatabk.sql`  
 ![数据导入](../../images/postgresql/pg_dataimport.png)
 
-方式二：在线导入数据
-pg_dump和psql读写管道的能力使得直接从一个服务器转储一个数据库到另一个服务器成为可能.  
+方式二：在线导入数据  
+pg_dump和psql读写管道的能力使得直接从一个服务器转储一个数据库到另一个服务器成为可能.    
+命令：  
+ `pg_dump -h host1 dbname | psql -h host2 dbname `  
 例如：
-`pg_dump -h host1 dbname | psql -h host2 dbname   
-`
+```
+export PGPASSWORD=pgqingcloud1234
+pg_dump -U pgqingcloud -h 192.168.100.21 pgqingcloud -w | psql -d pgqingcloud -U root -h 192.168.100.23 -W
+```
+![数据导入](../../images/postgresql/pg_importdataonline.png)
 
 **数据check**  
 导入完成后可以使用select语句进行检查。  
 例如：`select * from t_user; `
 ![数据check](../../images/postgresql/datacheck.png)
 
-### 2.4 查看postgresql运行日志
-为了方便用户查看`PostgreSQL on QingCloud`的运行日志，可以直接登录pg client节点，postgresql日志通过文件共享的方式从postgresql server实时传递到路径/opt/pg_log下。  
+### 2.4 查看/清理postgresql运行日志
+**查看日志**    
+为了方便用户查看`PostgreSQL on QingCloud`的运行日志，可以直接登录pg client节点（pgclient节点登录的默认用户名和密码是postgres/PG1314!qy），postgresql日志通过文件共享的方式从postgresql server实时传递到路径/opt/pg_log下。  
 对于一主一从，该目录下有2个文件夹，分别存放主从节点的日志。
 ![logcheck](../../images/postgresql/logcheck.png)
 >注意:  
 >postgresql的日志默认保存30天，每天会自动保存一个日志文件,系统会自动清理。  
 >pgscripts.log文件记录节点初始化和启动相关的日志，默认保存2周。  
 >pghealth.log文件记录节点出现问题时记录的相关日志.  
+
+**清理日志**  
+日志目录给用户开放的权限是读写权限，用户除了查看日志之外还可以根据自己的需要手动清理日志。
+直接登录Client节点进入/opt/pg_log目录，使用rm命令删除日志文件即可。
 
 ### 2.5 postgis插件的使用
 **查看安装的postgis插件相关的信息**  
