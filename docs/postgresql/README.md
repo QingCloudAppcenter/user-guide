@@ -9,7 +9,8 @@
 - 4.一主一从版本支持remote apply模式选项，实现主从同步复制，保证读写分离的读一致性。
 - 5.一主一从版本在异步流复制模式下，支持自动failover功能，提供HA功能。
 - 6.单节点版本提供一周一次自动备份功能。
-- 7.支持postgis插件，为 PostgreSQL 提供了存储、查询和修改空间关系的能力。
+- 7.支持postgis插件，为 PostgreSQL
+-  提供了存储、查询和修改空间关系的能力。
 - 8.提供客户端节点，方便用户运维。
 
  >注意：PostgreSQL on QingCloud 支持 PostgreSQL 9.6.3 版本，PostGIS插件的版本是PostGIS 2.3。
@@ -144,7 +145,7 @@ Master节点等待事务作用到远端节点，而不仅仅是写入磁盘， �
 
  集群节点监控信息：
 ![集群资源监控信息](../../images/postgresql/app_info.png)
-
+![集群资源监控信息](../../images/postgresql/app_info2.png)
 ### 1.2 修改配置参数  
 
   点击 `配置参数` 可以修改 `postgresql 参数`。
@@ -207,7 +208,7 @@ pg_dump和psql读写管道的能力使得直接从一个服务器转储一个数
 例如：
 
 ```bash
-export PGPASSWORD=pgqingcloud1234
+export PGPASSWORD=pgqingcloud1234  #PGPASSWORD为用户新建集群设置的数据库密码
 pg_dump -U pgqingcloud -h 192.168.100.21 pgqingcloud -w | psql -d pgqingcloud -U root -h 192.168.100.23 -W
 ```
 
@@ -222,15 +223,16 @@ pg_dump -U pgqingcloud -h 192.168.100.21 pgqingcloud -w | psql -d pgqingcloud -U
 
 **查看日志**    
 为了方便用户查看`PostgreSQL on QingCloud`的运行日志，可以直接登录pg client节点（pgclient节点登录的默认用户名和密码是postgres/PG1314!qy），postgresql日志通过文件共享的方式从postgresql server实时传递到路径/opt/pg_log下。  
-对于一主一从，该目录下有2个文件夹，分别存放主从节点的日志。
+对于一主一从，该目录下有2个文件夹pg1log,pg2log，分别存放主从节点的日志。
 ![logcheck](../../images/postgresql/logcheck.png)
+![logcheck](../../images/postgresql/logcheck2.png)
 >注意:  
 >postgresql的日志默认保存30天，每天会自动保存一个日志文件,系统会自动清理。  
 >pgscripts.log文件记录节点初始化和启动相关的日志，默认保存2周。  
 >pghealth.log文件记录节点出现问题时记录的相关日志.  
 
 **清理日志**  
-日志目录给用户开放的权限是读写权限，用户除了查看日志之外还可以根据自己的需要手动清理日志。
+日志目录给用户开放的权限是读写权限，用户除了查看日志之外还可以根据自己的需要手动清理日志。      
 直接登录Client节点进入/opt/pg_log目录，使用rm命令删除日志文件即可。
 
 ### 2.5 postgis插件的使用  
@@ -283,8 +285,8 @@ select * from t_user;
 ```sql
 create table t_user1 (id int primary key,val varchar(30));
 insert into t_user1  values(1,'Raito');  
-```  
-
+```
+ 
 数据库会返回如下错误，表示从节点只提供读服务。
 ![查看从节点readonly功能](../../images/postgresql/pgsc_readonly.png)
 
@@ -298,6 +300,7 @@ insert into t_user1  values(1,'Raito');
 
 ### 2.8 单机版自动备份功能  
 
-针对单机版用于开发测试环境，为了防止用户行为导致的勿删数据导致数据丢失的情况，单机版postgresql提供自动备份功能，每周自动备份一次，目前保留2个备份版本的数据。  
-备份数据的目录存放在postgresql server上的`/data/pgdatabackup/pgbasebackupdir`。  
-如有需要可以从该路径下恢复之前的数据版本。
+针对单机版用于开发测试环境，为了防止用户行为导致的勿删数据导致数据丢失的情况，单机版postgresql提供自动备份功能，每周自动备份一次，目前保留2个备份版本的数据。
+备份数据的目录存放在postgresql server上的`/data/pgdatabackup/pgbasebackupdir`。
+如有需要可以从该路径下恢复之前的数据版本(需要提工单完成该任务)。
+
