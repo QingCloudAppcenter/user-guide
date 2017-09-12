@@ -285,9 +285,10 @@ select * from t_user;
 
 ```sql
 create table t_user1 (id int primary key,val varchar(30));
-insert into t_user1  values(1,'Raito');  
+insert into t_user1  values(1,'Raito');
 ```
- 
+
+
 数据库会返回如下错误，表示从节点只提供读服务。
 ![查看从节点readonly功能](../../images/postgresql/pgsc_readonly.png)
 
