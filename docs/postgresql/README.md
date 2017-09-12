@@ -146,6 +146,7 @@ Master节点等待事务作用到远端节点，而不仅仅是写入磁盘， �
  集群节点监控信息：
 ![集群资源监控信息](../../images/postgresql/app_info.png)
 ![集群资源监控信息](../../images/postgresql/app_info2.png)
+
 ### 1.2 修改配置参数  
 
   点击 `配置参数` 可以修改 `postgresql 参数`。
