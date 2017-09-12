@@ -233,6 +233,8 @@ printf "\n\n"
 
 >对象存储逐渐成为云端重要的存储方案，场景四将描述如何将ElasticSearch与QingStor对象存储进行集成，场景六将介绍如何将logstash通过input与output插件与QingStor对象存储集成
 
+<span id = "scene4"></span>
+
 ### 场景四：ElasticSearch 与 QingStor 对象存储集成
 
 QingStor对象存储为用户提供了云端可无限扩展的通用数据存储服务，具有安全可靠、简单易用、高性能、低成本等特点。 用户可以将数据、日志、静态资源等多种文件类型，通过多种方式上传至QingStor对象存储中，以满足日常数据存储、归档、分析等需求。 为了更好的满足用户的需求，青云提供了ElasticSearch、Logstash等与QingStor对象存储的集成功能。
@@ -559,3 +561,7 @@ ELK提供了近20个配置参数，可以通过 `配置参数` 来定制个性�
 ### 安全
 
 Elasticsearch 本身的 API 没有提供安全机制，同时 Elasticsearch 的 API 的功能非常强大，所以强烈不建议通过公网将 Elasticsearch 直接暴露出去，Elasticsearch 需要在应用或者 API 网关后面。 针对Elasticsearch的攻击频发，因此建议用户通过VPN的方式而不是端口转发的方式访问集群节点，配置青云VPN的方法详见 [用户指南](https://docs.qingcloud.com/guide/vpn.html) 。
+
+### 数据迁移
+
+原青云大数据平台的ElasticSearch用户如需使用新版ELK on QingCloud应用，可借助青云对象存储完成升级过程，详情请参考[场景四：ElasticSearch 与 QingStor 对象存储集成](#scene4)
