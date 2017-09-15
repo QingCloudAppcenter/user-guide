@@ -2,41 +2,42 @@
 
 ## 描述  
 
-- `PostgreSQL on QingCloud`将 Postgresql 通过云应用的形式在 QingCloud AppCenter 部署，具有如下特性：
-- 1.提供用于测试或者开发环境下的单节点版本（PG9.6StandaloneV1.0）。
-- 2.提供能满足大部分生产环境需求的一主一从版本（PG9.6SimpleClusterV2.0）。
-- 3.一主一从版本提供主从节点，主节点提供读写服务，从节点提供读服务，实现读写分离功能。
-- 4.一主一从版本支持remote apply模式选项，实现主从同步复制，保证读写分离的读一致性。
-- 5.一主一从版本在异步流复制模式下，支持自动failover功能，提供HA功能。
-- 6.单节点版本提供一周一次自动备份功能。
-- 7.支持postgis插件，为 PostgreSQL
--  提供了存储、查询和修改空间关系的能力。
-- 8.提供客户端节点，方便用户运维。
+`PostgreSQL on QingCloud`将 Postgresql 通过云应用的形式在 QingCloud AppCenter 部署，具有如下特性：
+- 目前提供单节点版和主从双节点2个版本，分别满足开发测试和生产环境下的数据库需求。
+- 主从双节点版本提供主从节点，主节点提供读写服务，从节点提供读服务，实现读写分离功能。 
+- 主从双节点版本支持自动failover功能，提供HA功能。
+- 主从双节点版本支持remoteapply模式选项，实现主从同步复制，保证读写分离的读一致性。
+- 支持postgis插件，为 PostgreSQL提供了存储、查询和修改空间关系的能力。
+- 提供实时监控、健康检查、日志自动清理等功能，提供客户端节点，方便用户运维。
 
- >注意：PostgreSQL on QingCloud 支持 PostgreSQL 9.6.3 版本，PostGIS插件的版本是PostGIS 2.3。
+ >注意：PostgreSQL on QingCloud支持PostgreSQL9.6.3版本，PostGIS插件的版本是PostGIS 2.3。
 
 
 ## 简介  
 
-[PostgreSQL](https://www.postgresql.org/)是一个功能强大的开源数据库系统。经过长达15年以上的积极开发和不断改进，PostgreSQL已在可靠性、稳定性、数据一致性等获得了业内极高的声誉。目前PostgreSQL可以运行在所有主流操作系统上，包括Linux、Unix（AIX、BSD、HP-UX、SGI IRIX、Mac OS X、Solaris和Tru64）和Windows。
-
-作为一种企业级数据库，PostgreSQL以它所具有的各种高级功能而自豪，像多版本并发控制(MVCC)、按时间点恢复(PITR)、表空间、异步复制、嵌套事务、在线热备、复杂查询的规划和优化以及为容错而进行的预写日志等。它支持国际字符集、多字节编码并支持使用当地语言进行排序、大小写处理和格式化等操作。它也在所能管理的大数据量和所允许的大用户量并发访问时间具有完全的高伸缩性。想·
-
-## 单机版（PG9.6StandaloneV1.0）  
-
-单机版（PG9.6StandaloneV1.0）建议用于测试或者开发环境下。
+[PostgreSQL](https://www.postgresql.org/)是一个功能强大的开源数据库系统。经过长达15年以上的积极开发和不断改进，PostgreSQL已在可靠性、稳定性、数据一致性等获得了业内极高的声誉。作为一种企业级数据库，PostgreSQL以它所具有的各种高级功能而自豪，像多版本并发控制(MVCC)、按时间点恢复(PITR)、表空间、异步复制、嵌套事务、在线热备、复杂查询的规划和优化以及为容错而进行的预写日志等。它支持国际字符集、多字节编码并支持使用当地语言进行排序、大小写处理和格式化等操作。它也在所能管理的大数据量和所允许的大用户量并发访问时间具有完全的高伸缩性。 
 
 ## 创建步骤  
+
+目前提供单节点版和主从双节点版本2个版本：
+- 单节点版本号为PG9.6StandaloneV1.0
+- 主从双节点版本号为PG9.6SimpleClusterV2.0
+
+>单节点版建议用于测试或者开发环境下，该版本内置自动备份，每周备份一次，保留2个备份。   
+>主从双节点版本能满足一般生产环境下数据库的需求，主从节点可以通过修改配置参数设置同步或者异步流复制模式。
+
+两个版本的创建步骤类似，以下以单节点版为例具体说明创建步骤。 
 
 ### 第一步：基本设置  
 
 ![第1步: 基本设置](../../images/postgresql/basic_config.png)
-根据自己的需求填写 `名称` 和 `描述`，选择版本为单机版（Version 1-PG9.6Standalone）。
+根据自己的需求填写 `应用名称` 和 `应用描述`，选择`版本`为单节点版（Version 1-PG9.6Standalone）。
 
-### 第二步：PG Standalone节点设置  
+### 第二步：PG 节点设置  
 
-![第2步: PG Standalone节点设置](../../images/postgresql/pg_node_set.png)
-CPU，内存，主机类型，磁盘类型大小根据自己实际需求进行选择即可，生产环境建议磁盘使用超高性能型。
+![第2步: PG 节点设置](../../images/postgresql/pg_node_set.png)
+CPU，内存，实例类型，磁盘类型大小根据自己实际需求进行选择即可，生产环境建议磁盘使用超高性能型。
+>注意：主从双节点版本在这一步会有主从2个PG节点的设置。
 
 ### 第三步：PG Client节点设置  
 
@@ -50,81 +51,29 @@ Client节点提供postgresql客户端功能，方便用户管理postgresql数据
 
 ### 第五步：参数设置  
 
-![第5步: 服务环境参数设置1](../../images/postgresql/pg_param_config1.png)
-![第5步: 服务环境参数设置2](../../images/postgresql/pg_param_config2.png)
-![第5步: 服务环境参数设置3](../../images/postgresql/pg_param_config3.png)
-按照自己的实际需求配置 postgresql 参数。
+![第5步: 服务环境参数设置](../../images/postgresql/pg_param_config.png) 
+界面提供的参数大部分和Postgresql性能相关，如果需要调整相关参数，可以按照自己的实际需求配置和调整 postgresql 参数，修改参数postgresql service会重启。 
+ 
+在配置主从双节点版本参数时，会比单节点版本的设置多出最后2个如下的参数。
+![第5步: 服务环境参数设置](../../images/postgresql/pg_param2more_config.png) 
+
+>这2个参数的配置可以设置主从复制的方式，具体配置请参考如下2种方式。  
+>- 当前默认参数值如下：  
+synchronous_standby_names=''  
+synchronous_commit='on'  
+该设置表示当这个参数被设置为on时，直到来自于当前同步的后备服务器的一个回复指示该后备服务器已经收到了事务的提交记录并将其刷入了磁盘，主服务器上的事务才会提交。    
+>
+- 如果想保证主节点上任何的修改都及时在从节点上apply，需要将这2个参数设置成remote_apply模式。  
+synchronous_standby_names= '* '    
+synchronous_commit='remote_apply'    
+该设置表示Master节点等待事务作用到远端节点，而不仅仅是写入磁盘， 这会比通常的复制模式慢一些,但不会慢很多，它会确保所有的“提交数据”在slave 节点已经生效。   
 
 ### 第六步: 用户协议  
 
 阅读并同意青云 APP Center 用户协议之后即可开始部署应用。
 
  >注意：`PostgreSQL on QingCloud`在初始化的时候，会根据服务器参数中用户输入的数据库名称，数据库用户，和数据库密码。  
- 同时，为了方便用户维护postgresql database，会自动创建数据库超级用户root（superuser），密码和用户在服务器参数中设置的数据库密码相同。
-
-## 一主一从版本（PG9.6SimpleClusterV2.0）  
-
-一主一从版本提供主从节点，主节点提供读写服务，从节点提供读服务，实现读写分离功能。
-
-## 创建步骤  
-
-### 第一步：基本设置  
-
-![第1步: PG SC基本设置](../../images/postgresql/pgsc_basic_config.png)
-根据自己的需求填写 `名称` 和 `描述`，选择版本为主一从版本（PG9.6SimpleClusterV2.0）。
-
-### 第二步：PG一主一从 主节点设置  
-
-![第2步: PG SC主节点设置](../../images/postgresql/pgsc_node1_set.png)
-CPU，内存，主机类型，磁盘类型大小根据自己实际需求进行选择即可，生产环境建议磁盘使用超高性能型。
->注意：初始化集群的时候，默认第一个节点是主节点。
-
-### 第三步：PG一主一从 从节点设置  
-
-![第3步: PG SC从节点设置](../../images/postgresql/pgsc_node2_set.png)
-CPU，内存，主机类型，磁盘类型大小根据自己实际需求进行选择即可，生产环境建议磁盘使用超高性能型。
->注意：初始化集群的时候，默认第二个节点是从节点。
-
-### 第四步：PG一主一从 Client节点设置  
-
-![第4步: PG SC Client节点设置](../../images/postgresql/pgsc_clientnode_set.png)
-Client节点提供postgresql客户端功能，方便用户管理postgresql数据库，建议采用默认配置即可。
-
-### 第五步：网络设置   
-
-![第5步: 网络设置](../../images/postgresql/pgsc_vxnet_config.png)
-出于安全考虑，所有的集群都需要部署在私有网络中，选择自己创建的网络中。
-
-### 第六步：参数设置  
-
-![第6步: 服务环境参数设置1](../../images/postgresql/pgsc_param_config1.png)
-![第6步: 服务环境参数设置2](../../images/postgresql/pgsc_param_config2.png)
-![第6步: 服务环境参数设置3](../../images/postgresql/pgsc_param_config3.png)
-![第6步: 服务环境参数设置4](../../images/postgresql/pgsc_param_config4.png)  
-按照自己的实际需求配置 postgresql 参数。
-
->最后2个参数需要重点注意！！！  
-注意1：  
-当前默认参数值如下：  
-synchronous_standby_names=''  
-synchronous_commit='on'  
-当这个参数被设置为on时，直到来自于当前同步的后备服务器的一个回复指示该后备服务器已经收到了事务的提交记录并将其刷入了磁盘，主服务器上的事务才会提交。   
-在这种模式下主节点down了之后，HA会生效，从节点会自动切换为新的主节点。
-
-
->注意2：
-如果想保证主节点上任何的修改都及时在从节点上apply，需要将这2个参数设置成remote_apply模式。  
-synchronous_standby_names= '* '    
-synchronous_commit='remote_apply'    
-Master节点等待事务作用到远端节点，而不仅仅是写入磁盘， 这会比通常的复制模式慢一些,但不会慢很多，它会确保所有的“提交数据”在slave 节点已经生效。  
-因为主节点会一直等待从节点的响应，主机点down机之后，HA不可生效，也就是说数据的一致性和高可用性在一主一从模式下不可以同时满足。
-
-
-### 第七步: 用户协议  
-
-阅读并同意青云 APP Center 用户协议之后即可开始部署应用。
- >注意：`PostgreSQL on QingCloud`在初始化的时候，会根据服务器参数中用户输入的数据库名称，数据库用户，和数据库密码。  
- 同时，为了方便用户维护postgresql database，会自动创建数据库超级用户root（superuser），密码和用户在服务器参数中设置的数据库密码相同。
+ 同时，为了方便用户维护postgresql database，会自动创建数据库超级用户root（superuser），密码和用户在服务器参数中设置的数据库密码相同。   
 
 ## `PostgreSQL on QingCloud`的使用   
 
@@ -149,7 +98,7 @@ Master节点等待事务作用到远端节点，而不仅仅是写入磁盘， �
 
 ### 1.2 修改配置参数  
 
-  点击 `配置参数` 可以修改 `postgresql 参数`。
+  点击 `配置参数` 可以修改 `postgresql 参数`，修改参数postgresql服务将会重启。
   ![参数配置](../../images/postgresql/params_set.png)
 
 ### 1.3 扩容集群  
@@ -162,22 +111,21 @@ Master节点等待事务作用到远端节点，而不仅仅是写入磁盘， �
 ### 2.1登录PG client节点  
 
 `PostgreSQL on QingCloud` 提供客户端节点开放user access，用户可以通过VNC登录client节点。  
-pgclient节点VNC登录的用户名是postgres，密码是PG1314!qy, 登录后请自行修改该节点的登录密码。
+pgclient节点VNC登录的用户名是postgres，密码是pg1314.qy, 登录后请自行修改该节点的登录密码。
   ![登录PG client节点](../../images/postgresql/pgclientlogin.png)
 
 
 ### 2.2 登录postgresql DB
 
-在pg client节点上，通过psql的方式，用建集群步骤中定义的用户名和密码，连接到自定义的postgresql database。  
+在pg client节点上，通过psql的方式，用建集群步骤中定义的用户名和密码，连接到新创建的自定义的postgresql database。  
 输入命令：`psql -U pgqingcloud -h 192.168.100.11 -d pgqingcloud`  
-> -U 参数值是上图的服务器参数：数据库用户名，  
+-U 参数值是上图的服务器参数：数据库用户名，  
 -h 参数值是pgstandalone节点的IP，  
 -d 参数值可以是上图服务器参数:数据库名称。    
 然后输入的密码是上图服务器参数：数据库密码  
 
   ![新建DB的信息](../../images/postgresql/newDBinfo.png)   
 输入命令：`\l`， 可以查看当前postgresql server上的数据库信息。  
-如下图所示：
   ![登录PG database](../../images/postgresql/pglogin.png)  
 
 除了用psql命令行客户端连接数据库之外，还可以使用自己熟悉的其他图形化的数据库客户端连接到postgres DB上，方便做数据库操作以及数据库开发等工作。
@@ -203,7 +151,7 @@ pgclient节点VNC登录的用户名是postgres，密码是PG1314!qy, 登录后�
 ![数据导入](../../images/postgresql/pg_dataimport.png)
 
 方式二：在线导入数据  
-pg_dump和psql读写管道的能力使得直接从一个服务器转储一个数据库到另一个服务器成为可能.    
+pg_dump和psql读写管道的能力使得直接从一个服务器转储一个数据库到另一个服务器成为可能。   
 命令：  
  `pg_dump -h host1 dbname | psql -h host2 dbname `  
 例如：
@@ -238,7 +186,8 @@ pg_dump -U pgqingcloud -h 192.168.100.21 pgqingcloud -w | psql -d pgqingcloud -U
 
 ### 2.5 postgis插件的使用  
 
-**查看安装的postgis插件相关的信息**  
+以2.2 登录postgresql DB后，输入以下命令即可做相关操作。  
+**查看postgis插件信息**  
 `SELECT name, default_version,installed_version
 FROM pg_available_extensions WHERE name LIKE 'postgis%' or name LIKE 'address%';`
 ![查看安装的postgis插件](../../images/postgresql/checkpostgis.png)
@@ -247,7 +196,7 @@ FROM pg_available_extensions WHERE name LIKE 'postgis%' or name LIKE 'address%';
 `select postgis_full_version();`
 ![查看安装的postgis插件](../../images/postgresql/postgis_full_version.png)
 
-**新建基于postgis的Database my_spatial_db的脚本**  
+**新建基于postgis的Database my_spatial_db**  
 
 ```bash
 sudo su postgres
@@ -262,9 +211,9 @@ psql -d template_postgis -c "UPDATE pg_database SET datistemplate = 'true' WHERE
 createdb -T template_postgis my_spatial_db  
 ```
 
-### 2.6 一主一从流复制Data check  
+### 2.6 主从双节点数据复制的Data check  
 
-在主节点上执行以下sql，新建test table并插入数据
+以2.2 登录postgresql DB后，在主节点上执行以下sql，新建test table并插入数据
 
 ```sql
 create table t_user (id int primary key,val varchar(30));
@@ -273,15 +222,15 @@ insert into t_user  values(2,'Emily');
 select * from t_user;
 ```
 
-在从节点上执行以下sql，查看该表数据，查看数据是否和主节点一致。
+以2.2 登录postgresql DB后，在从节点上执行以下sql，查看该表数据，查看数据是否和主节点一致。
 
 ```sql
 select * from t_user;
 ```
 
-### 2.6 查看从节点readonly功能  
+### 2.6 查看从节点DB的readonly功能  
 
-在从节点上执行写操作，查看是否能执行成功。
+以2.2 登录postgresql DB后，在从节点上执行写操作，查看是否能执行成功。
 
 ```sql
 create table t_user1 (id int primary key,val varchar(30));
@@ -295,14 +244,9 @@ insert into t_user1  values(1,'Raito');
 
 ### 2.7 查看当前主节点  
 
-因为一主一从版本提供出现故障的情况下从节点能自动failover成为新的主节点，从监控页面可以查看到哪个节点是当前的主节点。
+因为主从双节点版本提供出现故障的情况下从节点能自动failover成为新的主节点，集群中的主从节点是变化的，从监控页面可以查看到哪个节点是当前的主节点。
 选中集群中某个节点的监控按钮，将监控信息的实时数据开关打开，将会出现如下监控信息。
 ![查看是否为主节点](../../images/postgresql/pg_ismaster.png)
 如果`是否为MASTER`这个监控项实时数据显示为1的话，该节点则为当前的主节点，否则是从节点。
 
-### 2.8 单机版自动备份功能  
-
-针对单机版用于开发测试环境，为了防止用户行为导致的勿删数据导致数据丢失的情况，单机版postgresql提供自动备份功能，每周自动备份一次，目前保留2个备份版本的数据。
-备份数据的目录存放在postgresql server上的`/data/pgdatabackup/pgbasebackupdir`。
-如有需要可以从该路径下恢复之前的数据版本(需要提工单完成该任务)。
-
+ 
