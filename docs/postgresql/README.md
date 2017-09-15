@@ -250,4 +250,4 @@ insert into t_user1  values(1,'Raito');
 ![查看是否为主节点](../../images/postgresql/pg_ismaster.png)
 如果`是否为MASTER`这个监控项实时数据显示为1的话，该节点则为当前的主节点，否则是从节点。
 
-关于`PostgreSQL on QingCloud`的介绍就到这里面，希望您在Qingcloud上使用愉快！
+关于`PostgreSQL on QingCloud`的介绍就到这里，希望您在Qingcloud上使用愉快！
