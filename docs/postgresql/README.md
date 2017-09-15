@@ -214,7 +214,7 @@ createdb -T template_postgis my_spatial_db
 
 ### 2.6 主从双节点数据复制的Data check  
 
-以2.2 登录postgresql DB后，在主节点上执行以下sql，新建test table并插入数据
+以2.2 登录postgresql DB后，在主节点上执行以下sql，新建test table并插入数据。
 
 ```sql
 create table t_user (id int primary key,val varchar(30));
@@ -245,9 +245,9 @@ insert into t_user1  values(1,'Raito');
 
 ### 2.7 查看当前主节点  
 
-因为主从双节点版本提供出现故障的情况下从节点能自动failover成为新的主节点，集群中的主从节点是变化的，从监控页面可以查看到哪个节点是当前的主节点。
-选中集群中某个节点的监控按钮，将监控信息的实时数据开关打开，将会出现如下监控信息。
+因为主从双节点版本提供出现故障的情况下从节点能自动failover成为新的主节点，集群中的主从节点是变化的，从监控页面可以查看到哪个节点是当前的主节点。  
+选中集群中某个节点的监控按钮，将监控信息的实时数据开关打开，将会出现如下监控信息。  
 ![查看是否为主节点](../../images/postgresql/pg_ismaster.png)
 如果`是否为MASTER`这个监控项实时数据显示为1的话，该节点则为当前的主节点，否则是从节点。
 
- 
+关于`PostgreSQL on QingCloud`的介绍就到这里面，希望您在Qingcloud上使用愉快！
