@@ -63,7 +63,7 @@ synchronous_standby_names=''
 synchronous_commit='on'  
 该设置表示当这个参数被设置为on时，直到来自于当前同步的后备服务器的一个回复指示该后备服务器已经收到了事务的提交记录并将其刷入了磁盘，主服务器上的事务才会提交。    
 >
-- 如果想保证主节点上任何的修改都及时在从节点上apply，需要将这2个参数设置成remote_apply模式。  
+>- 如果想保证主节点上任何的修改都及时在从节点上apply，需要将这2个参数设置成remote_apply模式。  
 synchronous_standby_names= '* '    
 synchronous_commit='remote_apply'    
 该设置表示Master节点等待事务作用到远端节点，而不仅仅是写入磁盘， 这会比通常的复制模式慢一些,但不会慢很多，它会确保所有的“提交数据”在slave 节点已经生效。   
@@ -74,6 +74,7 @@ synchronous_commit='remote_apply'
 
  >注意：`PostgreSQL on QingCloud`在初始化的时候，会根据服务器参数中用户输入的数据库名称，数据库用户，和数据库密码。  
  同时，为了方便用户维护postgresql database，会自动创建数据库超级用户root（superuser），密码和用户在服务器参数中设置的数据库密码相同。   
+
 
 ## `PostgreSQL on QingCloud`的使用   
 
