@@ -3,6 +3,7 @@
 ## 描述  
 
 `PostgreSQL on QingCloud`将 Postgresql 通过云应用的形式在 QingCloud AppCenter 部署，具有如下特性：
+
 - 目前提供单节点版和主从双节点2个版本，分别满足开发测试和生产环境下的数据库需求。
 - 主从双节点版本提供主从节点，主节点提供读写服务，从节点提供读服务，实现读写分离功能。 
 - 主从双节点版本支持自动failover功能，提供HA功能。
@@ -22,6 +23,7 @@
 ### 1.创建步骤  
 
 目前提供单节点版和主从双节点版本2个版本：
+
 - 单节点版本号为PG9.6StandaloneV1.0
 - 主从双节点版本号为PG9.6SimpleClusterV2.0
 
@@ -60,12 +62,13 @@ Client节点提供postgresql客户端功能，方便用户管理postgresql数据
 ![第5步: 服务环境参数设置](../../images/postgresql/pg_param2more_config.png) 
 
 >这2个参数的配置可以设置主从复制的方式，具体配置请参考如下2种方式。  
->- 当前默认参数值如下：  
+
+>1.当前默认参数值如下：  
 synchronous_standby_names=''  
 synchronous_commit='on'  
 该设置表示当这个参数被设置为on时，直到来自于当前同步的后备服务器的一个回复指示该后备服务器已经收到了事务的提交记录并将其刷入了磁盘，主服务器上的事务才会提交。    
->
->- 如果想保证主节点上任何的修改都及时在从节点上apply，需要将这2个参数设置成remote_apply模式。  
+
+>2.如果想保证主节点上任何的修改都及时在从节点上apply，需要将这2个参数设置成remote_apply模式。  
 synchronous_standby_names= '* '    
 synchronous_commit='remote_apply'    
 该设置表示Master节点等待事务作用到远端节点，而不仅仅是写入磁盘， 这会比通常的复制模式慢一些,但不会慢很多，它会确保所有的“提交数据”在slave 节点已经生效。   
