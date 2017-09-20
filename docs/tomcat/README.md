@@ -137,7 +137,7 @@ MySql 数据库应用可以在 AppCenter 控制台中创建
     <font color=red>在当前集群部署的 WAR 文件不支持自动部署到新添加的节点，使用 Tomcat Manager 的用户可以通过 undeploy & deploy 动作完成推送 WAR 文件到所有节点，使用 qingstor 的用户可以在集群控制菜单中通过 `基于QingStor重新部署 WAR` 将文件推送到各节点</font>。  
 1. 我们会根据您设置的节点物理内存大小自动配置 Java 虚拟机的最小和最大堆栈大小，分别为四分之一和二分之一内存大小，也就是说如果选择单节点 4G 内存，则 xms 为 1G，xmx为 2G。
 1. Tomcat 使用 OpenJDK 1.8.0_131，默认打开 Garbage Collection，其配置于 Tomcat 启动脚本 catalina.sh 中，配置为 CATALINA_OPTS="-XX:+PrintGCDateStamps -Xloggc:/opt/apache-tomcat-7.0.78/logs/tomcat_gc.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=1 -XX:GCLogFileSize=100M" ，日志同样会被转发至日志服务器统一保存。
-1. Tomcat 节点提供 ssh 访问权限，<font color=red>默认用户名密码为 root/tomcat0pwd</font>，同时不应直接修改 Tomcat 目录下的配置文件，而应修改 /etc/confd/templates 下对应配置文件的模版文件，否则集群启动后，Tomcat 目录下修改会被刷新覆盖。
+1. 日志节点提供 ssh 访问权限，<font color=red>默认用户名密码为 root/tomcat0pwd</font>。
 
 #### 可选：配置定制包日志及 JAVA_OPTS
 
