@@ -250,4 +250,5 @@ Redis 3.x　提供了一个从 Redis standalone (包括旧版本 2.8.17) 迁移�
 ![](snapshots/enable-config.png)
 
 ## 注意
+
 目前appcenter还不支持节点角色动态变更，因此如果网络发生partition或者其他情况导致主从切换，在网页上是无法得到反馈的。这一功能会在近期开发完成，Redis cluster应用也会及时跟进发布一个新的版本来支持这个功能。
