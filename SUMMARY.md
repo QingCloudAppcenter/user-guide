@@ -12,10 +12,7 @@
 * [MongoDB Replication](docs/mongodb-replication/README.md)
 * [MySQL Plus](docs/rds/README.md)
 * [Nextcloud](docs/nextcloud/README.md)
-<<<<<<< HEAD
-=======
 * [RabbitMQ](docs/rabbitmq/README.md)
->>>>>>> master
 * [Redis Cluster](docs/redis-cluster/README.md)
 * [Redis Standalone](docs/redis-standalone/README.md)
 * [SparkMR](docs/SparkMR/README.md)
