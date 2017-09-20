@@ -102,6 +102,8 @@ curl -d "[09-07 15:57:26]: call_es_api [:10105/_cluster/health] Exception [error
 curl -T <模板文件> http://<Logstash节点IP>/dicts/
 ```
 
+> <font color=red>注意！URL最后的 / 不能省略</font>
+
 上传成功后可通过访问`http://<Logstash节点IP>/dicts/`来查看模板文件。
 
 第四步，在集群详情页面，切换到参数配置页面，选择Logstash节点，修改`output_es_content`配置项为如下，点击保存。
@@ -142,6 +144,8 @@ curl -d "中国驻洛杉矶领事馆遭亚裔男子枪击 嫌犯已自首" http:
 ```bash
 curl -T <字典文件> http://<Logstash节点IP>/dicts/
 ```
+
+> <font color=red>注意！URL最后的 / 不能省略</font>
 
 上传成功后可通过访问`http://<Logstash节点IP>/dicts/`来查看字典文件。
 
