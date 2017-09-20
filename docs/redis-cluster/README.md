@@ -247,8 +247,12 @@ Redis 3.x　提供了一个从 Redis standalone (包括旧版本 2.8.17) 迁移�
 
 您可以通过参数配置页打开 CONFIG 和 SAVE 命令，但我们强烈不推荐您这么做。错误地使用 CONFIG 命令可能会导致服务的不可用，我们建议您在生产环境上使用默认设置来禁用这两个命令。 当您需要打开命令时，设置'打开config和save命令'为１，保存配置，服务会自动重启以生效。
 
+<<<<<<< HEAD
 ![](snapshots/enable-config.png)
 
 ## 注意
 
 目前appcenter还不支持节点角色动态变更，因此如果网络发生partition或者其他情况导致主从切换，在网页上是无法得到反馈的。这一功能会在近期开发完成，Redis cluster应用也会及时跟进发布一个新的版本来支持这个功能。
+=======
+![](snapshots/enable-config.png)
+>>>>>>> master

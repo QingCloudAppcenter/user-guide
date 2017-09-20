@@ -1,0 +1,72 @@
+{
+    "template": "*",
+    "version": 50501,
+    "settings": {
+        "index.refresh_interval": "5s",
+        "index": {
+            "analysis": {
+                "analyzer": {
+                    "by_smart": {
+                        "type": "custom",
+                        "tokenizer": "ik_smart"
+                    },
+                    "by_max_word": {
+                        "type": "custom",
+                        "tokenizer": "ik_max_word"
+                    }
+                }
+            }
+        }
+    },
+    "mappings": {
+        "_default_": {
+            "_all": {
+                "enabled": true,
+                "norms": false,
+                "analyzer": "by_max_word",
+                "search_analyzer": "by_smart"
+            },
+            "dynamic_templates": [
+                {
+                    "message_field": {
+                        "path_match": "message",
+                        "match_mapping_type": "string",
+                        "mapping": {
+                            "type": "text",
+                            "norms": false,
+                            "analyzer": "by_max_word",
+                            "search_analyzer": "by_smart"
+                        }
+                    }
+                },
+                {
+                    "string_fields": {
+                        "match": "*",
+                        "match_mapping_type": "string",
+                        "mapping": {
+                            "type": "text",
+                            "norms": false,
+                            "analyzer": "by_max_word",
+                            "search_analyzer": "by_smart",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "properties": {
+                "@timestamp": {
+                    "type": "date",
+                    "include_in_all": false
+                },
+                "@version": {
+                    "type": "keyword",
+                    "include_in_all": false
+                }
+            }
+        }
+    }
+}
