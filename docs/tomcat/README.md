@@ -235,4 +235,53 @@ WAR 文件名为存储在 QingStor 上的文件名称，带文件类型后缀。
 ![扩容集群](../../images/tomcat/links_del.png)
 
 
+## 并发测试用例参考
+
+### 测试工具
+
+使用 Apache Http Server 自带的 ApacheBench（ab） <https://httpd.apache.org/docs/2.4/programs/ab.html>
+
+### 测试环境
+
+Tomcat 集群：3节点超高性能型主机，4核 CPU，8G 内存  
+压测主机：超高性能型主机，4核 CPU，8G 内存  
+访问资源类型：静态页面  
+Tomcat 允许的最大线程数：2000  
+JVM XMS：2G  
+JVM XMX：4G  
+
+### 测试结果
+
+并发数：1500，总请求数：3000
+
+**Concurrency Level:      1500**  
+Time taken for tests:   24.344 seconds  
+**Complete requests:      3000**  
+**Failed requests:        0**  
+Total transferred:      3138000 bytes  
+HTML transferred:       2031000 bytes  
+**Requests per second:    123.23 [#/sec] (mean)**  
+Time per request:       12172.087 [ms] (mean)  
+Time per request:       8.115 [ms] (mean, across all concurrent requests)  
+Transfer rate:          125.88 [Kbytes/sec] received  
+
+Connection Times (ms)  
+              min  mean[+/-sd] median   max  
+Connect:        2  763 1073.9     81    5622  
+Processing:     4  906 1828.5    238   24319  
+Waiting:        4  906 1828.5    238   24319  
+Total:         28 1669 2300.7    842   24329  
+
+Percentage of the requests served within a certain time (ms)  
+  50%    842  
+  66%   1400  
+  75%   2301  
+  80%   2873  
+  90%   4465  
+  95%   6880  
+  98%   9093  
+  99%   9505  
+ 100%  24329 (longest request)  
+
+
 ---
