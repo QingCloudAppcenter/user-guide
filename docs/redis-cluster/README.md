@@ -117,7 +117,7 @@ S: 22b3f49a6b87403faeeb1219881e63096802eb6a 192.168.100.15:6379
 
 ### 2）Java 客户端读写数据示例
 
-首先 [下载 Jedis 库和 Apache Commons Pool 依赖库](https://github.com/xetorthio/jedis/wiki/Getting-started)。 把下载下来的 commons-pool2-2.0.jar 和 jedis-2.7.3.jar 放到同一目录下如 lib/， 创建 TestRedisCluster.java，内容如下。 然后编译、执行该 Java 程序（假设一个分片的主从节点分别是 192.168.100.10， 192.168.100.13， 端口均为 6379）。
+首先 [下载 Jedis 库和 Apache Commons Pool 依赖库](https://github.com/xetorthio/jedis/wiki/Getting-started)。 把下载下来的 commons-pool2-2.0.jar 和 jedis-2.9.0.jar 放到同一目录下如 lib/， 创建 TestRedisCluster.java，内容如下。 然后编译、执行该 Java 程序（假设一个分片的主从节点分别是 192.168.100.10， 192.168.100.13， 端口均为 6379）。
 
 ```shell
 javac -cp :./lib/* TestRedisCluster.java
@@ -131,7 +131,7 @@ import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.HostAndPort;
 
 public class TestRedisCluster {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Set<HostAndPort> jedisClusterNodes = new HashSet<HostAndPort>();
         //Jedis Cluster will attempt to discover cluster nodes automatically
         jedisClusterNodes.add(new HostAndPort(args[0], Integer.valueOf(args[2])));
