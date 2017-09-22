@@ -5,7 +5,7 @@
 `PostgreSQL on QingCloud`将 Postgresql 通过云应用的形式在 QingCloud AppCenter 部署，具有如下特性：
 
 - 目前提供单节点版和主从双节点2个版本，分别满足开发测试和生产环境下的数据库需求。
-- 主从双节点版本提供主从节点，主节点提供读写服务，从节点提供读服务，实现读写分离功能。 
+- 主从双节点版本提供主从节点，主节点提供读写服务，从节点提供读服务，实现读写分离功能。
 - 主从双节点版本支持自动failover功能，提供HA功能。
 - 主从双节点版本支持remoteapply模式选项，实现主从同步复制，保证读写分离的读一致性。
 - 支持postgis插件，为 PostgreSQL提供了存储、查询和修改空间关系的能力。
@@ -16,21 +16,21 @@
 
 ## 简介  
 
-[PostgreSQL](https://www.postgresql.org/)是一个功能强大的开源数据库系统。经过长达15年以上的积极开发和不断改进，PostgreSQL已在可靠性、稳定性、数据一致性等获得了业内极高的声誉。作为一种企业级数据库，PostgreSQL以它所具有的各种高级功能而自豪，像多版本并发控制(MVCC)、按时间点恢复(PITR)、表空间、异步复制、嵌套事务、在线热备、复杂查询的规划和优化以及为容错而进行的预写日志等。它支持国际字符集、多字节编码并支持使用当地语言进行排序、大小写处理和格式化等操作。它也在所能管理的大数据量和所允许的大用户量并发访问时间具有完全的高伸缩性。 
+[PostgreSQL](https://www.postgresql.org/)是一个功能强大的开源数据库系统。经过长达15年以上的积极开发和不断改进，PostgreSQL已在可靠性、稳定性、数据一致性等获得了业内极高的声誉。作为一种企业级数据库，PostgreSQL以它所具有的各种高级功能而自豪，像多版本并发控制(MVCC)、按时间点恢复(PITR)、表空间、异步复制、嵌套事务、在线热备、复杂查询的规划和优化以及为容错而进行的预写日志等。它支持国际字符集、多字节编码并支持使用当地语言进行排序、大小写处理和格式化等操作。它也在所能管理的大数据量和所允许的大用户量并发访问时间具有完全的高伸缩性。
 
-## `PostgreSQL on QingCloud`的具体使用 
+## `PostgreSQL on QingCloud`的具体使用
 
 ### 1.创建步骤  
 
 目前提供单节点版和主从双节点版本2个版本：
 
-- 单节点版本号为PG9.6StandaloneV1.0
-- 主从双节点版本号为PG9.6SimpleClusterV2.0
+- 单节点版本号为：PG9.6-V1.0 Standalone
+- 主从双节点版本号为：PG9.6-V1.0 SimpleCluster
 
 >单节点版建议用于测试或者开发环境下，该版本内置自动备份，每周备份一次，保留2个备份。   
 >主从双节点版本能满足一般生产环境下数据库的需求，主从节点可以通过修改配置参数设置同步或者异步流复制模式。
 
-两个版本的创建步骤类似，以下以单节点版为例具体说明创建步骤。 
+两个版本的创建步骤类似，以下以单节点版为例具体说明创建步骤。
 
 #### 第一步：基本设置  
 
@@ -55,11 +55,11 @@ Client节点提供postgresql客户端功能，方便用户管理postgresql数据
 
 #### 第五步：参数设置  
 
-![第5步: 服务环境参数设置](../../images/postgresql/pg_param_config.png) 
-界面提供的参数大部分和Postgresql性能相关，如果需要调整相关参数，可以按照自己的实际需求配置和调整 postgresql 参数，修改参数postgresql service会重启。 
- 
+![第5步: 服务环境参数设置](../../images/postgresql/pg_param_config.png)
+界面提供的参数大部分和Postgresql性能相关，如果需要调整相关参数，可以按照自己的实际需求配置和调整 postgresql 参数，修改参数postgresql service会重启。
+
 在配置主从双节点版本参数时，会比单节点版本的设置多出最后2个如下的参数。
-![第5步: 服务环境参数设置](../../images/postgresql/pg_param2more_config.png) 
+![第5步: 服务环境参数设置](../../images/postgresql/pg_param2more_config.png)
 
 >这2个参数的配置可以设置主从复制的方式，具体配置请参考如下2种方式。  
 
@@ -118,7 +118,10 @@ pgclient节点VNC登录的用户名是postgres，密码是pg1314.qy, 登录后�
   ![登录PG client节点](../../images/postgresql/pgclientlogin.png)
 
 
-### 3.2 登录postgresql DB
+### 3.2 登录postgresql DB  
+
+对于主从双节点版本，集群提供一个对外的读写 vip, 在保证高可用性的同时，无需手动切换主节点 IP 地址。
+  ![查看VIP的信息](../../images/postgresql/vipinfo.png)   
 
 在pg client节点上，通过psql的方式，用建集群步骤中定义的用户名和密码，连接到新创建的自定义的postgresql database。  
 输入命令：`psql -U pgqingcloud -h 192.168.100.11 -d pgqingcloud`  
