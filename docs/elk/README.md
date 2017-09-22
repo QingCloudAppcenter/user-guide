@@ -2,20 +2,20 @@
 
 ## 简介
 
-_ELK_ 是 _ElasticSearch_ 、 _Kibana_ 和 _Logstash_ 这三个软件集合的简称， _ElasticSearch_ 是一个实时分布式搜索和分析引擎， _Kibana_ 则为 _ElasticSearch_ 提供了强大的可视化界面， _Logstash_ 为用户提供数据采集、转换、优化和输出的能力。 _ELK_ 目前被广泛应用于实时日志处理、全文搜索和数据分析等领域。
+_ELK_ 是 _Elasticsearch_ 、 _Kibana_ 和 _Logstash_ 这三个软件集合的简称， _Elasticsearch_ 是一个实时分布式搜索和分析引擎， _Kibana_ 则为 _Elasticsearch_ 提供了强大的可视化界面， _Logstash_ 为用户提供数据采集、转换、优化和输出的能力。 _ELK_ 目前被广泛应用于实时日志处理、全文搜索和数据分析等领域。
 
-ELK on QingCloud 集成 ElasticSearch、Kibana 与 Logstash 到同一个服务中（后两者为可选），对三者进行了很好的集成后以AppCenter云应用的形式交付给用户使用。
+ELK on QingCloud 集成 Elasticsearch、Kibana 与 Logstash 到同一个服务中（后两者为可选），对三者进行了很好的集成后以AppCenter云应用的形式交付给用户使用。
 
 ### ELK on QingCloud 功能概览
 
-* ELK 版本全新升级到5.0，其中 ElasticSearch、Kibana 版本为5.5.1，Logstash 版本为5.4.3
-* 为 ElasticSearch 提供了更强大的分词功能支持，集成了 IK Analysis 中文分词插件，并为该插件提供了结巴分词的词库和 IK 自带的搜狗词库，同时还支持用户上传自定义词典
-* ElasticSearch 与 青云对象存储 QingStor 集成。ElasticSearch 集成了官方 S3 Repository 插件，可通过标准 S3 接口与青云对象存储 QingStor 集成，以便生成 snapshot 并将其存储到到 QingStor 中，并可以在必要时从中恢复
-* Logstash 集成了青云对象存储 QingStor 的 logstash input/ouput插件。用户可以很方便地从 QingStor 对象存储通过 Logstash-input-qingstor 插件输入数据到 ElasticSearch 或者通过 Logstash-output-qingstor 插件将输入到logstash的数据导出到青云对象存储
+* ELK 版本全新升级到5.0，其中 Elasticsearch、Kibana 版本为5.5.1，Logstash 版本为5.4.3
+* 为 Elasticsearch 提供了更强大的分词功能支持，集成了 IK Analysis 中文分词插件，并为该插件提供了结巴分词的词库和 IK 自带的搜狗词库，同时还支持用户上传自定义词典
+* Elasticsearch 与 青云对象存储 QingStor 集成。Elasticsearch 集成了官方 S3 Repository 插件，可通过标准 S3 接口与青云对象存储 QingStor 集成，以便生成 snapshot 并将其存储到到 QingStor 中，并可以在必要时从中恢复
+* Logstash 集成了青云对象存储 QingStor 的 logstash input/ouput插件。用户可以很方便地从 QingStor 对象存储通过 Logstash-input-qingstor 插件输入数据到 Elasticsearch 或者通过 Logstash-output-qingstor 插件将输入到logstash的数据导出到青云对象存储
 * Logstash 提供自定义插件能力
-* Kibana 集成 Nginx，提供 ElasticSearch 节点失效时的故障转移能力
-* 提供ES Head，ElasticHD可视化插件，方便用户通过浏览器使用 ElasticSearch
-* 可收集ElasticSearch集群各节点日志到logstash节点，方便定位问题
+* Kibana 集成 Nginx，提供 Elasticsearch 节点失效时的故障转移能力
+* 提供ES Head，ElasticHD可视化插件，方便用户通过浏览器使用 Elasticsearch
+* 可收集Elasticsearch集群各节点日志到logstash节点，方便定位问题
 * 集群关键指标监控
 * 一键集群安装部署
 * 支持节点横向和纵向扩容
@@ -28,11 +28,11 @@ ELK on QingCloud 集成 ElasticSearch、Kibana 与 Logstash 到同一个服务�
 
 填写服务`名称`和`描述`，选择版本
 
-### 第2步：ElasticSearch节点设置
+### 第2步：Elasticsearch节点设置
 
-![第2步：ElasticSearch节点设置](../../images/elk/es_node_config.png)
+![第2步：Elasticsearch节点设置](../../images/elk/es_node_config.png)
 
-填写 ElasticSearch 节点CPU、内存、节点数量、主机类型及数据盘大小等配置信息。
+填写 Elasticsearch 节点CPU、内存、节点数量、主机类型及数据盘大小等配置信息。
 
 ### 第3步：Kibana节点设置
 
@@ -68,13 +68,15 @@ ELK on QingCloud 集成 ElasticSearch、Kibana 与 Logstash 到同一个服务�
 
 ![查看服务详情](../../images/elk/cluster_detail.png)
 
-创建成功后，点击集群列表页面相应集群可查看集群详情。可以看到集群分为ElasticSearch节点、Kibana节点和Logstash节点三种角色。其中ElasticSearch节点为集群化部署方式，节点数至少为3，默认为3节点；Logstash节点可通过增加节点数的方式来满足上层应用的故障转移需求。ElasticSearch节点可提供远程扩展字典及热更新，Logstash节点提供用户自定义插件能力，具体使用方法将在下文中详述。
+创建成功后，点击集群列表页面相应集群可查看集群详情。可以看到集群分为Elasticsearch节点、Kibana节点和Logstash节点三种角色。其中Elasticsearch节点为集群化部署方式，节点数至少为3，默认为3节点；Logstash节点可通过增加节点数的方式来满足上层应用的故障转移需求。Elasticsearch节点可提供远程扩展字典及热更新，Logstash节点提供用户自定义插件能力，具体使用方法将在下文中详述。
 
 >ELK常被用于日志收集，存储，检索及分析领域，场景一和场景二将详解 ELK on QingCloud 在这方面的应用
 >为了方便测试，这两个场景选择了logstash http input插件输入日志数据，在实际应用中用户可以选择多种logstash input插件从各种数据源获取日志数据，比如文件、log4j、syslog、QingStor对象存储、Kafka等
->此外，logstash默认将日志输出到ElasticSearch中，用户可以通过`output_es_content`配置项，对这个输出过程进行定制。用户还可以通过`output_conf_content`配置项，选择将日志输出到除了ElasticSearch之外的其他位置，比如QingStor对象存储
+>此外，logstash默认将日志输出到Elasticsearch中，用户可以通过`output_es_content`配置项，对这个输出过程进行定制。用户还可以通过`output_conf_content`配置项，选择将日志输出到除了Elasticsearch之外的其他位置，比如QingStor对象存储
 
 ### 场景一：英文日志搜索场景
+
+场景一为用户呈现了英文日志从Logstash导入到Elasticsearch，再通过Kibana进行搜索的完整的过程。
 
 第一步，在集群详情页面找到任意Logstash节点的IP地址。Logstash节点默认配置了http input插件，可通过此插件开启的9700端口进行测试，执行如下命令将一条模拟日志发往Logstash。
 
@@ -92,6 +94,8 @@ curl -d "[09-07 15:57:26]: call_es_api [:10105/_cluster/health] Exception [error
 
 ### 场景二：中文日志搜索场景
 
+场景二为用户呈现了中文日志从Logstash导入到Elasticsearch，再通过Kibana进行搜索的完整的过程。
+
 第一步，在集群详情页面找到任意Logstash节点的IP地址。
 
 第二步，下载用于指定ik分词器的[模板文件](logstash.json)。
@@ -102,13 +106,15 @@ curl -d "[09-07 15:57:26]: call_es_api [:10105/_cluster/health] Exception [error
 curl -T <模板文件> http://<Logstash节点IP>/dicts/
 ```
 
+> <font color=red>注意！URL最后的 / 不能省略</font>
+
 上传成功后可通过访问`http://<Logstash节点IP>/dicts/`来查看模板文件。
 
 第四步，在集群详情页面，切换到参数配置页面，选择Logstash节点，修改`output_es_content`配置项为如下，点击保存。
 
 ```ruby
 template_overwrite => true
-template => "/data/elasticsearch/dicts/logstash.json"
+template => "/data/Elasticsearch/dicts/logstash.json"
 ```
 
 第五步，重启Logstash节点。在集群列表页面右键点击您的ELK集群，点击重启，选择Logstash节点，点击提交，此时Logstash节点将会重启。
@@ -127,11 +133,9 @@ curl -d "中国驻洛杉矶领事馆遭亚裔男子枪击 嫌犯已自首" http:
 
 ![配置index](../../images/elk/search_result.png)
 
-> 在中文环境使用ELK，一个很重要的功能就是中文分词。ELK on QingCloud 在这方面也进行了增强，场景三将为您详解
-
 ### 场景三：使用 IK Analysis 插件进行中文分词
 
-为了在 ElasticSearch 中获取更好的中文分词效果，ELK on QingCloud 集成了 IK Analysis 中文分词插件，并为该插件提供了结巴分词的词库和 IK 自带的搜狗词库，同时还支持用户上传自定义词典。IK Analysis 插件用法请参考 [IK Analysis plugin](https://github.com/medcl/elasticsearch-analysis-ik)。
+场景三为用户呈现了直接调用Elasticsearch API的中文分词使用方式，为了在 Elasticsearch 中获取更好的中文分词效果，ELK on QingCloud 集成了 IK Analysis 中文分词插件，并为该插件提供了结巴分词的词库和 IK 自带的搜狗词库，同时还支持用户上传自定义词典。IK Analysis 插件用法请参考 [IK Analysis plugin](https://github.com/medcl/Elasticsearch-analysis-ik)。
 
 上传用户自定义词典步骤如下：
 
@@ -143,17 +147,19 @@ curl -d "中国驻洛杉矶领事馆遭亚裔男子枪击 嫌犯已自首" http:
 curl -T <字典文件> http://<Logstash节点IP>/dicts/
 ```
 
+> <font color=red>注意！URL最后的 / 不能省略</font>
+
 上传成功后可通过访问`http://<Logstash节点IP>/dicts/`来查看字典文件。
 
 ![查看字典文件示意图](../../images/elk/access_dic.png)
 
-第三步，在集群详情页面中切换到配置参数标签页，选择"ElasticSearch节点"进行参数配置，设置`remote_ext_dict`设置项为用户自定义字典的可访问url `(如示例中为http://192.168.0.13/dicts/mydict.dic) `后保存, 然后在集群列表页面重启集群中的ElasticSearch节点。
+第三步，在集群详情页面中切换到配置参数标签页，选择"Elasticsearch节点"进行参数配置，设置`remote_ext_dict`设置项为用户自定义字典的可访问url `(如示例中为http://192.168.0.13/dicts/mydict.dic) `后保存, 然后在集群列表页面重启集群中的Elasticsearch节点。
 
-> 注意！再次强调请在配置保存之后，在集群列表页面手动重启集群中的ElasticSearch节点。
+> 注意！再次强调请在配置保存之后，在集群列表页面手动重启集群中的Elasticsearch节点。
 
 第四步，测试中文分词功能。
 
-使用如下bash脚本测试中文分词功能，请将192.168.0.10替换为集群中任意ElasticSearch节点的IP地址。
+使用如下bash脚本测试中文分词功能，请将192.168.0.10替换为集群中任意Elasticsearch节点的IP地址。
 
 ```bash
 HOST=192.168.0.10
@@ -251,15 +257,15 @@ printf "\n\n"
 
 ![中文分词结果示意图](../../images/elk/chinese_split.png)
 
-第六步，更新用户自定义字典，ElasticSearch会自动检测http响应头中的Last-Modified和ETag的变化，来进行分词字典的热更新。
+第六步，更新用户自定义字典，Elasticsearch会自动检测http响应头中的Last-Modified和ETag的变化，来进行分词字典的热更新。
 
->对象存储逐渐成为云端重要的存储方案，场景四将描述如何将ElasticSearch与QingStor对象存储进行集成，场景六将介绍如何将logstash通过input与output插件与QingStor对象存储集成
+>对象存储逐渐成为云端重要的存储方案，场景四将描述如何将Elasticsearch与QingStor对象存储进行集成，场景六将介绍如何将logstash通过input与output插件与QingStor对象存储集成
 
 <span id = "scene4"></span>
 
-### 场景四：ElasticSearch 与 QingStor 对象存储集成
+### 场景四：Elasticsearch 与 QingStor 对象存储集成
 
-QingStor对象存储为用户提供了云端可无限扩展的通用数据存储服务，具有安全可靠、简单易用、高性能、低成本等特点。 用户可以将数据、日志、静态资源等多种文件类型，通过多种方式上传至QingStor对象存储中，以满足日常数据存储、归档、分析等需求。 为了更好的满足用户的需求，青云提供了ElasticSearch、Logstash等与QingStor对象存储的集成功能。
+QingStor对象存储为用户提供了云端可无限扩展的通用数据存储服务，具有安全可靠、简单易用、高性能、低成本等特点。 用户可以将数据、日志、静态资源等多种文件类型，通过多种方式上传至QingStor对象存储中，以满足日常数据存储、归档、分析等需求。 为了更好的满足用户的需求，青云提供了Elasticsearch、Logstash等与QingStor对象存储的集成功能。
 
 Elasticsearch可以通过快照（snapshot）将指定index甚至整个cluster的数据存储到某远端仓库（repository）, 并能从该远端仓库存储的快照中恢复数据。 因Elasticsearch可以指定Amazon S3作为远程仓库，而QingStor又兼容AWS S3 API, 所以青云提供的Elasticsearch服务可以通过S3 Repository Plugin与QingStor对象存储集成以便生成快照将数据存储到到QingStor中，并可以在必要时从中恢复。
 
@@ -358,32 +364,30 @@ curl -XPOST 'http://192.168.0.10:9200/_snapshot/s3_repos_es_1/snapshot1/_restore
 
 六、恢复快照到另一个不同的集群，用户可以用这种方法在不同集群之间通过QingStor导入导出数据：
 
-```bash
 存储在snapshot中的信息不是和某个具体的集群或集群名字绑定的，因此可以把在一个集群中产生的快照恢复到另一个集群中去。
 
 恢复到一个新集群前需要做的是在新的集群中生成和老的集群同样repository（必须使用同样的参数，具体方法请参考第一小节）。 需要注意的是，新集群的版本必须和老集群一致或者更新。
 
 在新的集群创建好与老集群相同的repository后，就可以通过第五节中提到的命令（需要把ip地址192.168.0.10改成新集群里节点的地址）将老集群的数据恢复到新集群上去。
-```
 
-> 注解 更详细的有关集群快照的生成和恢复的信息请参考[Elasticsearch官方文档](https://www.elastic.co/guide/en/elasticsearch/reference/5.5/modules-snapshots.html)
+> 注解 更详细的有关集群快照的生成和恢复的信息请参考[Elasticsearch官方文档](https://www.elastic.co/guide/en/Elasticsearch/reference/5.5/modules-snapshots.html)
 
-### 场景五：ElasticSearch集群日志查看
+### 场景五：Elasticsearch集群日志查看
 
-第一步，在集群列表页面，在ELK集群上点击右键选择 **自定义服务** > **收集ES日志**，然后选择 **ElasticSearch节点** 点击提交。
+第一步，在集群列表页面，在ELK集群上点击右键选择 **自定义服务** > **收集ES日志**，然后选择 **Elasticsearch节点** 点击提交。
 
 ![收集ES日志](../../images/elk/collect_es_logs.png)
 
 第二步，任务执行成功后可通过浏览器访问`http://<Logstash节点IP>/logs/`查看对应ES节点的日志。
 
-> 注解 如存在多个Logstash节点请在集群详情页面切换到参数配置界面，配置ElasticSearch节点的`logstash_node_ip`配置项。
+> 注解 如存在多个Logstash节点请在集群详情页面切换到参数配置界面，配置Elasticsearch节点的`logstash_node_ip`配置项。
 
 >场景六～九将介绍如何对 ELK on QingCloud 中的logstash进行个性化定制及使用
 >场景十将介绍Kibana的使用方法
 
 ### 场景六：Logstash-input/output-qingstor插件使用方式
 
-Logstash 集成了青云对象存储 QingStor 的 logstash input/ouput插件。用户可以很方便地从 QingStor 对象存储通过 Logstash-input-qingstor 插件输入数据到 ElasticSearch 或者通过 Logstash-output-qingstor 插件从ElasticSearch导出数据到 QingStor 对象存储。使用插件之前请先在 青云控制台 申请 [Access Key](https://console.qingcloud.com/access_keys/) 和  [创建Bucket](https://docs.qingcloud.com/qingstor/guide/index.html#id2)。
+Logstash 集成了青云对象存储 QingStor 的 logstash input/ouput插件。用户可以很方便地从 QingStor 对象存储通过 Logstash-input-qingstor 插件输入数据到 Elasticsearch 或者通过 Logstash-output-qingstor 插件从Elasticsearch导出数据到 QingStor 对象存储。使用插件之前请先在 青云控制台 申请 [Access Key](https://console.qingcloud.com/access_keys/) 和  [创建Bucket](https://docs.qingcloud.com/qingstor/guide/index.html#id2)。
 
 > 下面以input插件为例说明。
 
@@ -404,7 +408,7 @@ qingstor {
 
 第三步，使用浏览器打开`http://<Kibana节点IP>:5601/`，配置index pattern后，既可在Discover查看到导入的日志。
 
-> Logstash默认的output是ElasticSearch， 并自动配置好了ElasticSearch集群的hosts选项。如果需要在output到ElasticSearch的过程中指定其他参数， 可以在`output_es_content`中指定，比如：
+> Logstash默认的output是Elasticsearch， 并自动配置好了Elasticsearch集群的hosts选项。如果需要在output到Elasticsearch的过程中指定其他参数， 可以在`output_es_content`中指定，比如：
 
 ```ruby
 	action => "update"
@@ -435,7 +439,11 @@ qingstor {
 
 第一步，在集群列表页面的Logstash节点上点击节点ID右侧的显示器图标，打开Web终端。输入默认用户名\(ubuntu\)、密码\(p12cHANgepwD\)，进入shell。
 
-第二步，进入`/data/logstash/plugins`目录，运行`git clone https://github.com/logstash-plugins/logstash-output-influxdb.git`下载logstash-output-influxdb插件。
+第二步，进入`/data/logstash/plugins`目录，运行如下命令下载logstash-output-influxdb插件。
+
+```bash
+git clone https://github.com/logstash-plugins/logstash-output-influxdb.git
+```
 
 第三步，在集群详情页面，切换到参数配置页面，选择Logstash节点，修改`gemfile_append_content`配置项为如下，点击保存。
 
@@ -443,9 +451,17 @@ qingstor {
 gem "logstash-output-influxdb", :path => "/data/logstash/plugins/logstash-output-influxdb"
 ```
 
-第四步，打开之前的Web终端，执行`sudo docker exec -it <docker container id> logstash-plugin install --no-verify`
+第四步，打开之前的Web终端，执行如下命令
 
-> 请将`<docker container id>`替换为您的logstash的容器ID，可通过命令`sudo docker ps`查看
+```bash
+sudo docker exec -it <docker container id> logstash-plugin install --no-verify
+```
+
+> 请将`<docker container id>`替换为您的logstash的容器ID，可通过如下命令查看
+
+```bash
+sudo docker ps
+```
 
 第五步，在集群详情页面，切换到参数配置页面，选择Logstash节点，修改`output_conf_content`配置项为如下，点击保存。
 
@@ -481,7 +497,19 @@ curl -d "qingcloud" 127.0.0.1:9700
 
 第一步，在集群列表页面的Logstash节点上点击节点ID右侧的显示器图标，打开Web终端。输入默认用户名\(ubuntu\)、密码\(p12cHANgepwD\)，进入shell。
 
-第二步，在shell中执行`sudo docker ps`，查看Logstash的Container ID，然后执行`sudo docker exec -it <docker container id> logstash-plugin generate --type <filter> --name <abcd> --path /data/logstash/plugins`，其中将`<docker container id>`替换为您的 Logstash的Container ID，`<filter>`替换为您想要定制的插件的类型，类型包括`{input, filter, codec, output}`，`<abcd>`替换为您要开发的插件的名称。执行成功后显示如图所示。
+第二步，在shell中执行如下命令，查看Logstash的Container ID。
+
+```bash
+sudo docker ps
+```
+
+然后执行如下命令:
+
+```bash
+sudo docker exec -it <docker container id> logstash-plugin generate --type <filter> --name <abcd> --path /data/logstash/plugins
+```
+
+其中将`<docker container id>`替换为您的 Logstash的Container ID，`<filter>`替换为您想要定制的插件的类型，类型包括`{input, filter, codec, output}`，`<abcd>`替换为您要开发的插件的名称。执行成功后显示如图所示。
 
 ![查看Container ID](../../images/elk/logstash_container.png)
 
@@ -517,7 +545,11 @@ curl -d "qingcloud" http://<Logstash节点IP>:9700
 sudo docker exec -it <docker container id> restart.sh
 ```
 
-> 请将`<docker container id>`替换为您的logstash的容器ID，可通过命令`sudo docker ps`查看
+> 请将`<docker container id>`替换为您的logstash的容器ID，可通过如下命令查看
+
+```bash
+sudo docker ps
+```
 
 如显示`[=[Restart]=] Can't lock the file.`，则表示其他操作正在执行，请稍后再次尝试重启命令。
 
@@ -541,23 +573,29 @@ Index pattern创建成功后可点击Discover查看导入的日志。
 
 _ELK on QingCloud_ 为用户提供了以下组件，用以服务集群其他组件或直接为用户提供服务。
 
-* [head](http://mobz.github.io/elasticsearch-head/) 提供一个Elasticsearch cluster的web控制台，用户可以在这个控制台里很方便的查看集群拓扑架构、监控集群状态，进行节点和索引级别的各种操作，以及进行数据的浏览、查询、分析等。在浏览器输入网址 `http://<Kibana节点IP>:9100/` 即可使用该插件提供的集群控制台。进入后请输入`http://<任意ElasticSearch节点IP>:9200/`后，点击连接即可查看ElasticSearch集群状态。
-* [ElasticHD](https://github.com/farmerx/ElasticHD) 是一个ElasticSearch可视化管理工具, 支持ES监控、实时搜索，Index template快捷替换修改，索引列表信息查看，SQL converts to DSL等功能。在浏览器输入网址 `http://<Kibana节点IP>:9800/` 即可使用该插件提供的集群控制台。
-* [Caddy](https://caddyserver.com/) 是一个支持 HTTP/2 的跨平台 Web 服务器，使用和配置都非常简单。 _ELK on QingCloud_ 使用Caddy是为在Logstash节点上上传字典提供便利，同时使得ElasticSearch的日志查看变得更加方便。集群中Caddy运行在Logstash节点的80端口。
-* [Nginx](https://nginx.org/) 是一个Web服务器，也可以用作反向代理，负载平衡器和HTTP缓存。 _ELK on QingCloud_ 使用Nginx是为Kibana提供ElasticSearch节点失效时的故障转移能力。集群中Nginx运行在Kibana节点的9200端口。
+* [head](http://mobz.github.io/Elasticsearch-head/) 提供一个Elasticsearch cluster的web控制台，用户可以在这个控制台里很方便的查看集群拓扑架构、监控集群状态，进行节点和索引级别的各种操作，以及进行数据的浏览、查询、分析等。在浏览器输入网址 `http://<Kibana节点IP>:9100/` 即可使用该插件提供的集群控制台。进入后请输入`http://<任意Elasticsearch节点IP>:9200/`后，点击连接即可查看Elasticsearch集群状态。
+* [ElasticHD](https://github.com/farmerx/ElasticHD) 是一个Elasticsearch可视化管理工具, 支持ES监控、实时搜索，Index template快捷替换修改，索引列表信息查看，SQL converts to DSL等功能。在浏览器输入网址 `http://<Kibana节点IP>:9800/` 即可使用该插件提供的集群控制台。
+* [Caddy](https://caddyserver.com/) 是一个支持 HTTP/2 的跨平台 Web 服务器，使用和配置都非常简单。 _ELK on QingCloud_ 使用Caddy是为在Logstash节点上上传字典提供便利，同时使得Elasticsearch的日志查看变得更加方便。集群中Caddy运行在Logstash节点的80端口。
+* [Nginx](https://nginx.org/) 是一个Web服务器，也可以用作反向代理，负载平衡器和HTTP缓存。 _ELK on QingCloud_ 使用Nginx是为Kibana提供Elasticsearch节点失效时的故障转移能力。集群中Nginx运行在Kibana节点的9200端口。
 
 ## 在线伸缩
 
 ### 增加节点
 
-可以在ELK详情页点击 `新增节点` 按钮可以增加 `ElasticSearch 节点`、`Kibana 节点` 或 `Logstash 节点`的数量，可以对每个新增节点指定 IP 或选择自动分配。
+可以在ELK详情页点击 `新增节点` 按钮可以增加 `Elasticsearch 节点`、`Kibana 节点` 或 `Logstash 节点`的数量，可以对每个新增节点指定 IP 或选择自动分配。
 ![增加节点](../../images/elk/add_node.png)
 
 ### 删除节点
 
-可以在 ELK 详情页选中需要删除的节点，然后点击 `删除` 按钮，只能一次删除一个，并且必须等到上个节点删除后且ElasticSearch集群完成recover操作后才能删除下一个节点，否则数据可能会丢失。删除节点过程中会锁定ELK集群不让对其进行其它生命周期操作。
+可以在 ELK 详情页选中需要删除的节点，然后点击 `删除` 按钮，只能一次删除一个，并且必须等到上个节点删除后且Elasticsearch集群完成recover操作后才能删除下一个节点，否则数据可能会丢失。删除节点过程中会锁定ELK集群不让对其进行其它生命周期操作。
 
-> 删除集群中的ElasticSearch节点需等待集群recover操作完成，集群恢复到Green状态，可通过访问任意ElasticSearch节点的9200端口来获得集群状态，示例命令为`curl http://192.168.0.5:9200/_cluster/stats`，请将192.168.0.5替换为您的ELK集群中的任意ElasticSearch节点IP。也可以通过浏览器访问Kibana节点的9100端口提供的ES Head界面或Kibana节点的9800端口提供的ElasticHD界面来查看集群状态。
+> 删除集群中的Elasticsearch节点需等待集群recover操作完成，集群恢复到Green状态，对于通常规模的集群大概需要1、2分钟的时间，可通过访问任意Elasticsearch节点的9200端口来获得集群状态，示例命令为
+
+```bash
+curl http://192.168.0.5:9200/_cluster/stats
+```
+
+> 请将192.168.0.5替换为您的ELK集群中的任意Elasticsearch节点IP。也可以通过浏览器访问Kibana节点的9100端口提供的ES Head界面或Kibana节点的9800端口提供的ElasticHD界面来查看集群状态。
 
 ### 纵向伸缩
 
@@ -570,9 +608,9 @@ ELK允许分别对各种角色的节点进行纵向的扩容及缩容。
 
 我们对ELK集群的每个节点提供了资源级别的监控和告警服务，包括 CPU 使用率、内存使用率、硬盘使用率等。
 
-### ElasticSearch 集群监控
+### Elasticsearch 集群监控
 
-为了帮助用户更好的管理和维护ELK集群，我们提供了部分针对ElasticSearch集群的监控，可通过点击任意ElasticSearch节点右侧的监控按钮来查看。
+为了帮助用户更好的管理和维护ELK集群，我们提供了部分针对Elasticsearch集群的监控，可通过点击任意Elasticsearch节点右侧的监控按钮来查看。
 
 ![监控示意图1](../../images/elk/elk_monitor1.png)
 
@@ -586,11 +624,11 @@ ELK提供了近20个配置参数，可以通过 `配置参数` 来定制个性�
 
 ### 修改配置参数
 
-在 ELK 详情页，点击 `配置参数` Tab 页，切换到`ElasticSearch节点`、`Kibana节点`或`Logstash节点`，点击 `修改属性`，修改完后，需要进行 "保存"。如图所示：
+在 ELK 详情页，点击 `配置参数` Tab 页，切换到`Elasticsearch节点`、`Kibana节点`或`Logstash节点`，点击 `修改属性`，修改完后，需要进行 "保存"。如图所示：
 
 ![配置参数](../../images/elk/env_modify.png)
 
-> 注意！ElasticSearch、Logstash节点相关配置修改后需手动重启。
+> 注意！Elasticsearch、Logstash节点相关配置修改后需手动重启。
 
 ## 注意事项
 
@@ -602,4 +640,4 @@ Elasticsearch 本身的 API 没有提供安全机制，同时 Elasticsearch 的 
 
 ### 数据迁移
 
-原青云大数据平台的ElasticSearch用户如需使用新版ELK on QingCloud应用，可借助青云对象存储完成升级过程，详情请参考[场景四：ElasticSearch 与 QingStor 对象存储集成](#scene4)
+原青云大数据平台的Elasticsearch用户如需使用新版ELK on QingCloud应用，可借助青云对象存储完成升级过程，详情请参考[场景四：Elasticsearch 与 QingStor 对象存储集成](#scene4)
