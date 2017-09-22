@@ -404,9 +404,13 @@ qingstor {
 
 > 请根据您的具体配置替换上面的配置，其他配置参数详情请参见[手册](https://github.com/yunify/logstash-output-qingstor/blob/master/docs/index.asciidoc)
 
-第二步，保存成功后请在您配置的bucket上上传日志文件。
+第二步，重启Logstash节点。
 
-第三步，使用浏览器打开`http://<Kibana节点IP>:5601/`，配置index pattern后，既可在Discover查看到导入的日志。
+在集群列表页面右键点击您的ELK集群，点击重启，选择Logstash节点，点击提交，此时Logstash节点将会重启。
+
+第三步，保存成功后请在您配置的bucket上上传日志文件。
+
+第四步，使用浏览器打开`http://<Kibana节点IP>:5601/`，配置index pattern后，既可在Discover查看到导入的日志。
 
 > Logstash默认的output是Elasticsearch， 并自动配置好了Elasticsearch集群的hosts选项。如果需要在output到Elasticsearch的过程中指定其他参数， 可以在`output_es_content`中指定，比如：
 
@@ -523,7 +527,11 @@ sudo docker exec -it <docker container id> logstash-plugin generate --type <filt
 
 ![Logstash参数配置](../../images/elk/logstash_env.png)
 
-第五步，测试插件是否如预期工作，Logstash节点默认配置了http input插件，可通过此插件开启的9700端口进行测试，执行如下命令将一条日志发往Logstash。
+第五步，重启Logstash节点。
+
+在集群列表页面右键点击您的ELK集群，点击重启，选择Logstash节点，点击提交，此时Logstash节点将会重启。
+
+第六步，测试插件是否如预期工作，Logstash节点默认配置了http input插件，可通过此插件开启的9700端口进行测试，执行如下命令将一条日志发往Logstash。
 
 ```bash
 curl -d "qingcloud" http://<Logstash节点IP>:9700
@@ -577,6 +585,30 @@ _ELK on QingCloud_ 为用户提供了以下组件，用以服务集群其他组�
 * [ElasticHD](https://github.com/farmerx/ElasticHD) 是一个Elasticsearch可视化管理工具, 支持ES监控、实时搜索，Index template快捷替换修改，索引列表信息查看，SQL converts to DSL等功能。在浏览器输入网址 `http://<Kibana节点IP>:9800/` 即可使用该插件提供的集群控制台。
 * [Caddy](https://caddyserver.com/) 是一个支持 HTTP/2 的跨平台 Web 服务器，使用和配置都非常简单。 _ELK on QingCloud_ 使用Caddy是为在Logstash节点上上传字典提供便利，同时使得Elasticsearch的日志查看变得更加方便。集群中Caddy运行在Logstash节点的80端口。
 * [Nginx](https://nginx.org/) 是一个Web服务器，也可以用作反向代理，负载平衡器和HTTP缓存。 _ELK on QingCloud_ 使用Nginx是为Kibana提供Elasticsearch节点失效时的故障转移能力。集群中Nginx运行在Kibana节点的9200端口。
+
+### 场景十二：logstash-input-syslog插件使用说明
+
+logstash-input-syslog是预置的logstash插件，更多的预置logstash插件请参见[Logstash预置插件列表](#logstash-plugin)。
+
+使用方式如下：
+
+第一步，在集群详情页面，切换到参数配置页面，选择Logstash节点，修改`input_conf_content`配置项为如下，点击保存。
+
+```ruby
+syslog { host => "0.0.0.0"  port => 514 }
+```
+> 请注意不要使用22、80、9600端口。
+
+> 请根据您的具体配置替换上面的配置，其他配置参数详情请参见[官方文档](https://www.elastic.co/guide/en/logstash/5.5/plugins-inputs-syslog.html)
+
+第二步，重启Logstash节点。
+
+在集群列表页面右键点击您的ELK集群，点击重启，选择Logstash节点，点击提交，此时Logstash节点将会重启。
+
+第三步，将syslog日志发送到logstash配置的端口，如本示例是514端口。
+
+第四步，测试插件是否如预期工作，在浏览器中访问Kibana节点提供的Web界面`(http://<Kibana节点IP>:5601)`，默认进入配置索引模式界面，如图，直接点击Create即可，点击左侧的Discover菜单项，显示近期接收到的日志，说明插件配置生效。
+
 
 ## 在线伸缩
 
@@ -641,3 +673,121 @@ Elasticsearch 本身的 API 没有提供安全机制，同时 Elasticsearch 的 
 ### 数据迁移
 
 原青云大数据平台的Elasticsearch用户如需使用新版ELK on QingCloud应用，可借助青云对象存储完成升级过程，详情请参考[场景四：Elasticsearch 与 QingStor 对象存储集成](#scene4)
+
+<span id = "logstash-plugin"></span>
+
+### APP设计说明
+
+本APP在软件设计上使用了Docker，用户登录到Logstash节点后可能无法找到logstash安装位置，这时可通过如下命令来找到logstash：
+
+```bash
+# 执行如下命令找到logstash的CONTAINER ID
+sudo docker ps
+# 执行如下命令进入运行中的CONTAINER中
+sudo docker exec -it <刚找到的CONTAINER ID> /bin/bash
+# 然后在CONTAINER中执行如下命令即可看到logstash的安装目录
+ls
+# 执行如下命令可看到其位于/opt/logstash目录下
+pwd
+```
+
+本APP的源码全部开源在[github](https://github.com/QingCloudAppcenter/ELK)。
+
+### Logstash预置插件列表
+
+- logstash-codec-cef
+- logstash-codec-collectd
+- logstash-codec-dots
+- logstash-codec-edn
+- logstash-codec-edn_lines
+- logstash-codec-es_bulk
+- logstash-codec-fluent
+- logstash-codec-graphite
+- logstash-codec-json
+- logstash-codec-json_lines
+- logstash-codec-line
+- logstash-codec-msgpack
+- logstash-codec-multiline
+- logstash-codec-netflow
+- logstash-codec-plain
+- logstash-codec-rubydebug
+- logstash-filter-clone
+- logstash-filter-csv
+- logstash-filter-date
+- logstash-filter-dissect
+- logstash-filter-dns
+- logstash-filter-drop
+- logstash-filter-fingerprint
+- logstash-filter-geoip
+- logstash-filter-grok
+- logstash-filter-json
+- logstash-filter-kv
+- logstash-filter-metrics
+- logstash-filter-mutate
+- logstash-filter-ruby
+- logstash-filter-sleep
+- logstash-filter-split
+- logstash-filter-syslog_pri
+- logstash-filter-throttle
+- logstash-filter-urldecode
+- logstash-filter-useragent
+- logstash-filter-uuid
+- logstash-filter-xml
+- logstash-input-beats
+- logstash-input-couchdb_changes
+- logstash-input-elasticsearch
+- logstash-input-exec
+- logstash-input-file
+- logstash-input-ganglia
+- logstash-input-gelf
+- logstash-input-generator
+- logstash-input-graphite
+- logstash-input-heartbeat
+- logstash-input-http
+- logstash-input-http_poller
+- logstash-input-imap
+- logstash-input-irc
+- logstash-input-jdbc
+- logstash-input-kafka
+- logstash-input-log4j
+- logstash-input-lumberjack
+- logstash-input-pipe
+- logstash-input-qingstor
+- logstash-input-rabbitmq
+- logstash-input-redis
+- logstash-input-s3
+- logstash-input-snmptrap
+- logstash-input-sqs
+- logstash-input-stdin
+- logstash-input-syslog
+- logstash-input-tcp
+- logstash-input-twitter
+- logstash-input-udp
+- logstash-input-unix
+- logstash-input-xmpp
+- logstash-output-cloudwatch
+- logstash-output-csv
+- logstash-output-elasticsearch
+- logstash-output-file
+- logstash-output-graphite
+- logstash-output-http
+- logstash-output-irc
+- logstash-output-kafka
+- logstash-output-nagios
+- logstash-output-null
+- logstash-output-pagerduty
+- logstash-output-pipe
+- logstash-output-qingstor
+- logstash-output-rabbitmq
+- logstash-output-redis
+- logstash-output-s3
+- logstash-output-sns
+- logstash-output-sqs
+- logstash-output-statsd
+- logstash-output-stdout
+- logstash-output-tcp
+- logstash-output-udp
+- logstash-output-webhdfs
+- logstash-output-xmpp
+- logstash-patterns-core
+
