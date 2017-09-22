@@ -226,7 +226,7 @@ Redis 集群服务每个主节点可以支持多个从节点。当读的能力�
 
 ### 从 Redis standalone 迁移数据到 Redis cluster
 
-Redis 3.x　提供了一个从 Redis standalone (包括旧版本 2.8.17) 迁移数据到 Redis cluster　的工具 redis-trib.rb, 请 下载 [Redis 4.x](http://download.redis.io/releases/redis-4.0.1.tar.gz), 解压后进入 Redis src目录， 执行以下命令:　
+Redis 4.x　提供了一个从 Redis standalone (包括旧版本 2.8.17) 迁移数据到 Redis cluster　的工具 redis-trib.rb, 请 下载 [Redis 4.x](http://download.redis.io/releases/redis-4.0.1.tar.gz), 解压后进入 Redis src目录， 执行以下命令:　
 (假设 Redis standalone 的主节点 IP 为 192.168.100.11，端口为 6379, Redis cluster 其中一个 节点的 IP 为 192.168.100.20, 端口为 6379)。
 
 ```shell
