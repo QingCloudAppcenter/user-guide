@@ -171,17 +171,17 @@ public class TestRedisCluster {
 
 Redis 集群采用 CRC16 算法对 key 值哈希到 16384 个 slots 中的一个，因此不同的 key 可能分散到不同的节点中，对于想固定一类 key 值到某一个节点，如按业务分类，可以采用 Hash Tags，下面是从 [Redis 文档](http://redis-documentasion-japanese.readthedocs.org/en/latest/topics/cluster-spec.html) 摘录的解释。
 
->
+
 In order to implement hash tags, the hash slot is computed in a different way. Basically if the key contains a “{...}” pattern only the substring between { and } is hashed in order to obtain the hash slot. However since it is possible that there are multiple occurrences of { or } the algorithm is well specified by the following rules:
->
+
 - If the key contains a { character
 - There is a } character on the right of {
 - There are one or more characters between the first occurrence of { and the first occurrence of } after the first occurrence of {.
->
+
 Then instead of hashing the key, only what is between the first occurrence of { and the first occurrence of } on its right are hashed.
->
+
 Examples:
->
+
 - The two keys {user1000}.following and {user1000}.followers will hash to the same hash slot since only the substring user1000 will be hashed in order to compute the hash slot.
 - For the key foo{}{bar} the whole key will be hashed as usually since the first occurrence of { is followed by } on the right without characters in the middle.
 - For the key foo{{bar}}zap the substring {bar will be hashed, because it is the substring between the first occurrence of { and the first occurrence of } on its right.
