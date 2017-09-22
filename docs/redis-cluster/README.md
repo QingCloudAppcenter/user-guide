@@ -1,13 +1,14 @@
-# Redis cluster on QingCloud AppCenter
+# Redis Cluster on QingCloud AppCenter
 
 Redis 是一个使用ANSI C编写的开源、支持网络、基于内存、可选持久性的键值对存储数据库。
 
 Redis cluster on QingCloud AppCenter 基于原生的Redis提供了Redis cluster的App，能够在AppCenter进行一键部署，有如下特性：
 
-- 支持一主多从以及多主多从，每个主所在分片 (shard) 平均分摊 16384 个 slots， 增加或删除主节点系统会自动平衡 slots (因为需要迁移数据，时间会有点长)。
-- 集群支持 HA, 即当某个主节点异常，它的从节点会自动切换成主节点。
+- 支持一主多从以及多主多从，每个主所在分片 (shard) 平均分摊 16384 个 slots， 增加或删除主节点系统会自动平衡 slots 
+- 集群支持 HA, 即当某个主节点异常，它的从节点会自动切换成主节点
 - 支持集群的横向及纵向伸缩
 - 一键部署
+- 基于最新的Redis 4.0.1稳定版构建
 
 ## 创建 Redis cluster App
 
@@ -61,7 +62,7 @@ Redis cluster on QingCloud AppCenter 基于原生的Redis提供了Redis cluster�
 
 ### 1）检查集群状态
 
-在同一私网中创建一台 Linux 主机，您可能需要先装一些依赖包 (如Ubuntu下apt-get install tcl ruby　和　gem install redis)， 然后请 [下载 Redis 3.x](http://download.redis.io/releases/redis-3.0.5.tar.gz), 解压后进入 Redis src目录，执行以下命令　（假设 Redis cluster 其中一个节点的 IP 为 192.168.100.13, 端口为 6379)。
+在同一私网中创建一台 Linux 主机，您可能需要先装一些依赖包 (如Ubuntu下apt-get install tcl ruby　和　gem install redis)， 然后请 [下载 Redis 4.x](http://download.redis.io/releases/redis-4.0.1.tar.gz), 解压后进入 Redis src目录，执行以下命令　（假设 Redis cluster 其中一个节点的 IP 为 192.168.100.13, 端口为 6379)。
 
 ```shell
 ./redis-trib.rb check 192.168.100.13:6379
@@ -170,21 +171,22 @@ public class TestRedisCluster {
 
 Redis 集群采用 CRC16 算法对 key 值哈希到 16384 个 slots 中的一个，因此不同的 key 可能分散到不同的节点中，对于想固定一类 key 值到某一个节点，如按业务分类，可以采用 Hash Tags，下面是从 [Redis 文档](http://redis-documentasion-japanese.readthedocs.org/en/latest/topics/cluster-spec.html) 摘录的解释。
 
->
+
 In order to implement hash tags, the hash slot is computed in a different way. Basically if the key contains a “{...}” pattern only the substring between { and } is hashed in order to obtain the hash slot. However since it is possible that there are multiple occurrences of { or } the algorithm is well specified by the following rules:
->
-If the key contains a { character
-There is a } character on the right of {
-There are one or more characters between the first occurrence of { and the first occurrence of } after the first occurrence of {.
+
+- If the key contains a { character
+- There is a } character on the right of {
+- There are one or more characters between the first occurrence of { and the first occurrence of } after the first occurrence of {.
+
 Then instead of hashing the key, only what is between the first occurrence of { and the first occurrence of } on its right are hashed.
->
+
 Examples:
->
-The two keys {user1000}.following and {user1000}.followers will hash to the same hash slot since only the substring user1000 will be hashed in order to compute the hash slot.
-For the key foo{}{bar} the whole key will be hashed as usually since the first occurrence of { is followed by } on the right without characters in the middle.
-For the key foo{{bar}}zap the substring {bar will be hashed, because it is the substring between the first occurrence of { and the first occurrence of } on its right.
-For the key foo{bar}{zap} the substring bar will be hashed, since the algorithm stops at the first valid or invalid (without bytes inside) match of { and }.
-What follows from the algorithm is that if the key starts with {}, it is guaranteed to be hashes as a whole. This is useful when using binary data as key names.
+
+- The two keys {user1000}.following and {user1000}.followers will hash to the same hash slot since only the substring user1000 will be hashed in order to compute the hash slot.
+- For the key foo{}{bar} the whole key will be hashed as usually since the first occurrence of { is followed by } on the right without characters in the middle.
+- For the key foo{{bar}}zap the substring {bar will be hashed, because it is the substring between the first occurrence of { and the first occurrence of } on its right.
+- For the key foo{bar}{zap} the substring bar will be hashed, since the algorithm stops at the first valid or invalid (without bytes inside) match of { and }.
+- What follows from the algorithm is that if the key starts with {}, it is guaranteed to be hashes as a whole. This is useful when using binary data as key names.
 
 ## 在线伸缩
 
@@ -224,7 +226,7 @@ Redis 集群服务每个主节点可以支持多个从节点。当读的能力�
 
 ### 从 Redis standalone 迁移数据到 Redis cluster
 
-Redis 3.x　提供了一个从 Redis standalone (包括旧版本 2.8.17) 迁移数据到 Redis cluster　的工具 redis-trib.rb, 请 下载 [Redis 3.x](http://download.redis.io/releases/redis-3.2.9.tar.gz), 解压后进入 Redis src目录， 执行以下命令:　
+Redis 3.x　提供了一个从 Redis standalone (包括旧版本 2.8.17) 迁移数据到 Redis cluster　的工具 redis-trib.rb, 请 下载 [Redis 4.x](http://download.redis.io/releases/redis-4.0.1.tar.gz), 解压后进入 Redis src目录， 执行以下命令:　
 (假设 Redis standalone 的主节点 IP 为 192.168.100.11，端口为 6379, Redis cluster 其中一个 节点的 IP 为 192.168.100.20, 端口为 6379)。
 
 ```shell
