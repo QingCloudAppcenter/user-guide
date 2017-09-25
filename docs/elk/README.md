@@ -114,7 +114,7 @@ curl -T <模板文件> http://<Logstash节点IP>/dicts/
 
 ```ruby
 template_overwrite => true
-template => "/data/Elasticsearch/dicts/logstash.json"
+template => "/data/elasticsearch/dicts/logstash.json"
 ```
 
 第五步，重启Logstash节点。在集群列表页面右键点击您的ELK集群，点击重启，选择Logstash节点，点击提交，此时Logstash节点将会重启。
@@ -135,7 +135,7 @@ curl -d "中国驻洛杉矶领事馆遭亚裔男子枪击 嫌犯已自首" http:
 
 ### 场景三：使用 IK Analysis 插件进行中文分词
 
-场景三为用户呈现了直接调用Elasticsearch API的中文分词使用方式，为了在 Elasticsearch 中获取更好的中文分词效果，ELK on QingCloud 集成了 IK Analysis 中文分词插件，并为该插件提供了结巴分词的词库和 IK 自带的搜狗词库，同时还支持用户上传自定义词典。IK Analysis 插件用法请参考 [IK Analysis plugin](https://github.com/medcl/Elasticsearch-analysis-ik)。
+场景三为用户呈现了直接调用Elasticsearch API的中文分词使用方式，为了在 Elasticsearch 中获取更好的中文分词效果，ELK on QingCloud 集成了 IK Analysis 中文分词插件，并为该插件提供了结巴分词的词库和 IK 自带的搜狗词库，同时还支持用户上传自定义词典。IK Analysis 插件用法请参考 [IK Analysis plugin](https://github.com/medcl/elasticsearch-analysis-ik)。
 
 上传用户自定义词典步骤如下：
 
@@ -370,7 +370,7 @@ curl -XPOST 'http://192.168.0.10:9200/_snapshot/s3_repos_es_1/snapshot1/_restore
 
 在新的集群创建好与老集群相同的repository后，就可以通过第五节中提到的命令（需要把ip地址192.168.0.10改成新集群里节点的地址）将老集群的数据恢复到新集群上去。
 
-> 注解 更详细的有关集群快照的生成和恢复的信息请参考[Elasticsearch官方文档](https://www.elastic.co/guide/en/Elasticsearch/reference/5.5/modules-snapshots.html)
+> 注解 更详细的有关集群快照的生成和恢复的信息请参考[Elasticsearch官方文档](https://www.elastic.co/guide/en/elasticsearch/reference/5.5/modules-snapshots.html)
 
 ### 场景五：Elasticsearch集群日志查看
 
@@ -581,7 +581,7 @@ Index pattern创建成功后可点击Discover查看导入的日志。
 
 _ELK on QingCloud_ 为用户提供了以下组件，用以服务集群其他组件或直接为用户提供服务。
 
-* [head](http://mobz.github.io/Elasticsearch-head/) 提供一个Elasticsearch cluster的web控制台，用户可以在这个控制台里很方便的查看集群拓扑架构、监控集群状态，进行节点和索引级别的各种操作，以及进行数据的浏览、查询、分析等。在浏览器输入网址 `http://<Kibana节点IP>:9100/` 即可使用该插件提供的集群控制台。进入后请输入`http://<任意Elasticsearch节点IP>:9200/`后，点击连接即可查看Elasticsearch集群状态。
+* [head](http://mobz.github.io/elasticsearch-head/) 提供一个Elasticsearch cluster的web控制台，用户可以在这个控制台里很方便的查看集群拓扑架构、监控集群状态，进行节点和索引级别的各种操作，以及进行数据的浏览、查询、分析等。在浏览器输入网址 `http://<Kibana节点IP>:9100/` 即可使用该插件提供的集群控制台。进入后请输入`http://<任意Elasticsearch节点IP>:9200/`后，点击连接即可查看Elasticsearch集群状态。
 * [ElasticHD](https://github.com/farmerx/ElasticHD) 是一个Elasticsearch可视化管理工具, 支持ES监控、实时搜索，Index template快捷替换修改，索引列表信息查看，SQL converts to DSL等功能。在浏览器输入网址 `http://<Kibana节点IP>:9800/` 即可使用该插件提供的集群控制台。
 * [Caddy](https://caddyserver.com/) 是一个支持 HTTP/2 的跨平台 Web 服务器，使用和配置都非常简单。 _ELK on QingCloud_ 使用Caddy是为在Logstash节点上上传字典提供便利，同时使得Elasticsearch的日志查看变得更加方便。集群中Caddy运行在Logstash节点的80端口。
 * [Nginx](https://nginx.org/) 是一个Web服务器，也可以用作反向代理，负载平衡器和HTTP缓存。 _ELK on QingCloud_ 使用Nginx是为Kibana提供Elasticsearch节点失效时的故障转移能力。集群中Nginx运行在Kibana节点的9200端口。
