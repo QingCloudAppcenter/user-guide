@@ -72,7 +72,7 @@ synchronous_commit='on'
 >2.如果想保证主节点上任何的修改都及时在从节点上apply，需要将这2个参数设置成remote_apply模式。  
 synchronous_standby_names= '* '    
 synchronous_commit='remote_apply'    
-该设置表示Master节点等待事务作用到远端节点，而不仅仅是写入磁盘， 这会比通常的复制模式慢一些,但不会慢很多，它会确保所有的“提交数据”在slave 节点已经生效。   
+该设置表示Master节点等待事务作用到远端节点，而不仅仅是写入磁盘， 这会比通常的复制模式慢一些,但不会慢很多，它会确保所有的“提交数据”在standby节点已经生效。   
 
 #### 第六步: 用户协议  
 
@@ -129,7 +129,7 @@ pgclient节点VNC登录的用户名是postgres，密码是pg1314.qy, 登录后�
 -U 参数值是上图的服务器参数：数据库用户名，  
 -h 参数值是pgstandalone节点的IP，  
 -d 参数值可以是上图服务器参数:数据库名称。    
-然后输入的密码是上图服务器参数：数据库密码  
+然后输入的密码是上图服务器参数：数据库密码，默认密码是pgqingcloud1234。  
 
   ![新建DB的信息](../../images/postgresql/newDBinfo.png)   
 输入命令：`\l`， 可以查看当前postgresql server上的数据库信息。  
@@ -164,7 +164,8 @@ pg_dump和psql读写管道的能力使得直接从一个服务器转储一个数
 例如：
 
 ```bash
-export PGPASSWORD=pgqingcloud1234  #PGPASSWORD为用户新建集群设置的数据库密码
+export PGPASSWORD=pgqingcloud1234    
+#PGPASSWORD为用户新建集群设置的数据库密码
 pg_dump -U pgqingcloud -h 192.168.100.21 pgqingcloud -w | psql -d pgqingcloud -U root -h 192.168.100.23 -W
 ```
 
@@ -248,13 +249,21 @@ insert into t_user1  values(1,'Raito');
 数据库会返回如下错误，表示从节点只提供读服务。
 ![查看从节点readonly功能](../../images/postgresql/pgsc_readonly.png)
 
-
 ### 3.8 查看当前主节点  
 
 因为主从双节点版本提供出现故障的情况下从节点能自动failover成为新的主节点，集群中的主从节点是变化的，从监控页面可以查看到哪个节点是当前的主节点。  
 选中集群中某个节点的监控按钮，将监控信息的实时数据开关打开，将会出现如下监控信息。  
 ![查看是否为主节点](../../images/postgresql/pg_ismaster.png)
 如果`是否为MASTER`这个监控项实时数据显示为1的话，该节点则为当前的主节点，否则是从节点。
+
+### 3.9 数据备份和恢复功能
+
+提供数据备份和恢复功能，可选自动备份和手工备份。
+![数据备份功能](../../images/postgresql/pg_backup.png)
+![数据备份功能](../../images/postgresql/pg_autobackup.png)
+
+从备份中选择要恢复的版本恢复数据。  
+![数据恢复功能](../../images/postgresql/pg_restore.png)
 
 关于`PostgreSQL on QingCloud`的介绍就到这里
 ，希望您在Qingcloud上使用愉快！
