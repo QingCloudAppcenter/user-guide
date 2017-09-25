@@ -18,4 +18,5 @@
 * [SparkMR](docs/SparkMR/README.md)
 * [Tomcat](docs/tomcat/README.md)
 * [ZooKeeper](docs/zk/README.md)
+* [PostgreSQL on QingCloud](docs/postgresql/README.md)
 

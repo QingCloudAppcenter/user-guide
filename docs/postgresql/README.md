@@ -258,8 +258,10 @@ insert into t_user1  values(1,'Raito');
 
 ### 3.9 数据备份和恢复功能
 
-提供数据备份和恢复功能，可选自动备份和手工备份。
+提供数据备份和恢复功能，可选手工备份和自动备份。  
+手工备份
 ![数据备份功能](../../images/postgresql/pg_backup.png)
+自动备份
 ![数据备份功能](../../images/postgresql/pg_autobackup.png)
 
 从备份中选择要恢复的版本恢复数据。  
