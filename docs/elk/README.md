@@ -673,7 +673,72 @@ Elasticsearch 本身的 API 没有提供安全机制，同时 Elasticsearch 的 
 
 ### 数据迁移
 
-原青云大数据平台的Elasticsearch用户如需使用新版ELK on QingCloud应用，可借助青云对象存储完成升级过程，详情请参考[场景四：Elasticsearch 与 QingStor 对象存储集成](#scene4)
+原青云大数据平台的Elasticsearch用户如需使用新版ELK on QingCloud应用，可借助青云对象存储完成升级过程，具体操作步骤如下：
+
+第一步，根据[部署ELK服务](#deploy-elk)创建ELK on QingCloud集群。
+
+第二步，根据[青云对象存储文档](https://docs.qingcloud.com/qingstor/index.html)创建对象存储的Bucket。
+
+第三步，在青云控制台申请[API 密钥](https://console.qingcloud.com/access_keys/)。
+
+第四步，通过如下命令为原青云大数据平台的Elasticsearch集群创建repository。
+
+```bash
+curl -XPUT 'http://<原青云大数据平台的Elasticsearch集群的某一节点的IP地址>:9200/_snapshot/my_es_repos/' -d'
+{
+  "type": "s3",
+  "settings": {
+    "endpoint": "s3.pek3a.qingstor.com",
+    "access_key": "<YourAccessKey>",
+    "secret_key": "<YourSecretKey>",
+    "bucket": "my_qingstor_bucket"
+  }
+}
+'
+```
+
+上述命令必须指定的几个关键参数包括：
+
+```bash
+集群节点地址            <原青云大数据平台的Elasticsearch集群的某一节点的IP地址>需替换为具体的IP地址
+repository            my_es_repos
+endpoint              s3.pek3a.qingstor.com (以北京3区为例，其他区需将pek3a改为相应名称如sh1a等)
+access_key            青云账号关联的access_key
+secret_key            青云账号关联的secret_key
+bucket                QingStor上bucket名称my_qingstor_bucket（如果不存在将创建出来）
+```
+
+第五步，创建了repository后，用如下命令即可创建名为snapshot1的快照（该快照将会存放在之前指定的QingStor的bucket my_qingstor_bucket中）：
+
+```bash
+创建包含集群所有index的snapshot
+curl -XPUT 'http://<原青云大数据平台的Elasticsearch集群的某一节点的IP地址>:9200/_snapshot/my_es_repos/snapshot1?wait_for_completion=true'
+```
+
+第六步，在ELK on QingCloud集群上创建和第四步中相同配置的repository。命令如下：
+
+```bash
+curl -XPUT 'http://<ELK on QingCloud集群的某一节点的IP地址>:9200/_snapshot/my_es_repos/' -d'
+{
+  "type": "s3",
+  "settings": {
+    "endpoint": "s3.pek3a.qingstor.com",
+    "access_key": "<YourAccessKey>",
+    "secret_key": "<YourSecretKey>",
+    "bucket": "my_qingstor_bucket"
+  }
+}
+'
+```
+
+> 注意！这里只有IP地址需变更为ELK on QingCloud集群的某一节点的IP地址，其他配置应与第四步中的配置完全相同。
+
+第七步，通过如下命令恢复存储在QingStor的快照到ELK on QingCloud集群，完成数据迁移。
+
+```bash
+curl -XPOST 'http://<ELK on QingCloud集群的某一节点的IP地址>:9200/_snapshot/my_es_repos/snapshot1/_restore'
+```
+
 
 <span id = "logstash-plugin"></span>
 
