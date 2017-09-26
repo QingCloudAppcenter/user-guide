@@ -12,6 +12,7 @@
 * [MongoDB Replication](docs/mongodb-replication/README.md)
 * [MySQL Plus](docs/rds/README.md)
 * [Nextcloud](docs/nextcloud/README.md)
+* [PostgreSQL](docs/postgresql/README.md)
 * [RabbitMQ](docs/rabbitmq/README.md)
 * [Redis Cluster](docs/redis-cluster/README.md)
 * [Redis Standalone](docs/redis-standalone/README.md)
