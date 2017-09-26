@@ -1,13 +1,14 @@
-# Redis cluster on QingCloud AppCenter
+# Redis Cluster on QingCloud AppCenter
 
 Redis 是一个使用ANSI C编写的开源、支持网络、基于内存、可选持久性的键值对存储数据库。
 
-Redis cluster on QingCloud AppCenter 基于原生的Redis提供了Redis cluster的App，能够在AppCenter进行一键部署，有如下特性：
+Redis cluster on QingCloud AppCenter 基于原生的 Redis 提供了 Redis cluster 的 App，能够在 AppCenter 进行一键部署，有如下特性：
 
-- 支持一主多从以及多主多从，每个主所在分片 (shard) 平均分摊 16384 个 slots， 增加或删除主节点系统会自动平衡 slots (因为需要迁移数据，时间会有点长)。
-- 集群支持 HA, 即当某个主节点异常，它的从节点会自动切换成主节点。
+- 支持一主多从以及多主多从，每个主所在分片 (shard) 平均分摊 16384 个 slots， 增加或删除主节点系统会自动平衡 slots 
+- 集群支持 HA, 即当某个主节点异常，它的从节点会自动切换成主节点
 - 支持集群的横向及纵向伸缩
 - 一键部署
+- 基于最新的 Redis 4.0.2 稳定版构建
 
 ## 创建 Redis cluster App
 
@@ -23,7 +24,7 @@ Redis cluster on QingCloud AppCenter 基于原生的Redis提供了Redis cluster�
 
 ### 2) 节点配置
 
-配置Redis节点，包括CPU，内存等信息。
+配置 Redis 节点，包括 CPU，内存等信息。
 
 ![](snapshots/step2.png)
 
@@ -39,7 +40,7 @@ Redis cluster on QingCloud AppCenter 基于原生的Redis提供了Redis cluster�
 
 ### 创建成功
 
-当Redis cluster服务创建完成之后，我们可以查看Redis cluster中各节点的运行状态。 
+当 Redis cluster 服务创建完成之后，我们可以查看 Redis cluster 中各节点的运行状态。 
 
 ![](snapshots/overview.png)
 
@@ -61,7 +62,7 @@ Redis cluster on QingCloud AppCenter 基于原生的Redis提供了Redis cluster�
 
 ### 1）检查集群状态
 
-在同一私网中创建一台 Linux 主机，您可能需要先装一些依赖包 (如Ubuntu下apt-get install tcl ruby　和　gem install redis)， 然后请 [下载 Redis 3.x](http://download.redis.io/releases/redis-3.0.5.tar.gz), 解压后进入 Redis src目录，执行以下命令　（假设 Redis cluster 其中一个节点的 IP 为 192.168.100.13, 端口为 6379)。
+在同一私网中创建一台 Linux 主机，您可能需要先装一些依赖包 (如 Ubuntu 下 apt-get install tcl ruby　和　gem install redis)， 然后请 [下载 Redis 4.x](http://download.redis.io/releases/redis-4.0.2.tar.gz), 解压后进入 Redis src 目录，执行以下命令　（假设 Redis cluster 其中一个节点的 IP 为 192.168.100.13, 端口为 6379)。
 
 ```shell
 ./redis-trib.rb check 192.168.100.13:6379
@@ -116,18 +117,21 @@ S: 22b3f49a6b87403faeeb1219881e63096802eb6a 192.168.100.15:6379
 
 ### 2）Java 客户端读写数据示例
 
-首先 [下载 Jedis 库和 Apache Commons Pool 依赖库](https://github.com/xetorthio/jedis/wiki/Getting-started)。 把下载下来的 commons-pool2-2.0.jar 和 jedis-2.7.3.jar 放到同一目录下如 lib/， 创建 TestRedisCluster.java，内容如下。 然后编译、执行该 Java 程序（假设一个分片的主从节点分别是 192.168.100.10， 192.168.100.13， 端口均为 6379）。
+首先 [下载 Jedis 库和 Apache Commons Pool 依赖库](https://github.com/xetorthio/jedis/wiki/Getting-started)。 把下载下来的 commons-pool2-2.0.jar 和 jedis-2.9.0.jar 放到同一目录下如 lib/， 创建 TestRedisCluster.java，内容如下。 然后编译、执行该 Java 程序（假设一个分片的主从节点分别是 192.168.100.10， 192.168.100.13， 端口均为 6379）。
 
-```java
+```shell
 javac -cp :./lib/* TestRedisCluster.java
 java -cp :./lib/* TestRedisCluster 192.168.100.10, 192.168.100.13 6379
+```
+
+```java
 import java.util.Set;
 import java.util.HashSet;
 import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.HostAndPort;
 
 public class TestRedisCluster {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Set<HostAndPort> jedisClusterNodes = new HashSet<HostAndPort>();
         //Jedis Cluster will attempt to discover cluster nodes automatically
         jedisClusterNodes.add(new HostAndPort(args[0], Integer.valueOf(args[2])));
@@ -170,21 +174,22 @@ public class TestRedisCluster {
 
 Redis 集群采用 CRC16 算法对 key 值哈希到 16384 个 slots 中的一个，因此不同的 key 可能分散到不同的节点中，对于想固定一类 key 值到某一个节点，如按业务分类，可以采用 Hash Tags，下面是从 [Redis 文档](http://redis-documentasion-japanese.readthedocs.org/en/latest/topics/cluster-spec.html) 摘录的解释。
 
->
+
 In order to implement hash tags, the hash slot is computed in a different way. Basically if the key contains a “{...}” pattern only the substring between { and } is hashed in order to obtain the hash slot. However since it is possible that there are multiple occurrences of { or } the algorithm is well specified by the following rules:
->
-If the key contains a { character
-There is a } character on the right of {
-There are one or more characters between the first occurrence of { and the first occurrence of } after the first occurrence of {.
-Then instead of hashing the key, only what is between the first occurrence of { and the first occurrence of } on its right are hashed.
->
+
+- If the key contains a **{** character
+- There is a **}** character on the right of **{**
+- There are one or more characters between the first occurrence of **{** and the first occurrence of **}** after the first occurrence of **{**.
+
+Then instead of hashing the key, only what is between the first occurrence of **{** and the first occurrence of **}** on its right are hashed.
+
 Examples:
->
-The two keys {user1000}.following and {user1000}.followers will hash to the same hash slot since only the substring user1000 will be hashed in order to compute the hash slot.
-For the key foo{}{bar} the whole key will be hashed as usually since the first occurrence of { is followed by } on the right without characters in the middle.
-For the key foo{{bar}}zap the substring {bar will be hashed, because it is the substring between the first occurrence of { and the first occurrence of } on its right.
-For the key foo{bar}{zap} the substring bar will be hashed, since the algorithm stops at the first valid or invalid (without bytes inside) match of { and }.
-What follows from the algorithm is that if the key starts with {}, it is guaranteed to be hashes as a whole. This is useful when using binary data as key names.
+
+- The two keys **{user1000}.following** and **{user1000}.followers** will hash to the same hash slot since only the substring **user1000** will be hashed in order to compute the hash slot.
+- For the key **foo{}{bar}** the whole key will be hashed as usually since the first occurrence of **{** is followed by **}** on the right without characters in the middle.
+- For the key **foo{{bar}}zap** the substring **{bar** will be hashed, because it is the substring between the first occurrence of **{** and the first occurrence of **}** on its right.
+- For the key **foo{bar}{zap}** the substring bar will be hashed, since the algorithm stops at the first valid or invalid (without bytes inside) match of **{** and **}**.
+- What follows from the algorithm is that if the key starts with **{}**, it is guaranteed to be hashes as a whole. This is useful when using binary data as key names.
 
 ## 在线伸缩
 
@@ -224,7 +229,7 @@ Redis 集群服务每个主节点可以支持多个从节点。当读的能力�
 
 ### 从 Redis standalone 迁移数据到 Redis cluster
 
-Redis 3.x　提供了一个从 Redis standalone (包括旧版本 2.8.17) 迁移数据到 Redis cluster　的工具 redis-trib.rb, 请 下载 [Redis 3.x](http://download.redis.io/releases/redis-3.2.9.tar.gz), 解压后进入 Redis src目录， 执行以下命令:　
+Redis 4.x　提供了一个从 Redis standalone (包括旧版本 2.8.17) 迁移数据到 Redis cluster　的工具 redis-trib.rb, 请 下载 [Redis 4.x](http://download.redis.io/releases/redis-4.0.2.tar.gz), 解压后进入 Redis src目录， 执行以下命令:　
 (假设 Redis standalone 的主节点 IP 为 192.168.100.11，端口为 6379, Redis cluster 其中一个 节点的 IP 为 192.168.100.20, 端口为 6379)。
 
 ```shell
@@ -248,3 +253,9 @@ Redis 3.x　提供了一个从 Redis standalone (包括旧版本 2.8.17) 迁移�
 您可以通过参数配置页打开 CONFIG 和 SAVE 命令，但我们强烈不推荐您这么做。错误地使用 CONFIG 命令可能会导致服务的不可用，我们建议您在生产环境上使用默认设置来禁用这两个命令。 当您需要打开命令时，设置'打开config和save命令'为１，保存配置，服务会自动重启以生效。
 
 ![](snapshots/enable-config.png)
+
+## 注意
+
+目前 appcenter 还不支持节点角色动态变更，因此如果网络发生 partition 或者其他情况导致主从切换，在网页上是无法得到反馈的。这一功能会在近期开发完成，Redis cluster 应用也会及时跟进发布一个新的版本来支持这个功能。
+
+

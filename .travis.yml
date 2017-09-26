@@ -10,6 +10,7 @@ install:
 - npm install -g markdownlint-cli
 - sudo pip install -U urllib3
 - sudo pip install -U requests
+- sudo pip install -U futures
 - sudo pip install -U qsctl
 before_script:
 - export FILENAME="_book/qingcloud-apps-user-guide"

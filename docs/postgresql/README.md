@@ -5,7 +5,11 @@
 `PostgreSQL on QingCloud`将 Postgresql 通过云应用的形式在 QingCloud AppCenter 部署，具有如下特性：
 
 - 目前提供单节点版和主从双节点2个版本，分别满足开发测试和生产环境下的数据库需求。
+<<<<<<< HEAD
 - 主从双节点版本提供主从节点，主节点提供读写服务，从节点提供读服务，实现读写分离功能。
+=======
+- 主从双节点版本提供主从节点，主节点提供读写服务，从节点提供读服务，实现读写分离功能。 
+>>>>>>> ede85d8eb64a74a4db5d67cb4732cb97a9547b53
 - 主从双节点版本支持自动failover功能，提供HA功能。
 - 主从双节点版本支持remoteapply模式选项，实现主从同步复制，保证读写分离的读一致性。
 - 支持postgis插件，为 PostgreSQL提供了存储、查询和修改空间关系的能力。
@@ -16,21 +20,36 @@
 
 ## 简介  
 
+<<<<<<< HEAD
 [PostgreSQL](https://www.postgresql.org/)是一个功能强大的开源数据库系统。经过长达15年以上的积极开发和不断改进，PostgreSQL已在可靠性、稳定性、数据一致性等获得了业内极高的声誉。作为一种企业级数据库，PostgreSQL以它所具有的各种高级功能而自豪，像多版本并发控制(MVCC)、按时间点恢复(PITR)、表空间、异步复制、嵌套事务、在线热备、复杂查询的规划和优化以及为容错而进行的预写日志等。它支持国际字符集、多字节编码并支持使用当地语言进行排序、大小写处理和格式化等操作。它也在所能管理的大数据量和所允许的大用户量并发访问时间具有完全的高伸缩性。
 
 ## `PostgreSQL on QingCloud`的具体使用
+=======
+[PostgreSQL](https://www.postgresql.org/)是一个功能强大的开源数据库系统。经过长达15年以上的积极开发和不断改进，PostgreSQL已在可靠性、稳定性、数据一致性等获得了业内极高的声誉。作为一种企业级数据库，PostgreSQL以它所具有的各种高级功能而自豪，像多版本并发控制(MVCC)、按时间点恢复(PITR)、表空间、异步复制、嵌套事务、在线热备、复杂查询的规划和优化以及为容错而进行的预写日志等。它支持国际字符集、多字节编码并支持使用当地语言进行排序、大小写处理和格式化等操作。它也在所能管理的大数据量和所允许的大用户量并发访问时间具有完全的高伸缩性。 
+
+## `PostgreSQL on QingCloud`的具体使用 
+>>>>>>> ede85d8eb64a74a4db5d67cb4732cb97a9547b53
 
 ### 1.创建步骤  
 
 目前提供单节点版和主从双节点版本2个版本：
 
+<<<<<<< HEAD
 - 单节点版本号为：PG9.6-V1.0 Standalone
 - 主从双节点版本号为：PG9.6-V1.0 SimpleCluster
+=======
+- 单节点版本号为PG9.6StandaloneV1.0
+- 主从双节点版本号为PG9.6SimpleClusterV2.0
+>>>>>>> ede85d8eb64a74a4db5d67cb4732cb97a9547b53
 
 >单节点版建议用于测试或者开发环境下，该版本内置自动备份，每周备份一次，保留2个备份。   
 >主从双节点版本能满足一般生产环境下数据库的需求，主从节点可以通过修改配置参数设置同步或者异步流复制模式。
 
+<<<<<<< HEAD
 两个版本的创建步骤类似，以下以单节点版为例具体说明创建步骤。
+=======
+两个版本的创建步骤类似，以下以单节点版为例具体说明创建步骤。 
+>>>>>>> ede85d8eb64a74a4db5d67cb4732cb97a9547b53
 
 #### 第一步：基本设置  
 
@@ -55,24 +74,40 @@ Client节点提供postgresql客户端功能，方便用户管理postgresql数据
 
 #### 第五步：参数设置  
 
+<<<<<<< HEAD
 ![第5步: 服务环境参数设置](../../images/postgresql/pg_param_config.png)
 界面提供的参数大部分和Postgresql性能相关，如果需要调整相关参数，可以按照自己的实际需求配置和调整 postgresql 参数，修改参数postgresql service会重启。
 
 在配置主从双节点版本参数时，会比单节点版本的设置多出最后2个如下的参数。
 ![第5步: 服务环境参数设置](../../images/postgresql/pg_param2more_config.png)
+=======
+![第5步: 服务环境参数设置](../../images/postgresql/pg_param_config.png) 
+界面提供的参数大部分和Postgresql性能相关，如果需要调整相关参数，可以按照自己的实际需求配置和调整 postgresql 参数，修改参数postgresql service会重启。 
+ 
+在配置主从双节点版本参数时，会比单节点版本的设置多出最后2个如下的参数。
+![第5步: 服务环境参数设置](../../images/postgresql/pg_param2more_config.png) 
+>>>>>>> ede85d8eb64a74a4db5d67cb4732cb97a9547b53
 
 >这2个参数的配置可以设置主从复制的方式，具体配置请参考如下2种方式。  
 
 >1.当前默认参数值如下：  
 synchronous_standby_names=''  
 synchronous_commit='on'  
+<<<<<<< HEAD
 该设置表示当前主从节点为异步流复制方式。   
 当这个参数被设置为on时，直到来自于当前同步的后备服务器的一个回复指示该后备服务器已经收到了事务的提交记录并将其刷入了磁盘，主服务器上的事务才会提交。    
+=======
+该设置表示当这个参数被设置为on时，直到来自于当前同步的后备服务器的一个回复指示该后备服务器已经收到了事务的提交记录并将其刷入了磁盘，主服务器上的事务才会提交。    
+>>>>>>> ede85d8eb64a74a4db5d67cb4732cb97a9547b53
 
 >2.如果想保证主节点上任何的修改都及时在从节点上apply，需要将这2个参数设置成remote_apply模式。  
 synchronous_standby_names= '* '    
 synchronous_commit='remote_apply'    
+<<<<<<< HEAD
 该设置表示Master节点等待事务作用到远端节点，而不仅仅是写入磁盘， 这会比通常的复制模式慢一些,但不会慢很多，它会确保所有的“提交数据”在standby节点已经生效。   
+=======
+该设置表示Master节点等待事务作用到远端节点，而不仅仅是写入磁盘， 这会比通常的复制模式慢一些,但不会慢很多，它会确保所有的“提交数据”在slave 节点已经生效。   
+>>>>>>> ede85d8eb64a74a4db5d67cb4732cb97a9547b53
 
 #### 第六步: 用户协议  
 
@@ -119,17 +154,25 @@ pgclient节点VNC登录的用户名是postgres，密码是pg1314.qy, 登录后�
   ![登录PG client节点](../../images/postgresql/pgclientlogin.png)
 
 
+<<<<<<< HEAD
 ### 3.2 登录postgresql DB  
 
 对于主从双节点版本，集群提供一个对外的读写 vip, 在保证高可用性的同时，无需手动切换主节点 IP 地址。
   ![查看VIP的信息](../../images/postgresql/vipinfo.png)   
+=======
+### 3.2 登录postgresql DB
+>>>>>>> ede85d8eb64a74a4db5d67cb4732cb97a9547b53
 
 在pg client节点上，通过psql的方式，用建集群步骤中定义的用户名和密码，连接到新创建的自定义的postgresql database。  
 输入命令：`psql -U pgqingcloud -h 192.168.100.11 -d pgqingcloud`  
 -U 参数值是上图的服务器参数：数据库用户名，  
 -h 参数值是pgstandalone节点的IP，  
 -d 参数值可以是上图服务器参数:数据库名称。    
+<<<<<<< HEAD
 然后输入的密码是上图服务器参数：数据库密码，默认密码是pgqingcloud1234。  
+=======
+然后输入的密码是上图服务器参数：数据库密码  
+>>>>>>> ede85d8eb64a74a4db5d67cb4732cb97a9547b53
 
   ![新建DB的信息](../../images/postgresql/newDBinfo.png)   
 输入命令：`\l`， 可以查看当前postgresql server上的数据库信息。  
@@ -164,8 +207,12 @@ pg_dump和psql读写管道的能力使得直接从一个服务器转储一个数
 例如：
 
 ```bash
+<<<<<<< HEAD
 export PGPASSWORD=pgqingcloud1234    
 #PGPASSWORD为用户新建集群设置的数据库密码
+=======
+export PGPASSWORD=pgqingcloud1234  #PGPASSWORD为用户新建集群设置的数据库密码
+>>>>>>> ede85d8eb64a74a4db5d67cb4732cb97a9547b53
 pg_dump -U pgqingcloud -h 192.168.100.21 pgqingcloud -w | psql -d pgqingcloud -U root -h 192.168.100.23 -W
 ```
 
@@ -249,6 +296,10 @@ insert into t_user1  values(1,'Raito');
 数据库会返回如下错误，表示从节点只提供读服务。
 ![查看从节点readonly功能](../../images/postgresql/pgsc_readonly.png)
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ede85d8eb64a74a4db5d67cb4732cb97a9547b53
 ### 3.8 查看当前主节点  
 
 因为主从双节点版本提供出现故障的情况下从节点能自动failover成为新的主节点，集群中的主从节点是变化的，从监控页面可以查看到哪个节点是当前的主节点。  
@@ -256,6 +307,7 @@ insert into t_user1  values(1,'Raito');
 ![查看是否为主节点](../../images/postgresql/pg_ismaster.png)
 如果`是否为MASTER`这个监控项实时数据显示为1的话，该节点则为当前的主节点，否则是从节点。
 
+<<<<<<< HEAD
 ### 3.9 数据备份和恢复功能
 
 提供数据备份和恢复功能，可选手工备份和自动备份。  
@@ -267,5 +319,7 @@ insert into t_user1  values(1,'Raito');
 从备份中选择要恢复的版本恢复数据。  
 ![数据恢复功能](../../images/postgresql/pg_restore.png)
 
+=======
+>>>>>>> ede85d8eb64a74a4db5d67cb4732cb97a9547b53
 关于`PostgreSQL on QingCloud`的介绍就到这里
 ，希望您在Qingcloud上使用愉快！
