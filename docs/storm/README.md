@@ -13,6 +13,7 @@ Storm 具有如下特点：
 - 消息不丢失：保证消息处理。
 
 除此之外 `Storm on QingCloud AppCenter` 将 Storm 通过云应用的形式在 QingCloud AppCenter 部署，具有如下特性:
+
 - 支持横向与纵向在线伸缩。
 - 提供 Storm UI 高可用 vip, 更加方便的监控和管理 Storm。
 - 系统自动运维，降低企业使用成本。
@@ -33,6 +34,7 @@ Storm 具有如下特点：
 ## Storm on QingCloud 部署架构
 
 Storm 集群采用的是 master/slave 架构，如下图所示，青云的 Storm 集群包括如下五种节点类：
+
 - 主节点：运行了 Nimbus、DRPC、UI 和 Logviewer 服务，负责接收客户端提交的计算拓扑，并协调分派计算任务。
 - 从节点：运行了 Supervisor 和 Logviewer 服务。其中，Supervisor 服务主要用于接收计算任务并按需启动或停止工作进程（Worker），而 Logviewer 服务方便用户查看运行日志。
 - RPC 节点：运行了 DRPC 和 Logviewer 服务，用于接收 RPC 请求，并将计算拓扑的处理结果返回给客户端。
@@ -285,7 +287,7 @@ Storm 提供了流式窗口 API，支持 Sliding Window 和 Tumbling Window。Sl
 
 >注意:当配置发生变化时，将会重启对应的 Storm 服务。
 
-###  常用配置项
+### 常用配置项
 
 - storm.zookeeper.session.timeout: Zookeeper客户端的 session 超时时间
 - nimbus.childopts: Storm Nimbus 服务的 JVM 参数
@@ -305,11 +307,13 @@ Storm 提供了流式窗口 API，支持 Sliding Window 和 Tumbling Window。Sl
 - topology.eventlogger.executors: Event Logger 的进程个数
 - topology.acker.executors: Acker 的进程个数
 
->注意：通常不需要修改 Strom 默认参数配置即可，修改 JVM 参数的时候请按照 -Xmx768m 格式修改数字大小即可，修改 woker端口数的时候按照 [6700,6701,6702,6703] 格式。
+>注意：通常不需要修改 Storm 默认参数配置即可，修改 JVM 参数的时候请按照 -Xmx768m 格式修改数字大小即可，修改 woker端口数的时候按照 [6700,6701,6702,6703] 格式。
+
 
 配置项的详细解释请参见 [Storm 官方文档](http://storm.apache.org/releases/1.1.1/Configuration.html)。
 
 ## 几种流式计算框架对比分析
+
   >注意：Storm 支持 Storm Core 和 Storm Trident 两种编程模式
 
   |          | Flink    |  Spark Streaming  |  Storm  |  Kafka Stream  |
@@ -326,6 +330,7 @@ Storm 提供了流式窗口 API，支持 Sliding Window 和 Tumbling Window。Sl
 Flink 和 Kafka Stream 目前在生产环境中比较少见，主要针对 Storm 和 Spark Streaming 选型建议如下：
 
 建议使用 Storm 场景：
+
 - 需要很低延迟的，比如实时金融系统，要求纯实时进行金融交易和分析
 - 要求可靠的事务机制和可靠性机制，即数据的处理完全精准无误的
 - 需要针对高峰低峰时间段，动态调整实时计算程序的并行度，以最大限度利用集群资源（通常是在小型公司，集群资源紧张的情况），也可以考虑用 Storm
@@ -333,9 +338,11 @@ Flink 和 Kafka Stream 目前在生产环境中比较少见，主要针对 Storm
 - 分布式 RPC 服务场景
 
 建议使用 Kafka Stream 场景
+
 - 输入源为 Kafka,轻量级 ETL 场景
 
 建议使用 Spark Streaming 场景
+
 - 不要求纯实时，不要求强大可靠的事务机制，不需要动态调整并行度，那么可以考虑使用 Spark Streaming
 - 如果一个项目除了实时计算之外，还包括了离线批处理、交互式查询等业务功能，而且实时计算中，可能还会牵扯到高延迟批处理、交互式查询等功能，那么可以选择 Spark 生态，用 Spark Core 开发离线批处理，用 Spark SQL 开发交互式查询，用 Spark Streaming 开发实时计算，三者可以无缝整合，给系统提供非常高的可扩展性
 - 吞吐量很大，海量数据场景
