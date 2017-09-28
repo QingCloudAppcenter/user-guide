@@ -28,7 +28,7 @@
 - 主从双节点版本号为：PG9.6-V1.0 SimpleCluster
 
 >单节点版建议用于测试或者开发环境下，该版本内置自动备份，每周备份一次，保留2个备份。   
->主从双节点版本能满足一般生产环境下数据库的需求，主从节点可以通过修改配置参数设置同步或者异步流复制模式。
+>主从双节点版本能满足生产环境下非大规模读负载均衡条件下的数据库的需求，主从节点可以通过修改配置参数设置同步或者异步流复制模式。
 
 两个版本的创建步骤类似，以下以单节点版为例具体说明创建步骤。
 
@@ -261,7 +261,6 @@ select * from t_user;
 create table t_user1 (id int primary key,val varchar(30));
 insert into t_user1  values(1,'Raito');
 ```
-
 
 数据库会返回如下错误，表示从节点只提供读服务。
 ![查看从节点readonly功能](../../images/postgresql/pgsc_readonly.png)
