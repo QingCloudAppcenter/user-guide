@@ -739,6 +739,7 @@ curl -XPUT 'http://<ELK on QingCloud集群的某一节点的IP地址>:9200/_snap
 curl -XPOST 'http://<ELK on QingCloud集群的某一节点的IP地址>:9200/_snapshot/my_es_repos/snapshot1/_restore'
 ```
 
+> 注意！对于北京3区-A和上海1区-A的用户，这两个区内的数据迁移是不耗公网网络流量的，其他区借助对象存储迁移是需要耗费公网流量的。
 
 <span id = "logstash-plugin"></span>
 
