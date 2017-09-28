@@ -125,7 +125,7 @@ pgclient节点VNC登录的用户名是postgres，密码是pg1314.qy, 登录后�
   ![查看VIP的信息](../../images/postgresql/vipinfo.png)   
 
 以`3.1登录PG client节点`描述的方式登录pg client节点，通过psql，用新建集群步骤中定义的用户名和密码，连接到新创建的自定义的postgresql database。  
-输入命令：`psql -U qingcloud -h 192.168.100.11 -d qingcloud`  
+输入命令：`psql -U qingcloud -h 192.168.100.250 -d qingcloud`  
 -U 参数值是上图的服务器参数：数据库用户名，  
 -h 参数值是postgresql节点的IP或者是双节点集群的vip，  
 -d 参数值可以是上图服务器参数:数据库名称。    
