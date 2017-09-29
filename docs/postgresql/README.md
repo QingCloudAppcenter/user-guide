@@ -45,7 +45,7 @@ CPU，内存，实例类型，磁盘类型大小根据自己实际需求进行�
 #### 第三步：PG Client节点设置  
 
 ![第3步: PG Client节点设置](../../images/postgresql/pg_clientnode_set.png)
-Client节点提供postgresql客户端功能和数据库服务器上数据库相关日志查看功能，方便用户管理postgresql数据库，默认配置该节点不创建，但是因为该节点能提供postgresql客户端和日志查看功能，建议用户创建该节点。
+Client节点提供postgresql客户端功能和数据库服务器上数据库相关日志查看管理功能，方便用户管理postgresql数据库，默认配置创建该节点。
 
 #### 第四步：网络设置  
 
