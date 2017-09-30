@@ -39,7 +39,7 @@ Storm 集群采用的是 master/slave 架构，如下图所示，青云的 Storm
 - 从节点：运行了 Supervisor 和 Logviewer 服务。其中，Supervisor 服务主要用于接收计算任务并按需启动或停止工作进程（Worker），而 Logviewer 服务方便用户查看运行日志。
 - RPC 节点：运行了 DRPC 和 Logviewer 服务，用于接收 RPC 请求，并将计算拓扑的处理结果返回给客户端。
 - 客户端节点：配置好了　Storm 提交任务的环境，可以用于该集群提交计算拓扑。
-- Zookeeper 集群：用于协调 Storm 集群。
+- [ZooKeeper on QingCloud AppCenter](https://appcenter.qingcloud.com/apps/app-tg3lbp0a) 集群：用于协调 Storm 集群。
 
 ![Storm 部署架构图](../../images/storm/storm_architecture.png)
 
