@@ -317,7 +317,7 @@ Storm 提供了流式窗口 API，支持 Sliding Window 和 Tumbling Window。Sl
   >注意：Storm 支持 Storm Core 和 Storm Trident 两种编程模式
 
   |          | Flink    |  Spark Streaming  |  Storm  |  Kafka Stream  |
-    | :----:   | :----:   | :----: | :----: |
+    | :----:   | :----:   | :----: | :----: |:----: |
     | 架构模式        | 主从      |   主从，依赖 Spark,每个 batch 处理都依赖主    |   主从，依赖 Zookeeper,处理过程中对主的依赖不大    |  安装 Kafka,Kafka 依赖 Zookeeper    |
     | 容错        |基于 distributed snapshots checkpoint 机制      |   基于 HDFS 做 checkpoint    |   Records Ack    |   高可用分区，状态存储和对乱序数据的处理能力    |
     | 处理模型与延迟        | 单条事件处理，毫秒级延迟      |   一个事件窗口的所有事件，秒级延迟    |   Storm Core 单条事件处理，毫秒级延迟，Storm Trident 为批处理，秒级延迟    | 单条事件处理，毫秒级延迟      |
