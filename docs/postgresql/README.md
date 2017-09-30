@@ -44,8 +44,8 @@ CPU，内存，实例类型，磁盘类型大小根据自己实际需求进行�
 
 #### 第三步：PG Client 节点设置  
 
-![第3步: PG Client 节点设置](../../images/postgresql/pg_clientnode_set.png)
-Client 节点提供 postgresql 客户端功能和数据库服务器上数据库相关日志查看管理功能，方便用户管理 postgresql 数据库，默认配置创建该节点。
+![第3步: PG Client节点设置](../../images/postgresql/pg_clientnode_set.png)
+Client节点提供postgresql客户端功能和数据库服务器上数据库相关日志查看管理功能，方便用户管理postgresql数据库，默认配置创建该节点。
 
 #### 第四步：网络设置  
 
@@ -114,131 +114,134 @@ synchronous_commit='remote_apply'
 
 ### 3.1登录 PG client 节点  
 
-`PostgreSQL on QingCloud` 提供客户端节点，开放 user access，用户可以通过 VNC 登录 client 节点。  
-pgclient 节点 VNC 登录的用户名是 postgres，密码是 pg1314.qy, 登录后请自行修改该节点的登录密码。
-  ![登录 PG client 节点](../../images/postgresql/pgclientlogin.png)
-
+`PostgreSQL on QingCloud` 提供客户端节点，开放user access，用户可以通过VNC登录client节点。  
+pgclient节点VNC登录的用户名是postgres，密码是pg1314.qy, 登录后请自行修改该节点的登录密码。
+  ![登录PG client节点](../../images/postgresql/pgclientlogin.png)
 
 ### 3.2 登录postgresql DB  
 
-对于主从双节点版本，集群提供一个对外的读写 vip, 在保证高可用性的同时，无需手动切换主节点 IP 地址。
-  ![查看 VIP 的信息](../../images/postgresql/vipinfo.png)   
+对于主从双节点版本，集群提供一个对外的读写vip, 在保证高可用性的同时，无需手动切换主节点 IP地址。
+  ![查看VIP的信息](../../images/postgresql/vipinfo.png)   
 
-以`3.1登录 PG client 节点`描述的方式登录 pg client 节点，通过 psql，用新建集群步骤中定义的用户名和密码，连接到新创建的自定义的 postgresql database。  
+以`3.1登录PG client节点`描述的方式登录pg client节点，通过psql，用新建集群步骤中定义的用户名和密码，连接到新创建的自定义的postgresql database。  
 输入命令：`psql -U qingcloud -h 192.168.100.250 -d qingcloud`  
 -U 参数值是上图的服务器参数：数据库用户名，  
--h 参数值是 postgresql 节点的 IP 或者是双节点集群的 vip，  
+-h 参数值是postgresql节点的IP或者是双节点集群的vip，  
 -d 参数值可以是上图服务器参数:数据库名称。    
-然后输入的密码是上图服务器参数：数据库密码，默认密码是 qingcloud1234。  
+然后输入的密码是上图服务器参数：数据库密码，默认密码是qingcloud1234。  
 
-  ![新建 DB 的信息](../../images/postgresql/newDBinfo.png)   
+  ![新建DB的信息](../../images/postgresql/newDBinfo.png)   
 
-输入命令：`\l`， 可以查看当前 postgresql server 上的数据库信息。  
-  ![登录 PG database](../../images/postgresql/pglogin.png)  
+输入命令：`\l`， 可以查看当前postgresql server上的数据库信息。  
+  ![登录PG database](../../images/postgresql/pglogin.png)  
 
-除了用 psql 命令行客户端连接数据库之外，还可以使用自己熟悉的其他图形化的数据库客户端连接到 postgres DB 上，方便做数据库操作以及数据库开发等工作。  
-例如：pgAdmin、DbVisualizer、DBeaver 等。
+除了用psql命令行客户端连接数据库之外，还可以使用自己熟悉的其他图形化的数据库客户端连接到postgres DB上，方便做数据库操作以及数据库开发等工作。  
+例如：pgAdmin、DbVisualizer、DBeaver等。
 
 ### 3.3 postgresql 数据导出和导入  
 
 #### 数据导出
 
-命令：`pg_dump -U root -h 需要导出数据的 DB 的 IP (-t 表名)数据库名(缺省时同用户名)  > 路径/文件名.sql`  
+命令：`pg_dump -U root -h 需要导出数据的DB的IP  (-t 表名)  数据库名(缺省时同用户名)  > 路径/文件名.sql`  
 例如：`pg_dump -U qingcloud -h 192.168.100.250 qingcloud  > /tmp/pgdatabk.sql`
   ![数据导出](../../images/postgresql/pg_datadump.png)
 
 #### 数据导入
 
-**方式一：从文件导入数据**    
-命令：  
-`psql -d databaename(数据库名) -U username(用户名) (-h 需要导入数据的DB的IP) -f < 路径/文件名.sql`  
-注意这里导入的时候请使用 root 用户，以防止权限不够导入数据有问题,数据库 root 用户的密码与新建数据库时的用户命名相同。     
-如果有需要，导入数据时先创建数据库再用 psql 导入：    
+##### 方式一：从文件导入数据      
+命令：`psql -d databaename(数据库名) -U username(用户名) (-h 需要导入数据的DB的IP) -f < 路径/文件名.sql`   
+注意这里导入的时候请使用root用户，以防止权限不够导入数据有问题,数据库root用户的密码与新建数据库时的用户命名相同。     
+如果有需要，导入数据时先创建数据库再用psql导入：    
 `createdb newdatabase;`  
-这里直接导入用户在创建集群时创建的数据库名称为 qingcloud  
+这里直接导入用户在创建集群时创建的数据库名称为qingcloud   
 例如：  
 `psql -d qingcloud -U root -h 192.168.100.6 -f /tmp/pgdatabk.sql`  
 ![数据导入](../../images/postgresql/pg_dataimport.png)
 
-**方式二：在线导入数据**  
-pg_dump 和 psql 读写管道的能力使得直接从一个服务器转储一个数据库到另一个服务器成为可能。   
-命令：  
- `pg_dump -h host1 dbname | psql -h host2 dbname `  
+##### 方式二：在线导入数据   
+pg_dump和psql读写管道的能力使得直接从一个服务器转储一个数据库到另一个服务器成为可能。  
+命令：`pg_dump -h host1 dbname | psql -h host2 dbname `  
 例如：
 
 ```bash
-export PGPASSWORD=qingcloud1234    
-#PGPASSWORD 为用户新建集群设置的数据库密码
+export PGPASSWORD=qingcloud1234
+#PGPASSWORD为用户新建集群设置的数据库密码
 pg_dump -U qingcloud -h 192.168.100.250 qingcloud -w | psql -d qingcloud -U root -h 192.168.100.6 -W
 ```
 
 ![数据导入](../../images/postgresql/pg_importdataonline.png)
 
-#### 数据 check  
+#### 数据check  
 
-导入完成后可以使用 select 语句进行检查。  
+导入完成后可以使用select语句进行检查。   
 例如：`select * from t_user; `
 ![数据check](../../images/postgresql/datacheck.png)
 
-### 3.4 查看/清理 postgresql 运行日志  
+### 3.4 查看/清理 postgresql 运行日志   
 
 #### 查看日志
 
-为了方便用户查看 `PostgreSQL on QingCloud` 的运行日志，可以直接登录 pg client 节点（pgclient 节点登录的默认用户名和密码是 postgres/PG1314!qy），postgresql 日志通过文件共享的方式从 postgresql server 实时传递到路径 /opt/pg_log 下。  
-对于一主一从，该目录下有2个文件夹 pg1log,pg2log，分别存放主从节点的日志。
+为了方便用户获取Postgresql的运行日志，`PostgreSQL on QingCloud`默认开启了 FTP 服务，您可以通过 FTP 来获取Postgresql的日志，用户名为 ftp_pg ，默认密码为 Pa88word。  
+以`3.1登录 PG client 节点`描述的方式登录 pg client 节点（pgclient 节点登录的默认用户名和密码是 postgres/PG1314!qy），通过以下ftp命令可以获取到日志，其中IP对应postgresql节点所在的IP地址。  
+`wget ftp://192.168.100.21/postgresqllog_30.csv --ftp-user=ftp_pg --ftp-password=Pa88word`
 ![logcheck](../../images/postgresql/logcheck.png)
-![logcheck](../../images/postgresql/logcheck2.png)
 >注意:  
->postgresql 的日志默认保存30天，每天会自动保存一个日志文件,系统会自动清理。  
->pgscripts.log 文件记录节点初始化和启动相关的日志，默认保存2周。  
->pghealth.log 文件记录节点出现问题时记录的相关日志.  
+>postgresql 的日志默认保存30天，每天会自动保存一个日志文件,系统会自动清理。日志的命名规则为postgresqllog_30.csv，数字表示当前日期在当月的第多少天。  
+>pghealth.log 文件记录postgresql节点在健康检查时出现问题记录的相关日志。
 
 #### 清理日志
 
-日志目录给用户开放的权限是读写权限，用户除了查看日志之外还可以根据自己的需要手动清理日志。      
-直接登录 Client 节点进入 /opt/pg_log 目录，使用 rm 命令删除日志文件即可。
+日志目录给用户开放的ftp权限是读写权限，用户除了查看日志之外还可以根据自己的需要手动清理日志。  
+输入如下命令登录和删除日志文件,参数IP地址为postgresql节点IP。
 
-### 3.5 postgis 插件的使用  
+```sh   
+ftp 192.168.100.3
+delete postgresqllog_30.csv
+```
 
-以2.2登录 postgresql DB 后，输入以下命令即可做相关操作。  
+![logcheck](../../images/postgresql/logclear.png)
+
+### 3.5 postgis 插件的使用   
 
 #### 查看 postgis 插件信息
+
+登录postgresql DB后，输入以下命令即可做相关操作。   
 
 ```sql
 SELECT name, default_version,installed_version
 FROM pg_available_extensions WHERE name LIKE 'postgis%' or name LIKE 'address%';`
 ```
 
-![查看安装的 postgis 插件](../../images/postgresql/checkpostgis.png)
+![查看安装的postgis插件](../../images/postgresql/checkpostgis.png)
 
-#### 查看 PostGIS 的版本信息
+#### 查看PostGIS的版本信息
 
 ```sql
 select postgis_full_version();
 ```
 
-![查看安装的 postgis 插件](../../images/postgresql/postgis_full_version.png)
+![查看安装的postgis插件](../../images/postgresql/postgis_full_version.png)
 
-#### 新建基于 postgis 的 Database demo
+#### 新建基于postgis的Database demo
 
-以数据库的 root 用户和新建 Postgresql DB 时设置的密码登录数据库服务器上的 postgres 数据库，可以采用任意的 postgresql 客户端登录到数据库服务器。  
-之后，根据模板创建属于自己的 postgis database。   
+以数据库的root用户和新建Postgresql DB时设置的密码登录数据库服务器上的postgres数据库，可以采用任意的postgresql客户端登录到数据库服务器。  
+之后，根据模板创建属于自己的postgis database。   
 
-例如：采用 `PostgreSQL on QingCloud` 提供的客户端节点登录数据库。  
+例如：采用`PostgreSQL on QingCloud`提供的客户端节点登录数据库。  
 `psql -U root -h 192.168.100.250 -d postgres`  
-其中 -h 参数值的 ip 地址为 postgres DB 主节点服务器地址或者是主从双节点集群的 VIP 地址。  
+其中-h参数值的ip地址为postgres DB主节点服务器地址或者是主从双节点集群的VIP地址。  
 
-连接 DB 之后，执行以下 sql 创建自己的 postgis Database，数据库名为 demo。
+连接DB之后，执行以下sql创建自己的postgis Database，数据库名为demo。
 
 ```sql
 CREATE DATABASE demo TEMPLATE=template_postgis;
 ```  
 
-创建好属于自己的 postgis database 之后，就可以连接到这个新建的数据库上做相关操作了。
+创建好属于自己的postgis database之后，就可以连接到这个新建的数据库上做相关操作了。
 
-### 3.6 主从双节点数据复制的 Datacheck  
+### 3.6 主从双节点数据复制的Datacheck  
 
-以`3.1登录 PG client 节点`描述的方式登录 pg client 节点后，在主节点上执行以下 sql，新建 test table 并插入数据。
+登录postgresql DB后，在主节点上执行以下sql，新建test table并插入数据。
 
 ```sql
 create table t_user (id int primary key,val varchar(30));
@@ -247,7 +250,7 @@ insert into t_user  values(2,'Emily');
 select * from t_user;
 ```
 
-以`3.1登录 PG client 节点`描述的方式登录 pg client 节点后，在从节点上执行以下 sql，查看该表数据，查看数据是否和主节点一致。
+登录postgresql DB后，在从节点上执行以下sql，查看该表数据，查看数据是否和主节点一致。
 
 ```sql
 select * from t_user;
@@ -255,7 +258,8 @@ select * from t_user;
 
 ### 3.7 查看从节点 DB 的 readonly 功能  
 
-以`3.1登录 PG client 节点`描述的方式登录 pg client 节点后，在从节点上执行写 DB 操作，查看是否能执行成功。
+登录postgresql DB后，在从节点上执行写DB操作，查看是否能执行成功。
+
 
 ```sql
 create table t_user1 (id int primary key,val varchar(30));
