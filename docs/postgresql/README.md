@@ -148,7 +148,8 @@ pgclient节点VNC登录的用户名是postgres，密码是pg1314.qy, 登录后�
 
 #### 数据导入
 
-##### 方式一：从文件导入数据      
+##### 方式一：从文件导入数据   
+
 命令：`psql -d databaename(数据库名) -U username(用户名) (-h 需要导入数据的DB的IP) -f < 路径/文件名.sql`   
 注意这里导入的时候请使用root用户，以防止权限不够导入数据有问题,数据库root用户的密码与新建数据库时的用户命名相同。     
 如果有需要，导入数据时先创建数据库再用psql导入：    
@@ -158,7 +159,8 @@ pgclient节点VNC登录的用户名是postgres，密码是pg1314.qy, 登录后�
 `psql -d qingcloud -U root -h 192.168.100.6 -f /tmp/pgdatabk.sql`  
 ![数据导入](../../images/postgresql/pg_dataimport.png)
 
-##### 方式二：在线导入数据   
+##### 方式二：在线导入数据  
+ 
 pg_dump和psql读写管道的能力使得直接从一个服务器转储一个数据库到另一个服务器成为可能。  
 命令：`pg_dump -h host1 dbname | psql -h host2 dbname `  
 例如：
