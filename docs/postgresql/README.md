@@ -57,7 +57,7 @@ Client节点提供postgresql客户端功能和数据库服务器上数据库相�
 ![第5步: 服务环境参数设置](../../images/postgresql/pg_param_config.png)
 界面提供的参数大部分和 Postgresql 性能相关，如果需要调整相关参数，可以按照自己的实际需求配置和调整 postgresql 参数，修改参数 postgresql service 会重启。
 
-在配置主从双节点版本参数时，会比单节点版本的设置多出如下一个参数。
+在配置主从双节点版本参数时，会比单节点版本的设置多出如下一个参数。  
 该参数用于设置主从复制模式是同步流复制还是异步流复制，该参数默认是异步流复制。
 ![第5步: 服务环境参数设置](../../images/postgresql/pg_param2more_config.png)
 
@@ -113,7 +113,7 @@ pgclient节点VNC登录的用户名是postgres，密码是pg1314.qy，登录后�
 
 以`3.1登录PG client节点`描述的方式登录pg client节点，通过psql，用新建集群步骤中定义的用户名和密码，连接到新创建的自定义的postgresql database。  
 输入命令：`psql -U qingcloud -h 192.168.100.250 -d qingcloud`  
--U 参数值是上图的服务器参数：数据库用户名，  
+>-U 参数值是上图的服务器参数：数据库用户名，  
 -h 参数值是postgresql节点的IP或者是双节点集群的vip，  
 -d 参数值可以是上图服务器参数:数据库名称。    
 然后输入的密码是上图服务器参数：数据库密码，默认密码是qingcloud1234。  
