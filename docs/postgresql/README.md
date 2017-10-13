@@ -5,9 +5,9 @@
 `PostgreSQL on QingCloud` 将 Postgresql 通过云应用的形式在 QingCloud AppCenter 部署，具有如下特性：
 
 - 目前提供单节点版和主从双节点2个版本，分别满足开发测试和生产环境下的数据库需求。
-- 主从双节点版本提供主从节点，主节点提供读写服务，从节点提供读服务，实现读写分离功能。
+- 主从双节点版本提供主从节点，主节点提供读写服务，从节点提供读服务。
 - 主从双节点版本支持自动 failover 功能，提供HA功能。
-- 主从双节点版本支持 remoteapply 模式选项，实现主从同步复制，保证读写分离的读一致性。
+- 提供postgresql大部分常用参数，方便调整参数。
 - 支持 postgis 插件，为 PostgreSQL 提供了存储、查询和修改空间关系的能力。
 - 提供实时监控、健康检查、日志自动清理等功能，提供客户端节点，方便用户运维。
 
@@ -28,7 +28,7 @@
 - 主从双节点版本号为：PG9.6-V1.0 SimpleCluster
 
 >单节点版建议用于测试或者开发环境下，该版本内置自动备份，每周备份一次，保留2个备份。   
->主从双节点版本能满足生产环境下非大规模读负载均衡条件下的数据库的需求，主从节点可以通过修改配置参数设置同步或者异步流复制模式。
+>主从双节点版本能满足生产环境下非大规模读负载均衡条件下的数据库的需求，主从节点可以通过修改配置参数设置同步流复制或者异步流复制模式。
 
 两个版本的创建步骤类似，以下以单节点版为例具体说明创建步骤。
 
@@ -57,21 +57,9 @@ Client节点提供postgresql客户端功能和数据库服务器上数据库相�
 ![第5步: 服务环境参数设置](../../images/postgresql/pg_param_config.png)
 界面提供的参数大部分和 Postgresql 性能相关，如果需要调整相关参数，可以按照自己的实际需求配置和调整 postgresql 参数，修改参数 postgresql service 会重启。
 
-在配置主从双节点版本参数时，会比单节点版本的设置多出最后2个如下的参数。
+在配置主从双节点版本参数时，会比单节点版本的设置多出如下一个参数。
+该参数用于设置主从复制模式是同步流复制还是异步流复制，该参数默认是异步流复制。
 ![第5步: 服务环境参数设置](../../images/postgresql/pg_param2more_config.png)
-
->这2个参数的配置可以设置主从复制的方式，具体配置请参考如下2种方式。  
-
->1.当前默认参数值如下：  
-synchronous_standby_names=''  
-synchronous_commit='on'  
-该设置表示当前主从节点为异步流复制方式。   
-当这个参数被设置为 on 时，直到来自于当前同步的后备服务器的一个回复指示该后备服务器已经收到了事务的提交记录并将其刷入了磁盘，主服务器上的事务才会提交。    
-
->2.如果想保证主节点上任何的修改都及时在从节点上 apply，需要将这2个参数设置成 remote_apply 模式。  
-synchronous_standby_names= '* '    
-synchronous_commit='remote_apply'    
-该设置表示 Master 节点等待事务作用到远端节点，而不仅仅是写入磁盘， 这会比通常的复制模式慢一些,但不会慢很多，它会确保所有的“提交数据”在 standby 节点已经生效。   
 
 #### 第六步: 用户协议  
 
@@ -114,13 +102,13 @@ synchronous_commit='remote_apply'
 
 ### 3.1登录 PG client 节点  
 
-`PostgreSQL on QingCloud` 提供客户端节点，开放user access，用户可以通过VNC登录client节点。  
-pgclient节点VNC登录的用户名是postgres，密码是pg1314.qy, 登录后请自行修改该节点的登录密码。
+`PostgreSQL on QingCloud` 提供客户端节点，用户可以通过VNC登录client节点。  
+pgclient节点VNC登录的用户名是postgres，密码是pg1314.qy，登录后请自行修改该节点的登录密码。
   ![登录PG client节点](../../images/postgresql/pgclientlogin.png)
 
 ### 3.2 登录postgresql DB  
 
-对于主从双节点版本，集群提供一个对外的读写vip, 在保证高可用性的同时，无需手动切换主节点 IP地址。
+对于主从双节点版本，集群提供一个对外的读写vip，在保证高可用性的同时，无需手动切换主节点 IP地址。
   ![查看VIP的信息](../../images/postgresql/vipinfo.png)   
 
 以`3.1登录PG client节点`描述的方式登录pg client节点，通过psql，用新建集群步骤中定义的用户名和密码，连接到新创建的自定义的postgresql database。  
@@ -129,8 +117,6 @@ pgclient节点VNC登录的用户名是postgres，密码是pg1314.qy, 登录后�
 -h 参数值是postgresql节点的IP或者是双节点集群的vip，  
 -d 参数值可以是上图服务器参数:数据库名称。    
 然后输入的密码是上图服务器参数：数据库密码，默认密码是qingcloud1234。  
-
-  ![新建DB的信息](../../images/postgresql/newDBinfo.png)   
 
 输入命令：`\l`， 可以查看当前postgresql server上的数据库信息。  
   ![登录PG database](../../images/postgresql/pglogin.png)  
@@ -142,7 +128,8 @@ pgclient节点VNC登录的用户名是postgres，密码是pg1314.qy, 登录后�
 
 #### 数据导出
 
-命令：`pg_dump -U root -h 需要导出数据的DB的IP  (-t 表名)  数据库名(缺省时同用户名)  > 路径/文件名.sql`  
+命令：  
+`pg_dump -U root -h 需要导出数据的DB的IP  (-t 表名)  数据库名(缺省时同用户名)  > 路径/文件名.sql`  
 例如：`pg_dump -U qingcloud -h 192.168.100.250 qingcloud  > /tmp/pgdatabk.sql`
   ![数据导出](../../images/postgresql/pg_datadump.png)
 
@@ -150,19 +137,22 @@ pgclient节点VNC登录的用户名是postgres，密码是pg1314.qy, 登录后�
 
 ##### 方式一：从文件导入数据   
 
-命令：`psql -d databaename(数据库名) -U username(用户名) (-h 需要导入数据的DB的IP) -f < 路径/文件名.sql`   
-注意这里导入的时候请使用root用户，以防止权限不够导入数据有问题,数据库root用户的密码与新建数据库时的用户命名相同。     
+命令：  
+`psql -d databaename(数据库名) -U username(用户名) (-h 需要导入数据的DB的IP) -f < 路径/文件名.sql`   
+>注意这里导入的时候请使用root用户，以防止权限不够导入数据有问题,数据库root用户的密码与新建数据库时的用户命名相同。     
 如果有需要，导入数据时先创建数据库再用psql导入：    
 `createdb newdatabase;`  
 这里直接导入用户在创建集群时创建的数据库名称为qingcloud   
+
 例如：  
 `psql -d qingcloud -U root -h 192.168.100.6 -f /tmp/pgdatabk.sql`  
 ![数据导入](../../images/postgresql/pg_dataimport.png)
 
 ##### 方式二：在线导入数据  
- 
+
 pg_dump和psql读写管道的能力使得直接从一个服务器转储一个数据库到另一个服务器成为可能。  
-命令：`pg_dump -h host1 dbname | psql -h host2 dbname `  
+命令：  
+`pg_dump -h host1 dbname | psql -h host2 dbname `  
 例如：
 
 ```bash
@@ -183,8 +173,10 @@ pg_dump -U qingcloud -h 192.168.100.250 qingcloud -w | psql -d qingcloud -U root
 
 #### 查看日志
 
-为了方便用户获取Postgresql的运行日志，`PostgreSQL on QingCloud`默认开启了 FTP 服务，您可以通过 FTP 来获取Postgresql的日志，用户名为 ftp_pg ，默认密码为 Pa88word。  
-以`3.1登录 PG client 节点`描述的方式登录 pg client 节点（pgclient 节点登录的默认用户名和密码是 postgres/PG1314!qy），通过以下ftp命令可以获取到日志，其中IP对应postgresql节点所在的IP地址。  
+为了方便用户获取Postgresql的运行日志，`PostgreSQL on QingCloud`默认开启了 FTP 服务，您可以通过 FTP 来获取Postgresql的日志，用户名为 ftp_pg ，默认密码为 Pa88word。
+
+以`3.1登录 PG client 节点`描述的方式登录 pg client 节点（pgclient 节点登录的默认用户名和密码是 postgres/PG1314!qy），通过以下ftp命令可以获取到日志，其中IP对应postgresql节点所在的IP地址。
+
 `wget ftp://192.168.100.21/postgresqllog_30.csv --ftp-user=ftp_pg --ftp-password=Pa88word`
 ![logcheck](../../images/postgresql/logcheck.png)
 >注意:  
@@ -224,22 +216,21 @@ select postgis_full_version();
 
 ![查看安装的postgis插件](../../images/postgresql/postgis_full_version.png)
 
-#### 新建基于postgis的Database demo
+#### 新建postgis Database
 
 以数据库的root用户和新建Postgresql DB时设置的密码登录数据库服务器上的postgres数据库，可以采用任意的postgresql客户端登录到数据库服务器。  
 之后，根据模板创建属于自己的postgis database。   
 
-例如：采用`PostgreSQL on QingCloud`提供的客户端节点登录数据库。  
+例如：登录数据库   
 `psql -U root -h 192.168.100.250 -d postgres`  
 其中-h参数值的ip地址为postgres DB主节点服务器地址或者是主从双节点集群的VIP地址。  
-
 连接DB之后，执行以下sql创建自己的postgis Database，数据库名为demo。
 
 ```sql
 CREATE DATABASE demo TEMPLATE=template_postgis;
 ```  
 
-创建好属于自己的postgis database之后，就可以连接到这个新建的数据库上做相关操作了。
+创建好属于自己的postgis database之后，就可以切换连接到这个新建的数据库上做相关操作了。
 
 ### 3.6 主从双节点数据复制的Datacheck  
 
@@ -280,11 +271,17 @@ insert into t_user1  values(1,'Raito');
 
 ### 3.9 数据备份和恢复功能
 
-提供数据备份和恢复功能，可选手工备份和自动备份。  
-手工备份
+提供数据备份和恢复功能，可选手工备份和自动备份。
+
+#### 手工备份
+
 ![数据备份功能](../../images/postgresql/pg_backup.png)
-自动备份
+
+#### 自动备份
+
 ![数据备份功能](../../images/postgresql/pg_autobackup.png)
+
+#### 恢复数据
 
 从备份中选择要恢复的版本恢复数据。  
 ![数据恢复功能](../../images/postgresql/pg_restore.png)
