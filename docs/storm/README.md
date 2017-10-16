@@ -14,7 +14,7 @@ Storm 具有如下特点：
 
 除此之外 `Storm on QingCloud AppCenter` 将 Storm 通过云应用的形式在 QingCloud AppCenter 部署，具有如下特性:
 
-- 版本升级到 1.1.1，相比较之前的版本，Storm 在 Streaming SQL 上有个更好的支持，加强了与 Kafka、HDFS、OpenTSDB、Druid 等大数据组件的集成，详情请参阅 [官方说明](http://storm.apache.org/2017/03/29/storm110-released.html)。
+- 版本升级到 1.1.1，相比较之前的版本，Storm 开始对 Streaming SQL 有了支持，加强了与 Kafka、HDFS、OpenTSDB、Druid 等大数据组件的集成，详情请参阅 [官方说明](http://storm.apache.org/2017/03/29/storm110-released.html)。
 - 支持横向与纵向在线伸缩。
 - 提供 Storm UI 高可用 vip, 更加方便的监控和管理 Storm。
 - 系统自动运维，降低企业使用成本。
