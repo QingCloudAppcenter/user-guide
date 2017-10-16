@@ -201,7 +201,7 @@ public class TestReachTopology {
 >java -cp /opt/storm/examples/storm-drpc-client/storm-example-1.1-SNAPSHOT.jar com.qingcloud.TestReachTopology  i-9hhwul25
 
 
->注意：官方这个测试用例较为复杂，需要请求 master 节点的 leader 角色，可以在 Storm UI 上查看到，当删除 leader 后，需要重新测试此流程。。
+>注意：官方这个测试用例较为复杂，需要请求 master 节点的 leader 角色，可以在 Storm UI 上查看到 leaer 角色的 host，当删除 leader 后，需要重新测试此流程。。
 
 执行结果如下图所示：
 
