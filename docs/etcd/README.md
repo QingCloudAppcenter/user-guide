@@ -35,19 +35,19 @@
 
   ![](images/envconf1.png)
 
-  + etcd autocompact
++ etcd autocompact
 
     etcd 历史记录自动清除
 
-  + 开启coredns
++ 开启coredns
 
     打开coredns服务，会在代理节点上53端口启动dns服务器。
 
-  + DNS服务根域名
++ DNS服务根域名
 
     dns服务器服务的域名后缀，这里定义的后缀会在本服务器处理，其他的后缀会交给8.8.8.8
 
-  + 服务信息在etcd中的前缀
++ 服务信息在etcd中的前缀
 
     服务信息在etcd中的前缀，coredns会读取etcd中这个前缀下的数据，并形成记录。
 
