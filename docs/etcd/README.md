@@ -2,7 +2,7 @@
 
 ## 简介
 
-青云QingCloud etcd 服务提供的是原生 [CoreOS etcd](https://coreos.com/etcd/) 云服务，etcd 是一个为分布式系统设计的分布式可靠的键值存储服务，应用程序可以从etcd中读取写入数据，监控数据变化。它主要用来提供注册服务，配置服务等功能。本应用方便用户在青云平台搭建 etcd 集群。应用借助appcenter提供的能力可以进行集群的动态扩容，备份恢复，健康检查和监控.并集成coredns方便用户通过dns进行服务发现。
+青云QingCloud etcd 服务提供的是原生 [CoreOS etcd](https://coreos.com/etcd/) 云服务，etcd 是一个为分布式系统设计的分布式可靠的键值存储服务，应用程序可以从etcd中读取写入数据，监控数据变化。它主要用来提供注册服务，配置服务等功能。本应用方便用户在青云平台搭建 etcd 集群。应用借助 appcenter 提供的能力可以进行集群的动态扩容，备份恢复，健康检查和监控.并集成 coredns 方便用户通过 dns 进行服务发现。
 
 ## 创建 etcd 集群
 
