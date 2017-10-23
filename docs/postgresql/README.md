@@ -2,7 +2,7 @@
 
 ## 描述  
 
-`PostgreSQL on QingCloud` 将Postgresql通过云应用的形式在 QingCloud AppCenter 部署，具有如下特性：
+`PostgreSQL on QingCloud` 将 Postgresql 通过云应用的形式在 QingCloud AppCenter 部署，具有如下特性：
 
 - 目前提供单节点版和主从双节点2个版本，分别满足开发测试和生产环境下的数据库需求。
 - 主从双节点版本提供主从节点，主节点提供读写服务，从节点提供读服务。
