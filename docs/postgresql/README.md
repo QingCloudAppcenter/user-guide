@@ -108,7 +108,7 @@ pgclient 节点 VNC 登录的用户名是 postgres ，密码是pg1314.qy，登�
 
 ### 3.2 登录 PostgreSQL DB  
 
-对于主从双节点版本，集群提供一个对外的读写 vip，在保证高可用性的同时，无需手动切换主节点 IP 地址。
+对于主从双节点版本，集群提供一个对外的读写 VIP ，在保证高可用性的同时，无需手动切换主节点 IP 地址。
   ![查看VIP的信息](../../images/postgresql/vipinfo.png)   
 
 以`3.1登录 PG client 节点`描述的方式登录 pg client 节点，通过 psql ，用新建集群步骤中定义的用户名和密码，连接到新创建的自定义的 PostgreSQL database 。  
@@ -122,14 +122,14 @@ pgclient 节点 VNC 登录的用户名是 postgres ，密码是pg1314.qy，登�
   ![登录PG database](../../images/postgresql/pglogin.png)  
 
 除了用 psql 命令行客户端连接数据库之外，还可以使用自己熟悉的其他图形化的数据库客户端连接到 PostgreSQL DB 上，方便做数据库操作以及数据库开发等工作。  
-例如：pgAdmin、DbVisualizer、DBeaver 等。
+例如：pgAdmin 、DbVisualizer 、DBeaver 等。
 
 ### 3.3 PostgreSQL 数据导出和导入  
 
 #### 数据导出
 
 命令：  
-`pg_dump -U root -h 需要导出数据的DB的IP  (-t 表名)  数据库名(缺省时同用户名)  > 路径/文件名.sql`  
+`pg_dump -U root -h 需要导出数据的 DB 的 IP  (-t 表名)  数据库名(缺省时同用户名)  > 路径/文件名.sql`  
 例如：`pg_dump -U qingcloud -h 192.168.100.250 qingcloud  > /tmp/pgdatabk.sql`
   ![数据导出](../../images/postgresql/pg_datadump.png)
 
@@ -175,7 +175,7 @@ pg_dump -U qingcloud -h 192.168.100.250 qingcloud -w | psql -d qingcloud -U root
 
 为了方便用户获取 PostgreSQL 的运行日志， `PostgreSQL on QingCloud` 默认开启了 FTP 服务，您可以通过 FTP 来获取 PostgreSQL 的日志，用户名为 ftp_pg ，默认密码为 Pa88word。
 
-以`3.1登录 PG client 节点`描述的方式登录 pg client 节点（pgclient 节点登录的默认用户名和密码是 postgres/PG1314!qy），通过以下 ftp 命令可以获取到日志，其中 IP 对应 PostgreSQL 节点所在的IP地址。
+以`3.1登录 PG client 节点`描述的方式登录 pg client 节点（pgclient 节点登录的默认用户名和密码是 postgres/PG1314!qy），通过以下 ftp 命令可以获取到日志，其中 IP 对应 PostgreSQL 节点所在的 IP 地址。
 
 `wget ftp://192.168.100.21/postgresqllog_30.csv --ftp-user=ftp_pg --ftp-password=Pa88word`
 ![logcheck](../../images/postgresql/logcheck.png)
@@ -186,7 +186,7 @@ pg_dump -U qingcloud -h 192.168.100.250 qingcloud -w | psql -d qingcloud -U root
 #### 清理日志
 
 日志目录给用户开放的 ftp 权限是读写权限，用户除了查看日志之外还可以根据自己的需要手动清理日志。  
-输入如下命令登录和删除日志文件,参数 IP 地址为 PostgreSQL 节点IP。
+输入如下命令登录和删除日志文件,参数 IP 地址为 PostgreSQL 节点 IP 。
 
 ```sh   
 ftp 192.168.100.3
