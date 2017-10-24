@@ -98,6 +98,34 @@ CPU，内存，实例类型，磁盘类型大小根据自己实际需求进行�
   点击 `扩容集群` ， 可以在集群性能不足时提高集群的配置：
   ![集群扩容](../../images/postgresql/pg_cluster_resize.png)
 
+
+### 2.4 查看当前主节点  
+
+  因为主从双节点版本提供出现故障的情况下从节点能自动 failover 成为新的主节点，集群中的主从节点是变化的。  
+  点开集群的`角色详情` tab 页即可查看。
+  ![查看是否为主节点](../../images/postgresql/pg_ismaster1.png)
+
+  或者通过节点的监控信息查看，选中集群中某个节点的监控按钮，将监控信息的实时数据开关打开，将会出现如下监控信息。  
+  ![查看是否为主节点](../../images/postgresql/pg_ismaster.png)
+  如果`是否为 MASTER `这个监控项实时数据显示为1的话，该节点则为当前的主节点，否则是从节点。
+
+### 2.5 重建从节点
+
+  当出现主从节点数据不一致的情况下，可以通过重建从节点修复。
+  在集群列表中选中集群，右键自定义服务-->重建从节点。
+  ![数据备份功能](../../images/postgresql/pg_rebuildStandby.png)
+
+### 2.6 自动 failover
+
+  主从双节点集群具备自动 failover 的功能，当主节点上的 PostgreSQL 出现问题的时候，从节点会自动升级为新的主节点，同时 down 了的主节点会尝试自动重启，并自动以从节点的身份加入集群。可以通过观察`角色详情`的 tab 页来查看 failover 变化的情况。  
+
+  自动 failover 之前：
+  ![自动 failover之前](../../images/postgresql/pgfailover1.png)
+
+  自动 failover 之后：
+  ![自动 failover之后](../../images/postgresql/pgfailover2.png)
+  >整个 failover 切换过程完成时间大概是五分钟，请耐心等待。
+
 ### 3.数据库基本操作  
 
 ### 3.1登录客户端节点  
@@ -270,34 +298,7 @@ insert into t_user1  values(1,'Raito');
 数据库会返回如下错误，表示从节点只提供读服务。
 ![查看从节点 readonly 功能](../../images/postgresql/pgsc_readonly.png)
 
-### 3.8 查看当前主节点  
-
-因为主从双节点版本提供出现故障的情况下从节点能自动 failover 成为新的主节点，集群中的主从节点是变化的。  
-点开集群的`角色详情` tab 页即可查看。
-![查看是否为主节点](../../images/postgresql/pg_ismaster1.png)
-
-或者通过节点的监控信息查看，选中集群中某个节点的监控按钮，将监控信息的实时数据开关打开，将会出现如下监控信息。  
-![查看是否为主节点](../../images/postgresql/pg_ismaster.png)
-如果`是否为 MASTER `这个监控项实时数据显示为1的话，该节点则为当前的主节点，否则是从节点。
-
-### 3.9 重建从节点
-
-当出现主从节点数据不一致的情况下，可以通过重建从节点修复。
-在集群列表中选中集群，右键自定义服务-->重建从节点。
-![数据备份功能](../../images/postgresql/pg_rebuildStandby.png)
-
-### 3.10 自动 failover
-
-主从双节点集群具备自动 failover 的功能，当主节点上的 PostgreSQL 出现问题的时候，从节点会自动升级为新的主节点，同时 down 了的主节点会尝试自动重启，并自动以从节点的身份加入集群。可以通过观察`角色详情`的 tab 页来查看 failover 变化的情况。  
-
-自动 failover 之前：
-![自动 failover之前](../../images/postgresql/pgfailover1.png)
-
-自动 failover 之后：
-![自动 failover之后](../../images/postgresql/pgfailover2.png)
->整个 failover 切换过程完成时间大概是五分钟，请耐心等待。
-
-### 3.11 数据备份和恢复功能
+### 3.8 数据备份和恢复功能
 
 提供数据备份和恢复功能，可选手工备份和自动备份。
 
@@ -314,7 +315,7 @@ insert into t_user1  values(1,'Raito');
 从备份中选择要恢复的版本恢复数据。  
 ![数据恢复功能](../../images/postgresql/pg_restore.png)
 
-### 3.12 基准测试
+### 3.9 基准测试
 
 测试模型：TPC-C
 
