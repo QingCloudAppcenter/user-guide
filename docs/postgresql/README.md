@@ -37,15 +37,15 @@
 ![第1步: 基本设置](../../images/postgresql/basic_config.png)
 根据自己的需求填写 `应用名称` 和 `应用描述`，选择`版本`为单节点版（Version 1-PG9.6Standalone）。
 
-#### 第二步：PG 节点设置  
+#### 第二步：数据库节点设置  
 
 ![第2步: PG节点设置](../../images/postgresql/pg_node_set.png)
 CPU，内存，实例类型，磁盘类型大小根据自己实际需求进行选择即可，生产环境建议磁盘使用超高性能型。
 
-#### 第三步：PG Client 节点设置  
+#### 第三步：客户端节点设置  
 
 ![第3步: PG Client节点设置](../../images/postgresql/pg_clientnode_set.png)
-Client 节点提供 PostgreSQL 客户端功能和数据库服务器上数据库相关日志查看管理功能，方便用户管理 PostgreSQL 数据库，默认配置创建该节点。
+客户端节点提供 PostgreSQL 客户端功能和数据库服务器上数据库相关日志查看管理功能，方便用户管理 PostgreSQL 数据库，默认配置创建该节点。
 
 #### 第四步：网络设置  
 
@@ -100,10 +100,10 @@ Client 节点提供 PostgreSQL 客户端功能和数据库服务器上数据库�
 
 ### 3.数据库基本操作  
 
-### 3.1登录 PG client 节点  
+### 3.1登录客户端节点  
 
 `PostgreSQL on QingCloud` 提供客户端节点，用户可以通过 VNC 登录 client 节点。  
-pgclient 节点 VNC 登录的用户名是 postgres ，密码是pg1314.qy，登录后请自行修改该节点的登录密码。
+客户端节点 VNC 登录的用户名是 postgres ，密码是pg1314.qy，登录后请自行修改该节点的登录密码。
   ![登录PG client节点](../../images/postgresql/pgclientlogin.png)
 
 ### 3.2 登录 PostgreSQL DB  
@@ -111,7 +111,7 @@ pgclient 节点 VNC 登录的用户名是 postgres ，密码是pg1314.qy，登�
 对于主从双节点版本，集群提供一个对外的读写 VIP ，在保证高可用性的同时，无需手动切换主节点 IP 地址。
   ![查看VIP的信息](../../images/postgresql/vipinfo.png)   
 
-以`3.1登录 PG client 节点`描述的方式登录 pg client 节点，通过 psql ，用新建集群步骤中定义的用户名和密码，连接到新创建的自定义的 PostgreSQL database 。  
+以`3.1登录客户端节点`描述的方式登录客户端节点后，通过 psql ，用新建集群步骤中定义的数据库用户名和密码，连接到新创建的自定义的 PostgreSQL database 。  
 输入命令：`psql -U qingcloud -h 192.168.100.250 -d qingcloud`  
 >-U 参数值是上图的服务器参数：数据库用户名，  
 -h 参数值是postgresql节点的IP或者是双节点集群的vip，  
@@ -173,11 +173,16 @@ pg_dump -U qingcloud -h 192.168.100.250 qingcloud -w | psql -d qingcloud -U root
 
 #### 查看日志
 
-为了方便用户获取 PostgreSQL 的运行日志， `PostgreSQL on QingCloud` 默认开启了 FTP 服务，您可以通过 FTP 来获取 PostgreSQL 的日志，用户名为 ftp_pg ，默认密码为 Pa88word。
+为了方便用户获取 PostgreSQL 的运行日志， `PostgreSQL on QingCloud` 默认开启了 FTP 服务，您可以通过 FTP 来获取 PostgreSQL 的日志，用户名为 ftp_pg ，默认密码为 Pa88word。  
+以`3.1登录 PG client 节点`描述的方式登录 pg client 节点后，通过以下 ftp 命令可以获取到日志，其中 IP 对应 PostgreSQL 节点所在的 IP 地址。
 
-以`3.1登录 PG client 节点`描述的方式登录 pg client 节点（pgclient 节点登录的默认用户名和密码是 postgres/PG1314!qy），通过以下 ftp 命令可以获取到日志，其中 IP 对应 PostgreSQL 节点所在的 IP 地址。
+```bash
+ftp 192.168.100.13
+ls
+exit
+wget ftp://192.168.100.13/postgresqllog_24.csv --ftp-user=ftp_pg --ftp-password=Pa88word
+```
 
-`wget ftp://192.168.100.21/postgresqllog_30.csv --ftp-user=ftp_pg --ftp-password=Pa88word`
 ![logcheck](../../images/postgresql/logcheck.png)
 >注意:  
 >PostgreSQL 的日志默认保存30天，每天会自动保存一个日志文件,系统会自动清理。日志的命名规则为postgresqllog_30.csv，数字表示当前日期在当月的第多少天。  
@@ -189,8 +194,9 @@ pg_dump -U qingcloud -h 192.168.100.250 qingcloud -w | psql -d qingcloud -U root
 输入如下命令登录和删除日志文件,参数 IP 地址为 PostgreSQL 节点 IP 。
 
 ```sh   
-ftp 192.168.100.3
-delete postgresqllog_30.csv
+ftp 192.168.100.13
+ls
+delete postgresqllog_24.csv
 ```
 
 ![logcheck](../../images/postgresql/logclear.png)
@@ -203,18 +209,10 @@ delete postgresqllog_30.csv
 
 ```sql
 SELECT name, default_version,installed_version
-FROM pg_available_extensions WHERE name LIKE 'postgis%' or name LIKE 'address%';`
+FROM pg_available_extensions WHERE name LIKE 'postgis%' or name LIKE 'address%';
 ```
 
 ![查看安装的postgis插件](../../images/postgresql/checkpostgis.png)
-
-#### 查看 PostGIS 的版本信息
-
-```sql
-select postgis_full_version();
-```
-
-![查看安装的postgis插件](../../images/postgresql/postgis_full_version.png)
 
 #### 新建 PostGIS Database
 
@@ -228,9 +226,20 @@ select postgis_full_version();
 
 ```sql
 CREATE DATABASE demo TEMPLATE=template_postgis;
+\c demo
 ```  
 
 创建好属于自己的 PostGIS database 之后，就可以切换连接到这个新建的数据库上做相关操作了。
+
+#### 查看 PostGIS 的版本信息
+
+连接到新建好的PostGis数据库demo之后，执行以下sql查看版本信息。
+
+```sql
+select postgis_full_version();
+```
+
+![查看安装的postgis插件](../../images/postgresql/postgis_full_version.png)
 
 ### 3.6 主从双节点数据复制的 Datacheck  
 
@@ -253,7 +262,6 @@ select * from t_user;
 
 登录 PostgreSQL DB 后，在从节点上执行写 DB 操作，查看是否能执行成功。
 
-
 ```sql
 create table t_user1 (id int primary key,val varchar(30));
 insert into t_user1  values(1,'Raito');
@@ -264,12 +272,22 @@ insert into t_user1  values(1,'Raito');
 
 ### 3.8 查看当前主节点  
 
-因为主从双节点版本提供出现故障的情况下从节点能自动 failover 成为新的主节点，集群中的主从节点是变化的，从监控页面可以查看到哪个节点是当前的主节点。  
-选中集群中某个节点的监控按钮，将监控信息的实时数据开关打开，将会出现如下监控信息。  
+因为主从双节点版本提供出现故障的情况下从节点能自动 failover 成为新的主节点，集群中的主从节点是变化的。  
+点开集群的角色详情 tab 页即可查看。
+![查看是否为主节点](../../images/postgresql/pg_ismaster1.png)
+
+或者通过节点的监控信息查看，选中集群中某个节点的监控按钮，将监控信息的实时数据开关打开，将会出现如下监控信息。  
 ![查看是否为主节点](../../images/postgresql/pg_ismaster.png)
 如果`是否为 MASTER `这个监控项实时数据显示为1的话，该节点则为当前的主节点，否则是从节点。
 
-### 3.9 数据备份和恢复功能
+### 3.9 重建从节点
+
+当出现主从节点数据不一致的情况下，可以通过重建从节点修复。
+在集群列表中选中集群，右键自定义服务-->重建从节点。 
+![数据备份功能](../../images/postgresql/pg_rebuildStandby.png)
+
+
+### 3.10 数据备份和恢复功能
 
 提供数据备份和恢复功能，可选手工备份和自动备份。
 
@@ -286,7 +304,7 @@ insert into t_user1  values(1,'Raito');
 从备份中选择要恢复的版本恢复数据。  
 ![数据恢复功能](../../images/postgresql/pg_restore.png)
 
-### 3.10 基准测试
+### 3.11 基准测试
 
 测试模型：TPC-C
 
