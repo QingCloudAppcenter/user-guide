@@ -9,7 +9,7 @@
 - 主从双节点版本支持自动 failover 功能，提供 HA 功能。
 - 提供 PostgreSQL 大部分常用参数修改接口，方便调整参数。
 - 支持 PostGIS 插件，为 PostgreSQL 提供了存储、查询和修改空间关系的能力。
-- 提供实时监控、健康检查、日志自动清理等功能，提供客户端节点，方便用户运维。
+- 提供实时监控、健康检查、日志自动清理等功能，方便用户运维。
 - 一键部署，开箱即用。
  >注意：PostgreSQL on QingCloud 支持 PostgreSQL 9.6.3版本，PostGIS 插件的版本是 PostGIS 2.3。
 
@@ -42,26 +42,21 @@
 ![第2步: PG节点设置](../../images/postgresql/pg_node_set.png)
 CPU，内存，实例类型，磁盘类型大小根据自己实际需求进行选择即可，生产环境建议磁盘使用超高性能型。
 
-#### 第三步：客户端节点设置  
+#### 第三步：网络设置  
 
-![第3步: PG Client节点设置](../../images/postgresql/pg_clientnode_set.png)
-客户端节点提供 PostgreSQL 客户端功能和数据库服务器上数据库相关日志查看管理功能，方便用户管理 PostgreSQL 数据库，默认配置创建该节点。
-
-#### 第四步：网络设置  
-
-![第4步: 网络设置](../../images/postgresql/vxnet_config.png)
+![第3步: 网络设置](../../images/postgresql/vxnet_config.png)
 出于安全考虑，所有的集群都需要部署在私有网络中，选择自己创建的网络中。
 
-#### 第五步：参数设置  
+#### 第四步：参数设置  
 
-![第5步: 服务环境参数设置](../../images/postgresql/pg_param_config.png)
+![第4步: 服务环境参数设置](../../images/postgresql/pg_param_config.png)
 界面提供的参数大部分和 PostgreSQL 性能相关，如果需要调整相关参数，可以按照自己的实际需求配置和调整相关参数，修改部分参数会导致 PostgreSQL 服务重启，具体可以参考参数说明。
 
 在配置主从双节点版本参数时，会比单节点版本的设置多出如下一个参数。  
 该参数用于设置主从复制模式是同步流复制还是异步流复制，默认是异步流复制。
-![第5步: 服务环境参数设置](../../images/postgresql/pg_param2more_config.png)
+![第4步: 服务环境参数设置](../../images/postgresql/pg_param2more_config.png)
 
-#### 第六步: 用户协议  
+#### 第五步: 用户协议  
 
 阅读并同意青云 AppCenter 用户协议之后即可开始部署应用。
 
@@ -128,18 +123,12 @@ CPU，内存，实例类型，磁盘类型大小根据自己实际需求进行�
 
 ### 3.数据库基本操作  
 
-### 3.1登录客户端节点  
-
-`PostgreSQL on QingCloud` 提供客户端节点，用户可以通过 VNC 登录 client 节点。  
-客户端节点 VNC 登录的用户名是 postgres ，密码是pg1314.qy，登录后请自行修改该节点的登录密码。
-  ![登录PG client节点](../../images/postgresql/pgclientlogin.png)
-
-### 3.2 登录 PostgreSQL DB  
+### 3.1 登录 PostgreSQL DB  
 
 对于主从双节点版本，集群提供一个对外的读写 VIP ，在保证高可用性的同时，无需手动切换主节点 IP 地址。
   ![查看VIP的信息](../../images/postgresql/vipinfo.png)   
 
-以`3.1登录客户端节点`描述的方式登录客户端节点后，通过 psql ，用新建集群步骤中定义的数据库用户名和密码，连接到新创建的自定义的 PostgreSQL database 。  
+通过 psql 命令行客户端 ，用新建集群步骤中定义的数据库用户名和密码，连接到新创建的自定义的 PostgreSQL database 。  
 输入命令：`psql -U qingcloud -h 192.168.100.250 -d qingcloud`  
 >-U 参数值是上图的服务器参数：数据库用户名，  
 -h 参数值是postgresql节点的IP或者是双节点集群的vip，  
@@ -152,7 +141,7 @@ CPU，内存，实例类型，磁盘类型大小根据自己实际需求进行�
 除了用 psql 命令行客户端连接数据库之外，还可以使用自己熟悉的其他图形化的数据库客户端连接到 PostgreSQL DB 上，方便做数据库操作以及数据库开发等工作。  
 例如：pgAdmin 、DbVisualizer 、DBeaver 等。
 
-### 3.3 PostgreSQL 数据导出和导入  
+### 3.2 PostgreSQL 数据导出和导入  
 
 #### 数据导出
 
@@ -197,12 +186,12 @@ pg_dump -U qingcloud -h 192.168.100.250 qingcloud -w | psql -d qingcloud -U root
 例如：`select * from t_user; `
 ![数据check](../../images/postgresql/datacheck.png)
 
-### 3.4 查看/清理 PostgreSQL 运行日志   
+### 3.3 查看/清理 PostgreSQL 运行日志   
 
 #### 查看日志
 
 为了方便用户获取 PostgreSQL 的运行日志， `PostgreSQL on QingCloud` 默认开启了 FTP 服务，您可以通过 FTP 来获取 PostgreSQL 的日志，用户名为 ftp_pg ，默认密码为 Pa88word。  
-以`3.1登录 PG client 节点`描述的方式登录 pg client 节点后，通过以下 ftp 命令可以获取到日志，其中 IP 对应 PostgreSQL 节点所在的 IP 地址。
+在任何一台装有 ftp 客户端的 host 上，通过以下 ftp 命令可以获取到日志，其中 IP 对应 PostgreSQL 节点所在的 IP 地址。
 
 ```bash
 ftp 192.168.100.13
@@ -229,7 +218,7 @@ delete postgresqllog_24.csv
 
 ![logcheck](../../images/postgresql/logclear.png)
 
-### 3.5 PostGIS 插件的使用   
+### 3.4 PostGIS 插件的使用   
 
 #### 查看 PostGIS 插件信息
 
@@ -250,7 +239,7 @@ FROM pg_available_extensions WHERE name LIKE 'postgis%' or name LIKE 'address%';
 例如：登录数据库   
 `psql -U root -h 192.168.100.250 -d postgres`  
 其中-h参数值的 ip 地址为 PostgreSQL DB 主节点服务器地址或者是主从双节点集群的 VIP 地址。  
-连接 DB 之后，执行以下 sql 创建自己的PostGIS Database，数据库名为demo。
+连接 DB 之后，执行以下 sql 创建自己的 PostGIS Database，数据库名为 demo 。
 
 ```sql
 CREATE DATABASE demo TEMPLATE=template_postgis;
