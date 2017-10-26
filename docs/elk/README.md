@@ -14,7 +14,7 @@ ELK on QingCloud 集成 Elasticsearch、Kibana 与 Logstash 到同一个服务�
 * Logstash 集成了青云对象存储 QingStor 的 logstash input/ouput插件。用户可以很方便地从 QingStor 对象存储通过 Logstash-input-qingstor 插件输入数据到 Elasticsearch 或者通过 Logstash-output-qingstor 插件将输入到logstash的数据导出到青云对象存储
 * Logstash 提供自定义插件能力
 * Kibana 集成 Nginx，提供 Elasticsearch 节点失效时的故障转移能力
-* 提供ES Head，ElasticHD可视化插件，方便用户通过浏览器使用 Elasticsearch
+* 提供ES Head、Cerebro、ES SQL、ElasticHD可视化插件，方便用户通过浏览器使用 Elasticsearch
 * 可收集Elasticsearch集群各节点日志到logstash节点，方便定位问题
 * 集群关键指标监控
 * 一键集群安装部署
@@ -441,7 +441,11 @@ qingstor {
 
 > 此处以logstash-output-influxdb插件的安装为例，其他插件安装方式类似
 
-第一步，在集群列表页面的Logstash节点上点击节点ID右侧的显示器图标，打开Web终端。输入默认用户名\(ubuntu\)、密码\(p12cHANgepwD\)，进入shell。
+第一步，在集群列表页面的Logstash节点上点击节点ID右侧的显示器图标，打开Web终端。输入默认用户名\(ubuntu\)、密码\(p12cHANgepwD\)，进入shell，输入如下命令切换到root用户。
+
+```bash
+sudo su -
+```
 
 第二步，进入`/data/logstash/plugins`目录，运行如下命令下载logstash-output-influxdb插件。
 
@@ -456,6 +460,14 @@ gem "logstash-output-influxdb", :path => "/data/logstash/plugins/logstash-output
 ```
 
 第四步，打开之前的Web终端，执行如下命令
+
+* 1.2.1及以后版本请使用如下命令
+
+```bash
+logstash-plugin install --no-verify
+```
+
+* 1.2及以前版本请使用如下命令
 
 ```bash
 sudo docker exec -it <docker container id> logstash-plugin install --no-verify
@@ -499,9 +511,25 @@ curl -d "qingcloud" 127.0.0.1:9700
 
 ### 场景八：Logstash自定义插件支持
 
-第一步，在集群列表页面的Logstash节点上点击节点ID右侧的显示器图标，打开Web终端。输入默认用户名\(ubuntu\)、密码\(p12cHANgepwD\)，进入shell。
+第一步，在集群列表页面的Logstash节点上点击节点ID右侧的显示器图标，打开Web终端。输入默认用户名\(ubuntu\)、密码\(p12cHANgepwD\)，进入shell，输入如下命令切换到root用户。
 
-第二步，在shell中执行如下命令，查看Logstash的Container ID。
+```bash
+sudo su -
+```
+
+第二步，请根据您的集群版本执行相应的命令创建自定义插件。
+
+* 1.2.1及以后版本请使用如下命令
+
+```bash
+logstash-plugin generate --type <filter> --name <abcd> --path /data/logstash/plugins
+```
+
+其中`<filter>`替换为您想要定制的插件的类型，类型包括`{input, filter, codec, output}`，`<abcd>`替换为您要开发的插件的名称。
+
+* 1.2及以前版本请使用如下命令
+
+在shell中执行如下命令，查看Logstash的Container ID。
 
 ```bash
 sudo docker ps
@@ -549,6 +577,14 @@ curl -d "qingcloud" http://<Logstash节点IP>:9700
 
 用户通过上述方法修改logstash.conf配置文件后，需通过以下命令重启logstash服务。
 
+* 1.2.1及以后版本请使用如下命令
+
+```bash
+/usr/share/logstash/sbin/restart.sh
+```
+
+* 1.2及以前版本请使用如下命令
+
 ```bash
 sudo docker exec -it <docker container id> restart.sh
 ```
@@ -582,6 +618,8 @@ Index pattern创建成功后可点击Discover查看导入的日志。
 _ELK on QingCloud_ 为用户提供了以下组件，用以服务集群其他组件或直接为用户提供服务。
 
 * [head](http://mobz.github.io/elasticsearch-head/) 提供一个Elasticsearch cluster的web控制台，用户可以在这个控制台里很方便的查看集群拓扑架构、监控集群状态，进行节点和索引级别的各种操作，以及进行数据的浏览、查询、分析等。在浏览器输入网址 `http://<Kibana节点IP>:9100/` 即可使用该插件提供的集群控制台。进入后请输入`http://<任意Elasticsearch节点IP>:9200/`后，点击连接即可查看Elasticsearch集群状态。
+* [elasticsearch-sql](https://github.com/NLPchina/elasticsearch-sql) 使用户可以使用SQL来进行Elasticsearch查询，并且可以在SQL中使用Elasticsearch的函数。在浏览器输入网址 `http://<Kibana节点IP>:8080/` 即可使用该插件提供的查询页面。
+* [Cerebro](https://github.com/lmenezes/cerebro) 的前身是kopf，她是一个开源的Elasticsearch Web管理工具，她提供了查看集群节点资源使用状态、查看集群分片状态、创建索引、修改集群设置、创建仓库及快照等功能，为用户提供了极大的便利。在浏览器输入网址 `http://<Kibana节点IP>:9000/` 即可使用该插件提供的集群控制台。进入后请输入`http://<任意Elasticsearch节点IP>:9200/`后，点击Connect即可查看Elasticsearch集群状态。
 * [ElasticHD](https://github.com/farmerx/ElasticHD) 是一个Elasticsearch可视化管理工具, 支持ES监控、实时搜索，Index template快捷替换修改，索引列表信息查看，SQL converts to DSL等功能。在浏览器输入网址 `http://<Kibana节点IP>:9800/` 即可使用该插件提供的集群控制台。
 * [Caddy](https://caddyserver.com/) 是一个支持 HTTP/2 的跨平台 Web 服务器，使用和配置都非常简单。 _ELK on QingCloud_ 使用Caddy是为在Logstash节点上上传字典提供便利，同时使得Elasticsearch的日志查看变得更加方便。集群中Caddy运行在Logstash节点的80端口。
 * [Nginx](https://nginx.org/) 是一个Web服务器，也可以用作反向代理，负载平衡器和HTTP缓存。 _ELK on QingCloud_ 使用Nginx是为Kibana提供Elasticsearch节点失效时的故障转移能力。集群中Nginx运行在Kibana节点的9200端口。
@@ -745,6 +783,12 @@ curl -XPOST 'http://<ELK on QingCloud集群的某一节点的IP地址>:9200/_sna
 
 ### APP设计说明
 
+* 1.2.1及以后版本Logstash节点设计说明
+
+自1.2.1版本之后，用户可直接进入logstash安装目录，目录位于/usr/share/logstash。
+
+* 1.2及以前版本Logstash节点设计说明
+
 本APP在软件设计上使用了Docker，用户登录到Logstash节点后可能无法找到logstash安装位置，这时可通过如下命令来找到logstash：
 
 ```bash
@@ -857,4 +901,27 @@ pwd
 * logstash-output-webhdfs
 * logstash-output-xmpp
 * logstash-patterns-core
+
+### 版本历史
+
+ELK5.5.1-QingCloud1.2.1
+
+* 修复之前版本无法使用logstash-input-beats插件的问题
+* 集成ES SQL、Cerebro可视化插件
+
+ELK5.5.1-QingCloud1.2
+
+* 修复ELK5.5.1-QingCloud1.1版本无法在地址范围为172.17.0.0/16的VPC网络中创建的问题
+
+ELK5.5.1-QingCloud1.1
+
+* 基于ElasticSearch5.5.1版本、Kibana5.5.1版本、Logstash5.4.3版本
+* 支持节点横向和纵向扩容
+* ES集成了IK中文分词插件，提供了结巴分词的词库和IK自带的搜狗词库，同时还支持用户上传自定义词典
+* ES集成官方S3存储仓库插件支持，可通过标准S3接口与青云对象存储集成
+* Logstash集成青云对象存储的input/output插件
+* Logstash提供自定义插件能力
+* Kibana集成Nginx，提供ES节点失效时的故障转移能力
+* 提供ES Head，ElasticHD可视化插件，方便用户通过浏览器使用ES
+* 集群关键指标监控
 
