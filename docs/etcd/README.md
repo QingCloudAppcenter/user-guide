@@ -41,7 +41,7 @@
 
 + 开启coredns
 
-    打开coredns服务，会在代理节点上53端口启动dns服务器。
+    打开coredns服务，会在代理节点上53端口启动dns服务器。如果启用coredns服务，请一定要创建代理节点。
 
 + DNS服务根域名
 
@@ -93,11 +93,36 @@ etcdctl --endpoints http://192.168.100.10:2379,http://192.168.100.11:2379,http:/
 
 测试coredns
 
-通过vpn连接vpc,然后使用dig访问coredns，并返回结果
+通过vpn连接vpc,然后使用dig访问coredns
 
 ```shell
-dig www.baidu.com@192.168.0.3
+dig www.baidu.com @192.168.0.3
+; <<>> DiG 9.9.7-P3 <<>> www.baidu.com
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 58199
+;; flags: qr rd ra; QUERY: 1, ANSWER: 3, AUTHORITY: 0, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;www.baidu.com.			IN	A
+
+;; ANSWER SECTION:
+www.baidu.com.		890	IN	CNAME	www.a.shifen.com.
+www.a.shifen.com.	234	IN	A	61.135.169.121
+www.a.shifen.com.	234	IN	A	61.135.169.125
+
+;; Query time: 46 msec
+;; SERVER: 202.106.0.20#53(202.106.0.20)
+;; WHEN: Fri Oct 27 15:46:16 CST 2017
+;; MSG SIZE  rcvd: 90
 ```
+
+```shell
+curl http://192.168.0.3/v2/keys/skydns/cluster/skydns/domain/test/ -d {"host":"192.168.0.5","port"}
+dig test.domain.skydns.cluster @192.168.0.3
+```
+
+返回了地址记录
 
 > 192.168.0.3为etcd 代理节点ip地址
 
