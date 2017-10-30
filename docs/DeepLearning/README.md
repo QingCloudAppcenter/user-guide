@@ -36,7 +36,7 @@ Keras是一个高层神经网络API，由Python编写，通过调用其他深度
 ![第4步：环境设置](../../images/DeepLearning/env_config.png)
 
 - DeepLearning app与QingStor命令行工具集成，[配置](https://docs.qingcloud.com/qingstor/command_line_tools/qsctl.html)
-QingStor相关参数，可以方便的从QingStor拉取数据。如果QingStor选用false，access_key_id和secret_access_key则无需填写。
+QingStor相关参数，可以方便的从QingStor拉取数据。如果QingStor选用false，access_key和secret_key则无需填写。
 
 ## DeepLearning 测试
 以MNIST数据集为例，分别测试caffe，tensorflow，pytorch。MNIST数据集包含0-9 10个数字，
