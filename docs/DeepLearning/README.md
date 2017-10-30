@@ -16,13 +16,13 @@ Keras是一个高层神经网络API，由Python编写，通过调用其他深度
 
 ### 第1步：基本设置
 
-![第1步：基本设置](../../images/DeepLearning/basic_config.png)
+![第1步：基本设置](../../images/DeepLearning/basic_config_1.png)
 
 - 填写服务名称和描述，选择版本。
 
 ### 第2步：dl(deep learning)节点设置
 
-![第2步：节点设置](../../images/DeepLearning/dl_node_config.png)
+![第2步：节点设置](../../images/DeepLearning/dl_node_config_1.png)
 
 - 填写节点CPU、GPU、内存、节点类型、节点个数、数据盘大小等配置信息。
 
