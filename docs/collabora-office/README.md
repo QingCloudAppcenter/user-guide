@@ -1,4 +1,4 @@
-# Nextcloud on QingCloud AppCenter 用户手册
+# Collabora Office on QingCloud AppCenter 用户手册
 
 ## 描述
 
@@ -18,7 +18,7 @@
 
 ### 第2步: Collabora Office 节点设置
 
-Collabora Office 节点依赖于青云 QingCloud 提供的负载均衡器服务，我们需要创建资源并进行相应的设置。如果之前创建 NextCloud 集群时已经创建了负载均衡器，则只需要再创建一个监听器并监听不同端口即可。同样需要注意：
+Collabora Office 节点依赖于青云 QingCloud 提供的负载均衡器服务，我们需要创建资源并进行相应的设置。如果之前创建 [NextCloud 集群](https://appcenter.qingcloud.com/apps/app-7780utnf) 时已经创建了负载均衡器，则只需要再创建一个监听器并监听不同端口即可。同样需要注意：
 
 - 监听器需开启会话保持
 - 监听器的超时时间需设置为 86400 秒
