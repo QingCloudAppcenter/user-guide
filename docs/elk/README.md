@@ -807,14 +807,13 @@ pwd
 
 ### Elasticsearch集成插件列表
 
-* repository-s3
+
 * [elasticsearch-analysis-ik](https://github.com/medcl/elasticsearch-analysis-ik)
 * [elasticsearch-analysis-pinyin](https://github.com/medcl/elasticsearch-analysis-pinyin) (1.2.1加入)
+* repository-s3
 * analysis-icu (1.2.1加入)
 * analysis-kuromoji (1.2.1加入)
-* analysis-ukrainian (1.2.1加入)
 * analysis-phonetic (1.2.1加入)
-* analysis-stempel (1.2.1加入)
 * ingest-attachment (1.2.1加入)
 * ingest-geoip (1.2.1加入)
 * ingest-user-agent (1.2.1加入)
