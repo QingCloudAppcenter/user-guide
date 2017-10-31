@@ -924,7 +924,7 @@ ELK5.5.1-QingCloud1.2.1
 
 * 修复之前版本无法使用logstash-input-beats插件的问题
 * 集成ES SQL、Cerebro可视化插件
-* 集成elasticsearch-analysis-pinyin、analysis-icu、analysis-kuromoji、analysis-ukrainian、analysis-phonetic、analysis-stempel、ingest-attachment、ingest-geoip、ingest-user-agent、mapper-murmur3、mapper-size插件
+* 集成elasticsearch-analysis-pinyin、analysis-icu、analysis-kuromoji、analysis-phonetic、ingest-attachment、ingest-geoip、ingest-user-agent、mapper-murmur3、mapper-size插件
 
 ELK5.5.1-QingCloud1.2
 
