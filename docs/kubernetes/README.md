@@ -1,5 +1,7 @@
 # Kubernetes on QingCloud AppCenter 用户指南
 
+[Instruction in English is available here](README-en-US.md)
+
 ## 简介
 
 Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器化的应用的调度系统，是一个用于容器应用的自动化部署、弹性伸缩、应用升级以及运维等的开源平台。青云QingCloud Kubernetes 服务旨在方便用户在青云平台搭建 Kubernetes 集群。
