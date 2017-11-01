@@ -87,7 +87,7 @@ Kubernetes 集群应用集成了官方的监控组件 heapster 和 dashboard。�
 登录客户端节点后执行
 
 ```shell
-nohup kubectl proxy --address='0.0.0.0' --accept-hosts='.*' --disable-filter=true &
+nohup kubectl proxy --address='0.0.0.0' --accept-hosts='.*' --disable-filter=true --accept-paths="^.*" &
 ```
 
 连接客户端节点所在 vpc 的VPN后，使用浏览器访问 http://客户端节点ip:8001/ui，会自动跳转到dashboard应用。
