@@ -373,7 +373,7 @@ Please find more examples related to the configuration files of QingCloud volume
 
 ## FAQ
 
-### How to visit services outside of Kubernetes cluster?  
+### How to visit services outside of Kubernetes cluster  
 
 There're two options
 
@@ -397,7 +397,7 @@ There're two options
 
 Please submit ticket if all these are correct. 
 
-### Why LoadBalancer doesn't work properly
+### Why LoadBalancer doesn't work properly  
 
 1. Make sure the Service could be accessed by Cluster IP. 
 
@@ -432,7 +432,7 @@ Kubernetes App On QingCloud collect logs and save them in Elasticsearch, end use
 
 Note: Make sure log forward service could work correctly if this configuration is enabled, otherwise fluent-bit agent will fail to collect log. 
 
-### Why log can't be collected
+### Why log can't be collected  
 
 fluent-bit agent may meet some problem if the expected log is not collected by embedded Elasticsearch service or personal log forward service, run command below to delete fluent-bit daemonset, kubernetes will re-deploy corresponding log service. 
 
@@ -441,7 +441,7 @@ fluent-bit agent may meet some problem if the expected log is not collected by e
 kubectl delete ds/fluent-bit -n kube-system
 ```
 
-### How to use private registry
+### How to use private registry  
 
  Kubernetes App on QingCloud support to configure private registry
 
