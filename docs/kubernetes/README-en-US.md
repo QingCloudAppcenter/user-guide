@@ -99,7 +99,7 @@ Enable VPN service of VPC and connect this VPN through VPN client, then open the
 
 ![](screenshot/dashboard.png)
 
-Kibana console for log management could be visited by URL like: http://client node ip:8001/api/v1/proxy/namespaces/kube-system/services/kibana-logging/
+Kibana console for log management could be visited by URL like: http://client-node-ip:8001/api/v1/proxy/namespaces/kube-system/services/kibana-logging/
 
 ![](screenshot/kibana.png)
 
@@ -122,7 +122,7 @@ End user needs to import below indexes on Kibana console to get corresponding lo
 
 Refer to [Official Document](https://www.elastic.co/guide/en/kibana/current/discover.html)
 
-To get the data structure of heapster, please visit http://客户端节点ip:8001/api/v1/proxy/namespaces/kube-system/services/elasticsearch-logging/_cat/indices  
+To get the data structure of heapster, please visit http://client-node-ip:8001/api/v1/proxy/namespaces/kube-system/services/elasticsearch-logging/_cat/indices  
 
 Some pre-defined templates are provided by QingCloud, which could be downloaded from [here](screenshot/export.json)  
 
