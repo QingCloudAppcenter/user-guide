@@ -1,16 +1,14 @@
-# Kubernetes on QingCloud AppCenter Usage Instruction
+# Kubernetes on QingCloud AppCenter User Instruction
 
 ## Summary
 
-Kubernetes is an open-source orchestration system for automating deployment, scaling and management of containerized applications, which aims to provide a "platform for automating deployment, scaling, and operations of application containers across clusters of hosts. The goal of Kubernetes on QingCloud AppCenter is to help end users to easily setup a Kubernetes cluster in several minutes.
-
-## Create Kubernetes cluster
-
-Through QingCloud AppCenter, creating and managing a Kubuerntes cluster is very easy, and also the cluster supports scaling horizontal/vertical, self diagnosis(displaying nodes' real-time status), and customizing thresholds/alarms. The cluster runs in the private network(vxnet), attached with high performance hard disk provided by QingCloud platform, which will ensure end users' data security and I/O performance.
+Kubernetes is an open-source orchestration system for automating deployment, scaling and management of containerized applications, which aims to provide a "platform for automating deployment, scaling, and operations of application containers across clusters of hosts. The goal of Kubernetes on QingCloud AppCenter is to help end users to easily setup a Kubernetes cluster in several minutes. It also supports cluster scaling horizontal/vertical, self diagnosis(displaying nodes' real-time status), and configurating thresholds/alarms. The cluster runs in the private network(vxnet) with high performance storage provided by QingCloud platform, which ensures end users' data security and I/O performance.
 
 ### Prerequisite
 
-To ensure data security, Kubernetes cluster should be better run in the private network, so creating a VPC and managed vxnet is necessary before creating Kubernetes cluster, then assign(join) vxnet to VPC and enable DHCP service(enabled as default). Please don't specify VPC network range to 172.17.0.0/16, which is consumed by docker as default, at same time, <font color=red>**assigning a public IP(EIP) to VPC**</font> is must-have, which is required for accessing QingCloud IaaS API and pulling docker images.
+To ensure high security, Kubernetes cluster must run in the private network, so creating a VPC and managed vxnet is necessary before creating Kubernetes cluster, then join vxnet to VPC and enable DHCP service(enabled as default). Please **don't specify VPC network range to 172.17.0.0/16**, which is used by docker as default, then <font color=red>**assoicate a public IP(EIP) to VPC**</font>, which is required for accessing QingCloud IaaS API and pulling docker images.
+
+## Create Kubernetes cluster
 
 ### Step 1: Select and configure IaaS resource
 
