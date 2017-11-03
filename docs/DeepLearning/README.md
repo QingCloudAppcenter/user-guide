@@ -10,7 +10,7 @@ PyTorch从Torch发展而来，并经过了大量改进，由FaceBook AI团队主
 ### Keras
 Keras是一个高层神经网络API，由Python编写，通过调用其他深度学习框架来进行计算，如Tensorflow、Theano以及CNTK。Keras高度模块化，能快速搭建神经网络，并且非常容易上手。
 # 青云深度学习平台
-基于青云提供的NVIDIA Tesla P100 GPU，青云深度学习平台配置了CUDA8.0和cudnn5，并安装了流行的深度学习框架，如Caffe(BVLC)， TensorFlow(1.2.1)，keras(2.0.8)，PyTorch（0.2.0_3），省去了用户搭建环境的麻烦，提高开发效率。用户无需修改代码，即可把本地的代码运行在云上，还能动态扩展所需资源。
+基于青云提供的NVIDIA Tesla P100 GPU，青云深度学习平台配置了CUDA8.0和cuDNN5，并安装了流行的深度学习框架，如Caffe(BVLC)， TensorFlow(1.2.1)，Keras(2.0.8)，PyTorch（0.2.0_3），省去了用户搭建环境的麻烦，提高开发效率。用户无需修改代码，即可把本地的代码运行在云上，还能动态扩展所需资源。
 
 ## 部署 DeepLearning 服务
 
