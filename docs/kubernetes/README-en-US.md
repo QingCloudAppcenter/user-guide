@@ -4,11 +4,12 @@
 
 ----
 
-### Prerequisite
+## Prerequisite
 
 To ensure high security, Kubernetes cluster must run in a private network, so creating a VPC and managed vxnet is necessary before creating Kubernetes cluster, then join vxnet to VPC and enable DHCP service(enabled as default). Please **don't specify VPC network range to 172.17.0.0/16**, which is used by docker as default, then <font color=red>**associate a public IP(EIP) to VPC**</font>, which is required for accessing QingCloud IaaS API and pulling docker images.
 
-##### Create A VPC  
+### Create A VPC  
+
 Through left navigation tree on QingCloud console, go to `Networks&CDN -> VPC networks`, click 'Create VPC network' button  
 
 ![](screenshot/create_vpc.png)  
@@ -18,7 +19,8 @@ After creating VPC, back to the page of `VPC networks`, click that VPC and go to
 Note: one of these vxnet should be specified as cluster's vxnet in step 6 below, the other ones should be specified as 'Pod vxnets' in `Environment Settings`  
 <font color=red>After all the setting is saved, please make sure to click 'Apply Changes' button on top right of the page</font>  
 
-##### Create vxnets  
+### Create vxnets 
+ 
 Go to `Networks&CDN -> VxNets`, click 'Create' button  
 
 ![](screenshot/create_vxnet.png)  
@@ -26,7 +28,8 @@ After creating vxnets, back to the page of `VxNets`, right click them, then clic
 
 ![](screenshot/join_vpc.png)  
 
-##### Create API Access Key  
+### Create API Access Key  
+
 Go to `Access Keys` page through left navigation tree, click 'Create' button, then input the name and description of the key and click 'Submit' button, a popup panel of generated key will be shown and download this key file to local machine, and then you could get the detail content of this key  
 
 ![](screenshot/create_api_key.png)  
