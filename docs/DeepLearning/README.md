@@ -39,8 +39,13 @@ Keras是一个高层神经网络API，由Python编写，通过调用其他深度
 QingStor相关参数，可以方便的从QingStor拉取数据。如果QingStor选用false，access_key和secret_key则无需填写。
 
 ## DeepLearning 测试
-以MNIST数据集为例，分别测试caffe，tensorflow，pytorch。MNIST数据集包含0-9 10个数字，
-训练数据集包含 60,000 个样本，测试数据集包含 10,000 样本，数据集中的每张图片由 28 x 28 个像素点构成。
+### 测试环境
+主机上使用miniconda，默认的python的版本为2.7，同时也配有python3.6的环境，如需切换，可以运行如下命令：  
+```shell
+source activate python36
+```  
+以MNIST数据集为例，分别测试Caffe，TensorFlow，PyTorch，Keras。MNIST数据集包含0-9 10个数字，
+训练数据集包含 60，000 个样本，测试数据集包含 10，000 样本，数据集中的每张图片由 28 x 28 个像素点构成。
 > Deep Learning 训练往往需要大量的数据，数据存储经常占用很大的空间。青云QingStor可以存储海量数据，
 用户可以方便的把数据放在QingStor，再使用QingStor命令行工具快速的下载到本地。如果在环境设置中配置好了QingStor(如果没有也可在本地[配置](https://docs.qingcloud.com/qingstor/command_line_tools/qsctl.html))，从QingStor获取数据：  
 ```shell
@@ -132,3 +137,9 @@ python mnist.py
 ```
 keras 训练结果  
 ![keras 训练结果](../../images/DeepLearning/keras_result.png)
+为了方便用户使用，环境中配置了jupyter notebook，用户可以使用如下命令启动  
+```shell
+jupyter notebook
+```
+jupyter notebook 开发环境   
+![jupyter notebook 开发环境](../../images/DeepLearning/jupyter_notebook.png)
