@@ -10,7 +10,7 @@ PyTorch从Torch发展而来，并经过了大量改进，由FaceBook AI团队主
 ### Keras
 Keras是一个高层神经网络API，由Python编写，通过调用其他深度学习框架来进行计算，如Tensorflow、Theano以及CNTK。Keras高度模块化，能快速搭建神经网络，并且非常容易上手。
 # 青云深度学习平台
-基于青云提供的NVIDIA Tesla P100 GPU，青云深度学习平台配置了CUDA8.0和cuDNN5，并安装了流行的深度学习框架，如Caffe(BVLC)，TensorFlow(1.2.1)，Keras(2.0.8)，PyTorch(0.2.0_3)，省去了用户搭建环境的麻烦，提高开发效率。用户无需修改代码，即可把本地的代码运行在云上，还能动态扩展所需资源。
+基于青云提供的NVIDIA Tesla P100 GPU，青云深度学习平台配置了CUDA8.0和cuDNN5，并安装了流行的深度学习框架，如Caffe(BVLC)，TensorFlow(1.2.1)，Keras(2.0.9)，PyTorch(0.2.0_4)，省去了用户搭建环境的麻烦，提高开发效率。用户无需修改代码，即可把本地的代码运行在云上，还能动态扩展所需资源。
 
 ## 部署 DeepLearning 服务
 
@@ -40,10 +40,7 @@ QingStor相关参数，可以方便的从QingStor拉取数据。如果QingStor�
 
 ## DeepLearning 测试
 ### 测试环境
-深度学习平台使用miniconda来管理python环境，默认的python的版本为2.7，同时也配有python3.6，如需切换，可以运行如下命令：  
-```shell
-source activate python36
-```  
+深度学习平台使用miniconda来管理python环境，python的版本为2.7。  
 以MNIST数据集为例，分别测试Caffe，TensorFlow，PyTorch，Keras。MNIST数据集包含0-9 10个数字，
 训练数据集包含60，000 个样本，测试数据集包含10，000 样本，数据集中的每张图片由28x28个像素点构成。
 > Deep Learning 训练往往需要大量的数据，数据存储经常占用很大的空间。青云QingStor可以存储海量数据，
