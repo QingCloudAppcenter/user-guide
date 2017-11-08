@@ -138,7 +138,8 @@ python mnist.py
 ```
 keras 训练结果  
 ![keras 训练结果](../../images/DeepLearning/keras_result.png)  
-为了方便用户使用，环境中配有jupyter notebook，用户可以使用如下命令启动  
+为了方便开发，环境中配有jupyter notebook，用户可以交互式编程，并能直观展现实时计算结果。  
+jupyter notebook启动命令  
 ```shell
 jupyter notebook
 ```
