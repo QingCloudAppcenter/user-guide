@@ -40,7 +40,7 @@ QingStor相关参数，可以方便的从QingStor拉取数据。如果QingStor�
 
 ## DeepLearning 测试
 ### 测试环境
-深度学习平台使用miniconda来管理python环境，python的版本为2.7，并装有numpy，scipy，pandas，matplotlib，nltk，scikit-learn，jupyter notebook等常用工具包。  
+深度学习平台使用miniconda2来管理python环境，python的版本为2.7，并装有numpy，scipy，pandas，matplotlib，nltk，scikit-learn，jupyter notebook等常用工具包。  
 以MNIST数据集为例，分别测试Caffe，TensorFlow，PyTorch，Keras。MNIST数据集包含0-9 10个数字，
 训练数据集包含60，000 个样本，测试数据集包含10，000 样本，数据集中的每张图片由28x28个像素点构成。
 > Deep Learning 训练往往需要大量的数据，数据存储经常占用很大的空间。青云QingStor可以存储海量数据，
@@ -64,8 +64,7 @@ caffe 训练过程
 ![caffe 训练过程](../../images/DeepLearning/caffe_train.png)  
 caffe 训练结果  
 ![caffe 训练结果](../../images/DeepLearning/caffe_result.png)
-### TensorFlow 测试示例
-TensorFlow 版本号为1.2，支持单机和分布式训练。  
+### TensorFlow 测试示例 
 #### 单机：
 ```shell
 cd /home/ubuntu/tensorflow  
@@ -81,12 +80,17 @@ tensorflow 增加节点
 Tensorflow 分布式训练需要指定parameter server 和 worker的IP地址和端口号（根据自己的IP进行修改）  
 下面是一个parameter server 和两个 worker 进行分布式训练：  
 节点1：  
+- 启动parameter server
 ```shell
 cd /home/ubuntu/tensorflow  
 python mnist_dist.py --ps_hosts=192.168.1.6:2221 --worker_hosts=192.168.1.6:2223,192.168.1.7:2223 --job_name=ps --task_index=0  
+```
+- 启动第一个worker  
+```shell
 python mnist_dist.py --ps_hosts=192.168.1.6:2221 --worker_hosts=192.168.1.6:2223,192.168.1.7:2223 --job_name=worker --task_index=0  
 ```
-节点2：
+节点2：  
+- 启动第二个worker  
 ```shell
 cd /home/ubuntu/tensorflow  
 python mnist_dist.py --ps_hosts=192.168.1.6:2221 --worker_hosts=192.168.1.6:2223,192.168.1.7:2223 --job_name=worker --task_index=1
@@ -112,7 +116,7 @@ python mnist.py
 pytorch 训练结果  
 ![pytorch 训练结果](../../images/DeepLearning/pytorch_result.png)
 #### 分布式  
-**pytorch分布式训练时，每个节点的GPU个数应该大于1个，否则容易出现错误。**  
+**pytorch分布式训练时，由于现在版本的pytoch自身的一些缺陷，每个节点的GPU个数应该大于1个，否则容易出现错误。**  
 节点1：  
 ```shell
 cd /home/ubuntu/pytorch   
