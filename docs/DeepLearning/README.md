@@ -40,7 +40,7 @@ QingStor相关参数，可以方便的从QingStor拉取数据。如果QingStor�
 
 ## DeepLearning 测试
 ### 测试环境
-深度学习平台使用miniconda来管理python环境，python的版本为2.7，并配有numpy，scipy，pandas，matplotlib，nltk，scikit-learn，jupyter notebook等常用工具包。  
+深度学习平台使用miniconda来管理python环境，python的版本为2.7，并装有numpy，scipy，pandas，matplotlib，nltk，scikit-learn，jupyter notebook等常用工具包。  
 以MNIST数据集为例，分别测试Caffe，TensorFlow，PyTorch，Keras。MNIST数据集包含0-9 10个数字，
 训练数据集包含60，000 个样本，测试数据集包含10，000 样本，数据集中的每张图片由28x28个像素点构成。
 > Deep Learning 训练往往需要大量的数据，数据存储经常占用很大的空间。青云QingStor可以存储海量数据，
@@ -139,6 +139,7 @@ keras 训练结果
 jupyter notebook
 ```
 jupyter noetbook默认端口号为`8888`。
-> 如果需要通过公网访问这些信息您需要先申请一个公网IP绑定在路由器上，在路由器上设置端口转发，同时打开防火墙相应的下行端口。为了方便使用jupyter notebook，也可参考[VPN 隧道指南](https://docs.qingcloud.com/guide/vpn.html) 配置VPN。
+> 如果需要通过公网访问这些信息您需要先申请一个公网IP绑定在路由器上，在路由器上设置端口转发，同时打开防火墙相应的下行端口。为了方便使用jupyter notebook，也可参考[VPN 隧道指南](https://docs.qingcloud.com/guide/vpn.html) 配置VPN。  
+
 jupyter notebook 开发环境   
 ![jupyter notebook 开发环境](../../images/DeepLearning/jupyter_notebook.png)
