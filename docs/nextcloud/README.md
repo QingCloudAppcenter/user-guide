@@ -158,6 +158,24 @@ CPU，内存，节点数量，实例类型和磁盘大小根据自己实际需�
 
 ![扩容集群](../../images/nextcloud/update_cluster_size.png)
 
+### 升级集群
+
+关闭集群后可以点击 `基本属性` 右侧的菜单中的升级以升级集群。升级完毕后所有数据不会丢失，升级失败的话会回滚到正常的版本。集群升级成功后首次访问会进入到维护界面并提示需要升级，点击页面上的升级按钮即可。
+
+### 配置 Office 文档在线预览
+
+首先按照上文的指引将集群升级至最新版本： v1.1.0 ，集群升级完毕后访问应用界面并启用 `Collabora Online` 。
+
+![启用 Collabora Online](../../images/nextcloud/enable-collobora-online.png)
+
+然后参考 [Collabora Office](https://appcenter-docs.qingcloud.com/user-guide/apps/docs/collabora-office/) 来部署 Collabora Office 服务。
+
+然后在 NextCloud `设置 —— 在线协作` 中配置 Collabora Office 服务的地址并附上其对应的监听器所监听的端口。
+
+![配置 Collabora Online](../../images/nextcloud/collabora_online_setting.png)
+
+之后就可以使用 Office 文档在线预览功能了。
+
 ---
 
 至此，`Nextcloud on QingCloud AppCenter` 的介绍到这里就告一个段落了。
