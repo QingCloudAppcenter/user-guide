@@ -398,7 +398,7 @@ Kubernetes on QingCloud 容器网络使用的是 SDN Passthrough 方案，每个
 
 3. 如果是私有网络的负载均衡器，请确认负载均衡器的私有网络ID（vxnet）没有复用 pod 所在的私有网络。
 
-4. 如果使用的是 80 端口，请确认您的账号通过了认证（最好 IP 通过备案）。
+4. 如果使用的是 80 端口，请确认您的账号通过了[账号认证](https://docs.qingcloud.com/guide/account/user_verify.html#guide-user-verify)（最好 IP 通过备案）。
 
 ### 如何在应用中输出 json 格式的日志，并被 Elasticsearch 按字段索引
 
