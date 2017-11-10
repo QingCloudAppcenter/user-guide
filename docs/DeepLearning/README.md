@@ -110,7 +110,7 @@ tensorboard --logdir=./tflog/
 tensorboard展示结果  
 ![tensorboard展示结果](../../images/DeepLearning/tensorboard.png)
 ### PyTorch 测试示例
-[PyToch文档](http://pytorch.org/)  
+[PyTorch文档](http://pytorch.org/)  
 #### 单机 
 ```shell
 cd /home/ubuntu/pytorch  
