@@ -52,8 +52,9 @@ qsctl cp -r qs://mydata/ data/
 ```
 
 ### Caffe 测试示例
-Caffe支持python接口，用户也可以根据需要重新配置编译，目前不支持多机分布式训练。  
+Caffe支持python接口，用户也可以根据需要重新配置编译，目前不支持多机分布式训练。[Caffe文档](http://caffe.berkeleyvision.org)  
 **Caffe预先用GPU版本进行编译，如果选择的GPU的个数为0，需修改配置文件，重新编译。**
+
 #### 单机
 单机示例：  
 ```shell
@@ -65,6 +66,7 @@ caffe 训练过程
 caffe 训练结果  
 ![caffe 训练结果](../../images/DeepLearning/caffe_result.png)
 ### TensorFlow 测试示例 
+[Tensorflow文档](http://tensorflow.org)  
 #### 单机：
 ```shell
 cd /home/ubuntu/tensorflow  
@@ -108,6 +110,7 @@ tensorboard --logdir=./tflog/
 tensorboard展示结果  
 ![tensorboard展示结果](../../images/DeepLearning/tensorboard.png)
 ### PyTorch 测试示例
+[PyToch文档](http://pytorch.org/)  
 #### 单机 
 ```shell
 cd /home/ubuntu/pytorch  
@@ -130,7 +133,7 @@ python mnist_dist.py
 pytorch 分布式训练结果  
 ![pytorch 分布式训练结果](../../images/DeepLearning/pytorch_cluster_result.png)
 ### Keras 测试示例  
-Keras默认使用Tensorflow来计算，目前青云平台上也只支持Tensorflow作为其计算框架。  
+Keras默认使用Tensorflow来计算，目前青云平台上也只支持Tensorflow作为其计算框架。[Keras文档](https://keras.io)  
 #### 单机 
 ```shell
 cd /home/ubuntu/keras  
@@ -141,6 +144,7 @@ keras 训练结果
 为了方便开发，环境中配有jupyter notebook，用户可以交互式编程，并能直观展现实时计算结果。  
 jupyter notebook启动命令  
 ```shell
+cd /home/ubuntu/keras
 jupyter notebook
 ```
 jupyter noetbook默认端口号为`8888`。
