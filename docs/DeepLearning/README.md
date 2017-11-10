@@ -65,6 +65,13 @@ caffe 训练过程
 ![caffe 训练过程](../../images/DeepLearning/caffe_train.png)  
 caffe 训练结果  
 ![caffe 训练结果](../../images/DeepLearning/caffe_result.png)
+> 查看GPU使用情况，可以使用如下命令。  
+```shell
+nvidia-smi  
+```
+
+GPU 使用情况
+![GPU 使用情况](../../images/DeepLearning/GPU.png)
 ### TensorFlow 测试示例 
 [Tensorflow文档](http://tensorflow.org)  
 #### 单机：
