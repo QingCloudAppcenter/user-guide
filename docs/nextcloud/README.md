@@ -166,6 +166,8 @@ CPU，内存，节点数量，实例类型和磁盘大小根据自己实际需�
 
 首先按照上文的指引将集群升级至最新版本： v1.1.0 ，集群升级完毕后访问应用界面并启用 `Collabora Online` 。
 
+> 因为需要访问外网以获取插件信息，所以可能需要比较长的加载时间，请耐心等候页面加载成功。
+
 ![启用 Collabora Online](../../images/nextcloud/enable_collobora_online.png)
 
 然后参考 [Collabora Office](https://appcenter-docs.qingcloud.com/user-guide/apps/docs/collabora-office/) 来部署 Collabora Office 服务。
