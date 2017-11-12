@@ -6,7 +6,7 @@
 
 `Collabora Office on QingCloud AppCenter` 将 Collabora Office 通过云应用的形式在 QingCloud AppCenter 部署，具有如下特性：
 
-- 支持与 NextCloud 集成
+- 支持与 NextCloud 集成，请参考[Nextcloud 文档](https://appcenter-docs.qingcloud.com/user-guide/apps/docs/nextcloud/)
 - 支持横向与纵向扩容
 - 系统自动运维，降低企业使用成本
 
@@ -41,6 +41,6 @@ Collabora Office 节点依赖于青云 QingCloud 提供的负载均衡器服务�
 > NextCloud 集群中的配置为： https://test.nextcloud.com
 > 则 Collabora Office 集群中的配置应为：https://test.nextcloud.com
 
-### 第7步: 用户协议
+### 第5步: 用户协议
 
 阅读并同意青云 APP Center 用户协议之后即可开始部署应用。
