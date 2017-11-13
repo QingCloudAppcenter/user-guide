@@ -73,7 +73,7 @@ nvidia-smi
 GPU 使用情况  
 ![GPU 使用情况](../../images/DeepLearning/GPU.png)
 ### TensorFlow 测试示例 
-[Tensorflow文档](http://tensorflow.org)  
+[TensorFlow文档](http://tensorflow.org)  
 #### 单机：
 ```shell
 cd /home/ubuntu/tensorflow  
