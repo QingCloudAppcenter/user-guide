@@ -48,8 +48,7 @@ Keras是一个高层神经网络API，由Python编写，通过调用其他深度
 
 ![第4步：环境设置](../../images/DeepLearning/env_config.png)
 
-- DeepLearning app与QingStor命令行工具集成，[配置](https://docs.qingcloud.com/qingstor/command_line_tools/qsctl.html)
-QingStor相关参数，可以方便的从QingStor拉取数据。如果QingStor选用false，access_key和secret_key则无需填写。
+- DeepLearning app与QingStor命令行工具集成，[配置](https://docs.qingcloud.com/qingstor/command_line_tools/qsctl.html)QingStor相关参数，可以方便的从QingStor拉取数据。如果QingStor选用false，access_key和secret_key则无需填写。
 
 ## DeepLearning 测试
 
@@ -116,6 +115,7 @@ tensorflow 增加节点
 Tensorflow 分布式训练需要指定parameter server 和 worker的IP地址和端口号（根据自己的IP进行修改）  
 下面是一个parameter server 和两个 worker 进行分布式训练：  
 节点1：  
+
 - 启动parameter server
 
 ```shell
@@ -130,6 +130,7 @@ python mnist_dist.py --ps_hosts=192.168.1.6:2221 --worker_hosts=192.168.1.6:2223
 ```
 
 节点2：  
+
 - 启动第二个worker  
 
 ```shell
