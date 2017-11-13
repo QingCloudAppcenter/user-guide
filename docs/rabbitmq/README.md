@@ -12,6 +12,8 @@
 - 提供了监控告警功能，更好地管理集群
 - 与 Haproxy+Keepalived 集成，具备高可用负载均衡特性
 - 开箱即用，支持 AMQP、MQTT、STOMP、WebSockets 等多种丰富协议
+- 磁盘节点支持消息延迟队列插件，[使用方法参考](https://github.com/rabbitmq/rabbitmq-delayed-message-exchange)
+- RabbitMQ 节点支持消息追踪插件，[使用方法参考](http://www.rabbitmq.com/firehose.html)
 
 
 ## 创建 RabbitMQ
