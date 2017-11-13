@@ -400,6 +400,7 @@ qingstor {
     secret_access_key => "your_secret_access_key"
     bucket => "bucket_name"
     region => "pek3a"
+    sincedb_path => "~/.sincedb"
 }
 ```
 
@@ -432,7 +433,7 @@ qingstor {
     encoding => "gzip"
     rotation_strategy => "size_and_time"
     file_size => 10485760
-    file_time => 60
+    file_time => 10
 }
 ```
 
