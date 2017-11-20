@@ -68,7 +68,7 @@ qsctl cp -r qs://mydata/ data/
 
 ### Caffe 测试示例
 
-Caffe 支持 Python 接口，用户也可以根据需要重新配置编译，目前不支持多机分布式训练，详情请见 [Caffe 文档](http://caffe.berkeleyvision.org)。  （**Caffe 预先用 GPU 版本进行编译，如果选择的 GPU 的个数为 0，需修改配置文件，重新编译。**）
+Caffe 支持 Python 接口，用户也可以根据需要重新配置编译，目前不支持多机分布式训练，详情请见 [Caffe 文档](http://caffe.berkeleyvision.org)。(**Caffe 预先用 GPU 版本进行编译，如果选择的 GPU 的个数为 0，需修改配置文件，重新编译。**)
 
 #### 单机
 
