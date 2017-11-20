@@ -136,7 +136,7 @@ python mnist_dist.py --ps_hosts=192.168.1.6:2221 --worker_hosts=192.168.1.6:2223
 
 节点 2：  
 
-- 启动第二个 worker  
+- 启动第二个 worker **注意：是在第二个节点即新增节点上启动** 
 
 ```shell
 cd /home/ubuntu/tensorflow  
@@ -146,12 +146,9 @@ python mnist_dist.py --ps_hosts=192.168.1.6:2221 --worker_hosts=192.168.1.6:2223
 TensorFlow 分布式训练结果  
 ![TensorFlow 分布式训练结果](../../images/DeepLearning/tensorflow_cluster_result.png)  
 
-TensorFlow 中的 TensorBoard 提供了训练过程中丰富的信息，默认端口号为 `6066`。
-> 您可以通过如下方式之一查看 TensorBoard UI：
-> 1. 通过公网访问，您需要先申请一个公网 IP 绑定在路由器上，在路由器上设置端口转发，同时打开防火墙相应的下行端口。
-> 2. 或参考[VPN 隧道指南](https://docs.qingcloud.com/guide/vpn.html) 配置 VPN，通过私网 IP 地址访问。  
+**开启 TensorBoard 服务**
 
-开启 TensorBoard 服务
+TensorFlow 中的 TensorBoard 提供了训练过程中丰富的信息，默认端口号为 `6006`。在某一节点上启动一下命令：
 
 ```shell
 tensorboard --logdir=./tflog/
@@ -159,6 +156,10 @@ tensorboard --logdir=./tflog/
 
 TensorBoard 展示结果  
 ![TensorBoard 展示结果](../../images/DeepLearning/tensorboard.png)
+
+> 您可以通过如下方式之一查看 TensorBoard UI：
+> 1. 通过公网访问，您需要先申请一个公网 IP 绑定在路由器上，在路由器上设置端口转发，同时打开防火墙相应的下行端口。
+> 2. 或参考[VPN 隧道指南](https://docs.qingcloud.com/guide/vpn.html) 配置 VPN，通过私网 IP 地址访问。  
 
 
 ### PyTorch 测试示例
