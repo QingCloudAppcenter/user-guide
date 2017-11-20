@@ -69,6 +69,7 @@ qsctl cp -r qs://mydata/ data/
 ### Caffe 测试示例
 
 Caffe 支持 Python 接口，用户也可以根据需要重新配置编译，目前不支持多机分布式训练。详情请见 [Caffe 文档](http://caffe.berkeleyvision.org)
+
 **Caffe 预先用 GPU 版本进行编译，如果选择的 GPU 的个数为 0，需修改配置文件，重新编译。**
 
 #### 单机
@@ -82,7 +83,7 @@ cd /home/ubuntu/caffe
 
 Caffe 训练过程  
 ![Caffe 训练过程](../../images/DeepLearning/caffe_train.png)  
-caffe 训练结果  
+Caffe 训练结果  
 ![Caffe 训练结果](../../images/DeepLearning/caffe_result.png)
 > 查看 GPU 使用情况，可以使用如下命令。  
 
@@ -113,7 +114,7 @@ TensorFlow 训练结果
 TensorFlow 增加节点  
 ![TensorFlow 增加节点](../../images/DeepLearning/tensorflow_add_node.png)  
 TensorFlow 分布式训练需要指定 parameter server 和 worker 的 IP 地址和端口号（根据自己的 IP 进行修改）  
-下面是一个 parameter server 和两个 worker 进行分布式训练：  
+下面是一个 parameter server 和两个 worker 进行分布式训练的示例：  
 节点 1：  
 
 - 启动 parameter server
@@ -141,8 +142,10 @@ python mnist_dist.py --ps_hosts=192.168.1.6:2221 --worker_hosts=192.168.1.6:2223
 TensorFlow 分布式训练结果  
 ![TensorFlow 分布式训练结果](../../images/DeepLearning/tensorflow_cluster_result.png)  
 
-TensorFlow 中的 tensorboard 提供了训练过程中丰富的信息，默认端口号为 `6066`。
-> 如果需要通过公网访问这些信息您需要先申请一个公网 IP 绑定在路由器上，在路由器上设置端口转发，同时打开防火墙相应的下行端口。为了方便查看 tensorboard UI，也可参考[VPN 隧道指南](https://docs.qingcloud.com/guide/vpn.html) 配置VPN。  
+TensorFlow 中的 TensorBoard 提供了训练过程中丰富的信息，默认端口号为 `6066`。
+> 您可以通过如下方式之一查看 TensorBoard UI：
+> 1. 通过公网访问，您需要先申请一个公网 IP 绑定在路由器上，在路由器上设置端口转发，同时打开防火墙相应的下行端口。
+> 2. 或参考[VPN 隧道指南](https://docs.qingcloud.com/guide/vpn.html) 配置 VPN，通过私网 IP 地址访问。  
 
 开启 TensorBoard 服务
 
