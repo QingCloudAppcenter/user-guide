@@ -56,13 +56,15 @@ Keras 是一个高层神经网络 API，由 Python 编写，通过调用其他�
 
 深度学习平台使用 miniconda2 来管理 Python 环境，Python 的版本为2.7，并装有 numpy，scipy，pandas，matplotlib，nltk，scikit-learn，jupyter notebook 等常用工具包。下面将以 MNIST 数据集为例，分别测试 Caffe，TensorFlow，PyTorch 和 Keras。
 
-
-
 > [MNIST](http://yann.lecun.com/exdb/mnist/) 是著名的手写数字数据集，包含 0~9 十个各种风格的手写数字，经常用于深度学习入门及测试。其内容分为训练集和测试集，训练数据集包含 60,000 个样本，测试数据集包含 10,000 样本，数据集中的每张图片由 28x28 个像素点构成。
 
-
-
 > Deep Learning 训练往往需要大量的数据，数据存储经常占用很大的空间。青云 QingStor 可以存储海量数据，用户可以方便的把数据放在 QingStor，再使用 QingStor 命令行工具快速的下载到本地。如果在环境设置中配置好了 QingStor (如果没有也可在本地[配置](https://docs.qingcloud.com/qingstor/command_line_tools/qsctl.html))，从 QingStor 获取数据：  
+=======
+深度学习平台使用 miniconda2 来管理 Python 环境，Python 的版本为2.7，并装有 numpy，scipy，pandas，matplotlib，nltk，scikit-learn，jupyter notebook 等常用工具包。节点登录信息：ubuntu/p12cHANgepwD。
+以 MNIST 数据集为例，分别测试 Caffe，TensorFlow，PyTorch，Keras。MNIST 数据集包含 0-9 10 个数字，
+训练数据集包含 60,000 个样本，测试数据集包含 10,000 样本，数据集中的每张图片由 28x28 个像素点构成。
+> Deep Learning 训练往往需要大量的数据，数据存储经常占用很大的空间。青云 QingStor 可以存储海量数据，
+用户可以方便的把数据放在 QingStor，再使用 QingStor 命令行工具快速的下载到本地。如果在环境设置中配置好了 QingStor (如果没有也可在本地[配置](https://docs.qingcloud.com/qingstor/command_line_tools/qsctl.html))，从 QingStor 获取数据：  
 
 ```shell
 cd /home/ubuntu/tensorflow  
@@ -70,11 +72,7 @@ mkdir data
 qsctl cp -r qs://mydata/ data/
 ```
 
-
-
 > 节点登录信息：ubuntu/p12cHANgepwD
-
-
 
 ### Caffe 测试示例
 
@@ -169,7 +167,6 @@ TensorBoard 展示结果
 > 1. 如需在TensorBoard中显示相关信息，需要编写相关代码。TensorBoard详细用法请参考 [Github](mnist_dist.py) TensorBoard 页面。
 > 2. 通过公网访问，您需要先申请一个公网 IP 绑定在路由器上，在路由器上设置端口转发，同时打开防火墙相应的下行端口。
 > 3. 或参考[VPN 隧道指南](https://docs.qingcloud.com/guide/vpn.html) 配置 VPN，通过私网 IP 地址访问。  
-
 
 ### PyTorch 测试示例
 
