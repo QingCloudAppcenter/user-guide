@@ -68,9 +68,7 @@ qsctl cp -r qs://mydata/ data/
 
 ### Caffe 测试示例
 
-Caffe 支持 Python 接口，用户也可以根据需要重新配置编译，目前不支持多机分布式训练，详情请见 [Caffe 文档](http://caffe.berkeleyvision.org)。
-
-**Caffe 预先用 GPU 版本进行编译，如果选择的 GPU 的个数为 0，需修改配置文件，重新编译。**
+Caffe 支持 Python 接口，用户也可以根据需要重新配置编译，目前不支持多机分布式训练，详情请见 [Caffe 文档](http://caffe.berkeleyvision.org)。  （**Caffe 预先用 GPU 版本进行编译，如果选择的 GPU 的个数为 0，需修改配置文件，重新编译。**）
 
 #### 单机
 
@@ -136,8 +134,7 @@ python mnist_dist.py --ps_hosts=192.168.1.6:2221 --worker_hosts=192.168.1.6:2223
 
 节点 2：  
 
-- 启动第二个 worker 
-**注意：是在第二个节点即新增节点上启动** 
+- 启动第二个 worker （**注意：是在第二个节点即新增节点上启动**） 
 
 ```shell
 cd /home/ubuntu/tensorflow  
@@ -147,7 +144,7 @@ python mnist_dist.py --ps_hosts=192.168.1.6:2221 --worker_hosts=192.168.1.6:2223
 TensorFlow 分布式训练结果  
 ![TensorFlow 分布式训练结果](../../images/DeepLearning/tensorflow_cluster_result.png)  
 
-**开启 TensorBoard 服务**
+#### 开启 TensorBoard 服务
 
 TensorFlow 中的 TensorBoard 提供了训练过程中丰富的信息，默认端口号为 `6006`。在某一节点上启动一下命令：
 
