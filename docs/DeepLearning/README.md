@@ -2,7 +2,7 @@
 
 ## 深度学习简介
 
-2016 年 AlphaGo 战胜李世石，预示我们进入了 AI 时代。深度学习是 AI 的核心技术，在图像分类，自然语言处理，无人驾驶等众多领域显示出了强大的能力，各大巨头纷纷投入巨资研发。语音助手，人脸识别，外文翻译等等，AI 已融入到了我们生活的方方面面，极大了促进了社会的发展。其中 Caffe，TensorFlow，Keras，PyTorch 是主流的深度学习框架，拥有强大的社区支持，是实践深度学习不可或缺的工具。  
+2016 年 AlphaGo 战胜李世石，预示我们进入了 AI 时代。深度学习是 AI 的核心技术，在图像分类，自然语言处理，无人驾驶等众多领域显示出了强大的能力，各大巨头纷纷投入巨资研发。语音助手，人脸识别，外文翻译等等，AI 已融入到了我们生活的方方面面，极大了促进了社会的发展。其中 Caffe，TensorFlow，Keras，PyTorch 是主流的深度学习框架，拥有强大的社区支持，是实践深度学习不可或缺的工具。  
 
 ### Caffe
 
@@ -14,11 +14,11 @@ TensorFlow 由 Google 大脑主导开发，是一个分布式系统上的大规�
 
 ### PyTorch
 
-PyTorch从Torch 发展而来，并经过了大量改进，由 FaceBook AI 团队主导开发。不同于 TensorFlow，PyTorch 采用动态计算图的方式，并提供良好的 python 接口，代码简单灵活，使用起来非常方便。内存分配也经过了优化，能支持分布式多机训练。
+PyTorch 从 Torch 发展而来，并经过了大量改进，由 FaceBook AI 团队主导开发。不同于 TensorFlow，PyTorch 采用动态计算图的方式，并提供良好的 python 接口，代码简单灵活，使用起来非常方便。内存分配也经过了优化，能支持分布式多机训练。
 
 ### Keras
 
-Keras 是一个高层神经网络 API，由 Python 编写，通过调用其他深度学习框架来进行计算，如 Tensorflow、Theano 以及 CNTK。Keras 高度模块化，能快速搭建神经网络，并且非常容易上手。
+Keras 是一个高层神经网络 API，由 Python 编写，通过调用其他深度学习框架来进行计算，如 TensorFlow、Theano 以及 CNTK。Keras 高度模块化，能快速搭建神经网络，并且非常容易上手。
 
 ## 青云深度学习平台
 
@@ -48,7 +48,7 @@ Keras 是一个高层神经网络 API，由 Python 编写，通过调用其他�
 
 ![第4步：环境设置](../../images/DeepLearning/env_config.png)
 
-- Deep Learning app 与 QingStor 命令行工具集成，[配置](https://docs.qingcloud.com/qingstor/command_line_tools/qsctl.html) QingStor 相关参数，可以方便的从 QingStor 拉取数据。如果 QingStor 选用 false，access_key 和 secret_key 则无需填写。
+- Deep Learning app 与 QingStor 命令行工具集成，[配置 QingStor](https://docs.qingcloud.com/qingstor/command_line_tools/qsctl.html) 相关参数，可以方便的从 QingStor 拉取数据。如果 QingStor 选用 false，access_key 和 secret_key 则无需填写。
 
 ## Deep Learning 测试
 
@@ -56,7 +56,7 @@ Keras 是一个高层神经网络 API，由 Python 编写，通过调用其他�
 
 深度学习平台使用 miniconda2 来管理 python 环境，python 的版本为2.7，并装有 numpy，scipy，pandas，matplotlib，nltk，scikit-learn，jupyter notebook 等常用工具包。  
 以 MNIST 数据集为例，分别测试 Caffe，TensorFlow，PyTorch，Keras。MNIST 数据集包含 0-9 10 个数字，
-训练数据集包含 60，000 个样本，测试数据集包含 10，000 样本，数据集中的每张图片由 28x28 个像素点构成。
+训练数据集包含 60,000 个样本，测试数据集包含 10,000 样本，数据集中的每张图片由 28x28 个像素点构成。
 > Deep Learning 训练往往需要大量的数据，数据存储经常占用很大的空间。青云 QingStor 可以存储海量数据，
 用户可以方便的把数据放在 QingStor，再使用 QingStor 命令行工具快速的下载到本地。如果在环境设置中配置好了 QingStor (如果没有也可在本地[配置](https://docs.qingcloud.com/qingstor/command_line_tools/qsctl.html))，从 QingStor 获取数据：  
 
