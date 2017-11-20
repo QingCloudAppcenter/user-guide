@@ -136,7 +136,8 @@ python mnist_dist.py --ps_hosts=192.168.1.6:2221 --worker_hosts=192.168.1.6:2223
 
 节点 2：  
 
-- 启动第二个 worker **注意：是在第二个节点即新增节点上启动** 
+- 启动第二个 worker 
+**注意：是在第二个节点即新增节点上启动** 
 
 ```shell
 cd /home/ubuntu/tensorflow  
