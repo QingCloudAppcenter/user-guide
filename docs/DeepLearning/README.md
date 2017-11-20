@@ -68,7 +68,7 @@ qsctl cp -r qs://mydata/ data/
 
 ### Caffe 测试示例
 
-Caffe 支持 Python 接口，用户也可以根据需要重新配置编译，目前不支持多机分布式训练。详情请见 [Caffe 文档](http://caffe.berkeleyvision.org)
+Caffe 支持 Python 接口，用户也可以根据需要重新配置编译，目前不支持多机分布式训练，详情请见 [Caffe 文档](http://caffe.berkeleyvision.org)。
 
 **Caffe 预先用 GPU 版本进行编译，如果选择的 GPU 的个数为 0，需修改配置文件，重新编译。**
 
@@ -83,9 +83,11 @@ cd /home/ubuntu/caffe
 
 Caffe 训练过程  
 ![Caffe 训练过程](../../images/DeepLearning/caffe_train.png)  
+
 Caffe 训练结果  
 ![Caffe 训练结果](../../images/DeepLearning/caffe_result.png)
-> 查看 GPU 使用情况，可以使用如下命令。  
+
+查看 GPU 使用情况，可以使用如下命令：
 
 ```shell
 nvidia-smi  
@@ -113,8 +115,10 @@ TensorFlow 训练结果
 增加节点，在线扩容：在详情页点击 `新增节点` 按钮，可以对每个新增节点指定 IP 或选择自动分配。  
 TensorFlow 增加节点  
 ![TensorFlow 增加节点](../../images/DeepLearning/tensorflow_add_node.png)  
+
 TensorFlow 分布式训练需要指定 parameter server 和 worker 的 IP 地址和端口号（根据自己的 IP 进行修改）  
 下面是一个 parameter server 和两个 worker 进行分布式训练的示例：  
+
 节点 1：  
 
 - 启动 parameter server
@@ -156,6 +160,7 @@ tensorboard --logdir=./tflog/
 TensorBoard 展示结果  
 ![TensorBoard 展示结果](../../images/DeepLearning/tensorboard.png)
 
+
 ### PyTorch 测试示例
 
 完整信息请见 [PyTorch文档](http://pytorch.org/)  
@@ -190,6 +195,7 @@ python mnist_dist.py
 PyTorch 分布式训练结果  
 ![PyTorch 分布式训练结果](../../images/DeepLearning/pytorch_cluster_result.png)
 
+
 ### Keras 测试示例  
 
 Keras 默认使用 TensorFlow 来计算，目前青云平台上也只支持 TensorFlow 作为其计算框架。详情请见 [Keras 文档](https://keras.io) 
@@ -203,6 +209,7 @@ python mnist.py
 
 Keras 训练结果  
 ![Keras 训练结果](../../images/DeepLearning/keras_result.png)  
+
 为了方便开发，环境中配有 jupyter notebook，用户可以交互式编程，并能直观展现实时计算结果。  
 jupyter notebook 启动命令  
 
