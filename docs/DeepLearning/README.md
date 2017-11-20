@@ -14,7 +14,7 @@ TensorFlow 由 Google 大脑主导开发，是一个分布式系统上的大规�
 
 ### PyTorch
 
-PyTorch 从 Torch 发展而来，并经过了大量改进，由 FaceBook AI 团队主导开发。不同于 TensorFlow，PyTorch 采用动态计算图的方式，并提供良好的 python 接口，代码简单灵活，使用起来非常方便。内存分配也经过了优化，能支持分布式多机训练。
+PyTorch 从 Torch 发展而来，并经过了大量改进，由 FaceBook AI 团队主导开发。不同于 TensorFlow，PyTorch 采用动态计算图的方式，并提供良好的 Python 接口，代码简单灵活，使用起来非常方便。内存分配也经过了优化，能支持分布式多机训练。
 
 ### Keras
 
@@ -54,7 +54,7 @@ Keras 是一个高层神经网络 API，由 Python 编写，通过调用其他�
 
 ### 测试环境
 
-深度学习平台使用 miniconda2 来管理 python 环境，python 的版本为2.7，并装有 numpy，scipy，pandas，matplotlib，nltk，scikit-learn，jupyter notebook 等常用工具包。  
+深度学习平台使用 miniconda2 来管理 Python 环境，Python 的版本为2.7，并装有 numpy，scipy，pandas，matplotlib，nltk，scikit-learn，jupyter notebook 等常用工具包。节点登录信息：ubuntu/p12cHANgepwD。
 以 MNIST 数据集为例，分别测试 Caffe，TensorFlow，PyTorch，Keras。MNIST 数据集包含 0-9 10 个数字，
 训练数据集包含 60,000 个样本，测试数据集包含 10,000 样本，数据集中的每张图片由 28x28 个像素点构成。
 > Deep Learning 训练往往需要大量的数据，数据存储经常占用很大的空间。青云 QingStor 可以存储海量数据，
@@ -68,7 +68,7 @@ qsctl cp -r qs://mydata/ data/
 
 ### Caffe 测试示例
 
-Caffe 支持 python 接口，用户也可以根据需要重新配置编译，目前不支持多机分布式训练。[Caffe 文档](http://caffe.berkeleyvision.org)  
+Caffe 支持 Python 接口，用户也可以根据需要重新配置编译，目前不支持多机分布式训练。详情请见 [Caffe 文档](http://caffe.berkeleyvision.org)
 **Caffe 预先用 GPU 版本进行编译，如果选择的 GPU 的个数为 0，需修改配置文件，重新编译。**
 
 #### 单机
@@ -80,10 +80,10 @@ cd /home/ubuntu/caffe
 ./build/tools/caffe train --solver=examples/mnist/lenet_solver.prototxt
 ```
 
-caffe 训练过程  
-![caffe 训练过程](../../images/DeepLearning/caffe_train.png)  
+Caffe 训练过程  
+![Caffe 训练过程](../../images/DeepLearning/caffe_train.png)  
 caffe 训练结果  
-![caffe 训练结果](../../images/DeepLearning/caffe_result.png)
+![Caffe 训练结果](../../images/DeepLearning/caffe_result.png)
 > 查看 GPU 使用情况，可以使用如下命令。  
 
 ```shell
@@ -95,7 +95,7 @@ GPU 使用情况
 
 ### TensorFlow 测试示例 
 
-[TensorFlow 文档](http://tensorflow.org)  
+完整信息请见 [TensorFlow 文档](http://tensorflow.org) 
 
 #### 单机：
 
@@ -114,7 +114,7 @@ TensorFlow 增加节点
 ![TensorFlow 增加节点](../../images/DeepLearning/tensorflow_add_node.png)  
 TensorFlow 分布式训练需要指定 parameter server 和 worker 的 IP 地址和端口号（根据自己的 IP 进行修改）  
 下面是一个 parameter server 和两个 worker 进行分布式训练：  
-节点1：  
+节点 1：  
 
 - 启动 parameter server
 
@@ -129,7 +129,7 @@ python mnist_dist.py --ps_hosts=192.168.1.6:2221 --worker_hosts=192.168.1.6:2223
 python mnist_dist.py --ps_hosts=192.168.1.6:2221 --worker_hosts=192.168.1.6:2223,192.168.1.7:2223 --job_name=worker --task_index=0  
 ```
 
-节点2：  
+节点 2：  
 
 - 启动第二个 worker  
 
@@ -144,18 +144,18 @@ TensorFlow 分布式训练结果
 TensorFlow 中的 tensorboard 提供了训练过程中丰富的信息，默认端口号为 `6066`。
 > 如果需要通过公网访问这些信息您需要先申请一个公网 IP 绑定在路由器上，在路由器上设置端口转发，同时打开防火墙相应的下行端口。为了方便查看 tensorboard UI，也可参考[VPN 隧道指南](https://docs.qingcloud.com/guide/vpn.html) 配置VPN。  
 
-开启 tensorboard 服务
+开启 TensorBoard 服务
 
 ```shell
 tensorboard --logdir=./tflog/
 ```
 
-tensorboard 展示结果  
-![tensorboard 展示结果](../../images/DeepLearning/tensorboard.png)
+TensorBoard 展示结果  
+![TensorBoard 展示结果](../../images/DeepLearning/tensorboard.png)
 
 ### PyTorch 测试示例
 
-[PyTorch文档](http://pytorch.org/)  
+完整信息请见 [PyTorch文档](http://pytorch.org/)  
 
 #### 单机 
 
@@ -164,12 +164,12 @@ cd /home/ubuntu/pytorch
 python mnist.py
 ```
 
-pytorch 训练结果  
-![pytorch 训练结果](../../images/DeepLearning/pytorch_result.png)
+PyTorch 训练结果  
+![PyTorch 训练结果](../../images/DeepLearning/pytorch_result.png)
 
 #### 分布式  
 
-**pytorch 分布式训练时，由于现在版本的 pytoch 自身的一些缺陷，每个节点的 GPU 个数应该大于 1 个，否则容易出现错误。**  
+**PyTorch 分布式训练时，由于现在版本的 PyTorch 自身的一些缺陷，每个节点的 GPU 个数应该大于 1 个，否则容易出现错误。**  
 节点 1：  
 
 ```shell
@@ -184,12 +184,12 @@ cd /home/ubuntu/pytorch
 python mnist_dist.py
 ```
 
-pytorch 分布式训练结果  
-![pytorch 分布式训练结果](../../images/DeepLearning/pytorch_cluster_result.png)
+PyTorch 分布式训练结果  
+![PyTorch 分布式训练结果](../../images/DeepLearning/pytorch_cluster_result.png)
 
 ### Keras 测试示例  
 
-Keras 默认使用 TensorFlow 来计算，目前青云平台上也只支持 TensorFlow 作为其计算框架。[Keras 文档](https://keras.io)  
+Keras 默认使用 TensorFlow 来计算，目前青云平台上也只支持 TensorFlow 作为其计算框架。详情请见 [Keras 文档](https://keras.io) 
 
 #### 单机 
 
@@ -198,8 +198,8 @@ cd /home/ubuntu/keras
 python mnist.py
 ```
 
-keras 训练结果  
-![keras 训练结果](../../images/DeepLearning/keras_result.png)  
+Keras 训练结果  
+![Keras 训练结果](../../images/DeepLearning/keras_result.png)  
 为了方便开发，环境中配有 jupyter notebook，用户可以交互式编程，并能直观展现实时计算结果。  
 jupyter notebook 启动命令  
 
@@ -209,7 +209,7 @@ jupyter notebook
 ```
 
 jupyter noetbook 默认端口号为 `8888`。
-> 如果需要通过公网访问这些信息您需要先申请一个公网 IP 绑定在路由器上，在路由器上设置端口转发，同时打开防火墙相应的下行端口。为了方便使用 jupyter notebook，也可参考[VPN 隧道指南](https://docs.qingcloud.com/guide/vpn.html) 配置VPN。  
+> 如果需要通过公网访问这些信息您需要先申请一个公网 IP 绑定在路由器上，在路由器上设置端口转发，同时打开防火墙相应的下行端口。为了方便使用 jupyter notebook，也可参考[VPN 隧道指南](https://docs.qingcloud.com/guide/vpn.html) 配置 VPN。  
 
 jupyter notebook 开发环境   
 ![jupyter notebook 开发环境](../../images/DeepLearning/jupyter_notebook.png)
