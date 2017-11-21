@@ -251,6 +251,8 @@ CREATE EXTENSION address_standardizer_data_us;
 CREATE EXTENSION postgis_tiger_geocoder;
 CREATE  EXTENSION pgrouting;
 ```  
+>注意：
+启用 PostGIS 必须使用超级用户 root 才有权限执行。
 
 #### 查看 PostGIS 的版本信息
 
