@@ -60,7 +60,7 @@ CPU，内存，实例类型，磁盘类型大小根据自己实际需求进行�
 
 阅读并同意青云 AppCenter 用户协议之后即可开始部署应用。
 
- >注意：
+ >注意：  
  `PostgreSQL on QingCloud` 在初始化的时候，会根据服务器参数中用户输入的数据库名称，数据库用户，和数据库密码。  
  同时，为了方便用户维护，会自动创建数据库超级用户（superuser） root，密码和用户在服务器参数中设置的数据库密码相同。    
 
@@ -117,7 +117,7 @@ CPU，内存，实例类型，磁盘类型大小根据自己实际需求进行�
   自动 failover 之后：
   ![自动 failover之后](../../images/postgresql/pgfailover2.png)
 
-  >注意：
+  >注意：  
   主从集群发生故障自动切换成功到集群可用状态时间大概为15s左右。
 
 ### 3.数据库基本操作  
@@ -200,7 +200,7 @@ wget ftp://192.168.100.13/postgresqllog_24.csv --ftp-user=ftp_pg --ftp-password=
 ```
 
 ![logcheck](../../images/postgresql/logcheck.png)
->注意:  
+>注意:    
 >PostgreSQL 的日志默认保存30天，每天会自动保存一个日志文件,系统会自动清理。日志的命名规则为postgresqllog_30.csv，数字表示当前日期在当月的第多少天。
 
 #### 清理日志
