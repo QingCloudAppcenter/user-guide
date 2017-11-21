@@ -160,7 +160,7 @@ TensorBoard 展示结果
 ![TensorBoard 展示结果](../../images/DeepLearning/tensorboard.png)
 
 > 您可以通过如下方式之一查看 TensorBoard UI：
-> 1. 如需在TensorBoard中显示相关信息，需要编写相关代码。TensorBoard详细用法请参考 [Github](mnist_dist.py) TensorBoard 页面。
+> 1. 如需在TensorBoard中显示相关信息，需要编写相关代码。TensorBoard详细用法请参考 [Github TensorBoard](https://github.com/tensorflow/tensorboard) 页面。
 > 2. 通过公网访问，您需要先申请一个公网 IP 绑定在路由器上，在路由器上设置端口转发，同时打开防火墙相应的下行端口。
 > 3. 或参考[VPN 隧道指南](https://docs.qingcloud.com/guide/vpn.html) 配置 VPN，通过私网 IP 地址访问。  
 
