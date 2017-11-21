@@ -33,9 +33,9 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 
 ![](screenshot/服务环境配置2.png)
 
-* Registry mirrors Docker hub 官方镜像仓库的 mirror 地址，默认是 docker hub 官方提供的中国区的 mirror。
+* Registry mirrors Docker hub 官方镜像仓库的 镜像 地址，默认是 docker hub 官方提供的中国区的镜像站点。镜像仓库包含所有官方镜像仓库的所有镜像。
 * Insecure registries Kubernetes 应用支持使用私有容器仓库，方便使用内部容器仓库的用户，青云提供了[harbor应用](https://appcenter.qingcloud.com/apps/app-2mhyb1ui)可以方便用户部署私有容器仓库。如果私有容器仓库没有支持 https，需要将 registry 的 ip 地址填写在这里（如果端口是非 80 端口，也需要填写，格式 ip:port)。
-* Kubernetes 需要从 dockerhub.qingcloud.com 下载镜像包含青云定制的 Kubernetes 服务镜像，因此需要用户填写 docherhub.qingcloud.com 用户名和密码。系统已经内置了 guest 账号，可以拉取 dockerhub.qingcloud.com 上的公开仓库。如果需要创建和使用自己的仓库，请提交工单申请。
+* Kubernetes 需要从 dockerhub.qingcloud.com 下载镜像，dockerhub.qingcloud.com 是青云提供给开发者的仓库服务，不包含官方镜像，这里需要用户填写 docherhub.qingcloud.com 用户名和密码用来下载镜像包含青云定制的 Kubernetes 服务镜像。系统已经内置了 guest 账号，可以拉取 dockerhub.qingcloud.com 上的公开仓库。
 * 设置 Kubernetes 系统的日志级别，之后可以通过 kibana 查看。
 * 如果用户需要自己对 Kubernetes 的日志或者容器输出的日志进行自定义处理，可以自己搭建 Fluent 或者 Fluent-bit 服务，将服务地址填写到这里，系统会自动将日志转发到填写的日志服务地址上。
 
@@ -398,7 +398,7 @@ Kubernetes on QingCloud 容器网络使用的是 SDN Passthrough 方案，每个
 
 3. 如果是私有网络的负载均衡器，请确认负载均衡器的私有网络ID（vxnet）没有复用 pod 所在的私有网络。
 
-4. 如果使用的是 80 端口，请确认您的账号通过了认证（最好 IP 通过备案）。
+4. 如果使用的是 80 端口，请确认您的账号通过了[账号认证](https://docs.qingcloud.com/guide/account/user_verify.html#guide-user-verify)（最好 IP 通过备案）。
 
 ### 如何在应用中输出 json 格式的日志，并被 Elasticsearch 按字段索引
 

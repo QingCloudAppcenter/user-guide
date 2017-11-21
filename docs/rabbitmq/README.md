@@ -12,6 +12,8 @@
 - 提供了监控告警功能，更好地管理集群
 - 与 Haproxy+Keepalived 集成，具备高可用负载均衡特性
 - 开箱即用，支持 AMQP、MQTT、STOMP、WebSockets 等多种丰富协议
+- 磁盘节点支持消息延迟队列插件，[使用方法参考](https://github.com/rabbitmq/rabbitmq-delayed-message-exchange)
+- RabbitMQ 节点支持消息追踪插件，[使用方法参考](http://www.rabbitmq.com/firehose.html)
 
 
 ## 创建 RabbitMQ
@@ -255,6 +257,8 @@ Haproxy 节点监控管理：
 - 熟悉的话,也可以使用 HTTP API
 
 ## 注意事项说明
+
+>RabbitMQ 作为传统消息队列，在消息未持久化的情况下，如果您重启或者关闭消息所在节点，会造成消息丢失。如果设置了持久化的策略，未设置 HA 镜像队列模式，就删除消息所在的单节点，会造成数据丢失。当您有非常重要的队列消息需要存储的时候，建议持久化并设置镜像队列 HA，删除节点的时候避免消息丢失，请不要把消息所在节点都删除了。
 
 RabbitMQ 支持消息的持久化，也就是数据写在磁盘上，为了数据安全考虑，大多数用户可能都会选择持久化。消息队列持久化包括3个部分：
 

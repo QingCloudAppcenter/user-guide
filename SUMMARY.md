@@ -1,5 +1,7 @@
 # Summary
 
+* [Collabora Online](docs/collabora-office/README.md)
+* [Deep Learning](docs/DeepLearning/README.md)
 * [etcd](docs/etcd/README.md)
 * [ELK](docs/elk/README.md)
 * [Harbor](docs/harbor/README.md)
