@@ -239,7 +239,7 @@ FROM pg_available_extensions WHERE name LIKE 'postgis%' or name LIKE 'address%';
 其中-h参数值的 ip 地址为 PostgreSQL DB 主节点服务器地址或者是主从双节点集群的 VIP 地址。  
 连接 DB 之后，执行以下 sql 创建自己的 PostGIS Database，数据库名为 demo 。
 
-```sql
+```sql  
 create database demo;
 \c demo
 CREATE EXTENSION postgis;
@@ -250,8 +250,8 @@ CREATE EXTENSION address_standardizer;
 CREATE EXTENSION address_standardizer_data_us;
 CREATE EXTENSION postgis_tiger_geocoder;
 CREATE  EXTENSION pgrouting;
-```
-  
+```   
+
 >注意：
 启用 PostGIS 必须使用超级用户 root 才有权限执行。
 
