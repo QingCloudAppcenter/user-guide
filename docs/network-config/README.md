@@ -14,7 +14,7 @@
 
 **背景：** 使用 AppCenter 的应用需要让应用的节点加入到一个受管的私有网络当中。
 
-## <span id = "create_vxnet">创建私有网络</span>
+## <a name = "create_vxnet">创建私有网络</a>
 
 
 
@@ -26,7 +26,7 @@
 
 **背景：** 在 SDN 2.0的区域当中，需要创建一个在 VPC 管理下的私有网络。
 
-### <span id = "create_vpc_vxnet">SDN 2.0 - VPC</span>
+### <a name = "create_vpc_vxnet">SDN 2.0 - VPC</a>
 
 ![](../../images/network-config/create_vpc_with_vxnet.png)
 
@@ -82,7 +82,7 @@
 
 **背景：**在SDN1.0的区域当中，需要创建一个在路由器管理下的私有网络。
 
-### <span id = "create_router_vxnet">SDN 1.0 - 路由器</span>
+### <a name = "create_router_vxnet">SDN 1.0 - 路由器</a>
 
 ![](../../images/network-config/create_router_with_vxnet.png)
 
@@ -119,11 +119,11 @@
 此时我们已经完成了"一个连接到路由器的私有网络"的创建。
 
 
-## <span id = "config_portmapping">配置端口转发响应公网请求</span>
+## <a name = "config_portmapping">配置端口转发响应公网请求</a>
 
 **背景** ：在SDN2.0的区域当中，应用需要被公网访问时，可以利用VPC的端口转发响应公网请求。
 
-### <span id = "vpc_portmapping">SDN 2.0 - VPC</span>
+### <a name = "vpc_portmapping">SDN 2.0 - VPC</a>
 
 #### 1.创建公网IP
 
@@ -185,7 +185,7 @@
 
 **背景** ：在SDN1.0的区域当中，应用需要被公网访问时，可以利用VPC的端口转发响应公网请求。
 
-### <span id = "router_portmapping">SDN 1.0 - 路由器</span>
+### <a name = "router_portmapping">SDN 1.0 - 路由器</a>
 
 #### 1.创建公网IP
 
@@ -247,7 +247,7 @@
 
 **背景** ：当App需要利用负载均衡器进行服务。（需要App支持配置负载均衡器）
 
-## <span id = "public_loadbalancer">为AppCenter应用配置公网负载均衡器</span>
+## <a name = "public_loadbalancer">为AppCenter应用配置公网负载均衡器</a>
 
 负载均衡器可以将来自多个公网地址的访问流量分发到多台主机上， 并支持自动检测并隔离不可用的主机，从而提高业务的服务能力和可用性。 同时，你还可以随时通过添加或删减主机来调整你的服务能力，而且这些操作不会影响业务的正常访问。 负载均衡器支持HTTP/HTTPS/TCP 三种监听模式，并支持透明代理，可以让后端主机不做任何更改，直接获取客户端真实IP。 另外，负载均衡器还支持灵活配置多种转发策略，实现高级的自定义转发控制功能。
 
@@ -313,7 +313,7 @@
 
 
 
-## <span id = "wordpress">示例:Wordpress 单机中文版</span>
+## <a name = "wordpress">示例:Wordpress 单机中文版</a>
 
 [应用链接](https://appcenter.qingcloud.com/apps/app-jbvdproy)
 
@@ -323,7 +323,7 @@
 
 2.利用VPC的端口转发响应公网请求
 
-## <span id = "tomcat_cluster">示例:Tomcat Cluster on QingCloud</span>
+## <a name = "tomcat_cluster">示例:Tomcat Cluster on QingCloud</a>
 
 [应用链接](https://appcenter.qingcloud.com/apps/app-jwq1fzqo)
 
