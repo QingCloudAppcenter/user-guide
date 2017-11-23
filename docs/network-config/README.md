@@ -35,7 +35,7 @@
 
 #### 2.创建私有网络
 
-然后创建私有网络，网络与 CDN ‣ 私有网络 ‣ 创建 ‣ 填入私有网络名称 ‣ 提交， 见下图步骤:
+然后创建私有网络，网络与 CDN ‣ 私有网络 ‣ 创建 ‣ 填入私有网络名称 ‣ 提交，见下图步骤:
 
 ![](../../images/network-config/create_vxnet.jpg)
 
@@ -43,7 +43,7 @@
 
 #### 3.连接私有网络到 VPC 网络
 
-最后把该私有网络加入 VPC 中，网络与 CDN ‣ 私有网络 ‣ 选中私有网络 ‣ 更多操作 ‣ 加入 VPC 网络 ， 见下图步骤:
+最后把该私有网络加入 VPC 中，网络与 CDN ‣ 私有网络 ‣ 选中私有网络 ‣ 更多操作 ‣ 加入 VPC 网络 ，见下图步骤:
 
 ![](../../images/network-config/vpc_vxnet.jpg)
 
@@ -60,13 +60,13 @@
 
 #### 2.创建私有网络
 
-网络与 CDN ‣ 私有网络 ‣ 创建 ‣ 填入私有网络名称 ‣ 提交， 见下图步骤:
+网络与 CDN ‣ 私有网络 ‣ 创建 ‣ 填入私有网络名称 ‣ 提交，见下图步骤:
 
 ![](../../images/network-config/create_vxnet.jpg)
 
 #### 3.连接私有网络到路由器
 
-网络与 CDN ‣ 私有网络 ‣ 选中私有网络 ‣ 更多操作 ‣ 连接路由器 ， 见下图步骤:
+网络与 CDN ‣ 私有网络 ‣ 选中私有网络 ‣ 更多操作 ‣ 连接路由器 ，见下图步骤:
 
 ![](../../images/network-config/router_vxnet.jpg)
 
@@ -77,25 +77,25 @@
 
 ## <a name = "config_portmapping">配置端口转发响应公网请求</a>
 
-**背景** ：在SDN2.0的区域当中，应用需要被公网访问时，可以利用VPC的端口转发响应公网请求。
+青云公有云 SDN 1.0 旧区和 SDN 2.0 新区创建网络稍有区别，SDN 2.0 的 VPC 对应 SDN 1.0 的路由器，因此配置端口转发也稍微有所区别。
 
 ### <a name = "vpc_portmapping">SDN 2.0 - VPC</a>
 
 #### 1.申请公网IP
 
-网络与CDN ‣ 公网IP ‣ 申请 ‣ 填入公网IP名称 ‣ 提交， 见下图步骤：
+首先需申请公网 IP 地址，网络与 CDN ‣ 公网 IP ‣ 申请 ‣ 填入公网 IP 名称 ‣ 提交，见下图步骤：
 
 ![](../../images/network-config/allocate_eip.jpg)
 
-#### 2.绑定公网IP到VPC
+#### 2.绑定公网 IP 到 VPC
 
-网络与CDN ‣ 公网IP ‣ 选中公网IP ‣ 绑定到VPC网络 ‣ 提交， 见下图步骤：
+网络与 CDN ‣ 公网 IP ‣ 选中公网 IP ‣ 绑定到 VPC 网络 ‣ 提交，见下图步骤：
 
 ![](../../images/network-config/vpc_bind_eip.jpg)
 
-#### 3.为VPC设置端口转发策略
+#### 3.为 VPC 设置端口转发策略
 
-网络与CDN ‣ VPC网络 ‣ 选中VPC网络 ‣ 进入详情页， 见下图步骤：
+网络与 CDN ‣ VPC 网络 ‣ 选中 VPC 网络 ‣ 进入详情页，见下图步骤：
 
 ![](../../images/network-config/enter_vpc.jpg)
 
@@ -103,13 +103,11 @@
 
 ![](../../images/network-config/vpc_portmapping_rule.jpg)
 
-
-
 #### 4.配置防火墙
 
-默认情况下AppCenter集群的端口是全部打开的，所以我们只需要配置VPC网络的防火墙，确保源端口流量可以通过。
+默认情况下 AppCenter 集群的端口是全部打开的，所以我们只需要配置 VPC 网络的防火墙，确保源端口流量可以通过。
 
-安全 ‣ 防火墙 ‣ 点击防火墙ID ‣ 进入详情页， 见下图步骤：
+安全 ‣ 防火墙 ‣ 点击防火墙 ID ‣ 进入详情页， 见下图步骤：
 
 ![](../../images/network-config/enter_sg.jpg)
 
@@ -117,23 +115,25 @@
 
 ![](../../images/network-config/add_sg_rule.jpg)
 
+
+
 ### <a name = "router_portmapping">SDN 1.0 - 路由器</a>
 
-#### 1.申请公网IP
+#### 1.申请公网 IP
 
-网络与CDN ‣ 公网IP ‣ 申请 ‣ 填入公网IP名称 ‣ 提交， 见下图步骤：
+首先需申请公网 IP 地址，网络与 CDN ‣ 公网 IP ‣ 申请 ‣ 填入公网 IP 名称 ‣ 提交， 见下图步骤：
 
 ![](../../images/network-config/allocate_eip_sdn1.jpg)
 
-#### 2.绑定公网IP到路由器
+#### 2.绑定公网 IP 到路由器
 
-网络与CDN ‣ 公网IP ‣ 选中公网IP ‣ 绑定到路由器 ‣ 提交， 见下图步骤：
+网络与 CDN ‣ 公网 IP ‣ 选中公网 IP ‣ 绑定到路由器 ‣ 提交， 见下图步骤：
 
 ![](../../images/network-config/router_bind_eip.jpg)
 
-#### 3.为VPC设置端口转发策略
+#### 3.为路由器设置端口转发策略
 
-网络与CDN ‣ 路由器 ‣ 点击路由器ID ‣ 进入详情页， 见下图步骤：
+网络与 CDN ‣ 路由器 ‣ 点击路由器 ID ‣ 进入详情页， 见下图步骤：
 
 ![](../../images/network-config/enter_router.jpg)
 
@@ -141,13 +141,11 @@
 
 ![](../../images/network-config/router_portmapping_rule.jpg)
 
-
-
 #### 4.配置防火墙
 
-默认情况下AppCenter集群的端口是全部打开的，所以我们只需要配置VPC网络的防火墙，确保源端口流量可以通过。
+默认情况下 AppCenter 集群的端口是全部打开的，所以我们只需要配置路由器网络的防火墙，确保源端口流量可以通过。
 
-安全 ‣ 防火墙 ‣ 点击防火墙ID ‣ 进入详情页， 见下图步骤：
+安全 ‣ 防火墙 ‣ 点击防火墙 ID ‣ 进入详情页， 见下图步骤：
 
 ![](../../images/network-config/enter_sg.jpg)
 
@@ -157,35 +155,33 @@
 
 
 
-**背景** ：当App需要利用负载均衡器进行服务。（需要App支持配置负载均衡器）
 
-## <a name = "public_loadbalancer">为AppCenter应用配置公网负载均衡器</a>
 
-负载均衡器可以将来自多个公网地址的访问流量分发到多台主机上， 并支持自动检测并隔离不可用的主机，从而提高业务的服务能力和可用性。 同时，你还可以随时通过添加或删减主机来调整你的服务能力，而且这些操作不会影响业务的正常访问。 负载均衡器支持HTTP/HTTPS/TCP 三种监听模式，并支持透明代理，可以让后端主机不做任何更改，直接获取客户端真实IP。 另外，负载均衡器还支持灵活配置多种转发策略，实现高级的自定义转发控制功能。
+## <a name = "public_loadbalancer">为 AppCenter 应用配置公网负载均衡器</a>
 
-不同应用要求的负载均衡器策略可能是不同的，这里我们以Tomcat Cluster on QingCloud为例进行配置。
+当 AppCenter 的应用需要利用负载均衡器进行服务，我们需要先创建负载均衡器资源。负载均衡器可以将来自多个公网地址的访问流量分发到多台主机上， 并支持自动检测并隔离不可用的主机，从而提高业务的服务能力和可用性。 同时，你还可以随时通过添加或删减主机来调整你的服务能力，而且这些操作不会影响业务的正常访问。 负载均衡器支持 HTTP/HTTPS/TCP 三种监听模式，并支持透明代理，可以让后端主机不做任何更改，直接获取客户端真实 IP。 另外，负载均衡器还支持灵活配置多种转发策略，实现高级的自定义转发控制功能。
+
+不同应用要求的负载均衡器策略可能是不同的，这里我们以 [Tomcat Cluster on QingCloud](https://appcenter.qingcloud.com/apps/app-jwq1fzqo) 为例进行配置。
 
 ![](../../images/network-config/add_lb.png)
 
-在上图显示了我们需要创建公网类型的负载均衡器，监听器启用回话保持，监听协议为http。
+在上图显示了我们需要创建公网类型的负载均衡器，监听器启用回话保持，监听协议为 http。
 
-### 1.申请公网IP
+### 1.申请公网 IP
 
-网络与CDN ‣ 公网IP ‣ 申请 ‣ 填入公网IP名称 ‣ 提交， 见下图步骤：
+通常情况 AppCenter 上的应用使用的是公网负载均衡器，按照如下方法创建，网络与 CDN ‣ 公网 IP ‣ 申请 ‣ 填入公网 IP 名称 ‣ 提交， 见下图步骤：
 
 ![](../../images/network-config/allocate_eip.jpg)
 
-
-
 ### 2.创建公网负载均衡器
 
-网络与CDN ‣ 负载均衡器 ‣ 创建 ‣ 填写信息 ‣ 提交， 见下图步骤：
+网络与 CDN ‣ 负载均衡器 ‣ 创建 ‣ 填写信息 ‣ 提交， 见下图步骤：
 
 ![](../../images/network-config/add_lb.jpg)
 
 ### 3.为负载均衡器添加监听器
 
-网络与CDN ‣ 负载均衡器 ‣ 负载均衡器ID ‣ 进入详情页， 见下图步骤：
+网络与 CDN ‣ 负载均衡器 ‣ 负载均衡器 ID ‣ 进入详情页， 见下图步骤：
 
 ![](../../images/network-config/enter_lb.jpg)
 
@@ -195,9 +191,9 @@
 
 ### 4.配置防火墙
 
-默认情况下AppCenter集群的端口是全部打开的，所以我们只需要配置VPC网络的防火墙，确保源端口流量可以通过。
+默认情况下 AppCenter 集群的端口是全部打开的，所以我们只需要配置 VPC(SDN 2.0 区) 或路由器 (SDN 1.0 区) 网络的防火墙，确保源端口流量可以通过。
 
-安全 ‣ 防火墙 ‣ 点击防火墙ID ‣ 进入详情页， 见下图步骤：
+安全 ‣ 防火墙 ‣ 点击防火墙 ID ‣ 进入详情页， 见下图步骤：
 
 ![](../../images/network-config/enter_sg.jpg)
 
@@ -211,25 +207,25 @@
 
 
 
-## <a name = "wordpress">示例:Wordpress 单机中文版</a>
+## <a name = "wordpress">示例: Wordpress 单机中文版</a>
 
 [应用链接](https://appcenter.qingcloud.com/apps/app-jbvdproy)
 
-通过下面的步骤，我们可以创建一个wordpress单机版的App，并利用VPC网络的端口转发进行公网访问。
+通过下面的步骤，我们可以创建一个 wordpress 单机版的 App，并利用 VPC 网络的端口转发进行公网访问。
 
-1.创建依赖资源-一个连接到VPC的私有网络（SDN2.0）
+1. [创建依赖资源](#create_vpc_vxnet) - 一个连接到 VPC 的私有网络（SDN 2.0）
 
-2.利用VPC的端口转发响应公网请求
+2. 利用 [VPC 的端口转发](#vpc_portmapping)响应公网请求
 
-## <a name = "tomcat_cluster">示例:Tomcat Cluster on QingCloud</a>
+## <a name = "tomcat_cluster">示例: Tomcat Cluster on QingCloud</a>
 
 [应用链接](https://appcenter.qingcloud.com/apps/app-jwq1fzqo)
 
-通过下面的步骤，我们可以创建一个Tomcat集群，并利用负载均衡器进行公网访问。
+通过下面的步骤，我们可以创建一个 Tomcat 集群，并利用负载均衡器进行公网访问。
 
-1.创建依赖资源-一个连接到VPC的私有网络（SDN2.0）
+1. [创建依赖资源](#create_vpc_vxnet) - 一个连接到VPC的私有网络（SDN 2.0）
 
-2.为AppCenter应用配置公网负载均衡器
+2. 为 AppCenter 应用[配置公网负载均衡器](#public_loadbalancer)
 
-同样也可以参考[Tomcat Cluster on QingCloud AppCenter 用户手册](https://github.com/QingCloudAppcenter/user-guide/tree/master/docs/tomcat)进行配置。
+同样也可以参考[Tomcat Cluster on QingCloud AppCenter 用户手册](https://github.com/QingCloudAppcenter/user-guide/tree/master/docs/tomcat) 进行配置。
 
