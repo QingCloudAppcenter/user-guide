@@ -163,7 +163,7 @@
 
 不同应用要求的负载均衡器策略可能是不同的，这里我们以 [Tomcat Cluster on QingCloud](https://appcenter.qingcloud.com/apps/app-jwq1fzqo) 为例进行配置。
 
-![](../../images/network-config/add_lb.png)
+![](../../images/network-config/lb_conf_info.jpg)
 
 在上图显示了我们需要创建公网类型的负载均衡器，监听器启用回话保持，监听协议为 http。
 
