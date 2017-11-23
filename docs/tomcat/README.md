@@ -1,5 +1,7 @@
 # Tomcat Cluster on QingCloud AppCenter 用户手册
 
+<extoc></extoc>
+
 ## 描述
 
 [Apache Tomcat](http://tomcat.apache.org/) 是一个开源的，使用极为广泛的轻量级应用服务器之一。

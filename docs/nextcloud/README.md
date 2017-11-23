@@ -1,5 +1,7 @@
 # Nextcloud on QingCloud AppCenter 用户手册
 
+<extoc></extoc>
+
 ## 描述
 
 [Nextcloud](https://nextcloud.com/) 是一个开源的企业级私有云存储解决方案。

@@ -1,5 +1,7 @@
 # Collabora Office on QingCloud AppCenter 用户手册
 
+<extoc></extoc>
+
 ## 描述
 
 [Collabora Office](https://www.collaboraoffice.com/code/) 是一个开源的企业级文档协同编辑解决方案。
