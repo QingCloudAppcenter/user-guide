@@ -1,28 +1,27 @@
 # 基础网络配置
 
+用户在使用 AppCenter 的应用时通常需要部署到一个受管的私有网络当中，因此在部署之前需要创建一些基础的网络资源。
+
 - [创建私有网络](#create_vxnet)
     - [SDN 2.0 - VPC](#create_vpc_vxnet)
     - [SDN 1.0 - 路由器](#create_router_vxnet)
 - [配置端口转发响应公网请求](#config_portmapping)
     - [SDN 2.0 - VPC](#vpc_portmapping)
     - [SDN 1.0 - 路由器](#router_portmapping)
-- [为AppCenter 应用配置公网负载均衡器](#public_loadbalancer)
+- [为 AppCenter 应用配置公网负载均衡器](#public_loadbalancer)
 - [示例: Wordpress 单机中文版](#wordpress)
 - [示例: Tomcat Cluster on QingCloud](#tomcat_cluster)
 
 
-
-**背景：** 使用 AppCenter 的应用需要让应用的节点加入到一个受管的私有网络当中。
-
 ## <a name = "create_vxnet">创建私有网络</a>
 
-**背景：** 在 SDN 2.0的区域当中，需要创建一个在 VPC 管理下的私有网络。
+青云公有云 SDN 1.0 旧区和 SDN 2.0 新区创建网络稍有区别，SDN 2.0 的 VPC 对应 SDN 1.0 的路由器，下面是详细的创建过程。
 
 ### <a name = "create_vpc_vxnet">SDN 2.0 - VPC</a>
 
-#### 1. 创建VPC网络
+#### 1. 创建 VPC 网络
 
-网络与CDN ‣ VPC网络 ‣ 创建VPC网络 ‣ 填入VPC网络名称 ‣ 创建，见下图步骤:
+在青云用户控制台按如下方法创建 VPC，网络与 CDN ‣ VPC 网络 ‣ 创建 VPC 网络 ‣ 填入 VPC 网络名称 ‣ 创建，见下图步骤:
 
 ![](../../images/network-config/create_vpc.jpg)
 
@@ -36,7 +35,7 @@
 
 #### 2.创建私有网络
 
-网络与CDN ‣ 私有网络 ‣ 创建 ‣ 填入私有网络名称 ‣ 提交， 见下图步骤:
+然后创建私有网络，网络与 CDN ‣ 私有网络 ‣ 创建 ‣ 填入私有网络名称 ‣ 提交， 见下图步骤:
 
 ![](../../images/network-config/create_vxnet.jpg)
 
@@ -44,39 +43,34 @@
 
 #### 3.连接私有网络到 VPC 网络
 
-网络与CDN ‣ 私有网络 ‣ 选中私有网络 ‣ 更多操作 ‣ 加入VPC网络 ， 见下图步骤:
+最后把该私有网络加入 VPC 中，网络与 CDN ‣ 私有网络 ‣ 选中私有网络 ‣ 更多操作 ‣ 加入 VPC 网络 ， 见下图步骤:
 
 ![](../../images/network-config/vpc_vxnet.jpg)
 
 
-
-
-
-
-
-**背景：**在SDN1.0的区域当中，需要创建一个在路由器管理下的私有网络。
-
 ### <a name = "create_router_vxnet">SDN 1.0 - 路由器</a>
+
+在 SDN 1.0 区，首先需要创建路由器，然后创建私有网络及加入私有网络到路由器中。
 
 #### 1.创建路由器
 
-网络与CDN ‣ 路由器 ‣ 创建 ‣ 填入路由器名称 ‣ 提交，见下图步骤:
+在控制台上，网络与 CDN ‣ 路由器 ‣ 创建 ‣ 填入路由器名称 ‣ 提交，见下图步骤:
 
 ![](../../images/network-config/create_router.jpg)
 
 #### 2.创建私有网络
 
-网络与CDN ‣ 私有网络 ‣ 创建 ‣ 填入私有网络名称 ‣ 提交， 见下图步骤:
+网络与 CDN ‣ 私有网络 ‣ 创建 ‣ 填入私有网络名称 ‣ 提交， 见下图步骤:
 
 ![](../../images/network-config/create_vxnet.jpg)
 
-
-
 #### 3.连接私有网络到路由器
 
-网络与CDN ‣ 私有网络 ‣ 选中私有网络 ‣ 更多操作 ‣ 连接路由器 ， 见下图步骤:
+网络与 CDN ‣ 私有网络 ‣ 选中私有网络 ‣ 更多操作 ‣ 连接路由器 ， 见下图步骤:
 
 ![](../../images/network-config/router_vxnet.jpg)
+
+
 
 
 
