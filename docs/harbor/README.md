@@ -1,5 +1,7 @@
 # Harbor on QingCloud AppCenter 用户手册
 
+<extoc></extoc>
+
 ## 描述
 
 [Harbor](https://github.com/vmware/harbor/) 是一个开源的企业级私有 Docker 镜像仓库方案，用于存储和分发 Docker 镜像，并提供基于角色的权限控制、仓库间 Image 异步复制、LDAP/AD 支持、图形界面等功能。

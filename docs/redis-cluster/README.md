@@ -1,5 +1,7 @@
 # Redis Cluster on QingCloud AppCenter
 
+<extoc></extoc>
+
 Redis 是一个使用ANSI C编写的开源、支持网络、基于内存、可选持久性的键值对存储数据库。
 
 Redis cluster on QingCloud AppCenter 基于原生的 Redis 提供了 Redis cluster 的 App，能够在 AppCenter 进行一键部署，有如下特性：

@@ -1,5 +1,7 @@
 # PostgreSQL on QingCloud 用户手册  
 
+<extoc></extoc>
+
 ## 描述  
 
 `PostgreSQL on QingCloud` 将 Postgresql 通过云应用的形式在 QingCloud AppCenter 部署，具有如下特性：
