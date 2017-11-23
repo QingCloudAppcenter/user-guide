@@ -1,5 +1,7 @@
 # 示例
 
+<extoc></extoc>
+
 ## 示例: Wordpress 单机中文版
 
 [应用链接](https://appcenter.qingcloud.com/apps/app-jbvdproy)
