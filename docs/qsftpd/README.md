@@ -1,5 +1,7 @@
 # qsftpd App 文档
 
+<extoc></extoc>
+
 qsftpd 是后端存储基于 QingStor 对象存储的 FTP 服务，qsftpd App 将 qsftpd 通过云应用的形式在 QingCloud AppCenter 部署，部署完成后，您可以将其视作一个 FTP 服务来使用。
 
 ## 准备工作

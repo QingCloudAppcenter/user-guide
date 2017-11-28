@@ -1,5 +1,7 @@
 # PostgreSQL on QingCloud 用户手册  
 
+<extoc></extoc>
+
 ## 描述  
 
 `PostgreSQL on QingCloud` 将 Postgresql 通过云应用的形式在 QingCloud AppCenter 部署，具有如下特性：
@@ -16,18 +18,18 @@
 
 ## 简介  
 
-[PostgreSQL](https://www.postgresql.org/)是一个功能强大的开源数据库系统。经过长达15年以上的积极开发和不断改进，PostgreSQL 已在可靠性、稳定性、数据一致性等获得了业内极高的声誉。作为一种企业级数据库，PostgreSQL 以它所具有的各种高级功能而自豪，像多版本并发控制 (MVCC)、按时间点恢复 (PITR)、表空间、异步复制、嵌套事务、在线热备、复杂查询的规划和优化以及为容错而进行的预写日志等。它支持国际字符集、多字节编码并支持使用当地语言进行排序、大小写处理和格式化等操作。它也在所能管理的大数据量和所允许的大用户量并发访问时间具有完全的高伸缩性。
+[PostgreSQL](https://www.postgresql.org/) 是一个功能强大的开源数据库系统。经过长达 15 年以上的积极开发和不断改进，PostgreSQL 已在可靠性、稳定性、数据一致性等获得了业内极高的声誉。作为一种企业级数据库，PostgreSQL 以它所具有的各种高级功能而自豪，像多版本并发控制 (MVCC)、按时间点恢复 (PITR)、表空间、异步复制、嵌套事务、在线热备、复杂查询的规划和优化以及为容错而进行的预写日志等。它支持国际字符集、多字节编码并支持使用当地语言进行排序、大小写处理和格式化等操作。它也在所能管理的大数据量和所允许的大用户量并发访问时间具有完全的高伸缩性。
 
 ## `PostgreSQL on QingCloud` 的具体使用
 
 ### 1.创建步骤  
 
-目前提供单节点版和主从双节点版本2个版本：
+目前提供单节点版和主从双节点版本 2 个版本：
 
 - 单节点版本号为：PG9.6-V1.0 Standalone
 - 主从双节点版本号为：PG9.6-V1.0 SimpleCluster
 
->单节点版建议用于测试或者开发环境下，该版本内置自动备份，每周备份一次，保留2个备份。   
+>单节点版建议用于测试或者开发环境下，该版本内置自动备份，每周备份一次，保留 2 个备份。   
 >主从双节点版本能满足生产环境下非大规模读负载均衡条件下的数据库的需求，主从节点可以通过修改配置参数设置同步流复制或者异步流复制模式。
 
 两个版本的创建步骤类似，以下以单节点版为例具体说明创建步骤。
@@ -35,7 +37,7 @@
 #### 第一步：基本设置  
 
 ![第1步: 基本设置](../../images/postgresql/basic_config.png)
-根据自己的需求填写 `应用名称` 和 `应用描述`，选择`版本`为单节点版（Version 1-PG9.6Standalone）。
+根据自己的需求填写 `应用名称` 和 `应用描述`，选择`版本`为单节点版（PG9.6-V1.0 Standalone）。
 
 #### 第二步：数据库节点设置  
 
@@ -60,8 +62,8 @@ CPU，内存，实例类型，磁盘类型大小根据自己实际需求进行�
 
 阅读并同意青云 AppCenter 用户协议之后即可开始部署应用。
 
- >注意：`PostgreSQL on QingCloud` 在初始化的时候，会根据服务器参数中用户输入的数据库名称，数据库用户，和数据库密码。  
- 同时，为了方便用户维护 PostgreSQL database，会自动创建数据库超级用户 root（superuser），密码和用户在服务器参数中设置的数据库密码相同。    
+ >注意：  
+ `PostgreSQL on QingCloud` 在初始化的时候，会根据服务器参数中用户输入的数据库名称，数据库用户，和数据库密码。同时，为了方便用户维护，会自动创建数据库超级用户 (superuser) root，密码和用户在服务器参数中设置的数据库密码相同。    
 
 ### 2.集群操作  
 
@@ -100,10 +102,6 @@ CPU，内存，实例类型，磁盘类型大小根据自己实际需求进行�
   点开集群的`角色详情` tab 页即可查看。
   ![查看是否为主节点](../../images/postgresql/pg_ismaster1.png)
 
-  或者通过节点的监控信息查看，选中集群中某个节点的监控按钮，将监控信息的实时数据开关打开，将会出现如下监控信息。  
-  ![查看是否为主节点](../../images/postgresql/pg_ismaster.png)
-  如果`是否为 MASTER `这个监控项实时数据显示为1的话，该节点则为当前的主节点，否则是从节点。
-
 ### 2.5 重建从节点
 
   当出现主从节点数据不一致的情况下，可以通过重建从节点修复。
@@ -119,7 +117,9 @@ CPU，内存，实例类型，磁盘类型大小根据自己实际需求进行�
 
   自动 failover 之后：
   ![自动 failover之后](../../images/postgresql/pgfailover2.png)
-  >整个 failover 切换过程完成时间大概是五分钟，请耐心等待。
+
+  >注意：  
+  主从集群发生故障自动切换成功到集群可用状态时间大概为15s左右。
 
 ### 3.数据库基本操作  
 
@@ -131,9 +131,9 @@ CPU，内存，实例类型，磁盘类型大小根据自己实际需求进行�
 通过 psql 命令行客户端 ，用新建集群步骤中定义的数据库用户名和密码，连接到新创建的自定义的 PostgreSQL database 。  
 输入命令：`psql -U qingcloud -h 192.168.100.250 -d qingcloud`  
 >-U 参数值是上图的服务器参数：数据库用户名，  
--h 参数值是postgresql节点的IP或者是双节点集群的vip，  
+-h 参数值是postgresql节点的IP或者是双节点集群的VIP，  
 -d 参数值可以是上图服务器参数:数据库名称。    
-然后输入的密码是上图服务器参数：数据库密码，默认密码是qingcloud1234。  
+然后输入的密码是上图服务器参数：数据库密码。  
 
 输入命令：`\l`， 可以查看当前 PostgreSQL server 上的数据库信息。  
   ![登录PG database](../../images/postgresql/pglogin.png)  
@@ -201,9 +201,8 @@ wget ftp://192.168.100.13/postgresqllog_24.csv --ftp-user=ftp_pg --ftp-password=
 ```
 
 ![logcheck](../../images/postgresql/logcheck.png)
->注意:  
->PostgreSQL 的日志默认保存30天，每天会自动保存一个日志文件,系统会自动清理。日志的命名规则为postgresqllog_30.csv，数字表示当前日期在当月的第多少天。  
->pghealth.log 文件记录 PostgreSQL节点在健康检查时出现问题记录的相关日志。
+>注意:    
+>PostgreSQL 的日志默认保存30天，每天会自动保存一个日志文件,系统会自动清理。日志的命名规则为postgresqllog_30.csv，数字表示当前日期在当月的第多少天。
 
 #### 清理日志
 
@@ -234,19 +233,28 @@ FROM pg_available_extensions WHERE name LIKE 'postgis%' or name LIKE 'address%';
 #### 新建 PostGIS Database
 
 以数据库的 root 用户和新建 PostgreSQL DB 时设置的密码登录数据库服务器上的 PostgreSQL 数据库，可以采用任意的 PostgreSQL 客户端登录到数据库服务器。  
-之后，根据模板创建属于自己的 PostGIS database 。   
+之后，根据以下脚本创建属于自己的 PostGIS database 。   
 
 例如：登录数据库   
 `psql -U root -h 192.168.100.250 -d postgres`  
 其中-h参数值的 ip 地址为 PostgreSQL DB 主节点服务器地址或者是主从双节点集群的 VIP 地址。  
 连接 DB 之后，执行以下 sql 创建自己的 PostGIS Database，数据库名为 demo 。
 
-```sql
-CREATE DATABASE demo TEMPLATE=template_postgis;
+```sql  
+create database demo;
 \c demo
-```  
+CREATE EXTENSION postgis;
+CREATE EXTENSION postgis_topology;
+CREATE EXTENSION postgis_sfcgal;
+CREATE EXTENSION fuzzystrmatch;
+CREATE EXTENSION address_standardizer;
+CREATE EXTENSION address_standardizer_data_us;
+CREATE EXTENSION postgis_tiger_geocoder;
+CREATE  EXTENSION pgrouting;
+```   
 
-创建好属于自己的 PostGIS database 之后，就可以切换连接到这个新建的数据库上做相关操作了。
+>注意：
+启用 PostGIS 必须使用超级用户 root 才有权限执行。
 
 #### 查看 PostGIS 的版本信息
 

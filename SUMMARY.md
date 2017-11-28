@@ -1,6 +1,12 @@
 # Summary
 
+* [网络资源配置](docs/network-config/README.md)
+	* [创建私有网络](docs/network-config/create_vxnet.md)
+	* [配置端口转发](docs/network-config/config_portmapping.md)
+	* [配置负载均衡器](docs/network-config/public_loadbalancer.md)
+	* [示例](docs/network-config/example.md)
 * [Collabora Online](docs/collabora-office/README.md)
+* [Deep Learning](docs/DeepLearning/README.md)
 * [etcd](docs/etcd/README.md)
 * [ELK](docs/elk/README.md)
 * [etcd](docs/etcd/README.md)

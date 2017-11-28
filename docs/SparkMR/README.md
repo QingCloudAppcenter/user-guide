@@ -1,5 +1,7 @@
 # SparkMR on QingCloud AppCenter 用户指南
 
+<extoc></extoc>
+
 ## 简介
 
 *SparkMR on QingCloud AppCenter* 将 *Apache Hadoop* 和 *Apache Spark* 集成到同一个集群服务中，以AppCenter云应用的形式交付给用户使用。

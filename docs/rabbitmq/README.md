@@ -1,5 +1,7 @@
 # RabbitMQ on QingCloud AppCenter 用户手册
 
+<extoc></extoc>
+
 ## 简介
 
 [RabbitMQ](https://www.rabbitmq.com/) 实现了 AMQP 协议，具有可靠性、灵活的路由、事务、高可用的队列、消息排序、可视化管理工具等功能，服务器端用 Erlang 语言编写，天生具备高可用和高并发的特性。

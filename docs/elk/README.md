@@ -1,5 +1,7 @@
 # ELK on QingCloud AppCenter 用户指南
 
+<extoc></extoc>
+
 ## 简介
 
 _ELK_ 是 _Elasticsearch_ 、 _Kibana_ 和 _Logstash_ 这三个软件集合的简称， _Elasticsearch_ 是一个实时分布式搜索和分析引擎， _Kibana_ 则为 _Elasticsearch_ 提供了强大的可视化界面， _Logstash_ 为用户提供数据采集、转换、优化和输出的能力。 _ELK_ 目前被广泛应用于实时日志处理、全文搜索和数据分析等领域。
