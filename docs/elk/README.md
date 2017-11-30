@@ -22,6 +22,7 @@ ELK on QingCloud 集成 Elasticsearch、Kibana 与 Logstash 到同一个服务�
 * 一键集群安装部署
 * 支持节点横向和纵向扩容
 * 1.2.1版本集成elasticsearch-analysis-pinyin插件
+* X版本系列集成了X-Pack，用户可导入License使用
 
 ## 部署ELK服务
 
@@ -89,6 +90,8 @@ curl -d "[09-07 15:57:26]: call_es_api [:10105/_cluster/health] Exception [error
 
 第二步，在浏览器中访问Kibana节点提供的Web界面`(http://<Kibana节点IP>:5601)`，默认进入配置索引模式界面，如图，直接点击Create即可。
 
+X版本系列需要用户输入用户名及密码，默认用户名为elastic，默认密码为changeme。
+
 ![配置index](../../images/elk/config_index.png)
 
 点击左侧的Discover菜单项，显示近期接收到的日志，在搜索栏中输入“error”，点击右侧的“搜索”按钮。如图，“error”被高亮显示，测试成功。
@@ -130,6 +133,8 @@ curl -d "中国驻洛杉矶领事馆遭亚裔男子枪击 嫌犯已自首" http:
 
 在浏览器中访问Kibana节点提供的Web界面`(http://<Kibana节点IP>:5601)`，默认进入配置索引模式界面，如图，直接点击Create即可。
 
+X版本系列需要用户输入用户名及密码，默认用户名为elastic，默认密码为changeme。
+
 ![配置index](../../images/elk/config_index.png)
 
 点击左侧的Discover菜单项，显示近期接收到的日志，在搜索栏中输入“中国”，点击右侧的“搜索”按钮。如图，“中国”被高亮显示并且中间没有空格分隔，测试成功。
@@ -166,6 +171,9 @@ curl -T <字典文件> http://<Logstash节点IP>/dicts/
 
 ```bash
 HOST=192.168.0.10
+
+# X版本系列请使用如下格式
+# HOST=elastic:changeme@192.168.0.10
 
 # 创建 index 索引
 curl -XPUT http://$HOST:9200/index
@@ -297,6 +305,12 @@ endpoint              s3.pek3a.qingstor.com (以北京3区为例，其他区需�
 access_key            青云账号关联的access_key
 secret_key            青云账号关联的secret_key
 bucket                QingStor上bucket名称my_qingstor_bucket（如果不存在将创建出来）
+
+X系列版本请使用如下形式的url：
+http://elastic:changeme@192.168.0.10:9200/
+
+认证用户名              elastic
+认证密码                changeme
 ```
 
 二、创建了repository后，可通过如下命令获取、删除repository：
@@ -402,6 +416,7 @@ qingstor {
     secret_access_key => "your_secret_access_key"
     bucket => "bucket_name"
     region => "pek3a"
+    tmpdir => "/data/qingstor2logstash"
     sincedb_path => "~/.sincedb"
 }
 ```
@@ -419,8 +434,8 @@ qingstor {
 > Logstash默认的output是Elasticsearch， 并自动配置好了Elasticsearch集群的hosts选项。如果需要在output到Elasticsearch的过程中指定其他参数， 可以在`output_es_content`中指定，比如：
 
 ```ruby
-	action => "update"
-	index => "my-first-index"
+    action => "update"
+    index => "my-first-index"
 ```
 
 > 如还需output到其他位置，可以通过`output_conf_content`指定，比如通过`Logstash-output-qingstor`插件将数据output到QingStor对象存储：
@@ -436,6 +451,7 @@ qingstor {
     rotation_strategy => "size_and_time"
     file_size => 10485760
     file_time => 10
+    tmpdir => "/data/logstash2qingstor"
 }
 ```
 
@@ -571,6 +587,8 @@ curl -d "qingcloud" http://<Logstash节点IP>:9700
 
 在浏览器中访问Kibana节点提供的Web界面`(http://<Kibana节点IP>:5601)`，默认进入配置索引模式界面，如图，直接点击Create即可，点击左侧的Discover菜单项，显示近期接收到的日志，如图，示例中的`logstash_filter_abcd`成功将原消息中的`qingcloud`替换为了`Hello World!`，说明插件配置生效。
 
+X版本系列需要用户输入用户名及密码，默认用户名为elastic，默认密码为changeme。
+
 ![配置index](../../images/elk/config_index.png)
 
 ![日志展示](../../images/elk/log_display.png)
@@ -605,6 +623,8 @@ sudo docker ps
 
 在浏览器中打开`http://<Kibana节点IP>:5601/`，首先会提示创建index pattern，默认情况下，Kibana 认为您要访问的是通过 Logstash 导入 Elasticsearch 的数据。这时候您可以用默认的 logstash-* 作为您的 index pattern。
 
+X版本系列需要用户输入用户名及密码，默认用户名为elastic，默认密码为changeme。
+
 > 如果显示 "Unable to fetch mapping. Do you have indices matching the pattern?"，可通过往Logstash节点上默认开启的http插件发送一条日志，命令如下：
 
 ```bash
@@ -621,12 +641,13 @@ Index pattern创建成功后可点击Discover查看导入的日志。
 
 _ELK on QingCloud_ 为用户提供了以下组件，用以服务集群其他组件或直接为用户提供服务。
 
-* [head](http://mobz.github.io/elasticsearch-head/) 提供一个Elasticsearch cluster的web控制台，用户可以在这个控制台里很方便的查看集群拓扑架构、监控集群状态，进行节点和索引级别的各种操作，以及进行数据的浏览、查询、分析等。在浏览器输入网址 `http://<Kibana节点IP>:9100/` 即可使用该插件提供的集群控制台。进入后请输入`http://<任意Elasticsearch节点IP>:9200/`后，点击连接即可查看Elasticsearch集群状态。
-* [elasticsearch-sql](https://github.com/NLPchina/elasticsearch-sql) 使用户可以使用SQL来进行Elasticsearch查询，并且可以在SQL中使用Elasticsearch的函数。在浏览器输入网址 `http://<Kibana节点IP>:8080/` 即可使用该插件提供的查询页面。此插件在1.2.1版本加入。
-* [Cerebro](https://github.com/lmenezes/cerebro) 的前身是kopf，她是一个开源的Elasticsearch Web管理工具，她提供了查看集群节点资源使用状态、查看集群分片状态、创建索引、修改集群设置、创建仓库及快照等功能，为用户提供了极大的便利。在浏览器输入网址 `http://<Kibana节点IP>:9000/` 即可使用该插件提供的集群控制台。进入后请输入`http://<任意Elasticsearch节点IP>:9200/`后，点击Connect即可查看Elasticsearch集群状态。此插件在1.2.1版本加入。
-* [ElasticHD](https://github.com/farmerx/ElasticHD) 是一个Elasticsearch可视化管理工具, 支持ES监控、实时搜索，Index template快捷替换修改，索引列表信息查看，SQL converts to DSL等功能。在浏览器输入网址 `http://<Kibana节点IP>:9800/` 即可使用该插件提供的集群控制台。
+* [head](http://mobz.github.io/elasticsearch-head/) 提供一个Elasticsearch cluster的web控制台，用户可以在这个控制台里很方便的查看集群拓扑架构、监控集群状态，进行节点和索引级别的各种操作，以及进行数据的浏览、查询、分析等。在浏览器输入网址 `http://<Kibana节点IP>:9100/` 即可使用该插件提供的集群控制台。X版本系列需在浏览器输入网址`http://<Kibana节点IP>:9100/?auth_user=elastic&auth_password=changeme`。进入后请输入`http://<任意Elasticsearch节点IP>:9200/`后，点击连接即可查看Elasticsearch集群状态。
+* [elasticsearch-sql](https://github.com/NLPchina/elasticsearch-sql) 使用户可以使用SQL来进行Elasticsearch查询，并且可以在SQL中使用Elasticsearch的函数。在浏览器输入网址 `http://<Kibana节点IP>:8080/` 即可使用该插件提供的查询页面。此插件在1.2.1版本加入。此插件不支持X版本系列。
+* [Cerebro](https://github.com/lmenezes/cerebro) 的前身是kopf，她是一个开源的Elasticsearch Web管理工具，她提供了查看集群节点资源使用状态、查看集群分片状态、创建索引、修改集群设置、创建仓库及快照等功能，为用户提供了极大的便利。在浏览器输入网址 `http://<Kibana节点IP>:9000/` 即可使用该插件提供的集群控制台。进入后请输入`http://<任意Elasticsearch节点IP>:9200/`后，点击Connect即可查看Elasticsearch集群状态。X版本系列需点击`Authentication`，输入用户名密码，默认用户名elastic，默认密码changeme。此插件在1.2.1版本加入。
+* [ElasticHD](https://github.com/farmerx/ElasticHD) 是一个Elasticsearch可视化管理工具, 支持ES监控、实时搜索，Index template快捷替换修改，索引列表信息查看，SQL converts to DSL等功能。在浏览器输入网址 `http://<Kibana节点IP>:9800/` 即可使用该插件提供的集群控制台。X版本系列进入后，需输入`http://elastic:changeme@<任意Elasticsearch节点IP>:9200`，并点击Connect即可。
 * [Caddy](https://caddyserver.com/) 是一个支持 HTTP/2 的跨平台 Web 服务器，使用和配置都非常简单。 _ELK on QingCloud_ 使用Caddy是为在Logstash节点上上传字典提供便利，同时使得Elasticsearch的日志查看变得更加方便。集群中Caddy运行在Logstash节点的80端口。
 * [Nginx](https://nginx.org/) 是一个Web服务器，也可以用作反向代理，负载平衡器和HTTP缓存。 _ELK on QingCloud_ 使用Nginx是为Kibana提供Elasticsearch节点失效时的故障转移能力。集群中Nginx运行在Kibana节点的9200端口。
+* [X-Pack](https://www.elastic.co/guide/en/x-pack/5.5/xpack-introduction.html) 是一个Elastic Stack扩展，将安全、告警、监控、报告和图表能力集成进一个易于安装的包中。X-Pack组件被设计成无缝地在一起工作，你可以简单地启用或禁用你想要使用的特性。本组件被集成于X版本系列之中，用户可导入License使用。
 
 ### 场景十二：logstash-input-syslog插件使用说明
 
@@ -652,6 +673,7 @@ syslog { host => "0.0.0.0"  port => 514 }
 
 第四步，测试插件是否如预期工作，在浏览器中访问Kibana节点提供的Web界面`(http://<Kibana节点IP>:5601)`，默认进入配置索引模式界面，如图，直接点击Create即可，点击左侧的Discover菜单项，显示近期接收到的日志，说明插件配置生效。
 
+X版本系列需要用户输入用户名及密码，默认用户名为elastic，默认密码为changeme。
 
 ## 在线伸缩
 
@@ -668,6 +690,9 @@ syslog { host => "0.0.0.0"  port => 514 }
 
 ```bash
 curl http://192.168.0.5:9200/_cluster/stats
+
+# X版本系列请使用如下命令
+curl http://elastic:changeme@192.168.0.5:9200/_cluster/stats
 ```
 
 > 请将192.168.0.5替换为您的ELK集群中的任意Elasticsearch节点IP。也可以通过浏览器访问Kibana节点的9100端口提供的ES Head界面或Kibana节点的9800端口提供的ElasticHD界面来查看集群状态。
@@ -748,9 +773,15 @@ endpoint              s3.pek3a.qingstor.com (以北京3区为例，其他区需�
 access_key            青云账号关联的access_key
 secret_key            青云账号关联的secret_key
 bucket                QingStor上bucket名称my_qingstor_bucket（如果不存在将创建出来）
+
+X系列版本请使用如下形式的url：
+http://elastic:changeme@192.168.0.10:9200/
+
+认证用户名              elastic
+认证密码                changeme
 ```
 
-第五步，创建了repository后，用如下命令即可创建名为snapshot1的快照（该快照将会存放在之前指定的QingStor的bucket my_qingstor_bucket中）：
+第五步，创建了repository后，用如下命令即可创建名为snapshot1的快照（该快照将会存放在之前指定的QingStor的bucket `my_qingstor_bucket`中）：
 
 ```bash
 创建包含集群所有index的snapshot
@@ -944,6 +975,12 @@ ELK5.5.1-QingCloud1.1
 * Kibana集成Nginx，提供ES节点失效时的故障转移能力
 * 提供ES Head，ElasticHD可视化插件，方便用户通过浏览器使用ES
 * 集群关键指标监控
+
+### X版本系列历史
+
+ELK-X5.5.1-QingCloud1.0
+
+* 基于ELK5.5.1-QingCloud1.2.1版本，并集成了X-Pack
 
 ### ELK on QingCloud升级操作方式
 
