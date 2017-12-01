@@ -120,7 +120,9 @@ CDH(*Cloudera's Distribution Including Apache Hadoop*)是Cloudera公司的Hadoop
 
 - 点击`「使用Parcel」`旁边的`更多选项`进入`Parcel 存储库设置` 
 
-![Parcel存储库设置](../../images/CDH/parcel_config.png)
+  ![Parcel存储库设置](../../images/CDH/parcel_config.png)
+
+
 
 与 CentOS 7.3 兼容的 CDH 5.13.0 各组件已经提前下载并存储到Cloudera Manager主节点，包括cdh5, Kafka, kudu, accumulo-c5, spark2和sqoop 。因此需要将这几个组件的`远程Parcel存储库URL`配置为Cloudera Manager主节点相应路径。假设Cloudera Manager主节点ip为192.168.100.19 ，则各组件到`远程Parcel存储库URL`需按如下url进行配置
 
