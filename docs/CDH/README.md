@@ -109,14 +109,14 @@ CDH(*Cloudera's Distribution Including Apache Hadoop*)是Cloudera公司的Hadoop
 ### 选择配置安装包
 
 - 选择默认安装方法为`「使用Parcel」`
+
 - 选择默认CDH版本为`「CDH-5.13.0-1.cdh5.13.0.p0.29」`
+
 - 选择其他需要安装组件的Parcel包，比如Kafka
 
+  ![安装包](../../images/CDH/select_parcel.png)
+
 >    如需安装Accumulo请选择已经提前下载好的1.7.2版
-
-![安装包](../../images/CDH/select_parcel.png)
-
-
 
 - 点击`「使用Parcel」`旁边的`更多选项`进入`Parcel 存储库设置` 
 
