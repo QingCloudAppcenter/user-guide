@@ -80,7 +80,7 @@ CDH(*Cloudera's Distribution Including Apache Hadoop*)是Cloudera公司的Hadoop
 
 
 
-###接受许可条款和条件
+### 接受许可条款和条件
 
 ![条款](../../images/CDH/agreement.png)
 
