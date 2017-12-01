@@ -978,7 +978,7 @@ ELK5.5.1-QingCloud1.1
 
 ### X版本系列历史
 
-ELK-X5.5.1-QingCloud1.0
+ELK5.5.1-X-QingCloud1.0
 
 * 基于ELK5.5.1-QingCloud1.2.1版本，并集成了X-Pack
 
