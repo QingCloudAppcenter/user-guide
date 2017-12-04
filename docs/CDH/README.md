@@ -1,4 +1,4 @@
-# CDH on QingCloud AppCenter 用户指南
+CDH on QingCloud AppCenter 用户指南
 
 ## 简介
 
@@ -22,13 +22,13 @@ CDH(*Cloudera's Distribution Including Apache Hadoop*)是Cloudera公司的Hadoop
 
 填写服务`名称`和`描述`，选择版本
 
-### 第2步：Cloudera Manager 主节点设置
+### 第2步：主节点设置
 
 ![第2步：HDFS主节点设置](../../images/CDH/cm_config.png)
 
-填写 Cloudera Manager 主节点 CPU、内存、节点类型、数据盘类型及大小等配置信息。
+填写主节点 CPU、内存、节点类型、数据盘类型及大小等配置信息。
 
-> Cloudera Manager 主节点运行了诸多服务，需要比较大的内存空间，8G以下的内存配置仅供测试。
+> 主节点运行了诸多服务比如 Cloudera Manager Server, Name Node, Resource Manager 等，需要比较大的内存空间，8G以下的内存配置仅供测试。
 
 ### 第3步：从节点设置
 
@@ -38,7 +38,7 @@ CDH(*Cloudera's Distribution Including Apache Hadoop*)是Cloudera公司的Hadoop
 
 > 从节点如需安装除了HDFS data node，YARN NodeManager之外的其他服务如kafka，则至少需要8G内存。
 
-> Cloudera Manager 主节点及从节点均为用户可访问的节点，可通过用户名root，初始密码为p12cHANgepwD 进行访问。
+> 主节点及从节点均为用户可访问的节点，可通过用户名root，初始密码为p12cHANgepwD 进行访问。
 
 ### 第4步：网络设置
 
@@ -72,7 +72,7 @@ CDH(*Cloudera's Distribution Including Apache Hadoop*)是Cloudera公司的Hadoop
 
 ### 登录Cloudera Manager
 
-集群创建成功后，Cloudera Manager服务将会部署到Cloudera Manager主节点中，待各节点服务状态均变为正常后，即可通过访问 `http://<Cloudera Manager主节点ip>:7180` 开始部署CDH组件到整个集群。
+集群创建成功后，Cloudera Manager服务将会部署到主节点中，待各节点服务状态均变为正常后，即可通过访问 `http://<主节点ip>:7180` 开始部署CDH组件到整个集群。
 
 > 默认用户名及密码admin/admin
 
@@ -124,7 +124,7 @@ CDH(*Cloudera's Distribution Including Apache Hadoop*)是Cloudera公司的Hadoop
 
 
 
-与 CentOS 7.3 兼容的 CDH 5.13.0 各组件已经提前下载并存储到Cloudera Manager主节点，包括cdh5, Kafka, kudu, accumulo-c5, spark2和sqoop 。因此需要将这几个组件的`远程Parcel存储库URL`配置为Cloudera Manager主节点相应路径。假设Cloudera Manager主节点ip为192.168.100.19 ，则各组件到`远程Parcel存储库URL`需按如下url进行配置
+与 CentOS 7.3 兼容的 CDH 5.13.0 各组件已经提前下载并存储到主节点，包括cdh5, Kafka, kudu, accumulo-c5, spark2和sqoop 。因此需要将这几个组件的`远程Parcel存储库URL`配置为主节点相应路径。假设主节点ip为192.168.100.19 ，则各组件到`远程Parcel存储库URL`需按如下url进行配置
 
 
 
