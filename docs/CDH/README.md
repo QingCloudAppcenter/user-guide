@@ -427,7 +427,7 @@ CDH on QingCloud 中主节点唯一且不可删除，从节点最少为3个
 
 ![增加节点](../../images/CDH/delete_node4.png)
 
-​	如下所示，执行该步前需要登录该节点停止 Cloudera agent 服务后点击确认：
+​	如下所示，执行该步前需要登录该节点停止 Cloudera Manager Agent 服务后点击确认：
 
 ```shell
 service cloudera-scm-agent stop
