@@ -308,19 +308,19 @@ CDH on QingCloud 中主节点唯一，用户可以增加从节点。
 
 下面将逐一演示每一步：
 
-- 添加从节点到 CDH on QingCloud 集群中
+#### 添加从节点到 CDH on QingCloud 集群中
 
-  待新添加节点的「服务状态」变为正常后，继续下一步
+待新添加节点的「服务状态」变为正常后，继续下一步
 
-  > 节点IP需要手动指定
+> 节点IP需要手动指定
 
 ![增加节点](../../images/CDH/add_node1.png)
 
 
 
-- 在 Cloudera Manager 里将该新增节点加入 CDH 集群以被 Cloudera Manager 管理
+#### 在 Cloudera Manager 里将该新增节点加入 CDH 集群以被 Cloudera Manager 管理
 
-  进入 Cloudera Manager 的主机->所有主机页面，点击添加新主机
+进入 Cloudera Manager 的主机->所有主机页面，点击添加新主机
 
 ![增加节点](../../images/CDH/add_node2.png)
 
@@ -356,7 +356,7 @@ CDH on QingCloud 中主节点唯一，用户可以增加从节点。
 
 ![增加节点](../../images/CDH/add_node12.png)
 
-- 创建从节点的主机模版，将需要部署在从节点的角色加入该模版
+#### 创建从节点的主机模版，将需要部署在从节点的角色加入该模版
 
 ![增加节点](../../images/CDH/create_template1.png)
 
@@ -364,7 +364,7 @@ CDH on QingCloud 中主节点唯一，用户可以增加从节点。
 
 
 
-- 在新加入的从节点主机上应用从节点模版，以部署从节点角色到该主机
+#### 在新加入的从节点主机上应用从节点模版，以部署从节点角色到该主机
 
 ![增加节点](../../images/CDH/add_node13.png)
 
@@ -372,9 +372,9 @@ CDH on QingCloud 中主节点唯一，用户可以增加从节点。
 
 ![增加节点](../../images/CDH/add_node15.png)
 
-- 重启过期服务使新配置生效
+#### 重启过期服务使新配置生效
 
-  添加节点后，Cloudera Manager 会显示如下「过期配置：需要重新部署客户端配置」的提示，点击该信息将进入过期配置页面
+添加节点后，Cloudera Manager 会显示如下「过期配置：需要重新部署客户端配置」的提示，点击该信息将进入过期配置页面
 
 ![增加节点](../../images/CDH/add_node16.png)
 
@@ -412,10 +412,9 @@ CDH on QingCloud 中主节点唯一且不可删除，从节点最少为3个
 
 下面将逐一演示有关步骤：
 
-- 确保待删除从节点上的数据和服务已经妥善处理，删除该节点不会导致数据丢失
+#### 确保待删除从节点上的数据和服务已经妥善处理，删除该节点不会导致数据丢失
 
-
-- 在 Cloudera Manager 里将该从节点从 CDH 集群删除
+#### 在 Cloudera Manager 里将该从节点从 CDH 集群删除
 
 ![增加节点](../../images/CDH/delete_node1.png)
 
@@ -423,7 +422,7 @@ CDH on QingCloud 中主节点唯一且不可删除，从节点最少为3个
 
 ![增加节点](../../images/CDH/delete_node3.png)
 
-- 将该从节点从 Cloudera Manager 删除
+#### 将该从节点从 Cloudera Manager 删除
 
 ![增加节点](../../images/CDH/delete_node4.png)
 
@@ -437,12 +436,13 @@ service cloudera-scm-agent stop
 
 ![增加节点](../../images/CDH/delete_node6.png)
 
-- 重启过期服务使新配置生效
+#### 重启过期服务使新配置生效
 
 > 参考增加节点相关步骤
 
-- 将配置参数里的「允许横向缩容」设置为 true 
-- 将该节点从 CDH on QingCloud 集群删除
+#### 将配置参数里的「允许横向缩容」设置为 true 
+
+#### 将该节点从 CDH on QingCloud 集群删除
 
 
 
@@ -450,9 +450,9 @@ service cloudera-scm-agent stop
 
 
 
-- 将配置参数里的「允许横向缩容」设置为 false 
+#### 将配置参数里的「允许横向缩容」设置为 false 
 
-  ​
+
 
 ### 纵向伸缩
 
