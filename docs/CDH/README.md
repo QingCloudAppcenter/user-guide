@@ -2,7 +2,7 @@
 
 ## 简介
 
-CDH(*Cloudera's Distribution Including Apache Hadoop*) 是 Cloudera 的 Hadoop 发行版。CDH 提供了 Hadoop 生态圈很多重要开源产品及组件如 Hadoop, Spark, HBase, Hive, Pig, Hue, Oozie, Kafka, Zookeeper, Kudu, Accumulo, Flume, Sqoop, Sentry 等。CDH 还提供了用于 CDH 集群管理的 Cloudera Manager 以及用于数据管理的 Cloudera Navigator 。
+CDH (*Cloudera's Distribution Including Apache Hadoop*) 是 Cloudera 的 Hadoop 发行版。CDH 提供了 Hadoop 生态圈很多重要开源产品及组件如 Hadoop, Spark, HBase, Hive, Pig, Hue, Oozie, Kafka, Zookeeper, Kudu, Accumulo, Flume, Sqoop, Sentry 等。CDH 还提供了用于 CDH 集群管理的 Cloudera Manager 以及用于数据管理的 Cloudera Navigator 。
 
 安装配置 CDH 集群是一项十分复杂的工作，涉及到操作系统环境配置、特定版本 JDK 的安装、数据库的安装及配置、Cloudera Manager server 及 agent 的安装及配置、各个大数据组件的安装及配置等，并且安装过程中需要联网下载众多比较大的安装包，会使得整个集群的安装过程复杂、缓慢并且容易出错。
 
@@ -10,11 +10,11 @@ CDH(*Cloudera's Distribution Including Apache Hadoop*) 是 Cloudera 的 Hadoop �
 
 *CDH on QingCloud* 将安装 CDH 需要的操作系统环境的配置、各个依赖产品/组件的安装及配置等众多纷繁复杂的工作自动化，提前下载好了各个组件的安装包并做了相关分发配置，使得整个 CDH 集群的安装配置过程可以在十分钟左右快速完成，并可以很方便的横向及纵向扩展集群，极大地方便了用户的使用。
 
->CDH on QingCloud 目前提供的 CDH 版本是与 CentOS 7.3 兼容的 *CDH 5.13.0* （ Impala 和 Solr 暂没有与CentOS 7.3相兼容的版本 ）
+>*CDH on QingCloud* 目前提供的 CDH 版本是与 CentOS 7.3 兼容的 *CDH 5.13.0* （ Impala 和 Solr 暂没有与CentOS 7.3相兼容的版本 ）
 >
 >CDH 某些服务需要 license 才可以使用，用户可以自行获取 license
 >
->CDH on QingCloud 提供的是 CDH 在青云上的自动化安装和部署服务，CDH 使用中遇到问题请参考[官方指南](https://www.cloudera.com/documentation/enterprise/latest/topics/introduction.html) 或者联系Cloudera 客服
+>*CDH on QingCloud* 提供的是 CDH 在青云上的自动化安装和部署服务，CDH 使用中遇到问题请参考[官方指南](https://www.cloudera.com/documentation/enterprise/latest/topics/introduction.html) 或者联系Cloudera 客服
 
 
 
@@ -130,23 +130,15 @@ CDH 主节点及从节点 IP 应该「手动指定」，此为官方推荐做法
 
 
 
-与 CentOS 7.3 兼容的 CDH 5.13.0 各组件已经提前下载并存储到主节点，包括cdh5, Kafka, kudu, accumulo-c5, spark2和sqoop 。因此需要将这几个组件的`远程Parcel存储库URL`配置为主节点相应路径。假设主节点ip为192.168.100.19 ，则各组件到`远程Parcel存储库URL`需按如下url进行配置
-
-
+与 CentOS 7.3 兼容的 CDH 5.13.0 各组件已经提前下载并存储到主节点，包括cdh5, Kafka, kudu, accumulo-c5, spark2和sqoop 。因此需要将这几个组件的`远程Parcel存储库URL`配置为主节点相应路径。假设主节点ip为192.168.100.19 ，则各组件到`远程Parcel存储库URL`需按如下url进行配置：
 
 ```shell
 http://192.168.100.19/cdh5/parcels/5.13.0/
-
 http://192.168.100.19/kafka/parcels/3.0.0/
-
 http://192.168.100.19/kudu/parcels/1.4.0/
-
 http://192.168.100.19/accumulo-c5/parcels/1.7.2/
-
 http://192.168.100.19/spark2/parcels/2.1.0/
-
 http://192.168.100.19/sqoop/sqoop-connectors/
-
 ```
 
 
