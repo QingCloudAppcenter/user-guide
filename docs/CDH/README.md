@@ -1,16 +1,20 @@
-CDH on QingCloud AppCenter 用户指南
+# CDH on QingCloud AppCenter 用户指南
 
 ## 简介
 
-CDH(*Cloudera's Distribution Including Apache Hadoop*)是Cloudera公司的Hadoop发行版。CDH提供了Hadoop生态圈很多重要开源产品及组件如Hadoop, Spark, HBase, Hive, Pig, Hue, Oozie, Kafka, Zookeeper, Kudu, Accumulo, Flume, Sqoop, Sentry等。CDH还提供了用于CDH集群管理的Cloudera Manager以及用于数据管理的Cloudera Navigator 。
+CDH(*Cloudera's Distribution Including Apache Hadoop*) 是 Cloudera 的 Hadoop 发行版。CDH 提供了 Hadoop 生态圈很多重要开源产品及组件如 Hadoop, Spark, HBase, Hive, Pig, Hue, Oozie, Kafka, Zookeeper, Kudu, Accumulo, Flume, Sqoop, Sentry 等。CDH 还提供了用于 CDH 集群管理的 Cloudera Manager 以及用于数据管理的 Cloudera Navigator 。
 
-安装配置CDH集群是一项十分复杂的工作，涉及到操作系统环境配置、特定版本JDK的安装、数据库的安装及配置、Cloudera Manager server及agent的安装及配置、各个大数据组件的安装及配置等，并且安装过程中需要联网下载众多比较大的安装包，会使得整个集群的安装过程复杂、缓慢并且容易出错。
+安装配置 CDH 集群是一项十分复杂的工作，涉及到操作系统环境配置、特定版本 JDK 的安装、数据库的安装及配置、Cloudera Manager server 及 agent 的安装及配置、各个大数据组件的安装及配置等，并且安装过程中需要联网下载众多比较大的安装包，会使得整个集群的安装过程复杂、缓慢并且容易出错。
 
-*CDH on QingCloud* 将安装CDH需要的操作系统环境的配置、各个依赖产品/组件的安装及配置等众多纷繁复杂的工作自动化，提前下载好了各个组件的安装包并做了相关分发配置，使得整个CDH集群的安装配置过程可以在十分钟左右快速完成，并可以很方便的横向及纵向扩展集群，极大地方便了用户的使用。
+> 手动安装 CDH 步骤详见 [官方安装指南](https://www.cloudera.com/documentation/enterprise/latest/topics/installation.html)
 
->目前支持的CDH版本是与CentOS 7.3兼容的 *CDH 5.13.0*
+*CDH on QingCloud* 将安装 CDH 需要的操作系统环境的配置、各个依赖产品/组件的安装及配置等众多纷繁复杂的工作自动化，提前下载好了各个组件的安装包并做了相关分发配置，使得整个 CDH 集群的安装配置过程可以在十分钟左右快速完成，并可以很方便的横向及纵向扩展集群，极大地方便了用户的使用。
+
+>CDH on QingCloud 目前提供的 CDH 版本是与 CentOS 7.3 兼容的 *CDH 5.13.0* （ Impala 和 Solr 暂没有与CentOS 7.3相兼容的版本 ）
 >
->CDH某些服务需要license才可以使用，用户可以自行获取license
+>CDH 某些服务需要 license 才可以使用，用户可以自行获取 license
+>
+>CDH on QingCloud 提供的是 CDH 在青云上的自动化安装和部署服务，CDH 使用中遇到问题请参考[官方指南](https://www.cloudera.com/documentation/enterprise/latest/topics/introduction.html) 或者联系Cloudera 客服
 
 
 
@@ -45,6 +49,8 @@ CDH(*Cloudera's Distribution Including Apache Hadoop*)是Cloudera公司的Hadoop
 ![第6步：网络设置](../../images/CDH/network_config.png)
 
 出于安全考虑，所有的集群都需要部署在私有网络中，选择自己创建的已连接路由器的私有网络。
+
+CDH 主节点及从节点 IP 应该「手动指定」，此为官方推荐做法。
 
 > 更多细节详见[网络资源配置](http://appcenter-docs.qingcloud.com/user-guide/apps/docs/network-config/)
 
@@ -308,17 +314,17 @@ CDH on QingCloud 中主节点唯一，用户可以增加从节点。
 
 下面将逐一演示每一步：
 
-#### 添加从节点到 CDH on QingCloud 集群中
+#### 第1步：添加从节点到 CDH on QingCloud 集群中
 
 待新添加节点的「服务状态」变为正常后，继续下一步
 
-> 节点IP需要手动指定
+> CDH 节点 IP 应该「手动指定」，此为官方推荐做法。
 
 ![增加节点](../../images/CDH/add_node1.png)
 
 
 
-#### 在 Cloudera Manager 里将该新增节点加入 CDH 集群以被 Cloudera Manager 管理
+#### 第2步：在 Cloudera Manager 里将该新增节点加入 CDH 集群
 
 进入 Cloudera Manager 的主机->所有主机页面，点击添加新主机
 
@@ -356,7 +362,7 @@ CDH on QingCloud 中主节点唯一，用户可以增加从节点。
 
 ![增加节点](../../images/CDH/add_node12.png)
 
-#### 创建从节点的主机模版，将需要部署在从节点的角色加入该模版
+#### 第3步：创建从节点的主机模版，将需要部署在从节点的角色加入该模版
 
 ![增加节点](../../images/CDH/create_template1.png)
 
@@ -364,7 +370,7 @@ CDH on QingCloud 中主节点唯一，用户可以增加从节点。
 
 
 
-#### 在新加入的从节点主机上应用从节点模版，以部署从节点角色到该主机
+#### 第4步：在新加入的从节点主机上应用从节点模版，以部署从节点角色到该主机
 
 ![增加节点](../../images/CDH/add_node13.png)
 
@@ -372,7 +378,7 @@ CDH on QingCloud 中主节点唯一，用户可以增加从节点。
 
 ![增加节点](../../images/CDH/add_node15.png)
 
-#### 重启过期服务使新配置生效
+#### 第5步：重启过期服务使新配置生效
 
 添加节点后，Cloudera Manager 会显示如下「过期配置：需要重新部署客户端配置」的提示，点击该信息将进入过期配置页面
 
@@ -412,9 +418,9 @@ CDH on QingCloud 中主节点唯一且不可删除，从节点最少为3个
 
 下面将逐一演示有关步骤：
 
-#### 确保待删除从节点上的数据和服务已经妥善处理，删除该节点不会导致数据丢失
+#### 第1步：确保待删除从节点上的数据和服务已经妥善处理，删除该节点不会导致数据丢失
 
-#### 在 Cloudera Manager 里将该从节点从 CDH 集群删除
+#### 第2步：在 Cloudera Manager 里将该从节点从 CDH 集群删除
 
 ![增加节点](../../images/CDH/delete_node1.png)
 
@@ -422,7 +428,7 @@ CDH on QingCloud 中主节点唯一且不可删除，从节点最少为3个
 
 ![增加节点](../../images/CDH/delete_node3.png)
 
-#### 将该从节点从 Cloudera Manager 删除
+#### 第3步：将该从节点从 Cloudera Manager 删除
 
 ![增加节点](../../images/CDH/delete_node4.png)
 
@@ -436,13 +442,13 @@ service cloudera-scm-agent stop
 
 ![增加节点](../../images/CDH/delete_node6.png)
 
-#### 重启过期服务使新配置生效
+#### 第4步：重启过期服务使新配置生效
 
 > 参考增加节点相关步骤
 
-#### 将配置参数里的「允许横向缩容」设置为 true 
+#### 第5步：将配置参数里的「允许横向缩容」设置为 true 
 
-#### 将该节点从 CDH on QingCloud 集群删除
+#### 第6步：将该节点从 CDH on QingCloud 集群删除
 
 
 
@@ -450,7 +456,7 @@ service cloudera-scm-agent stop
 
 
 
-#### 将配置参数里的「允许横向缩容」设置为 false 
+#### 第7步：将配置参数里的「允许横向缩容」设置为 false 
 
 
 
@@ -458,7 +464,9 @@ service cloudera-scm-agent stop
 
 CDH允许分别对各种角色的节点进行纵向的扩容及缩容。
 
-> 扩容或者缩容后，Cloudera Manager 服务及 Service/Host Monitor 服务需要一点时间重新启动，在此期间它的服务暂不可访问或不正常
+> 扩容/缩容后，Cloudera Manager 服务需要一点时间重新启动，在此期间它的服务暂不可访问
+>
+> 扩容/缩容或者集群关闭再启动后，Cloudera Manager的某些服务如 Service Monitor, Host Monitor, Reports Manager, Activity Manager, Event Server 可能需要手动启动
 
 
 
