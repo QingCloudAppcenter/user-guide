@@ -10,7 +10,7 @@ CDH (*Cloudera's Distribution Including Apache Hadoop*) 是 Cloudera 的 Hadoop 
 
 *CDH on QingCloud* 将安装 CDH 需要的操作系统环境的配置、各个依赖产品/组件的安装及配置等众多纷繁复杂的工作自动化，提前下载好了各个组件的安装包并做了相关分发配置，使得整个 CDH 集群的安装配置过程可以在十分钟左右快速完成，并可以很方便的横向及纵向扩展集群，极大地方便了用户的使用。
 
->*CDH on QingCloud* 目前提供的 CDH 版本是与 CentOS 7.3 兼容的 *CDH 5.13.0* （ Impala 和 Solr 暂没有与CentOS 7.3相兼容的版本 ）
+>*CDH on QingCloud* 目前提供的 CDH 版本是与 CentOS 7.3 兼容的 *CDH 5.13.0* （ Impala 和 Solr 暂没有与CentOS 7.3相兼容的版本 ），完整组件列表及版本详见[官方文档](https://www.cloudera.com/documentation/enterprise/release-notes/topics/cm_vd_cdh_package_tarball_513.html#cm_vd_cdh_package_tarball_513) 
 >
 >CDH 某些服务需要 license 才可以使用，用户可以自行获取 license
 >
