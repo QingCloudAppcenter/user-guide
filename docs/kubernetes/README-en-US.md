@@ -13,7 +13,7 @@ To ensure high security, Kubernetes cluster must run in a private network, so cr
 As shown below, through the left navigation tree on QingCloud console, go to `Networks & CDN -> VPC networks`, click 'Create VPC network' button.  
 
 ![](screenshot/create_vpc.png)  
-After creating VPC, back to the page of `VPC networks`, click that VPC and go to its detail page, in this page, assign an EIP and vxnets to it  
+After creating VPC, back to the page of `VPC networks`, click the VPC and go to its detailed page. In this page, associate an EIP with it, and join the created vxnets to it. 
 
 ![](screenshot/assign_eip.png)  
 Note: one of these vxnet should be specified as cluster's vxnet in step 6 below, the other ones should be specified as 'Pod vxnets' in `Environment Settings`  
