@@ -1,16 +1,16 @@
 # Kubernetes on QingCloud AppCenter User Instructions
 
-[Kubernetes](https://kubernetes.io) is an open-source orchestration system to provide a platform for automating deployment, scaling, and operations of containerized applications across clusters of hosts. The goal of Kubernetes on QingCloud AppCenter is to help end users easily set up a Kubernetes cluster in several minutes. It also supports cluster horizontal scaling and vertical scaling, nodes monitoring and alarms configuration. The cluster runs in private network with high performance storage provided by QingCloud platform, which ensures end users' data security and I/O performance.
+[Kubernetes](https://kubernetes.io) is an open-source orchestration system to provide a platform for automating deployment, scaling, and operations of containerized applications across clusters of hosts. The goal of Kubernetes on QingCloud AppCenter is to help end users easily set up a Kubernetes cluster in several minutes. It also supports cluster horizontal scaling and vertical scaling, nodes monitoring and alarms configuration. The cluster runs in private network with high performance storage provided by QingCloud platform, which ensures end users' data security and provides high I/O performance.
 
 ----
 
-## Prerequisite
+## Prerequisites
 
-To ensure high security, Kubernetes cluster must run in a private network, so creating a VPC and managed vxnet is necessary before creating Kubernetes cluster, then join vxnet to VPC and enable DHCP service(enabled as default). Please **don't specify VPC network range to 172.17.0.0/16**, which is used by docker as default, then <font color=red>**associate a public IP(EIP) to VPC**</font>, which is required for accessing QingCloud IaaS API and pulling docker images.
+To ensure high security, Kubernetes cluster must run in a private network, so creating a VPC and managed vxnet is necessary before creating Kubernetes cluster. Also join the vxnet to the VPC and enable DHCP service(enabled by default). Please **don't specify VPC network range to 172.17.0.0/16**, which is used by docker by default, then <font color=red>**associate a public IP(EIP) to VPC**</font>, which is required for accessing QingCloud IaaS API and pulling docker images from internet.
 
-### Create A VPC  
+### Create a VPC  
 
-Through left navigation tree on QingCloud console, go to `Networks&CDN -> VPC networks`, click 'Create VPC network' button  
+As shown below, through the left navigation tree on QingCloud console, go to `Networks & CDN -> VPC networks`, click 'Create VPC network' button.  
 
 ![](screenshot/create_vpc.png)  
 After creating VPC, back to the page of `VPC networks`, click that VPC and go to its detail page, in this page, assign an EIP and vxnets to it  
