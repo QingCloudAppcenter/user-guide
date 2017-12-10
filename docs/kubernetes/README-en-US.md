@@ -2,7 +2,7 @@
 
 <extoc></extoc>
 
-## Summary
+## Abstract
 
 [Kubernetes](https://kubernetes.io) is an open-source orchestration system to provide a platform for automating deployment, scaling, and operations of containerized applications across clusters of hosts. The goal of Kubernetes on QingCloud AppCenter is to help end users easily set up a Kubernetes cluster in several minutes. It also supports cluster horizontal scaling and vertical scaling, nodes monitoring and alarms configuration. The cluster runs in private network with high performance storage provided by QingCloud platform, which ensures end users' data security and provides high I/O performance.
 
@@ -12,17 +12,9 @@
 
 To ensure high security, Kubernetes cluster must run in a private network, so creating a VPC and managed vxnet is necessary before creating Kubernetes cluster. Also join the vxnet to the VPC and enable DHCP service(enabled by default). Please **don't specify VPC network range to 172.17.0.0/16**, which is used by docker by default, then <font color=red>**associate a public IP(EIP) to VPC**</font>, which is required for accessing QingCloud IaaS API and pulling docker images from internet.
 
-### Create a VPC  
+### Create an EIP
 
-As shown below, through the left navigation tree on QingCloud console, go to `Networks & CDN -> VPC networks`, click 'Create VPC network' button.  
-
-![](screenshot/create_vpc.png)  
-
-After creating VPC, back to the page of `VPC networks`, click the VPC and go to its detailed page. In this page, associate an EIP(please create one beforhand) with it, and join the created vxnets(check the following section) to it. 
-
-![](screenshot/assign_eip.png) 
-
-**Note:** The vxnets for Kubernetes will be categorized into two kinds, one of which is for Kubernetes itself called 'cluster vxnet', the other one of which is for applications deployed on the cluster called 'Pod vxnets'. You should create multiple Pod vxnets for your Kubernetes cluster. <font color=red>After all settings are saved, please make sure to click 'Apply Changes' button on top right of the page.</font>  
+Since the Kubernetes you are going to create must be accessible to internet, you need to create an EIP first. Please go to `Networks & CDN -> Elastic EIPs`, click 'Create' button. 
 
 ### Create vxnets 
  
@@ -30,19 +22,33 @@ Go to `Networks & CDN -> VxNets`, click 'Create' button.
 
 ![](screenshot/create_vxnet.png)  
 
-After creating vxnets, go back to the page of `VxNets`, right click it, then click 'Join VPC Network' button and choose the VPC created in above step(**Optional**, skip this step if you already assign vxnets to VPC on VPC detailed page).  
+You need to create two kinds of VxNet, one of which is for Kubernetes cluster itself called 'cluster vxnet'. The other one is called 'Pod vxnets' which are for applications deployed onto the cluster. You should create multiple Pod vxnets.
+
+Once you created the VxNets and the VPC described as the following section, please go back to the page of `VxNets` again, right click it, then click 'Join VPC Network' button and choose the VPC you created below (**Optional**, skip this step if you already assign vxnets to VPC on VPC detailed page).  
 
 ![](screenshot/join_vpc.png)  
 
+### Create a VPC  
+
+As shown below, through the left navigation tree on QingCloud console, go to `Networks & CDN -> VPC networks`, click 'Create VPC network' button.  
+
+![](screenshot/create_vpc.png)  
+
+After creating VPC, go back to the page of `VPC Networks`, click the VPC and go to its detailed page. In this page, associate the EIP with it, and join the created vxnets including cluster VxNet and Pod VxNets to it as well. 
+
+![](screenshot/assign_eip.png) 
+
+**Note:** <font color=red>After all settings are saved, please make sure to click 'Apply Changes' button on top right of the page.</font>  
+
 ### Create API Access Key  
 
-Go to `Access Keys` page through left navigation tree, click 'Create' button, then input the name and description of the key and click 'Submit' button, a popup panel of generated key will be shown and download this key file to your local machine, and then you could get the detailed content of this key.  
+Your Kubernetes cluster will manage your resource from QingCloud platform, so API access key is required by the Kubernetes in terms of security. Please go to `Access Keys` page through left navigation tree, click 'Create' button, then input the name and description of the key and click 'Submit' button, a popup panel of generated key will be shown and download this key file to your local machine, and then you could get the detailed content of this key.  
 
 ![](screenshot/create_api_key.png)  
 
 ## Create Kubernetes cluster
 
-After you prepared all prerequisites described above, then it is ready to create Kubernetes.
+After all prerequisites described above are created, then you are ready to create Kubernetes.
 
 ### Step 1: Select and configure IaaS resource
 
