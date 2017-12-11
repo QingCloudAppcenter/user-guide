@@ -1,5 +1,7 @@
 # Deploy Wordpress on QingCloud Kubernetes  
+
 {% include "../auto-i18n.md" %}
+
 ## Deployment
 
 1. Deploy [Kuberntes cluster on QingCloud](../README-en-US.md). 
