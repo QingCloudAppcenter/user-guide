@@ -469,24 +469,23 @@ Note:
 
 ### How to customize the logs in Kubernetes  
 
-Kubernetes App On QingCloud collect logs and save them in Elasticsearch, end user could manage the log on Kibana console, but sometimes end users want to manage logs by themselves, for this case, they could set their own log server in environment when deploying cluster, currently Kubernetes App On QingCloud supports [Fluent or Fluent-bit](http://fluentbit.io/documentation/0.12/output/forward.html), and please refer to [example of fluent-bit](https://github.com/QingCloudAppcenter/kubernetes/tree/k8s-1.7/sample/fluentbit), run commands below as reference:  
+Kubernetes on QingCloud collects logs and stores them in the embeded Elasticsearch service. You can view the logs on the embeded Kibana console. If you want to have more control about your logs, you can configure your own logging server in Environment Settings when deploying the cluster. Currently Kubernetes on QingCloud supports [Fluent and Fluent-bit](http://fluentbit.io/documentation/0.12/output/forward.html). Please refer to [example of fluent-bit](https://github.com/QingCloudAppcenter/kubernetes/tree/k8s-1.7/sample/fluentbit), run commands below as reference:  
 
-1. Logon to client node, start fluent-bit forward server  
+1. Log in the client node, start fluent-bit forward server  
 
   ```console
   		cd /opt/kubernetes/sample/fluentbit/
   		sh run.sh
   ```
 
-2. Modify the 'Fluent forward server' parameter to clientip:24224 in cluster environment parameters and save it. 
-  fluent-bit agent will be restarted one by one and corresponding log will be shown on console later. 
+2. Modify the 'Fluent forward server' parameter to clientip:24224 in cluster Environment Settings and save it. 
+  fluent-bit agent will be restarted one by one and corresponding logs will be shown on the console later on. 
 
-Note: Make sure log forward service could work correctly if this configuration is enabled, otherwise fluent-bit agent will fail to collect log. 
+**Note**: Make sure log forward service works correctly if this configuration is enabled, otherwise fluent-bit agent will fail to collect log. 
 
 ### Why log can't be collected  
 
-fluent-bit agent may meet some problem if the expected log is not collected by embedded Elasticsearch service or personal log forward service, run command below to delete fluent-bit daemonset, kubernetes will re-deploy corresponding log service. 
-
+If you find the logs of the application running on the cluster is not collected by the embedded Elasticsearch service or customized log forwarded service, it might be there is some problem with fluent-bit agent. Please run the command below to delete fluent-bit daemonset. Kubernetes will re-deploy it automatically. 
 
 ```  console
 kubectl delete ds/fluent-bit -n kube-system
@@ -496,7 +495,7 @@ kubectl delete ds/fluent-bit -n kube-system
 
  Kubernetes on QingCloud supports to use private registry.
 
-* If private registry doesn't enable https，please set 'Insecure registries' in Environment Settings with value being ip:port of private registry when creating Kubernetes cluster. 
+* If private registry doesn't enable https, please set 'Insecure registries' in Environment Settings with value being ip:port of private registry when creating Kubernetes cluster. 
 
 * Kubernetes on QingCloud doesn't support username/password authentication for private registry currently. End users can create secret token on Kubernetes to use his/her own registry account by following the steps below:  
 
