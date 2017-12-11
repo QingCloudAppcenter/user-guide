@@ -4,7 +4,7 @@
 
 ## Abstract
 
-[Kubernetes](https://kubernetes.io) is an open-source orchestration system to provide a platform for automating deployment, scaling, and operations of containerized applications across clusters of hosts. The goal of [Kubernetes on QingCloud AppCenter](https://appcenter.qingcloud.com/apps/app-u0llx5j8) is to help end users easily set up a Kubernetes cluster in several minutes. It also supports cluster horizontal scaling and vertical scaling, nodes monitoring and alarms configuration etc. The cluster runs in a private network with high performance storage provided by QingCloud platform, which ensures end users data security and provides high I/O performance.
+[Kubernetes](https://kubernetes.io) is an open-source orchestration system to provide a platform for automating deployment, scaling, and operations of containerized applications across clusters of hosts. The goal of [Kubernetes on QingCloud AppCenter](https://appcenter.qingcloud.com/apps/app-u0llx5j8) is to help end users easily set up a Kubernetes cluster in several minutes. It also supports cluster horizontal scaling and vertical scaling, nodes monitoring and alarming etc. In addition, the cluster is integrated with QingCloud storage, network and load balancer and so on. In another words, Kubernetes on QingCloud ensures end users data security and provides high disk/network I/O performance as well.
 
 ----
 
