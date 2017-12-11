@@ -399,6 +399,8 @@ Kubernetes on QingCloud uses QingCloud SDN Passthrough solution for container ne
 1. Each host instance supports 64 NICs at most, so we restrict the number of pods on each node to 60.  
 2. Private network (vxnet) is class C subnet, which only supports 253 IP addresses at most. So in order to support a large number of pods, please join multiple vxnets to the VPC when creating cluster.  
 
+----
+
 ## Tutorial
 
 1. [Use QingCloud LoadBalancer to deploy Helloworld Service](tutorials/helloworld-en-US.md)
@@ -410,23 +412,26 @@ Please find more examples related to the configuration files of QingCloud volume
 
     kubectl apply -f xxxx.yaml
 
+----
 
 ## Note
 
-1. Please don't set network range to 172.17.0.0/16 in VPC, which is occupied by docker as default.  
+1. Please don't set network range to 172.17.0.0/16 for VPC, which is used by docker as default.  
 2. Use same resource type for all kinds of nodes.  
-3. The number of Pods and containers displays on node monitor page.  
-4. Make sure vxnet could access intenet for the needs of calling QingCloud IaaS API and pulling images(**bind EIP to VPC**).  
-5. Choose vxnet which is in same VPC where cluster's vxnet resides in and don't reuse the vxnet occupied by pod.  
+3. The number of Pods and containers are displayed on the cluster built-in node monitor section on the cluster detailed page of QingCloud console.  
+4. Make sure vxnet could access intenet for calling QingCloud IaaS API and pulling images (**Please bind EIP to VPC**).  
+5. Please use cluster vxnet just for kubernetes cluster, and use pod vxnets just for pods deployment. Don't mess them up. Also make cluster vxnet and pod vxnets in the same VPC.  
 6. Please refer to [ Kubernetes Official Document](https://kubernetes.io/docs/home/) for more usage about Kubernetes.  
+
+----
 
 ## FAQ
 
-### How to visit services outside of Kubernetes cluster  
+### How to visit services from outside of Kubernetes cluster  
 
 There're two options
 
-1. Expose loadbalancer through service, and use the loadbalancer of vxnet for the private network case. This is the commonly accepted option, which could be used in official scenarios. 
+1. Expose loadbalancer through service, and use the loadbalancer of vxnet for the private network case. This is the commonly adopted option, which is recommended to use in producation environment. 
 2. Create a router rule which redirects the packages, which are sent to cluster-ip, to some node(like master node) in the cluster. This solution will treat this node as gateway to transmit packages. Please configure dns if end uses still use domain name to access service. This option is just work-around.  
 
 ```shell
@@ -441,24 +446,21 @@ There're two options
 
 ### Why my cluster fails to startup or gets timeout  
 
-1. Make sure to bind EIP to VPC. 
+1. Make sure an EIP is associated with your VPC. 
 2. Make sure the API key is correct. 
 
-Please submit ticket if all these are correct. 
+Please submit ticket if it still doesn't work. 
 
 ### Why LoadBalancer doesn't work properly  
 
 1. Make sure the Service could be accessed by Cluster IP. 
-
 2. Make sure the Service could be accessed by NodePort. 
-
 3. Do not reuse the vxnets where Pods are using if this loadbalancer is in private network. 
-
-4. Make sure the account get verified(getting ICP license could be better ) if end user uses 80 port. 
+4. Make sure the account get verified (getting ICP license could be better) if end user uses 80 port. 
 
 ### How to use log of json format and indexed in Elasticsearch by fields  
 
-fluent-bit service in Kubernetes App On QingCloud already enable the detection of json data, so if the output of log is in json format, it will be added to Elasticsearch index and resolved as json. 
+fluent-bit service in Kubernetes On QingCloud already enables the detection of json data, so if the output of log is in json format, it will be added to Elasticsearch index and resolved as json. 
 
 Note:
 
