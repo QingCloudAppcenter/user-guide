@@ -220,7 +220,7 @@ When compose service in your yaml file, set service type to LoadBalancer, then a
 
 As described above, specifying annotation as qingcloud-load-balancer-eip-ids or qingcloud-load-balancer-vxnet-id will create loadbalancer with Internet or vxnet type. If just specifying LoadBalancer service type but not set any annotations or no more detailed attributes under annotations spec, a loadbalancer with vxnet type will be created and assigned to the vxnet where Kubernetes cluster resides in.  
 
-The complete example is as follows. 
+The example is as follows. 
 
 ```yaml
 apiVersion: v1
@@ -268,14 +268,14 @@ Please set name attribute if more than one ports are set in configuration file, 
 
 ### Storage
 
-Kubernetes on QingCloud supports to attach volumes to pod as PersistentVolume. These volumes will also be migrated to the nodes where the pods are scheduled and migrated to.  
+The Kubernetes cluster supports to attach QingCloud volumes to pod as PersistentVolume. These volumes will also be migrated to the nodes along with their pods which may be migrated for some reason.  
 
-Set qingCloudStore specification when defining PersistentVolume, which has two attributes:  
+Set _qingCloudStore_ specification when defining PersistentVolume, which has two attributes:  
 
-1. **volumeID**: the volume ID which is created on QingCloud console in advance. 
-2. **fsType**: the type of file system after volume is attached. 
+1. **volumeID**: the ID of the volume that is created on QingCloud console in advance. 
+2. **fsType**: the type of file system after the volume is attached. 
 
-The complete example is as shown below.  
+The example is as shown below.  
 
 ```yaml
 kind: PersistentVolume
@@ -294,7 +294,7 @@ spec:
         fsType: ext4
 ```
 
-Example for Kubernetes 1.5:  
+Example for Pod of Kubernetes 1.5:  
 
 ```yaml
 apiVersion: v1
@@ -315,7 +315,7 @@ spec:
       fsType: ext4
 ```
 
-Example for Kubernetes 1.7+:  
+Example for Pod of Kubernetes 1.7+:  
 
 ```yaml
 apiVersion: v1
@@ -340,7 +340,7 @@ spec:
 
 #### Use PersistentVolumeClaim
 
-The examples above show that, to use PersistentVolume, the volume should be created at first, then input volume ID in configuration file and bind it to specified service. It is very hard for resource migration. To solve this limitation, Kubernetes provides PersistentVolumeClaim, which just needs to define the requirement of volume. Creation and destruction will be handled by Kubernetes automatically.  
+The examples above show that, to use PersistentVolume, the volume needs to be created at first, then input volume ID in the configuration file and bind it to a specified service. It is very hard for resource migration because of hard code in the configurations. To solve this limitation, Kubernetes provides PersistentVolumeClaim, which just claims volume needs. Volumen creation and destruction will be handled by Kubernetes automatically.  
 
 Define StorageClass:  
 
@@ -373,12 +373,12 @@ spec:
       storage: 10Gi
 ```
 
-QingCloud develop related plugin to support PersistentVolumeClaim, qingcloud-storageclass already is already integrated into Kubernetes App on QingCloud, end users don't need additional configuration, and qingcloud-storageclass is the default storageclass, so end users could skip setting annotations 'volume.beta.kubernetes.io/storage-class: qingcloud-storageclass' in PersistentVolumeClaim specification. Please refer to the example of wordpress below for more detail.  
+We already developed QingCloud plugin to support Kubernetes PersistentVolumeClaim. And the plugin qingcloud-storageclass is integrated into the Kubernetes cluster by default, which means end users don't need any more configurations, so end users can skip setting annotations _volume.beta.kubernetes.io/storage-class: qingcloud-storageclass_ in PersistentVolumeClaim specification. Please refer to the example of wordpress below for more details.  
 
-qingcloud-storageclass supports high performance and super high performance volume device, which depends on the volume type of cluster nodes when deploying, the storage plugin will create corresponding volumes automatically based on the resource type of host instances, that's why Kubernetes App ask to use same resource type when deploying.  
+qingcloud-storageclass supports high performance and super high performance volume types, which depends on the volume type of cluster nodes when deploying. The storage plugin will create corresponding volumes automatically based on the resource type of host instances, that's the reason Kubernetes App asks to use same resource type when deploying.  
 
-To use capacity volume, specify storage-class as qingcloud-storageclass-capacity.  
-Run command as below:
+To use capacity volume, specify _storage-class_ to _qingcloud-storageclass-capacity_.  
+Run the command as follows:
 
 ```shell
 kubectl get storageclass
@@ -388,9 +388,9 @@ qingcloud-storageclass (default)   kubernetes.io/qingcloud-volume
 qingcloud-storageclass-capacity    kubernetes.io/qingcloud-volume
 ```
 
-it will return all supported storageclass in cluster, end users could also define their own storageclass.  
+It returns all supported storageclass in cluster. End users could also define their own storageclass.  
 
->Note: no matter the volume is high perforamnce or capacity, its acccessModes must be **ReadWriteOnce**  
+>Note: No matter the volume is high perforamnce or capacity, its acccessModes must be **ReadWriteOnce**  
 
 ### Network
 
