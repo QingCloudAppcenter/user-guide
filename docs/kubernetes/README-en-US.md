@@ -61,7 +61,7 @@ Please go to [Kubernetes on QingCloud AppCenter](https://appcenter.qingcloud.com
 ![](screenshot/base_config.png)  
 ![](screenshot/master_config.png)  
 
-Choose the cluster VxNet for the Kubernetes.  
+Choose the cluster VxNet for the Kubernetes. **Note:** choose cluster VxNet, not Pod VxNet. 
 
 ![](screenshot/net_config.png)  
 
@@ -69,13 +69,15 @@ Specify other parameters for Kubernetes cluster. The following are some of the i
 
 ![](screenshot/env_config.png)  
 
-* Kubernetes on QingCloud AppCenter integrates with QingCloud IaaS platform and could operate resources such as volume, VxNet etc. From the aspect of security, end user needs to use her/his own API access key to call QingCloud IaaS API [Access Key](https://console.qingcloud.com/access_keys/).  
+* Kubernetes on QingCloud AppCenter integrates with QingCloud IaaS platform and could manage resources such as volume, VxNet etc. From the aspect of security, end user needs to use her/his own API access key to call QingCloud IaaS API [Access Key](https://console.qingcloud.com/access_keys/).
 
-* The Kubernetes cluster uses QingCloud SDN (software defined network) to provide network for Pods. Every pod will be bound with a NIC and assigned with a private IP address. End user should create vxnets in advance and input the vxnet IDs starting with vxnet- to the parameter 'Pod vxnets'. The Pod vxnets are recommended to be only used for Pods in this Kubernetes cluster. Each vxnet could contains 253 IP addresses, so create multiple vxnets if you have large amount of Pods. Please separate them by blank character in the Environment Settings. <font color=red>**Please don't include cluster vxnet in the Environment Settings. Also all these Pod vxnets should be in the same VPC as the cluster vxnet.**</font>
+* The Kubernetes cluster uses QingCloud SDN (software defined network) to provide network for Pods. Every pod will be bound with a NIC and assigned with a private IP address. End user should create vxnets in advance and input the vxnet IDs starting with _vxnet-_ to the parameter 'Pod vxnets'. The Pod vxnets are recommended to be only used for Pods in this Kubernetes cluster. Each vxnet contains up to 253 IP addresses, so create multiple vxnets if you have large amount of Pods. Please separate them by blank character in the Environment Settings. <font color=red>**Please don't include cluster vxnet in the Environment Settings. Also all these Pod vxnets should be in the same VPC as the cluster vxnet.**</font>
 
-* The Kubernetes cluster supports the feature of customizing log monitor. End user can search and query all the log resource managed by the Kubernetes. The log will be deleted on a scheduled time to save disk space. This schedule is configurable by the cluster parameter 'Keep log days'.
+* The Kubernetes cluster supports the feature of customizing log monitor. End user can search and query all the log resource managed by the Kubernetes. The log will be deleted on a scheduled time to save disk space. It is configurable by the cluster parameter 'Keep log days'.
 
 * Configure the domain name for Kubernetes API, which is used to generate ca certification of API server.  
+
+The following parameters are optional.
 
 ![](screenshot/env_config2.png)
 
