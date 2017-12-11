@@ -251,7 +251,7 @@ spec:
   type: LoadBalancer
 ```
 
-As no qingcloud-load-balancer-eip-ids or qingcloud-load-balancer-vxnet-id specified for helloworld-internal service, a loadbalancer with vxnet type will be created and assigned to the vxnet where Kubernetes cluster resides in.  
+Please specify _qingcloud-load-balancer-eip-ids_ when you are using public load balancer, or specify _qingcloud-load-balancer-vxnet-id_ when using private load balancer. If neither _qingcloud-load-balancer-eip-ids_ nor _qingcloud-load-balancer-vxnet-id_ is specified, for instance, in the helloworld-internal service example above, a private loadbalancer will be created into to the vxnet where Kubernetes cluster is using, i.e., the cluster vxnet.  
 
 Check the service status through kubectl command below. 
 
@@ -431,7 +431,7 @@ Please find more examples related to the configuration files of QingCloud volume
 
 ### How to visit services from outside of Kubernetes cluster  
 
-There're two options
+There're two options.
 
 * Expose loadbalancer through service, and use the loadbalancer of vxnet for the private network case. This is the commonly adopted option, which is recommended to use in production environment. 
 * Create a router rule to redirect the packages to the cluster ip through any node (including master node) in the cluster. This node acts as the gateway to forward packages for the cluster ip. Please configure DNS if you want to use domain name to access your service. This solution is not recommended to use in production environment.  
