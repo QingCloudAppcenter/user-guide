@@ -494,21 +494,19 @@ kubectl delete ds/fluent-bit -n kube-system
 
 ### How to use private registry  
 
- Kubernetes App on QingCloud support to configure private registry
+ Kubernetes on QingCloud supports to use private registry.
 
-1. If private registry doesn't enable https，please set 'Insecure registries' in environment parameter with value as ip:port of private registry. 
+* If private registry doesn't enable https，please set 'Insecure registries' in Environment Settings with value being ip:port of private registry when creating Kubernetes cluster. 
 
-2. Kubernetes App on QingCloud doesn't support username/password authentication on private registry but end users could create corresponding secret token on Kubernetes to manage his own registry account. 
+* Kubernetes on QingCloud doesn't support username/password authentication for private registry currently. End users can create secret token on Kubernetes to use his/her own registry account by following the steps below:  
 
-Detail steps as below:  
-
-1. Create secret, modify myregistrykey and myregistryserver
+  1. Create secret, modify myregistrykey and myregistryserver
 
    ```console
    kubectl create secret docker-registry myregistrykey --docker-username=username --docker-password=password --docker-email=email --docker-server=myregistryserver.com
    ```
 
-2. Configure imagePullSecrets and use the secret created
+  2. Configure imagePullSecrets and use the secret created
 
   ```yaml
   apiVersion: v1
