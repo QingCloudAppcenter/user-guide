@@ -10,7 +10,7 @@
 
 ## Prerequisites
 
-To ensure high security, Kubernetes cluster must run in a private network, so creating a VPC and managed vxnets is necessary before creating Kubernetes cluster. Also join the vxnets to the VPC and enable DHCP service(enabled by default). In addition, <font color=red>**associate a public IP(EIP) to the VPC**</font>, which is required for accessing QingCloud IaaS API and pulling docker images from internet.
+To ensure high security, Kubernetes cluster must run in a private network, so creating a VPC and managed vxnets is necessary before creating Kubernetes cluster. Also join the vxnets to the VPC and enable DHCP service (enabled by default). In addition, <font color=red>**associate a public IP (EIP) to the VPC**</font>, which is required for accessing QingCloud IaaS API and pulling docker images from internet.
 
 ### Create an EIP
 
@@ -22,11 +22,11 @@ Go to `Networks & CDN -> VxNets`, click 'Create' button.
 
 ![](screenshot/create_vxnet.png)  
 
-You need to create two kinds of VxNet, one of which is for Kubernetes cluster itself called 'cluster vxnet'. The other one is called 'Pod vxnets' which are for applications deployed onto the cluster. You might create multiple Pod vxnets since one VxNet only supports 253 private IPs(Pods).
+You need to create two kinds of VxNet, one of which is for Kubernetes cluster itself called 'cluster vxnet'. The other one is called 'Pod vxnets' which are for applications deployed onto the cluster. You might create multiple Pod vxnets since one VxNet only supports 253 private IPs (Pods).
 
 ### Create a VPC  
 
-As shown below, through the left navigation tree on QingCloud console, go to `Networks & CDN -> VPC networks`, click 'Create VPC Network' button. Please **don't specify VPC network range to 172.17.0.0/16**, which is used by docker by default.  
+As shown below, through the left navigation tree on QingCloud console, go to `Networks & CDN -> VPC Networks`, click 'Create VPC Network' button. Please **don't specify VPC Network Range to 172.17.0.0/16**, which is used by docker by default.  
 
 ![](screenshot/create_vpc.png)  
 
@@ -34,13 +34,13 @@ As shown below, through the left navigation tree on QingCloud console, go to `Ne
 
 Once you created the VxNets and the VPC, you need to join the VxNets to the VPC through one of the following ways.
 
-* Please go back to the page of `VPC Networks`, click the VPC into its detailed page. In this page, associate the EIP you created above with it, and join the created vxnets including cluster VxNet and Pod VxNets to it as well. 
+* Please go back to the page of `VPC Networks`, click the VPC into its detailed page. In this page, associate the EIP you created above with it, and join the created VxNets including cluster VxNet and Pod VxNets to it. 
 
 ![](screenshot/assign_eip.png) 
 
-**Note:** <font color=red>After all settings are saved, please make sure to click 'Apply Changes' button on top right of the page.</font>  
+    > **Note:** <font color=red>After all settings are saved, please make sure to click 'Apply Changes' button on top right of the page.</font>  
 
-* Please go back to the page of `VxNets` again, right click it, then click 'Join VPC Network' button and choose the VPC you created.
+* Please go back to the page of `VxNets`, right click it, then select 'Join VPC Network' and choose the VPC you created to join.
 
 ![](screenshot/join_vpc.png)  
 
