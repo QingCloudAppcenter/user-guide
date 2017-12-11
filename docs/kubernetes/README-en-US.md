@@ -38,7 +38,7 @@ Once you created the VxNets and the VPC, you need to join the VxNets to the VPC 
 
 ![](screenshot/assign_eip.png) 
 
-    > **Note:** <font color=red>After all settings are saved, please make sure to click 'Apply Changes' button on top right of the page.</font>  
+>**Note:** <font color=red>After all settings are saved, please make sure to click 'Apply Changes' button on top right of the page.</font>  
 
 * Please go back to the page of `VxNets`, right click it, then select 'Join VPC Network' and choose the VPC you created to join.
 
