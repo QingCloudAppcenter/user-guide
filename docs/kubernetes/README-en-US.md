@@ -433,8 +433,8 @@ Please find more examples related to the configuration files of QingCloud volume
 
 There're two options
 
-1. Expose loadbalancer through service, and use the loadbalancer of vxnet for the private network case. This is the commonly adopted option, which is recommended to use in producation environment. 
-2. Create a router rule which redirects the packages, which are sent to cluster-ip, to some node(like master node) in the cluster. This solution will treat this node as gateway to transmit packages. Please configure dns if end uses still use domain name to access service. This option is just work-around.  
+* Expose loadbalancer through service, and use the loadbalancer of vxnet for the private network case. This is the commonly adopted option, which is recommended to use in producation environment. 
+* Create a router rule which redirects the packages, which are sent to cluster-ip, to some node(like master node) in the cluster. This solution will treat this node as gateway to transmit packages. Please configure dns if end uses still use domain name to access service. This option is just work-around.  
 
 ```shell
 # ip route add 10.96.0.0/16 via $cluster_node_ip
@@ -448,17 +448,17 @@ There're two options
 
 ### Why my cluster fails to startup or gets timeout  
 
-1. Make sure an EIP is associated with your VPC. 
-2. Make sure the API key is correct. 
+* Make sure an EIP is associated with your VPC. 
+* Make sure the API key is correct. 
 
 Please submit ticket if it still doesn't work. 
 
 ### Why LoadBalancer doesn't work properly  
 
-1. Make sure the Service could be accessed by Cluster IP. 
-2. Make sure the Service could be accessed by NodePort. 
-3. Do not reuse the vxnets where Pods are using if this loadbalancer is in private network. 
-4. Make sure the account get verified (getting ICP license could be better) if end user uses 80 port. 
+* Make sure the Service could be accessed by Cluster IP. 
+* Make sure the Service could be accessed by NodePort. 
+* Do not reuse the vxnets where Pods are using if this loadbalancer is in private network. 
+* Make sure the account get verified (getting ICP license could be better) if end user uses 80 port. 
 
 ### How to output my application logs in json format and be indexed by Elasticsearch in terms of fields
 
@@ -466,8 +466,8 @@ fluent-bit service in Kubernetes On QingCloud already enables the detection of j
 
 Note:
 
-1. The whole line of log must be in json format. Some log libaries will append extra information such as timestamps, which makes the log data not in json format. Please print the logs to console by your programming library. 
-2. Please refer to the [Hello World Example](tutorials/helloworld-en-US.md) for more details about log output. 
+* The whole line of log must be in json format. Some log libaries will append extra information such as timestamps, which makes the log data not in json format. Please print the logs to console by your programming library. 
+* Please refer to the [Hello World Example](tutorials/helloworld-en-US.md) for more details about log output. 
 
 ### How to customize the logs in Kubernetes  
 
