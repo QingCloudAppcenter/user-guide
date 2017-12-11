@@ -206,21 +206,21 @@ Adjust the capacity for different roles' nodes on the pop-up page.
 
 ## Kubernetes integrates with QingCloud IaaS
 
-Kubernetes on QingCloud integrates its internal services with services from QingCloud IaaS platform such as load balancer, storage, network etc. 
+Kubernetes on QingCloud integrates its internal services with the services from QingCloud IaaS platform such as load balancer, storage, network etc. 
 
 ### LoadBalancer
 
-THe Kubernetes supports to integrate its internal services with loadbalancer from QingCloud IaaS. These services are accessible from outside of the cluster through loadbalancer.  
+The Kubernetes supports to integrate its internal services with loadbalancer from QingCloud IaaS. These services are accessible from outside of the cluster through loadbalancer.  
 
-Set Service type to LoadBalance, then add below annotations in metadata:
+When compose service in your yaml file, set service type to LoadBalancer, then add the following annotations in metadata section:
 
-1. service.beta.kubernetes.io/qingcloud-load-balancer-type: this annotation will set the loadbalancer type, corresponding to loadbalancer_type attribute of QingCloud IaaS API [create_loadbalancer](https://docs.qingcloud.com/api/lb/create_loadbalancer.html).  
-2. service.beta.kubernetes.io/qingcloud-load-balancer-eip-ids: this annotation will bind eips to loadbalancer(these eips should be created on QingCloud console at first and not accupied by other services), then input their ID for this annotation, which supports 4 eip IDs at most. With this annotation, the loadbalancer of Intenet type will be created automactically.  
-3. service.beta.kubernetes.io/qingcloud-load-balancer-vxnet-id: this annotation will assign created loadbalancer of vxnet type to some vxnet(this vxnet should be created on QingCloud console at first).  
+1. **service.beta.kubernetes.io/qingcloud-load-balancer-type**: This annotation will set the loadbalancer type, which corresponds to the loadbalancer_type attribute of QingCloud IaaS API [create_loadbalancer](https://docs.qingcloud.com/api/lb/create_loadbalancer.html).  
+2. **service.beta.kubernetes.io/qingcloud-load-balancer-eip-ids**: This annotation will bind eips to loadbalancer (these eips should be created on QingCloud console at first and not used by other services), then input their ID for this annotation, which supports up to four EIPs. With this annotation, the loadbalancer of Intenet type will be created automactically.  
+3. **service.beta.kubernetes.io/qingcloud-load-balancer-vxnet-id**: This annotation will assign created loadbalancer of vxnet type to some vxnet (This vxnet should be created on QingCloud console at first).  
 
-As described above, specifying annotation as qingcloud-load-balancer-eip-ids or qingcloud-load-balancer-vxnet-id will create loadbalancer with Internet or vxnet type. If just specifying LoadBalancer service type but not set any annotations or no more detail attributes under annotations spec, a loadbalancer with vxnet type will be created and assigned to the vxnet where Kubernetes cluster resides in.  
+As described above, specifying annotation as qingcloud-load-balancer-eip-ids or qingcloud-load-balancer-vxnet-id will create loadbalancer with Internet or vxnet type. If just specifying LoadBalancer service type but not set any annotations or no more detailed attributes under annotations spec, a loadbalancer with vxnet type will be created and assigned to the vxnet where Kubernetes cluster resides in.  
 
-Completed example as below: 
+The complete example is as follows. 
 
 ```yaml
 apiVersion: v1
@@ -253,7 +253,7 @@ spec:
 
 As no qingcloud-load-balancer-eip-ids or qingcloud-load-balancer-vxnet-id specified for helloworld-internal service, a loadbalancer with vxnet type will be created and assigned to the vxnet where Kubernetes cluster resides in.  
 
-Check the service status through kubectl command:  
+Check the service status through kubectl command below. 
 
 ```shell
 kubectl get service
@@ -268,14 +268,14 @@ Please set name attribute if more than one ports are set in configuration file, 
 
 ### Storage
 
-Kubernetes on QingCloud support to attach volumes to pod as PersistentVolume, these volumes will also be migrated to the nodes where the pods are scheduled and migrated to.  
+Kubernetes on QingCloud supports to attach volumes to pod as PersistentVolume. These volumes will also be migrated to the nodes where the pods are scheduled and migrated to.  
 
 Set qingCloudStore specification when defining PersistentVolume, which has two attributes:  
 
-1. volumeID the volume ID which is created on QingCloud console in advance. 
-2. fsType the type of file system after volume is attached. 
+1. **volumeID**: the volume ID which is created on QingCloud console in advance. 
+2. **fsType**: the type of file system after volume is attached. 
 
-Completed example as below:  
+The complete example is as shown below.  
 
 ```yaml
 kind: PersistentVolume
@@ -294,7 +294,7 @@ spec:
         fsType: ext4
 ```
 
-Example in pod of Kubernetes1.5:  
+Example for Kubernetes 1.5:  
 
 ```yaml
 apiVersion: v1
@@ -315,7 +315,7 @@ spec:
       fsType: ext4
 ```
 
-Example in pod of Kubernetes1.7+:  
+Example for Kubernetes 1.7+:  
 
 ```yaml
 apiVersion: v1
@@ -340,7 +340,7 @@ spec:
 
 #### Use PersistentVolumeClaim
 
-The examples above show that, to use PersistentVolume, the volume should be created at first, then input volume ID in configuration file and bind it to specified service, it is very hard for resource migration. To solve this limitation, Kubernetes provides PersistentVolumeClaim, which just needs to define the requirement of volume, creation and destruction will be handled by Kubernetes automatically.  
+The examples above show that, to use PersistentVolume, the volume should be created at first, then input volume ID in configuration file and bind it to specified service. It is very hard for resource migration. To solve this limitation, Kubernetes provides PersistentVolumeClaim, which just needs to define the requirement of volume. Creation and destruction will be handled by Kubernetes automatically.  
 
 Define StorageClass:  
 
