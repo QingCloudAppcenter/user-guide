@@ -1,5 +1,5 @@
 # Kubernetes on QingCloud AppCenter User Guide
-
+{% include "./auto-i18n.md" %}
 <extoc></extoc>
 
 ## Abstract

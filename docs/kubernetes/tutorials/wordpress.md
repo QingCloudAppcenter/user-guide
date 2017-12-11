@@ -1,5 +1,5 @@
 # 在 QingCloud Kubernetes 上部署 Wordpress
-
+{% include "../auto-i18n.md" %}
 ## 部署
 
 1. 先在 QingCloud 上部署一套 Kubernetes 集群。
