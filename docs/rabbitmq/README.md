@@ -1,5 +1,7 @@
 # RabbitMQ on QingCloud AppCenter 用户手册
 
+<extoc></extoc>
+
 ## 简介
 
 [RabbitMQ](https://www.rabbitmq.com/) 实现了 AMQP 协议，具有可靠性、灵活的路由、事务、高可用的队列、消息排序、可视化管理工具等功能，服务器端用 Erlang 语言编写，天生具备高可用和高并发的特性。
@@ -12,6 +14,8 @@
 - 提供了监控告警功能，更好地管理集群
 - 与 Haproxy+Keepalived 集成，具备高可用负载均衡特性
 - 开箱即用，支持 AMQP、MQTT、STOMP、WebSockets 等多种丰富协议
+- 磁盘节点支持消息延迟队列插件，[使用方法参考](https://github.com/rabbitmq/rabbitmq-delayed-message-exchange)
+- RabbitMQ 节点支持消息追踪插件，[使用方法参考](http://www.rabbitmq.com/firehose.html)
 
 
 ## 创建 RabbitMQ

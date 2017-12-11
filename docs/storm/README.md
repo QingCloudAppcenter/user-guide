@@ -1,5 +1,7 @@
 # Apache Storm on QingCloud AppCenter 用户手册
 
+<extoc></extoc>
+
 ## 简介
 
 Storm 是一个开源的分布式实时计算系统，通常被比作＂实时的 Hadoop＂。Storm 为实时计算提供了一些简单优美的原语，支持多种编程语言，并内建流式窗口 API 及分布式缓存 API，极大简化了流式数据处理过程。Storm 不仅高可靠、易扩展，而且处理速度极快，每个计算节点每秒能处理上百万条元组信息（Tuple），因此常被用于实时分析、在线机器学习、连续计算、分布式 RPC、ETL 等。 关于 Storm 更多的详细信息，请参阅 [Storm 官方网站](http://storm.apache.org/)，[Storm 官方中文文档](http://storm.apachecn.org/releases/cn/1.1.0/)。

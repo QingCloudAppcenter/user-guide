@@ -1,5 +1,7 @@
 # Apache Kafka on QingCloud AppCenter 用户手册
 
+<extoc></extoc>
+
 ## 简介
 
 [Kafka](http://kafka.apache.org/) 是一种高吞吐量、低延迟、高可靠的分布式发布订阅消息系统。

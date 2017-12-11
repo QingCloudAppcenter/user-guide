@@ -1,4 +1,6 @@
-# 用户手册
+# QingCloud MySQL Plus用户手册
+
+<extoc></extoc>
 
 ## 描述
 
