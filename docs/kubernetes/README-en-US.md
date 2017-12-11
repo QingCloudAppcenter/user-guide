@@ -69,7 +69,7 @@ Specify other parameters for Kubernetes cluster. The following are some of the i
 
 ![](screenshot/env_config.png)  
 
-* Kubernetes on QingCloud AppCenter integrates with QingCloud IaaS platform and could manage resources such as volume, VxNet etc. From the aspect of security, end user needs to use her/his own API access key to call QingCloud IaaS API [Access Key](https://console.qingcloud.com/access_keys/).
+* Kubernetes on QingCloud AppCenter integrates with QingCloud IaaS platform and could manage resource such as volume, VxNet etc. From the aspect of security, end user needs to use her/his own API access key to call QingCloud IaaS API [Access Key](https://console.qingcloud.com/access_keys/).
 
 * The Kubernetes cluster uses QingCloud SDN (software defined network) to provide network for Pods. Every pod will be bound with a NIC and assigned with a private IP address. End user should create vxnets in advance and input the vxnet IDs starting with _vxnet-_ to the parameter 'Pod vxnets'. The Pod vxnets are recommended to be only used for Pods in this Kubernetes cluster. Each vxnet contains up to 253 IP addresses, so create multiple vxnets if you have large amount of Pods. Please separate them by blank character in the Environment Settings. <font color=red>**Please don't include cluster vxnet in the Environment Settings. Also all these Pod vxnets should be in the same VPC as the cluster vxnet.**</font>
 
@@ -81,11 +81,11 @@ The following parameters are optional.
 
 ![](screenshot/env_config2.png)
 
-* Registry mirrors The mirror address for Docker hub registry, the default value is official docker hub mirror address for China.  
-* Insecure registries Kubernetes App supports private docker registry. To help end users using their own internal registry, QingCloud also provide [harbor App](https://appcenter.qingcloud.com/apps/app-2mhyb1ui), which could be deployed easily. Specify corresponding IP address if the private registry doesn't support https or doesn't use 80 port(the format is ip:port).  
-* Kubernetes cluster needs to pull necessary images customized by QingCloud from dockerhub.qingcloud.com, so end user needs to input user name and password of docherhub.qingcloud.com. Kubernetes App already binds guest account to pull images on public repositories from dockerhub.qingcloud.com. Please submit help ticket if you need to create and use your own repository.  
-* Set the log level of Kubernetes cluster, manage log through Kibana console.
-* Specify fluentd server address if end user want to use his own log server.
+* **Registry mirrors:** The mirror address for Docker hub registry, the default value is official docker hub mirror address for China.  
+* **Insecure registries:** The Kubernetes cluster supports private docker registry. To help end users using their own internal registry, QingCloud also provide [harbor App](https://appcenter.qingcloud.com/apps/app-2mhyb1ui), which could be deployed easily. Specify corresponding IP address if the private registry doesn't support https or doesn't use 80 port(the format is ip:port).  
+* **Dockerhub Username & Password:** The Kubernetes cluster needs to pull necessary images customized by QingCloud from dockerhub.qingcloud.com, so end user needs to input user name and password of docherhub.qingcloud.com. The cluster already binds guest account to pull images on public repositories from dockerhub.qingcloud.com. Please go to QingCloud console, `Container Platform -> Docker Hub` to create your own repository.  
+* **Kubernetes log level:** Set the log level of Kubernetes cluster. You can view log through Kibana console.
+* **Fluent forward server:** Specify fluentd server address if end user wants to use her/his own log server.
 
 After deploying Kubernetes cluster, end user may check every node's status in the detailed page of the cluster. 'Healthy' under 'Service status' means this node starts successfully. Cluster's status will become to 'Active' after every node becomes healthy, which means end user can use Kubernetes services now.  
 
