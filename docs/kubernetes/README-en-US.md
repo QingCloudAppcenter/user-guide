@@ -433,18 +433,17 @@ Please find more examples related to the configuration files of QingCloud volume
 
 There're two options
 
-* Expose loadbalancer through service, and use the loadbalancer of vxnet for the private network case. This is the commonly adopted option, which is recommended to use in producation environment. 
-* Create a router rule which redirects the packages, which are sent to cluster-ip, to some node(like master node) in the cluster. This solution will treat this node as gateway to transmit packages. Please configure dns if end uses still use domain name to access service. This option is just work-around.  
+* Expose loadbalancer through service, and use the loadbalancer of vxnet for the private network case. This is the commonly adopted option, which is recommended to use in production environment. 
+* Create a router rule to redirect the packages to the cluster ip through any node (including master node) in the cluster. This node acts as the gateway to forward packages for the cluster ip. Please configure DNS if you want to use domain name to access your service. This solution is not recommended to use in production environment.  
 
 ```shell
 # ip route add 10.96.0.0/16 via $cluster_node_ip
 ```
 
 ```reStructuredText
-   	nameserver 10.96.0.10
-    search default.svc.cluster.local svc.cluster.local cluster.local
+nameserver 10.96.0.10
+search default.svc.cluster.local svc.cluster.local cluster.local
 ```
-
 
 ### Why my cluster fails to startup or gets timeout  
 
