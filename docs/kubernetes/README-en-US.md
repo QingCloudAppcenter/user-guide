@@ -176,23 +176,23 @@ The main timeline query is as follows.
 .es(index='heapster-cpu-*',q="MetricsTags.type:node",split='MetricsTags.host_id:10',timefield='CpuMetricsTimestamp',kibana=true,metric="max:Metrics.cpu/node_utilization.value")
 ```
 
-_heapster-cpu-_ is the alias name of _heapster-_, which could be identified by adding_ _type_.  
+_heapster-cpu-_ is the alias name of _heapster-_, which could be identified by adding _\_type_.  
 _MetricsTags.type:node_ is the tag for different types of instances, like pod, node...etc.  
 End user could find out the data under same type at first then build up query based on requirement and charts.
 
 ## Scale horizontal/vertical
 
-### Add node
+### Add Node
 
-Click 'Add Nodes' button to solve the performance issue when more and more services are deployed in Kubernetes cluster, the newly added node's status could be found in cluster detail page.  
+Click 'Add Nodes' button when workload becomes heavy such as more and more services are deployed in Kubernetes cluster. The newly added node's status could be found in cluster detailed page.  
 
-### Delete node
+### Delete Node
 
-Click 'Delete' button to remove unnecessary nodes when there are less connections and services, which will save resource and cost for end user.  
+Click 'Delete' button to remove unnecessary nodes when the workload is down to low level, which saves cost for end user.  
 
-### Scale Up/Down(Resize cluster)
+### Scale Up/Down (Resize cluster)
 
-Resize cluster if end user want to enhance or reduce node configuration.  
+User also can resize (i.e., scale up or down) cluster to change the cluster workload capacity.  
 
 ![](screenshot/scale1.png)
 
