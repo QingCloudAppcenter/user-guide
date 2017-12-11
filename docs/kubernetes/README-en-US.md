@@ -82,7 +82,7 @@ The following parameters are optional.
 ![](screenshot/env_config2.png)
 
 * **Registry mirrors:** The mirror address for Docker hub registry, the default value is official docker hub mirror address for China.  
-* **Insecure registries:** The Kubernetes cluster supports private docker registry. To help end users using their own internal registry, QingCloud also provide [harbor App](https://appcenter.qingcloud.com/apps/app-2mhyb1ui), which could be deployed easily. Specify corresponding IP address if the private registry doesn't support https or doesn't use 80 port(the format is ip:port).  
+* **Insecure registries:** The Kubernetes cluster supports private docker registry. To help end users using their own internal registry, QingCloud provides [Harbor App](https://appcenter.qingcloud.com/apps/app-2mhyb1ui), which is deployed within a few minutes. Specify corresponding IP address if the private registry doesn't support https or doesn't use 80 port(the format is ip:port).  
 * **Dockerhub Username & Password:** The Kubernetes cluster needs to pull necessary images customized by QingCloud from dockerhub.qingcloud.com, so end user needs to input user name and password of docherhub.qingcloud.com. The cluster already binds guest account to pull images on public repositories from dockerhub.qingcloud.com. Please go to QingCloud console, `Container Platform -> Docker Hub` to create your own repository.  
 * **Kubernetes log level:** Set the log level of Kubernetes cluster. You can view log through Kibana console.
 * **Fluent forward server:** Specify fluentd server address if end user wants to use her/his own log server.
@@ -460,14 +460,14 @@ Please submit ticket if it still doesn't work.
 3. Do not reuse the vxnets where Pods are using if this loadbalancer is in private network. 
 4. Make sure the account get verified (getting ICP license could be better) if end user uses 80 port. 
 
-### How to use log of json format and indexed in Elasticsearch by fields  
+### How to output my application logs in json format and be indexed by Elasticsearch in terms of fields
 
 fluent-bit service in Kubernetes On QingCloud already enables the detection of json data, so if the output of log is in json format, it will be added to Elasticsearch index and resolved as json. 
 
 Note:
 
-1. The whole line of log must be in json format. Some log libaries will append extra information, like timestamps, which will make the log data incompleted. Please handle the log and print the output to console by programming. 
-2. Please refer to [example of helloworld](tutorials/helloworld-en-US.md) for more detail about log output. 
+1. The whole line of log must be in json format. Some log libaries will append extra information such as timestamps, which makes the log data not in json format. Please print the logs to console by your programming library. 
+2. Please refer to the [Hello World Example](tutorials/helloworld-en-US.md) for more details about log output. 
 
 ### How to customize the logs in Kubernetes  
 
@@ -480,8 +480,7 @@ Kubernetes on QingCloud collects logs and stores them in the embeded Elasticsear
 # sh run.sh
 ```
 
-2. Modify the 'Fluent forward server' parameter to clientip:24224 in cluster Environment Settings and save it. 
-  fluent-bit agent will be restarted one by one and corresponding logs will be shown on the console later on. 
+2. Modify the 'Fluent forward server' parameter to clientip:24224 in cluster Environment Settings and save it. Fluent-bit agent will be restarted one by one, and the corresponding logs will be shown on the console later on. 
 
 **Note**: Make sure log forward service works correctly if this configuration is enabled, otherwise fluent-bit agent will fail to collect log. 
 
