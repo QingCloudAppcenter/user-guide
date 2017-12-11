@@ -268,7 +268,7 @@ Please set name attribute if more than one ports are set in configuration file, 
 
 ### Storage
 
-The Kubernetes cluster supports to attach QingCloud volumes to pod as PersistentVolume. These volumes will also be migrated to the nodes along with their pods which may be migrated for some reason.  
+The Kubernetes cluster supports to attach QingCloud IaaS volumes to pod as PersistentVolume. These volumes will also be migrated to the nodes along with their pods which may be migrated for some reason.  
 
 Set _qingCloudStore_ specification when defining PersistentVolume, which has two attributes:  
 
@@ -373,11 +373,11 @@ spec:
       storage: 10Gi
 ```
 
-We already developed QingCloud plugin to support Kubernetes PersistentVolumeClaim. And the plugin qingcloud-storageclass is integrated into the Kubernetes cluster by default, which means end users don't need any more configurations, so end users can skip setting annotations _volume.beta.kubernetes.io/storage-class: qingcloud-storageclass_ in PersistentVolumeClaim specification. Please refer to the example of wordpress below for more details.  
+We already developed QingCloud plugin to support Kubernetes PersistentVolumeClaim. And the plugin _qingcloud-storageclass_ is integrated into the Kubernetes cluster by default, which means end users don't need any more configurations, so end users can skip setting annotations _volume.beta.kubernetes.io/storage-class: qingcloud-storageclass_ in PersistentVolumeClaim specification. Please refer to the example of wordpress below for more details.  
 
-qingcloud-storageclass supports high performance and super high performance volume types, which depends on the volume type of cluster nodes when deploying. The storage plugin will create corresponding volumes automatically based on the resource type of host instances, that's the reason Kubernetes App asks to use same resource type when deploying.  
+qingcloud-storageclass supports high performance and super high performance volume types, which depends on the volume type of cluster nodes when deploying. The storage plugin will create corresponding volumes automatically based on the resource type of host instances. That's the reason Kubernetes App asks to use same resource type when deploying.  
 
-To use capacity volume, specify _storage-class_ to _qingcloud-storageclass-capacity_.  
+To use capacity volume, specify _storage-class_ to _qingcloud-storageclass-capacity_ instead of _qingcloud-storageclass_.  
 Run the command as follows:
 
 ```shell
@@ -390,11 +390,11 @@ qingcloud-storageclass-capacity    kubernetes.io/qingcloud-volume
 
 It returns all supported storageclass in cluster. End users could also define their own storageclass.  
 
->Note: No matter the volume is high perforamnce or capacity, its acccessModes must be **ReadWriteOnce**  
+>Note: No matter the volume is high perforamnce or capacity, its acccessModes must be **ReadWriteOnce**.  
 
 ### Network
 
-Kubernetes App on QingCloud uses SDN Passthrough solution for container network, IP assigned to every pod is under same VPC where host instance resides in. Information message about attaching NIC will be shown on QingCloud console when deploying containers. By this solution, Pods and host instances will locate in same layer of network, which will bring less network loss, but there are some limitations:  
+Kubernetes on QingCloud uses QingCloud SDN Passthrough solution for container network. IP assigned to every pod is under same VPC where host instance resides in. Information message about attaching NIC will be shown on QingCloud console when deploying containers. By this solution, Pods and host instances will locate in same layer of network, which will bring less network loss, but there are some limitations:  
 
 1. Every host instance supports 64 NICs at most, so Kubernetes App on QingCloud restrict the number of pods on each node to 60.  
 2. Private network(vxnet) is class C subnet, which only supports more than 200 IP addresses, so to support more Pods deployment, please specify more vxnet ID when creating cluster.  
