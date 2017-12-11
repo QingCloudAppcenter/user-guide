@@ -93,18 +93,19 @@ After deploying Kubernetes cluster, end user may check every node's status in th
 
 ## Test Kubernetes
 
-### Use client node
+### Log in the cluster
 
-To test Kubernetes cluster, end user could access client node, click 'vnc' icon on client node  
+In order to avoid operation trouble, we only open client node to end user currently which pre-configured everything for user to manage the cluster. Please click 'vnc' icon on client node as shown below. 
 
 ![](screenshot/client.png)  
+
 Login as root/k8s and run commands as below:
 
 ```shell
 kubectl get pods --all-namespaces
 ```
 
-which will return all Pods with status to show if the cluster runs normally.
+which returns all Pods with status to show if the cluster runs normally.
 
 ```shell
 kubectl get service --all-namespaces
@@ -119,14 +120,14 @@ kube-system   kube-dns                10.96.0.10      <none>        53/UDP,53/TC
 kube-system   kubernetes-dashboard    10.96.70.70     <none>        80/TCP          1m
 ```
 
-which will return all services with status, these services could be accessed by cluster-ip or service name.  
+which returns all services with status. These services are accessable by cluster-ip or service name.  
 
 ```shell
 curl 10.96.0.11:9200/_cluster/health
 curl elasticsearch-logging.kube-system:9200/_cluster/health
 ```
 
-On client node, the default dns search domain is 'default.svc.cluster.local svc.cluster.local cluster.local', so to access the services under non default namespace, end user should add namespace suffix. For more detail about Kubernetes dns support, please refer to [Kubernetes Official Document about DNS Pods and Services](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/).
+On client node, the default DNS search domain is _default.svc.cluster.local svc.cluster.local cluster.local_. Therefore, to access the services from non default namespace, end user should add namespace suffix. For more details about Kubernetes DNS support, please refer to [Kubernetes Official Document about DNS Pods and Services](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/).
 
 ### Check cluster status through browser
 
