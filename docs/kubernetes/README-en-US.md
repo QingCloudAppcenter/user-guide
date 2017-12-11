@@ -180,6 +180,8 @@ _heapster-cpu-_ is the alias name of _heapster-_, which could be identified by a
 _MetricsTags.type:node_ is the tag for different types of instances, like pod, node...etc.  
 End user could find out the data under same type at first then build up query based on requirement and charts.
 
+----
+
 ## Scale horizontal/vertical
 
 ### Add Node
@@ -200,11 +202,15 @@ Adjust the capacity for different roles' nodes on the pop-up page.
 
 ![](screenshot/scale2.png)
 
+----
+
 ## Kubernetes integrates with QingCloud IaaS
+
+Kubernetes on QingCloud integrates its internal services with services from QingCloud IaaS platform such as load balancer, storage, network etc. 
 
 ### LoadBalancer
 
-Kubernetes on QingCloud supports to integrate Kubernetes internal services with loadbalancer from QingCloud IaaS platform, these services could be accessed from outside of cluster through loadbalancer.  
+THe Kubernetes supports to integrate its internal services with loadbalancer from QingCloud IaaS. These services are accessible from outside of the cluster through loadbalancer.  
 
 Set Service type to LoadBalance, then add below annotations in metadata:
 
