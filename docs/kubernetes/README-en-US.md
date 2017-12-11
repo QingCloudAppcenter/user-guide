@@ -127,11 +127,11 @@ curl 10.96.0.11:9200/_cluster/health
 curl elasticsearch-logging.kube-system:9200/_cluster/health
 ```
 
-On client node, the default DNS search domain is _default.svc.cluster.local svc.cluster.local cluster.local_. Therefore, to access the services from non default namespace, end user should add namespace suffix. For more details about Kubernetes DNS support, please refer to [Kubernetes Official Document about DNS Pods and Services](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/).
+On client node, the default DNS search domain is _default.svc.cluster.local svc.cluster.local cluster.local_. Therefore, to access the services from non default namespace, end user should add namespace suffix. For more details about Kubernetes DNS support, please refer to Kubernetes Official Document about [DNS Pods and Services](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/).
 
 ### Check cluster status through browser
 
-Kubernetes cluster on QingCloud integates heapster and dashboard components provided by Kubernetes and an elasticsearch kibana cluster. End user can check monitor and log data easily.  
+Kubernetes cluster on QingCloud integates heapster and dashboard components provided by Kubernetes and an elasticsearch kibana cluster. End user can check monitor and log data easily via those components.  
 
 Log in client node and run command as below:  
 
@@ -147,13 +147,13 @@ You can visit Kibana console for log management at http://\<client node ip\>:800
 
 ![](screenshot/kibana.png)
 
-End user could find out proxy address for other service by command below:  
+End user could find out proxy address for other service by running the command below:  
 
 ```shell
 kubectl cluster-info
 ```
 
-End user needs to import below indexes on Kibana console to get corresponding log data. All these data is based on timestamp, input the index name with pattern and timestamp then select field name through drop-down list.  
+End user needs to import the following indexes on Kibana console to get corresponding log data. All these data is based on timestamp. So input the index name with pattern and timestamp then select field name through drop-down list.  
 
 | index                 | timestamp                  |
 | --------------------- | -------------------------- |
@@ -164,20 +164,20 @@ End user needs to import below indexes on Kibana console to get corresponding lo
 | logstash-*            | @timestamp                 |
 
 
-Refer to [Official Document](https://www.elastic.co/guide/en/kibana/current/discover.html)
+For deatails please refer to the [Official Document](https://www.elastic.co/guide/en/kibana/current/discover.html).
 
 To get the data structure of heapster, please visit http://\<client node ip\>:8001/api/v1/proxy/namespaces/kube-system/services/elasticsearch-logging/_cat/indices  
 
-Some pre-defined templates are provided by QingCloud, which could be downloaded from [here](screenshot/export.json)  
+Some pre-defined templates are provided by QingCloud, which could be downloaded from [here](screenshot/export.json).  
 
-The main timeline query is as below:  
+The main timeline query is as follows.  
 
 ```Text
 .es(index='heapster-cpu-*',q="MetricsTags.type:node",split='MetricsTags.host_id:10',timefield='CpuMetricsTimestamp',kibana=true,metric="max:Metrics.cpu/node_utilization.value")
 ```
 
-'heapster-cpu-' is the alias name of 'heapster-', which could be identified by adding '_type'.  
-'MetricsTags.type:node' is the tag for different types of instances, like pod, node...etc.  
+_heapster-cpu-_ is the alias name of _heapster-_, which could be identified by adding_ _type_.  
+_MetricsTags.type:node_ is the tag for different types of instances, like pod, node...etc.  
 End user could find out the data under same type at first then build up query based on requirement and charts.
 
 ## Scale horizontal/vertical
