@@ -2,9 +2,11 @@
 
 ## Deployment
 
-1. Deploy[Kuberntes cluster on QingCloud](../README-en-US.md). 
+1. Deploy [Kuberntes cluster on QingCloud](../README-en-US.md). 
 2. Make sure kubectl works on your local machine or log into the client node of the Kubernetes cluster. 
 3. Create an EIP on QingCloud console. 
+
+Then input the following commands.
 
 ```shell
 # git clone https://github.com/QingCloudAppcenter/kubernetes.git
@@ -72,11 +74,11 @@ data:
   PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ```
 
-The output above if the environment variables of this pod. 
+The API above outputs the environment variables of the pod. 
 
-Note: helloworld service in this example uses probe program on server side written by go, for more source reference, please go to [go-probe](https://github.com/jolestar/go-probe). 
+**Note**: This example uses probe program on server side written in go. For more reference, please go to [go-probe](https://github.com/jolestar/go-probe). 
 
-## Specification
+## Specifications
 
 ```yaml
 apiVersion: extensions/v1beta1
@@ -126,17 +128,17 @@ spec:
   type: LoadBalancer
 ```
 
-Define Deployment of helloworld service at first, set replicas to 2, which means two Pods will be deployed, specify image pulling URL and port in container spec. 
+In this example, first define a deployment of helloworld service, and set its replicas to 2, which means two Pods will be deployed. Image pulling URL and port are specified in the container spec section. 
 
-Then define two Service, which type is LoadBalancer, set qingcloud-load-balancer-eip-ids to one of them and set nothing annotations for another one, a LoadBalancer with internet type will be created, the other one is vxnet type and use the vxnet where current cluster resides in. 
+Then define two services with type being LoadBalancer. One service is set qingcloud-load-balancer-eip-ids, and the other one is not set anything in annotations section regarding load balancer. Once deploy this yaml file, a public load balancer specified by the first service will be created; and a private load balancer specificed by the second service will be created as well, which is deployed in the same vxnet as the Kubernetes cluster. 
 
 ## Deletion
 
 ```shell
-kubectl delete -f helloworld-web-deployment.yaml
+# kubectl delete -f helloworld-web-deployment.yaml
 ```
 
 ## Note
 
-1. If wordpress can't access by the IP of loadbalancer, please double check if your account is verified, if not, try to change port as work-around. 
+* If the service can't be accessed by the IP of loadbalancer, please double check if your account is verified. If not, try to change port other than 80 as a temporary solution. 
 
