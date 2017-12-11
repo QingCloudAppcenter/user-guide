@@ -102,13 +102,13 @@ In order to avoid operation trouble, we only open client node to end user curren
 Log in as root/k8s and run commands as below:
 
 ```shell
-kubectl get pods --all-namespaces
+# kubectl get pods --all-namespaces
 ```
 
 which returns all Pods with status to show if the cluster runs normally.
 
 ```shell
-kubectl get service --all-namespaces
+# kubectl get service --all-namespaces
 
 NAMESPACE     NAME                    CLUSTER-IP      EXTERNAL-IP   PORT(S)         AGE
 default       kubernetes              10.96.0.1       <none>        443/TCP         1m
@@ -123,8 +123,8 @@ kube-system   kubernetes-dashboard    10.96.70.70     <none>        80/TCP      
 which returns all services with status. These services are accessable by cluster-ip or service name.  
 
 ```shell
-curl 10.96.0.11:9200/_cluster/health
-curl elasticsearch-logging.kube-system:9200/_cluster/health
+# curl 10.96.0.11:9200/_cluster/health
+# curl elasticsearch-logging.kube-system:9200/_cluster/health
 ```
 
 On client node, the default DNS search domain is _default.svc.cluster.local svc.cluster.local cluster.local_. Therefore, to access the services from non default namespace, end user should add namespace suffix. For more details about Kubernetes DNS support, please refer to Kubernetes Official Document about [DNS Pods and Services](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/).
@@ -136,7 +136,7 @@ Kubernetes cluster on QingCloud integates heapster and dashboard components prov
 Log in client node and run command as below:  
 
 ```shell
-nohup kubectl proxy --address='0.0.0.0' --accept-hosts='.*' --disable-filter=true --accept-paths="^.*" &
+# nohup kubectl proxy --address='0.0.0.0' --accept-hosts='.*' --disable-filter=true --accept-paths="^.*" &
 ```
 
 You also can enable VPN service of VPC and connect this VPN through VPN client, then open the URL on browser: http://\<client node ip\>:8001/ui. The dashboard console is as below:
@@ -150,7 +150,7 @@ You can visit Kibana console for log management at http://\<client node ip\>:800
 End user could find out proxy address for other service by running the command below:  
 
 ```shell
-kubectl cluster-info
+# kubectl cluster-info
 ```
 
 End user needs to import the following indexes on Kibana console to get corresponding log data. All these data is based on timestamp. So input the index name with pattern and timestamp then select field name through drop-down list.  
@@ -256,7 +256,7 @@ As no qingcloud-load-balancer-eip-ids or qingcloud-load-balancer-vxnet-id specif
 Check the service status through kubectl command below. 
 
 ```shell
-kubectl get service
+# kubectl get service
 
 NAME                  CLUSTER-IP     EXTERNAL-IP     PORT(S)        AGE
 helloworld            10.96.146.44   139.198.0.55    80:30760/TCP   3d
@@ -381,7 +381,7 @@ To use capacity volume, specify _storage-class_ to _qingcloud-storageclass-capac
 Run the command as follows:
 
 ```shell
-kubectl get storageclass
+# kubectl get storageclass
 
 NAME                               TYPE
 qingcloud-storageclass (default)   kubernetes.io/qingcloud-volume
@@ -410,7 +410,9 @@ Kubernetes on QingCloud uses QingCloud SDN Passthrough solution for container ne
 
 Please find more examples related to the configuration files of QingCloud volume and Loadbalancer from [Kubernetes on QingCloud github repository](https://github.com/QingCloudAppcenter/kubernetes/tree/master/sample).  
 
-    kubectl apply -f xxxx.yaml
+```shell
+# kubectl apply -f xxxx.yaml
+```
 
 ----
 
@@ -435,7 +437,7 @@ There're two options
 2. Create a router rule which redirects the packages, which are sent to cluster-ip, to some node(like master node) in the cluster. This solution will treat this node as gateway to transmit packages. Please configure dns if end uses still use domain name to access service. This option is just work-around.  
 
 ```shell
-    ip route add 10.96.0.0/16 via $cluster_node_ip
+# ip route add 10.96.0.0/16 via $cluster_node_ip
 ```
 
 ```reStructuredText
@@ -473,10 +475,10 @@ Kubernetes on QingCloud collects logs and stores them in the embeded Elasticsear
 
 1. Log in the client node, start fluent-bit forward server  
 
-  ```console
-  		cd /opt/kubernetes/sample/fluentbit/
-  		sh run.sh
-  ```
+```console
+# cd /opt/kubernetes/sample/fluentbit/
+# sh run.sh
+```
 
 2. Modify the 'Fluent forward server' parameter to clientip:24224 in cluster Environment Settings and save it. 
   fluent-bit agent will be restarted one by one and corresponding logs will be shown on the console later on. 
@@ -485,10 +487,10 @@ Kubernetes on QingCloud collects logs and stores them in the embeded Elasticsear
 
 ### Why log can't be collected  
 
-If you find the logs of the application running on the cluster is not collected by the embedded Elasticsearch service or customized log forwarded service, it might be there is some problem with fluent-bit agent. Please run the command below to delete fluent-bit daemonset. Kubernetes will re-deploy it automatically. 
+If you find the logs of the application running on the cluster is not collected by the embedded Elasticsearch service or your customized log forwarded service, it might be there is some problem with fluent-bit agent. Please run the command below to delete fluent-bit daemonset. Kubernetes will re-deploy it automatically. 
 
 ```  console
-kubectl delete ds/fluent-bit -n kube-system
+# kubectl delete ds/fluent-bit -n kube-system
 ```
 
 ### How to use private registry  
@@ -502,7 +504,7 @@ kubectl delete ds/fluent-bit -n kube-system
   1. Create secret, modify myregistrykey and myregistryserver
 
    ```console
-   kubectl create secret docker-registry myregistrykey --docker-username=username --docker-password=password --docker-email=email --docker-server=myregistryserver.com
+   # kubectl create secret docker-registry myregistrykey --docker-username=username --docker-password=password --docker-email=email --docker-server=myregistryserver.com
    ```
 
   2. Configure imagePullSecrets and use the secret created
