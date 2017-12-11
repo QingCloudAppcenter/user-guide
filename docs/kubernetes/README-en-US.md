@@ -50,6 +50,8 @@ Your Kubernetes cluster will manage your resource from QingCloud platform, so AP
 
 ![](screenshot/create_api_key.png)  
 
+----
+
 ## Create Kubernetes cluster
 
 After all prerequisites described above are created, you are ready to create Kubernetes.
@@ -85,6 +87,7 @@ Specify other parameters for Kubernetes cluster. The following are some of the i
 
 After deploying Kubernetes cluster, end user may check every node's status in the detailed page of the cluster. 'Healthy' under 'Service status' means this node starts successfully. Cluster's status will become to 'Active' after every node becomes healthy, which means end user can use Kubernetes services now.  
 
+----
 
 ## Test Kubernetes
 
