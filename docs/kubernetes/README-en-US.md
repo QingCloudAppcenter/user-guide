@@ -52,30 +52,28 @@ Your Kubernetes cluster will manage your resource from QingCloud platform, so AP
 
 ## Create Kubernetes cluster
 
-After all prerequisites described above are created, then you are ready to create Kubernetes.
+After all prerequisites described above are created, you are ready to create Kubernetes.
 
-### Step 1: Select and configure IaaS resource
-
-After clicking 'Deploy on QingCloud' button and selecting specific zone, it is asked to input Kubernetes cluster name, description and version choose charge mode  
+Please go to [Kubernetes on QingCloud AppCenter](https://appcenter.qingcloud.com/apps/app-u0llx5j8), click 'Deploy on QingCloud' button and select specific zone, and input the cluster info such as name, description, version, node CPU/Memory, how many nodes (nodes count) etc. 
 
 ![](screenshot/base_config.png)  
-Please choose CPU/Memory, nodes count and other configuration based on requirement for different types of Kubernetes nodes, snapshot below is from master node as example. All nodes should use same resource type   
-
 ![](screenshot/master_config.png)  
-Assign vxnet, which should be created before deploying this cluster  
+
+Choose the cluster VxNet for the Kubernetes.  
 
 ![](screenshot/net_config.png)  
-Input other parameters for Kubernetes cluster  
+
+Specify other parameters for Kubernetes cluster. The following are some of the important parameters you need to be aware of.  
 
 ![](screenshot/env_config.png)  
 
-* Kubernetes on QingCloud AppCenter integrates with QingCloud IaaS platform and could operate resources like volume, vxnet...etc, to do that, end user needs to request and generate API access key to call QingCloud IaaS API [Access Key](https://console.qingcloud.com/access_keys/).  
+* Kubernetes on QingCloud AppCenter integrates with QingCloud IaaS platform and could operate resources such as volume, VxNet etc. From the aspect of security, end user needs to use her/his own API access key to call QingCloud IaaS API [Access Key](https://console.qingcloud.com/access_keys/).  
 
-* Kubernetes App uses SDN2.0 provided by QingCloud, every pod will be binded with a NIC and assigned with a private IP address. End user should create vxnets in advance and input their IDs to cluster parameter 'Pod vxnets', like vxnet-xxxxxxx. Our suggestion is that the vxnets specified in cluster parameter should be better only used for Pods in this Kubernetes cluster, every vxnet could contains 200+ IP addresses, creating and specifying more vxnet if you have the requirement for large amount of Pods, separate them by blank character. <font color=red>**Please don't input the vxnet which is consumed by Kubernetes cluster and also all these vxnets should be in same VPC where cluster's vxnet resides in**</font>。
+* The Kubernetes cluster uses QingCloud SDN (software defined network) to provide network for Pods. Every pod will be bound with a NIC and assigned with a private IP address. End user should create vxnets in advance and input the vxnet IDs starting with vxnet- to the parameter 'Pod vxnets'. The Pod vxnets are recommended to be only used for Pods in this Kubernetes cluster. Each vxnet could contains 253 IP addresses, so create multiple vxnets if you have large amount of Pods. Please separate them by blank character in the Environment Settings. <font color=red>**Please don't include cluster vxnet in the Environment Settings. Also all these Pod vxnets should be in the same VPC as the cluster vxnet.**</font>
 
-* Kubernetes App supports the feature of customizing log monitor, end user could search and query all the log resource managed by Kubernetes. The log will be deleted on schedule to save disk space, this schedule could be configured in cluster parameter 'Keep log days'
+* The Kubernetes cluster supports the feature of customizing log monitor. End user can search and query all the log resource managed by the Kubernetes. The log will be deleted on a scheduled time to save disk space. This schedule is configurable by the cluster parameter 'Keep log days'.
 
-* Configure the domain name for Kubernetes API, which is used to generate ca certification of API server  
+* Configure the domain name for Kubernetes API, which is used to generate ca certification of API server.  
 
 ![](screenshot/env_config2.png)
 
@@ -85,9 +83,7 @@ Input other parameters for Kubernetes cluster
 * Set the log level of Kubernetes cluster, manage log through Kibana console.
 * Specify fluentd server address if end user want to use his own log server.
 
-### Step 2: Finish Deployment
-
-After deploying Kubernetes cluster, end user could check every node's status, 'Healthy' under 'Service status' means this node starts successfully. Cluster's status will become to 'Active' after every node become healthy, which means end user could use Kubernetes services.  
+After deploying Kubernetes cluster, end user may check every node's status in the detailed page of the cluster. 'Healthy' under 'Service status' means this node starts successfully. Cluster's status will become to 'Active' after every node becomes healthy, which means end user can use Kubernetes services now.  
 
 
 ## Test Kubernetes
