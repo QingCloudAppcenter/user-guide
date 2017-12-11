@@ -394,10 +394,10 @@ It returns all supported storageclass in cluster. End users could also define th
 
 ### Network
 
-Kubernetes on QingCloud uses QingCloud SDN Passthrough solution for container network. IP assigned to every pod is under same VPC where host instance resides in. Information message about attaching NIC will be shown on QingCloud console when deploying containers. By this solution, Pods and host instances will locate in same layer of network, which will bring less network loss, but there are some limitations:  
+Kubernetes on QingCloud uses QingCloud SDN Passthrough solution for container network. The Pods and Kubernetes cluster hosts are in the same VPC, which means they are on the same layer of network, resulting no network performance lost at all. Whenever you create pods, you will see information message about attaching NIC on QingCloud console. However there are some limitations. 
 
-1. Every host instance supports 64 NICs at most, so Kubernetes App on QingCloud restrict the number of pods on each node to 60.  
-2. Private network(vxnet) is class C subnet, which only supports more than 200 IP addresses, so to support more Pods deployment, please specify more vxnet ID when creating cluster.  
+1. Each host instance supports 64 NICs at most, so we restrict the number of pods on each node to 60.  
+2. Private network (vxnet) is class C subnet, which only supports 253 IP addresses at most. So in order to support a large number of pods, please join multiple vxnets to the VPC when creating cluster.  
 
 ## Tutorial
 
