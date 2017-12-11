@@ -1,6 +1,9 @@
 # Kubernetes on QingCloud AppCenter 用户指南
 
+[Instruction in English is available here](README-en-US.md)
+
 <extoc></extoc>
+
 
 ## 简介
 
