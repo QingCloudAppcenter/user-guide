@@ -99,7 +99,7 @@ In order to avoid operation trouble, we only open client node to end user curren
 
 ![](screenshot/client.png)  
 
-Login as root/k8s and run commands as below:
+Log in as root/k8s and run commands as below:
 
 ```shell
 kubectl get pods --all-namespaces
@@ -131,15 +131,15 @@ On client node, the default DNS search domain is _default.svc.cluster.local svc.
 
 ### Check cluster status through browser
 
-Kubernetes cluster on QingCloud integate heapster and dashboard components provided by Kubernetes and also binds with an elasticsearch kibana cluster, end user could check monitor and log data easily.  
+Kubernetes cluster on QingCloud integates heapster and dashboard components provided by Kubernetes and an elasticsearch kibana cluster. End user can check monitor and log data easily.  
 
-Login client node and run command as below:  
+Log in client node and run command as below:  
 
 ```shell
 nohup kubectl proxy --address='0.0.0.0' --accept-hosts='.*' --disable-filter=true --accept-paths="^.*" &
 ```
 
-Enable VPN service of VPC and connect this VPN through VPN client, then open the URL on browser: http://client node ip:8001/ui，this will open dashboard console as below:
+You also can enable VPN service of VPC and connect this VPN through VPN client, then open the URL on browser: http://\<client node ip\>:8001/ui，this will open dashboard console as below:
 
 ![](screenshot/dashboard.png)
 
