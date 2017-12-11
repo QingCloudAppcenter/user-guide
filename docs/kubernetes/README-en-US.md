@@ -139,11 +139,11 @@ Log in client node and run command as below:
 nohup kubectl proxy --address='0.0.0.0' --accept-hosts='.*' --disable-filter=true --accept-paths="^.*" &
 ```
 
-You also can enable VPN service of VPC and connect this VPN through VPN client, then open the URL on browser: http://\<client node ip\>:8001/ui，this will open dashboard console as below:
+You also can enable VPN service of VPC and connect this VPN through VPN client, then open the URL on browser: http://\<client node ip\>:8001/ui. The dashboard console is as below:
 
 ![](screenshot/dashboard.png)
 
-Kibana console for log management could be visited by URL like: http://client-node-ip:8001/api/v1/proxy/namespaces/kube-system/services/kibana-logging/
+You can visit Kibana console for log management at http://\<client node ip\>:8001/api/v1/proxy/namespaces/kube-system/services/kibana-logging/
 
 ![](screenshot/kibana.png)
 
@@ -166,7 +166,7 @@ End user needs to import below indexes on Kibana console to get corresponding lo
 
 Refer to [Official Document](https://www.elastic.co/guide/en/kibana/current/discover.html)
 
-To get the data structure of heapster, please visit http://client-node-ip:8001/api/v1/proxy/namespaces/kube-system/services/elasticsearch-logging/_cat/indices  
+To get the data structure of heapster, please visit http://\<client node ip\>:8001/api/v1/proxy/namespaces/kube-system/services/elasticsearch-logging/_cat/indices  
 
 Some pre-defined templates are provided by QingCloud, which could be downloaded from [here](screenshot/export.json)  
 
@@ -185,7 +185,6 @@ End user could find out the data under same type at first then build up query ba
 ### Add node
 
 Click 'Add Nodes' button to solve the performance issue when more and more services are deployed in Kubernetes cluster, the newly added node's status could be found in cluster detail page.  
-
 
 ### Delete node
 
