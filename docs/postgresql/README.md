@@ -13,7 +13,9 @@
 - 支持 PostGIS 插件，为 PostgreSQL 提供了存储、查询和修改空间关系的能力。
 - 提供实时监控、健康检查、日志自动清理等功能，方便用户运维。
 - 一键部署，开箱即用。
- >注意：PostgreSQL on QingCloud 支持 PostgreSQL 9.6.3版本，PostGIS 插件的版本是 PostGIS 2.3。
+ >注意：PostgreSQL on QingCloud 支持如下版本:
+ PostgreSQL 9.6.3版本，PostGIS 插件的版本是 PostGIS 2.3   
+ PostgreSQL 10.1 版本，PostGIS 插件的版本是 PostGIS 2.4   
 
 
 ## 简介  
