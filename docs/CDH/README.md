@@ -10,11 +10,11 @@ CDH (*Cloudera's Distribution Including Apache Hadoop*) 是 Cloudera 的 Hadoop 
 
 *CDH on QingCloud* 将安装 CDH 需要的操作系统环境的配置、各个依赖产品/组件的安装及配置等众多纷繁复杂的工作自动化，提前下载好了各个组件的安装包并做了相关分发配置，使得整个 CDH 集群的安装配置过程可以在十分钟左右快速完成，并可以很方便的横向及纵向扩展集群，极大地方便了用户的使用。
 
->*CDH on QingCloud* 目前提供的 CDH 版本是与 CentOS 7.3 兼容的 *CDH 5.13.0* （ Impala 和 Solr 暂没有与CentOS 7.3相兼容的版本 ），完整组件列表及版本详见[官方文档](https://www.cloudera.com/documentation/enterprise/release-notes/topics/cm_vd_cdh_package_tarball_513.html#cm_vd_cdh_package_tarball_513) 
+>*CDH on QingCloud* 目前提供的 CDH 版本是与 CentOS 7.3 兼容的 *CDH 5.13.0* （Impala 和 Solr 暂没有与 CentOS 7.3 相兼容的版本），完整组件列表及版本详见[官方文档](https://www.cloudera.com/documentation/enterprise/release-notes/topics/cm_vd_cdh_package_tarball_513.html#cm_vd_cdh_package_tarball_513)。 
 >
->CDH 某些服务需要 license 才可以使用，用户可以自行获取 license
+>CDH 某些服务需要 license 才可以使用，用户可以自行获取 license。
 >
->*CDH on QingCloud* 提供的是 CDH 在青云上的自动化安装和部署服务，CDH 使用中遇到问题请参考[官方指南](https://www.cloudera.com/documentation/enterprise/latest/topics/introduction.html) 或者联系Cloudera 客服
+>*CDH on QingCloud* 提供的是 CDH 在青云上的自动化安装和部署服务，CDH 使用中遇到问题请参考[官方指南](https://www.cloudera.com/documentation/enterprise/latest/topics/introduction.html) 或者联系Cloudera 客服。
 
 
 
@@ -32,7 +32,7 @@ CDH (*Cloudera's Distribution Including Apache Hadoop*) 是 Cloudera 的 Hadoop 
 
 填写主节点 CPU、内存、节点类型、数据盘类型及大小等配置信息。
 
-> 主节点运行了诸多服务比如 Cloudera Manager Server, Name Node, Resource Manager 等，需要比较大的内存空间，8G以下的内存配置仅供测试。
+> 主节点运行了诸多服务比如 Cloudera Manager Server, Name Node, Resource Manager 等，需要比较大的内存空间，8G 以下的内存配置仅供测试。
 
 ### 第3步：从节点设置
 
@@ -40,9 +40,9 @@ CDH (*Cloudera's Distribution Including Apache Hadoop*) 是 Cloudera 的 Hadoop 
 
 填写 从节点 CPU、内存、节点类型、数据盘类型及大小等配置信息。
 
-> 从节点如需安装除了HDFS data node，YARN NodeManager之外的其他服务如kafka，则至少需要8G内存。
+> 从节点如需安装除了 HDFS data node，YARN NodeManager 之外的其他服务如 Kafka，则至少需要 8G 内存。
 
-> 主节点及从节点均为用户可访问的节点，可通过用户名root，初始密码为p12cHANgepwD 进行访问。
+> 主节点及从节点均为用户可访问的节点，可通过用户名 root，初始密码为 p12cHANgepwD 进行访问。
 
 ### 第4步：网络设置
 
@@ -58,15 +58,15 @@ CDH 主节点及从节点 IP 应该「手动指定」，此为官方推荐做法
 
 ![第8步：服务环境参数设置](../../images/CDH/env_config.png)
 
-由于从节点上通常保存有集群数据，并运行着相关服务，因此默认是不允许删除从节点的。如需删除从节点，请将该节点上的数据及服务妥善处理后，设置配置参数「允许横向缩容」为true, 再进行相关操作。
+由于从节点上通常保存有集群数据，并运行着相关服务，因此默认是不允许删除从节点的。如需删除从节点，请将该节点上的数据及服务妥善处理后，设置配置参数「允许横向缩容」为 true, 再进行相关操作。
 
-操作完成后请将「允许横向缩容」设回false以避免误操作导致数据丢失。
+操作完成后请将「允许横向缩容」设回 false 以避免误操作导致数据丢失。
 
 ![更改配置参数](../../images/CDH/change_env.png)
 
-### 第6步: 用户协议
+### 第 6 步: 用户协议
 
-阅读并同意青云 APP Center 用户协议之后即可开始创建部署CDH所需集群。
+阅读并同意青云 AppCenter 用户协议之后即可开始创建部署 CDH 所需集群。
 
 创建完成后点击集群列表页面相应集群即可查看集群详情：
 
@@ -74,11 +74,11 @@ CDH 主节点及从节点 IP 应该「手动指定」，此为官方推荐做法
 
 
 
-## CDH安装部署
+## CDH 安装部署
 
-### 1. 登录Cloudera Manager
+### 1. 登录 Cloudera Manager
 
-集群创建成功后，Cloudera Manager服务将会部署到主节点中，待各节点服务状态均变为正常后，即可通过访问 `http://<主节点ip>:7180` 开始部署CDH组件到整个集群。
+集群创建成功后，Cloudera Manager 服务将会部署到主节点中，待各节点服务状态均变为正常后，即可通过访问 `http://<主节点ip>:7180` 开始部署 CDH 组件到整个集群。
 
 > 默认用户名及密码admin/admin
 
@@ -106,7 +106,7 @@ CDH 主节点及从节点 IP 应该「手动指定」，此为官方推荐做法
 
 ### 5. 指定安装主机
 
-输入创建好集群的各节点ip，点击搜索列出需要安装CDH的主机列表并全部选中
+输入创建好集群的各节点 ip，点击搜索列出需要安装 CDH 的主机列表并全部选中
 
 ![指定主机](../../images/CDH/hosts.png)
 
@@ -116,21 +116,21 @@ CDH 主节点及从节点 IP 应该「手动指定」，此为官方推荐做法
 
 - 选择默认安装方法为`「使用Parcel」`
 
-- 选择默认CDH版本为`「CDH-5.13.0-1.cdh5.13.0.p0.29」`
+- 选择默认 CDH 版本为`「CDH-5.13.0-1.cdh5.13.0.p0.29」`
 
-- 选择其他需要安装组件的Parcel包，比如Kafka
+- 选择其他需要安装组件的 Parcel 包，比如 Kafka
 
   ![安装包](../../images/CDH/select_parcel.png)
 
->    如需安装Accumulo请选择已经提前下载好的1.7.2版
+>    如需安装 Accumulo 请选择已经提前下载好的 1.7.2 版
 
-- 点击`「使用Parcel」`旁边的`更多选项`进入`Parcel 存储库设置` 
+- 点击`「使用 Parcel」`旁边的`更多选项`进入 `Parcel 存储库设置` 
 
-  ![Parcel存储库设置](../../images/CDH/parcel_config.png)
+  ![Parcel 存储库设置](../../images/CDH/parcel_config.png)
 
 
 
-与 CentOS 7.3 兼容的 CDH 5.13.0 各组件已经提前下载并存储到主节点，包括cdh5, Kafka, kudu, accumulo-c5, spark2和sqoop 。因此需要将这几个组件的`远程Parcel存储库URL`配置为主节点相应路径。假设主节点ip为192.168.100.19 ，则各组件到`远程Parcel存储库URL`需按如下url进行配置：
+与 CentOS 7.3 兼容的 CDH 5.13.0 各组件已经提前下载并存储到主节点，包括 cdh5, Kafka, kudu, accumulo-c5, spark2 和 sqoop 。因此需要将这几个组件的`远程 Parcel 存储库 URL`配置为主节点相应路径。假设主节点 ip 为 192.168.100.19 ，则各组件到`远程 Parcel 存储库 URL`需按如下 url 进行配置：
 
 ```shell
 http://192.168.100.19/cdh5/parcels/5.13.0/
@@ -143,15 +143,15 @@ http://192.168.100.19/sqoop/sqoop-connectors/
 
 
 
-如下为配置好本地parcel存储库url后的效果：
+如下为配置好本地 parcel 存储库 url 后的效果：
 
-![Parcel存储库设置](../../images/CDH/parcel_config2.png)
+![Parcel 存储库设置](../../images/CDH/parcel_config2.png)
 
 
 
-### 7. JDK安装
+### 7. JDK 安装
 
-![JDK安装](../../images/CDH/jdk.png)
+![JDK 安装](../../images/CDH/jdk.png)
 
 
 
@@ -165,7 +165,7 @@ http://192.168.100.19/sqoop/sqoop-connectors/
 
 ### 9. 安装身份验证
 
-- 选择以root用户「登录到所有主机」
+- 选择以 root 用户「登录到所有主机」
 - 选择身份验证方法为「所有主机接受相同密码」
 - 输入密码 p12cHANgepwD
 - 点击继续后，即开始集群安装
@@ -210,7 +210,7 @@ http://192.168.100.19/sqoop/sqoop-connectors/
 
 ### 13. 选择需要安装的服务
 
-> Impala和Solr没有与CentOS 7.3相兼容的版本，因此预定义或自定义安装不能选择包含Impala或Solr的组合
+> Impala 和 Solr 没有与 CentOS 7.3 相兼容的版本，因此预定义或自定义安装不能选择包含 Impala 或 Solr 的组合
 
 - 选择安装预定义的服务组合
 
@@ -242,7 +242,7 @@ http://192.168.100.19/sqoop/sqoop-connectors/
 
 为服务选定主机后，点击下一步将进入数据库设置页面。
 
-各服务需要输入的数据库名称和用户名如下图所示，密码均为`CDH@qingcloud2017`
+各服务需要输入的数据库名称和用户名如下图所示，密码均为 `CDH@qingcloud2017`
 
 ![集群安装](../../images/CDH/db_config.png)
 
@@ -272,7 +272,7 @@ http://192.168.100.19/sqoop/sqoop-connectors/
 
 
 
-点击完成将看到Cloudera Manager管理界面
+点击完成将看到 Cloudera Manager 管理界面
 
 ![集群安装](../../images/CDH/cm1.png)
 
@@ -306,7 +306,7 @@ CDH on QingCloud 中主节点唯一，用户可以增加从节点。
 
 下面将逐一演示每一步：
 
-#### 第1步：添加从节点到 CDH on QingCloud 集群中
+#### 第 1 步：添加从节点到 CDH on QingCloud 集群中
 
 待新添加节点的「服务状态」变为正常后，继续下一步
 
@@ -316,7 +316,7 @@ CDH on QingCloud 中主节点唯一，用户可以增加从节点。
 
 
 
-#### 第2步：在 Cloudera Manager 里将该新增节点加入 CDH 集群
+#### 第 2 步：在 Cloudera Manager 里将该新增节点加入 CDH 集群
 
 进入 Cloudera Manager 的主机->所有主机页面，点击添加新主机
 
@@ -324,7 +324,7 @@ CDH on QingCloud 中主节点唯一，用户可以增加从节点。
 
 
 
-​	然后按如下图示输入新增节点IP，密码等配置，依次点「继续」直至完成：
+​	然后按如下图示输入新增节点 IP，密码等配置，依次点「继续」直至完成：
 
 
 
@@ -354,7 +354,7 @@ CDH on QingCloud 中主节点唯一，用户可以增加从节点。
 
 ![增加节点](../../images/CDH/add_node12.png)
 
-#### 第3步：创建从节点的主机模版，将需要部署在从节点的角色加入该模版
+#### 第 3 步：创建从节点的主机模版，将需要部署在从节点的角色加入该模版
 
 ![增加节点](../../images/CDH/create_template1.png)
 
@@ -362,7 +362,7 @@ CDH on QingCloud 中主节点唯一，用户可以增加从节点。
 
 
 
-#### 第4步：在新加入的从节点主机上应用从节点模版，以部署从节点角色到该主机
+#### 第 4 步：在新加入的从节点主机上应用从节点模版，以部署从节点角色到该主机
 
 ![增加节点](../../images/CDH/add_node13.png)
 
@@ -370,7 +370,7 @@ CDH on QingCloud 中主节点唯一，用户可以增加从节点。
 
 ![增加节点](../../images/CDH/add_node15.png)
 
-#### 第5步：重启过期服务使新配置生效
+#### 第 5 步：重启过期服务使新配置生效
 
 添加节点后，Cloudera Manager 会显示如下「过期配置：需要重新部署客户端配置」的提示，点击该信息将进入过期配置页面
 
@@ -388,7 +388,7 @@ CDH on QingCloud 中主节点唯一，用户可以增加从节点。
 
 ### 删除节点
 
-CDH on QingCloud 中主节点唯一且不可删除，从节点最少为3个
+CDH on QingCloud 中主节点唯一且不可删除，从节点最少为 3 个
 
 删除从节点需要如下几步：
 
@@ -410,9 +410,9 @@ CDH on QingCloud 中主节点唯一且不可删除，从节点最少为3个
 
 下面将逐一演示有关步骤：
 
-#### 第1步：确保待删除从节点上的数据和服务已经妥善处理，删除该节点不会导致数据丢失
+#### 第 1 步：确保待删除从节点上的数据和服务已经妥善处理，删除该节点不会导致数据丢失
 
-#### 第2步：在 Cloudera Manager 里将该从节点从 CDH 集群删除
+#### 第 2 步：在 Cloudera Manager 里将该从节点从 CDH 集群删除
 
 ![增加节点](../../images/CDH/delete_node1.png)
 
@@ -420,7 +420,7 @@ CDH on QingCloud 中主节点唯一且不可删除，从节点最少为3个
 
 ![增加节点](../../images/CDH/delete_node3.png)
 
-#### 第3步：将该从节点从 Cloudera Manager 删除
+#### 第 3 步：将该从节点从 Cloudera Manager 删除
 
 ![增加节点](../../images/CDH/delete_node4.png)
 
@@ -434,13 +434,13 @@ service cloudera-scm-agent stop
 
 ![增加节点](../../images/CDH/delete_node6.png)
 
-#### 第4步：重启过期服务使新配置生效
+#### 第 4 步：重启过期服务使新配置生效
 
 > 参考增加节点相关步骤
 
-#### 第5步：将配置参数里的「允许横向缩容」设置为 true 
+#### 第 5 步：将配置参数里的「允许横向缩容」设置为 true 
 
-#### 第6步：将该节点从 CDH on QingCloud 集群删除
+#### 第 6 步：将该节点从 CDH on QingCloud 集群删除
 
 
 
@@ -448,17 +448,17 @@ service cloudera-scm-agent stop
 
 
 
-#### 第7步：将配置参数里的「允许横向缩容」设置为 false 
+#### 第 7 步：将配置参数里的「允许横向缩容」设置为 false 
 
 
 
 ### 纵向伸缩
 
-CDH允许分别对各种角色的节点进行纵向的扩容及缩容。
+CDH 允许分别对各种角色的节点进行纵向的扩容及缩容。
 
 > 扩容/缩容后，Cloudera Manager 服务需要一点时间重新启动，在此期间它的服务暂不可访问
 >
-> 扩容/缩容或者集群关闭再启动后，Cloudera Manager的某些服务如 Service Monitor, Host Monitor, Reports Manager, Activity Manager, Event Server 可能需要手动启动
+> 扩容/缩容或者集群关闭再启动后，Cloudera Manager 的某些服务如 Service Monitor, Host Monitor, Reports Manager, Activity Manager, Event Server 可能需要手动启动
 
 
 
