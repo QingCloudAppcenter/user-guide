@@ -1,23 +1,24 @@
-# 在 QingCloud Kubernetes 上部署 Helloworld Service
+# Deploy Helloworld Service on QingCloud Kubernetes
 
 {% include "../auto-i18n.md" %}
 
-## 部署
+## Deployment
 
-1. 先在 QingCloud 上部署一套 Kubernetes 集群。
-2. 配置好 kubectl 环境，或者直接登陆到客户端（client）节点上进行操作。
-3. 准备好一个可用的公网 IP (EIP) 地址,复制 ID。这个eip为可用状态，创建服务时，程序会自动创建负载均衡器，并绑定这个IP，
+1. Deploy [Kuberntes cluster on QingCloud](../README-en-US.md). 
+2. Make sure kubectl works on your local machine or log into the client node of the Kubernetes cluster. 
+3. Create an EIP on QingCloud console. 
 
+Then input the following commands.
 
 ```shell
-git clone https://github.com/QingCloudAppcenter/kubernetes.git
-cd kubernetes/sample
-./deploy-helloworld.sh -e eip-xxx
+# git clone https://github.com/QingCloudAppcenter/kubernetes.git
+# cd kubernetes/sample
+# ./deploy-helloworld.sh -e eip-xxxxxxxx
 ```
 
-将上面的参数中的 eip 替换成我们前面准备好的 ID。
+Replace the eip id with the one you created. 
 
-执行后将输出：
+The result will be as follows. 
 
 ```shell
 deployment "helloworld" created
@@ -25,28 +26,26 @@ service "helloworld" created
 service "helloworld-internal" created
 ```
 
-通过 kubectl 查看 pod 以及 service
+Check pods and services via kubectl 
 
 ```shell
-kubectl get pods -o wide
+# kubectl get pods -o wide
 NAME                               READY     STATUS    RESTARTS   AGE       IP                NODE
 helloworld-2920729173-57nwc        1/1       Running   0          37s       192.168.102.244   i-73baa3ue
 helloworld-2920729173-sz05f        1/1       Running   0          37s       192.168.102.242   i-fqauml9r
 ```
 
 ```shell
-kubectl get service
+# kubectl get service
 NAME                  CLUSTER-IP      EXTERNAL-IP     PORT(S)        AGE
 helloworld            10.96.200.197   139.198.0.55    80:32689/TCP   2m
 helloworld-internal   10.96.147.153   192.168.0.8     80:31128/TCP   2m
 ```
 
-输出结果中的 ID 以及 IP 地址根据您的环境不同会有变化。
-
-我们通过浏览器打开负载均衡器 IP 地址（注意：如果是内网的负载均衡器，需要您通过 VPN 连接到 Kubernetes 所在的 VPC），或者通过命令行进行测试。
+Open browser and access helloworld page through the IP address of loadbalancer (Note: If this loadbalancer is vxnet type, please enable VPN service and connect it through VPN client), or test it by command line as the following:  
 
 ```shell
-curl -H "accept: application/yaml" http://139.198.0.55/env
+# curl -H "accept: application/yaml" http://139.198.0.55/env
 name: env
 summary: ""
 data:
@@ -77,11 +76,11 @@ data:
   PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ```
 
-这个接口输出的是该 pod 的系统环境变量。
+The API above outputs the environment variables of the pod. 
 
-注：示例中的 helloworld service 用的是一个 go 的 server 端探针程序，支持的更多接口请参看 github 源码 [go-probe](https://github.com/jolestar/go-probe)。
+**Note**: This example uses probe program on server side written in go. For more reference, please go to [go-probe](https://github.com/jolestar/go-probe). 
 
-## Spec 说明
+## Specifications
 
 ```yaml
 apiVersion: extensions/v1beta1
@@ -131,17 +130,17 @@ spec:
   type: LoadBalancer
 ```
 
-上例中的 helloworld service，首先定义了一个 Deployment，replicas 为 2，也就是部署后会有两个 pod 实例，container spec 中指定了 image 地址以及端口。
+In this example, first define a deployment of helloworld service, and set its replicas to 2, which means two Pods will be deployed. Image pulling URL and port are specified in the container spec section. 
 
-然后定义了两个 service，类型都是 LoadBalancer，不过一个指定了 qingcloud-load-balancer-eip-ids，另外一个没有配置 annotations，所以创建后一个会是公网类型的 LoadBalancer，另外一个会是默认的私网类型的 LoadBalancer，使用的是当前集群所在的私网。
+Then define two services with type being LoadBalancer. One service is set qingcloud-load-balancer-eip-ids, and the other one is not set anything in annotations section regarding load balancer. Once deploy this yaml file, a public load balancer specified by the first service will be created; and a private load balancer specificed by the second service will be created as well, which is deployed in the same vxnet as the Kubernetes cluster. 
 
-## 删除
+## Deletion
 
 ```shell
-kubectl delete -f helloworld-web-deployment.yaml
+# kubectl delete -f helloworld-web-deployment.yaml
 ```
 
-## 常见问题
+## Note
 
-1. 如果部署后发现通过公网负载均衡器无法访问访问，请确认您的账号是否通过认证。这种情况可以先通过修改端口解决。
+* If the service can't be accessed by the IP of loadbalancer, please double check if your account is verified. If not, try to change port other than 80 as a temporary solution. 
 

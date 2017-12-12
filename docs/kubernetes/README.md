@@ -1,6 +1,11 @@
 # Kubernetes on QingCloud AppCenter 用户指南
 
+{% include "./auto-i18n.md" %}
+
+[Instruction in English is available here](README-en-US.md)
+
 <extoc></extoc>
+
 
 ## 简介
 
