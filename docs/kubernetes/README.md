@@ -21,30 +21,37 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 
 ### 第一步：选择基本配置
 
-在创建的对话框中，您需要填写名称 (可选)，选择 Kubernetes 版本号以及选择计费方式
-![](screenshot/基本配置.png)
-请根据需要选择 Kubernetes 主节点，节点和日志节点的 CPU、节点配置和数量、下图以主节点为例。所有节点的主机资源类型请保持一致，要么都是性能型，要么都是超高性能型
-![](screenshot/主节点配置.png)
-选择集群主机所在的私网，私网需要在创建集群前准备好。
-![](screenshot/网络配置.png)
-填写 Kubernetes 应用所需参数
-![](screenshot/服务环境配置.png)
+在创建的对话框中，您需要填写名称 (可选)，选择 Kubernetes 版本号以及选择计费方式。  
+![](screenshot/基本配置.png)  
+请根据需要选择 Kubernetes 主节点，节点和日志节点的 CPU、节点配置和数量、下图以主节点为例。所有节点的主机资源类型请保持一致，要么都是性能型，要么都是超高性能型。  
+![](screenshot/主节点配置.png)  
+如果用户选择不部署日志节点（节点个数为0），则需在依赖服务中选择预先部署好的 ELK 集群或者环境变量中指定自建的 Elastic Search 服务器的 IP 地址和端口。  
+![](screenshot/日志节点配置.png)  
+选择集群主机所在的私网，私网需要在创建集群前准备好。  
+![](screenshot/网络配置.png)  
+如果用户不想使用 Kubernetes App 的日志节点和内置的日志管理工具，可以预先部署 [ELK App on QingCloud](https://appcenter.qingcloud.com/apps/app-p6au3oyq)，在此处选择其为Kubernetes 集群的依赖服务。  
+<font color=red>**注意**</font>：日志节点数必须为0，ELK 集群必须和 Kubernetes 集群在同一 VPC 下。  
+![](screenshot/依赖服务配置.png)  
 
-* 为了更好地与青云基础设施集成，Kubernetes 应用需要使用您的 API 秘钥来调用 QingCloud IaaS API。请在控制台生成[秘钥](https://console.qingcloud.com/access_keys/)。
+填写 Kubernetes 应用所需参数：  
+![](screenshot/服务环境配置.png)  
 
-* Kubernetes 应用使用青云提供的 SDN2.0，创建的 Pod 都会绑定一个网卡，分配一个私网地址。这里可以设置所使用的私网 ID，私网需要预先准备好，如(vxnet-xxxxxxx)。建议给 Pod 设置专用的私网，每个私网可以容纳200多个 IP，如果您需要的容器数量较多，请填写多个，之间用空格切分。<font color=red>**Pod 的 vxnet 请不要复用 Kubernetes 所在的 vxnet，且应和 Kubernetes 集群所在的私网在同一 VPC 中**</font>。
+* 为了更好地与青云基础设施集成，Kubernetes 应用需要使用您的 API 秘钥来调用 QingCloud IaaS API。请在控制台生成[秘钥](https://console.qingcloud.com/access_keys/)。  
 
-* Kubernetes 应用内置了自定义日志监控功能，用户可以查询到所有 Kubernetes 管理的资源的日志。为了节省空间，日志会定期销毁。这里可以设置保存日志的天数
+* Kubernetes 应用使用青云提供的 SDN2.0，创建的 Pod 都会绑定一个网卡，分配一个私网地址。这里可以设置所使用的私网 ID，私网需要预先准备好，如(vxnet-xxxxxxx)。建议给 Pod 设置专用的私网，每个私网可以容纳200多个 IP，如果您需要的容器数量较多，请填写多个，之间用空格切分。<font color=red>**Pod 的 vxnet 请不要复用 Kubernetes 所在的 vxnet，且应和 Kubernetes 集群所在的私网在同一 VPC 中**</font>。  
 
-* 这里可以设置 Kubernetes API的域名，用于生成api server使用的ca证书
+* Kubernetes 应用内置了自定义日志监控功能，用户可以查询到所有 Kubernetes 管理的资源的日志。为了节省空间，日志会定期销毁。这里可以设置保存日志的天数。  
 
-![](screenshot/服务环境配置2.png)
+* 这里可以设置 Kubernetes API的域名，用于生成api server使用的ca证书。  
 
-* Registry mirrors Docker hub 官方镜像仓库的 镜像 地址，默认是 docker hub 官方提供的中国区的镜像站点。镜像仓库包含所有官方镜像仓库的所有镜像。
-* Insecure registries Kubernetes 应用支持使用私有容器仓库，方便使用内部容器仓库的用户，青云提供了[harbor应用](https://appcenter.qingcloud.com/apps/app-2mhyb1ui)可以方便用户部署私有容器仓库。如果私有容器仓库没有支持 https，需要将 registry 的 ip 地址填写在这里（如果端口是非 80 端口，也需要填写，格式 ip:port)。
-* Kubernetes 需要从 dockerhub.qingcloud.com 下载镜像，dockerhub.qingcloud.com 是青云提供给开发者的仓库服务，不包含官方镜像，这里需要用户填写 docherhub.qingcloud.com 用户名和密码用来下载镜像包含青云定制的 Kubernetes 服务镜像。系统已经内置了 guest 账号，可以拉取 dockerhub.qingcloud.com 上的公开仓库。
-* 设置 Kubernetes 系统的日志级别，之后可以通过 kibana 查看。
-* 如果用户需要自己对 Kubernetes 的日志或者容器输出的日志进行自定义处理，可以自己搭建 Fluent 或者 Fluent-bit 服务，将服务地址填写到这里，系统会自动将日志转发到填写的日志服务地址上。
+![](screenshot/服务环境配置2.png)  
+
+* Registry mirrors Docker hub 官方镜像仓库的 镜像 地址，默认是 docker hub 官方提供的中国区的镜像站点。镜像仓库包含所有官方镜像仓库的所有镜像。  
+* Insecure registries Kubernetes 应用支持使用私有容器仓库，方便使用内部容器仓库的用户，青云提供了[harbor应用](https://appcenter.qingcloud.com/apps/app-2mhyb1ui)可以方便用户部署私有容器仓库。如果私有容器仓库没有支持 https，需要将 registry 的 ip 地址填写在这里（如果端口是非 80 端口，也需要填写，格式 ip:port)。  
+* Kubernetes 需要从 dockerhub.qingcloud.com 下载镜像，dockerhub.qingcloud.com 是青云提供给开发者的仓库服务，不包含官方镜像，这里需要用户填写 docherhub.qingcloud.com 用户名和密码用来下载镜像包含青云定制的 Kubernetes 服务镜像。系统已经内置了 guest 账号，可以拉取 dockerhub.qingcloud.com 上的公开仓库。  
+* 设置 Kubernetes 系统的日志级别，之后可以通过 kibana 查看。  
+* 如果用户需要自己对 Kubernetes 的日志或者容器输出的日志进行自定义处理，可以自己搭建 Fluent 或者 Fluent-bit 服务，将服务地址填写到这里，系统会自动将日志转发到填写的日志服务地址上。  
+* 如果用户既不想使用 Kubernetes App 的日志节点和内置的日志管理工具，也不想使用青云提供的 ELK App作为依赖服务，而是用自己搭建的 ELK 或者 EFK 服务，可以通过指定 Elastic Search 服务器的 IP 地址和端口，这里要确保 Kubernetes 集群内的节点能够访问这个地址且端口有效，格式 ip:port。  
 
 ### 第二步：创建成功
 
@@ -55,8 +62,8 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 
 ### 使用客户端节点
 
-Kubernetes 集群创建完成之后可以进行测试。找到客户端节点，点击 vnc 图标。
-![](screenshot/跳板机.png)
+Kubernetes 集群创建完成之后可以进行测试。找到客户端节点，点击 vnc 图标。  
+![](screenshot/跳板机.png)  
 使用 root/k8s 登录。执行
 
 ```shell
@@ -89,29 +96,29 @@ curl elasticsearch-logging.kube-system:9200/_cluster/health
 
 ### 通过浏览器查看集群状态
 
-Kubernetes 集群应用集成了官方的监控组件 heapster 和 dashboard。并提供了一个  elasticsearch kibana集群。方便用户查看监控和日志信息。
+Kubernetes 集群应用集成了官方的监控组件 heapster 和 dashboard。并提供了一个  elasticsearch kibana集群。方便用户查看监控和日志信息。  
 
-登录客户端节点后执行
+登录客户端节点后执行  
 
 ```shell
 nohup kubectl proxy --address='0.0.0.0' --accept-hosts='.*' --disable-filter=true --accept-paths="^.*" &
 ```
 
-连接客户端节点所在 vpc 的VPN后，使用浏览器访问 http://客户端节点ip:8001/ui，会自动跳转到dashboard应用。
-例如：
+连接客户端节点所在 vpc 的VPN后，使用浏览器访问 http://客户端节点ip:8001/ui，会自动跳转到dashboard应用。  
+例如：  
 ![](screenshot/dashboard.png)
 
-同样，访问http://客户端节点ip:8001/api/v1/proxy/namespaces/kube-system/services/kibana-logging/ 会打开日志服务的kibana
-如图
+同样，访问http://客户端节点ip:8001/api/v1/proxy/namespaces/kube-system/services/kibana-logging/ 会打开日志服务的kibana  
+如图  
 ![](screenshot/kibana.png)
 
-用户可以执行以下命令获得其他服务的proxy地址
+用户可以执行以下命令获得其他服务的proxy地址  
 
 ```shell
 kubectl cluster-info
 ```
 
-用户需要导入以下index来获取所需数据。数据都是以时间为基准，需要输入index名称的匹配模式和数据的时间戳．输入index匹配模式后，在时间戳下拉框中选择对应的字段然后点击创建即可．
+用户需要导入以下index来获取所需数据。数据都是以时间为基准，需要输入index名称的匹配模式和数据的时间戳．输入index匹配模式后，在时间戳下拉框中选择对应的字段然后点击创建即可。  
 
 | index                 | timestamp                  |
 | --------------------- | -------------------------- |
@@ -124,11 +131,11 @@ kubectl cluster-info
 
 具体配置请参考[官方文档](https://www.elastic.co/guide/en/kibana/current/discover.html)
 
-heapster的数据结构可以访问 http://客户端节点ip:8001/api/v1/proxy/namespaces/kube-system/services/elasticsearch-logging/_cat/indices 获得
+heapster的数据结构可以访问 http://客户端节点ip:8001/api/v1/proxy/namespaces/kube-system/services/elasticsearch-logging/_cat/indices 获得。  
 
-我们提供了一些预置的模板，可以在[这里](screenshot/export.json)下载
+我们提供了一些预置的模板，可以在[这里](screenshot/export.json)下载。  
 
-主要的timelion查询如下
+主要的timelion查询如下  
 
 ```Text
 .es(index='heapster-cpu-*',q="MetricsTags.type:node",split='MetricsTags.host_id:10',timefield='CpuMetricsTimestamp',kibana=true,metric="max:Metrics.cpu/node_utilization.value")
@@ -316,6 +323,7 @@ metadata:
   name: qingcloud-pvc
   annotations:
     volume.beta.kubernetes.io/storage-class: qingcloud-storageclass
+    kubernetes.io/fsType: xfs
 spec:
   accessModes:
     - ReadWriteOnce
@@ -324,7 +332,7 @@ spec:
       storage: 10Gi
 ```
 
-qingcloud-storageclass 已经在 Kubernetes on QingCloud 内置，所以不需要用户自己配置，同时 qingcloud-storageclass 是默认的 storageclass，所以 PersistentVolumeClaim 中的 annotations volume.beta.kubernetes.io/storage-class: qingcloud-storageclass，也可以省略。更完整的例子参看后面教程中的 wordpress 例子。
+qingcloud-storageclass 已经在 Kubernetes on QingCloud 内置，所以不需要用户自己配置，同时 qingcloud-storageclass 是默认的 storageclass，所以 PersistentVolumeClaim 中的 annotations volume.beta.kubernetes.io/storage-class: qingcloud-storageclass，也可以省略，使用默认的文件系统类型 ext4 则可省略 kubernetes.io/fsType 的定义。更完整的例子参看后面教程中的 wordpress 例子。
 
 默认的 qingcloud-storageclass 使用的是性能盘或者超高性能盘，取决于集群节点选择的主机的资源类型(性能型或者超高性能型)，系统会自动根据主机类型进行创建。所以有一个要求就是集群中的所有节点都必须选择一致的资源类型。
 
@@ -364,12 +372,13 @@ Kubernetes on QingCloud 容器网络使用的是 SDN Passthrough 方案，每个
 
 ## 注意事项
 
-1. VPC 的地址范围请不要选择 172.17.0.0/16 这个段，因为这个 docker 默认使用这个段，使用这个段会导致网络问题。
-2. 所有节点的主机资源类型请保持一致，要么都是性能型，要么都是超高性能型。
-3. 节点监控界面中包含当前节点运行的 pod 数量和容器数量。
-4. 由于需要调用 QingCloud IaaS API 以及拉取镜像，请确保集群所在私网能够访问公网（**VPC 绑定了公网 IP**)。
-5. 私有网络负载均衡器的 vxnet 请选择 kubernetes 集群所在的 vxnet，不要和 pod 的 vxnet 混用。
-6. 更多 Kubernetes 的使用方法请参考 [ Kubernetes 官方文档](https://kubernetes.io/docs/home/)。
+1. VPC 的地址范围请不要选择 172.17.0.0/16 这个段，因为这个 docker 默认使用这个段，使用这个段会导致网络问题。  
+2. 所有节点的主机资源类型请保持一致，要么都是性能型，要么都是超高性能型。  
+3. 节点监控界面中包含当前节点运行的 pod 数量和容器数量。  
+4. 由于需要调用 QingCloud IaaS API 以及拉取镜像，请确保集群所在私网能够访问公网（**VPC 绑定了公网 IP**)。  
+5. 私有网络负载均衡器的 vxnet 请选择 kubernetes 集群所在的 vxnet，不要和 pod 的 vxnet 混用。  
+6. 如果既部署了日志节点又依赖了外部 ELK 集群，则优先使用自带的日志服务，如果依赖了外部 ELK App 集群，又在环境变量中指定了 Elastic Search 服务器，则优先使用 ELK App 集群。  
+7. 更多 Kubernetes 的使用方法请参考 [ Kubernetes 官方文档](https://kubernetes.io/docs/home/)。  
 
 ## FAQ
 

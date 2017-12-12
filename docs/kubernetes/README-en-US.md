@@ -63,9 +63,18 @@ Please go to [Kubernetes on QingCloud AppCenter](https://appcenter.qingcloud.com
 ![](screenshot/base_config.png)  
 ![](screenshot/master_config.png)  
 
+Please add exteranl ELK app in step 7 or specify Elastic Search server address in environment setting if setting log node count to zero.  
+
+![](screenshot/log_node_config.png)  
+
 Choose the cluster VxNet for the Kubernetes. **Note:** choose cluster VxNet, not Pod VxNet. 
 
 ![](screenshot/net_config.png)  
+
+EFK service is deployed on log nodes to collect and manage log data, you could also choose to rely on [ELK App on QingCloud](https://appcenter.qingcloud.com/apps/app-p6au3oyq) outside of Kubernetes cluster.  
+**Note:** log node count should be zero, ELK cluster should be deployed at first and located in same VPC network as Kubernetes cluster.  
+
+![](screenshot/external_svc_config.png)  
 
 Specify other parameters for Kubernetes cluster. The following are some of the important parameters you need to be aware of.  
 
@@ -86,8 +95,9 @@ The following parameters are optional.
 * **Registry mirrors:** The mirror address for Docker hub registry, the default value is official docker hub mirror address for China.  
 * **Insecure registries:** The Kubernetes cluster supports private docker registry. To help end users using their own internal registry, QingCloud provides [Harbor App](https://appcenter.qingcloud.com/apps/app-2mhyb1ui), which is deployed within a few minutes. Specify corresponding IP address if the private registry doesn't support https or doesn't use 80 port(the format is ip:port).  
 * **Dockerhub Username & Password:** The Kubernetes cluster needs to pull necessary images customized by QingCloud from dockerhub.qingcloud.com, so end user needs to input user name and password of docherhub.qingcloud.com. The cluster already binds guest account to pull images on public repositories from dockerhub.qingcloud.com. Please go to QingCloud console, `Container Platform -> Docker Hub` to create your own repository.  
-* **Kubernetes log level:** Set the log level of Kubernetes cluster. You can view log through Kibana console.
-* **Fluent forward server:** Specify fluentd server address if end user wants to use her/his own log server.
+* **Kubernetes log level:** Set the log level of Kubernetes cluster. You can view log through Kibana console.  
+* **Fluent forward server:** Specify fluentd server address if end user wants to use her/his own log server.  
+* **Elastic Search server:** Specify Elastic Search server address if end user wants to use her/his own ES service, the format is ip:port, make sure the ip and port are accessible.  
 
 After deploying Kubernetes cluster, end user may check every node's status in the detailed page of the cluster. 'Healthy' under 'Service status' means this node starts successfully. Cluster's status will become to 'Active' after every node becomes healthy, which means end user can use Kubernetes services now.  
 
@@ -367,6 +377,7 @@ metadata:
   name: qingcloud-pvc
   annotations:
     volume.beta.kubernetes.io/storage-class: qingcloud-storageclass
+    kubernetes.io/fsType: xfs
 spec:
   accessModes:
     - ReadWriteOnce
@@ -375,7 +386,7 @@ spec:
       storage: 10Gi
 ```
 
-We already developed QingCloud plugin to support Kubernetes PersistentVolumeClaim. And the plugin _qingcloud-storageclass_ is integrated into the Kubernetes cluster by default, which means end users don't need any more configurations, so end users can skip setting annotations _volume.beta.kubernetes.io/storage-class: qingcloud-storageclass_ in PersistentVolumeClaim specification. Please refer to the example of wordpress below for more details.  
+We already developed QingCloud plugin to support Kubernetes PersistentVolumeClaim. And the plugin _qingcloud-storageclass_ is integrated into the Kubernetes cluster by default, which means end users don't need any more configurations, so end users can skip setting annotations _volume.beta.kubernetes.io/storage-class: qingcloud-storageclass_ in PersistentVolumeClaim specification, the default fsType is ext4, skip setting annotations _kubernetes.io/fsType_ if no customization requirement. Please refer to the example of wordpress below for more details.  
 
 qingcloud-storageclass supports high performance and super high performance volume types, which depends on the volume type of cluster nodes when deploying. The storage plugin will create corresponding volumes automatically based on the resource type of host instances. That's the reason Kubernetes App asks to use same resource type when deploying.  
 
@@ -425,7 +436,8 @@ Please find more examples related to the configuration files of QingCloud volume
 3. The number of Pods and containers are displayed on the cluster built-in node monitor section on the cluster detailed page of QingCloud console.  
 4. Make sure vxnet could access intenet for calling QingCloud IaaS API and pulling images (**Please bind EIP to VPC**).  
 5. Please use cluster vxnet just for kubernetes cluster, and use pod vxnets just for pods deployment. Don't mess them up. Also make cluster vxnet and pod vxnets in the same VPC.  
-6. Please refer to [ Kubernetes Official Document](https://kubernetes.io/docs/home/) for more usage about Kubernetes.  
+6. If end users choose to deploy log nodes and external ELK App cluster at same time by mistake, will use log nodes to manage log data by default, and if external ELK App cluster is deployed and Elastic Search server address is set at same time by mistake, will use exteral ELK App cluster by default.  
+7. Please refer to [ Kubernetes Official Document](https://kubernetes.io/docs/home/) for more usage about Kubernetes.  
 
 ----
 
