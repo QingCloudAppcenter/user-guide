@@ -1,5 +1,6 @@
 # QingCloud Kubernetes Tutorial
 
+{% include "../auto-i18n.md" %}
  
 
 1. [Use QingCloud LoadBalancer to deploy Helloworld Service](helloworld-en-US.md)
