@@ -2,7 +2,7 @@
 
 RadonDB 目前只支持 go-mydumper 方式的数据导入和导出。
 
-[XeLabs/go-mydumper](https://github.com/XeLabs/go-mydumper) 是一个使用 go 语言开发的开源工具，与 [maxbube/mydumper](https://github.com/maxbube/mydumper) 格式完全兼容，但是对并行进行了优化，性能更加卓越。该工具不仅限于 RadonDB 使用，MySQL 也可以使用。
+[XeLabs/go-mydumper](https://github.com/XeLabs/go-mydumper) 是一个使用 go 语言开发的开源工具，与 [maxbube/mydumper](https://github.com/maxbube/mydumper) 格式完全兼容，但是对并行处理进行了优化，性能更加卓越。该工具不仅限于 RadonDB 使用，MySQL 也可以使用。
 
 导入数据到 RadonDB，go-mydumper 会批量并行式导入，非常快捷。
 
@@ -11,11 +11,11 @@ RadonDB 目前只支持 go-mydumper 方式的数据导入和导出。
 ## 1. 安装 go-mydumper
 
 ``` plain
-$git clone https://github.com/XeLabs/go-mydumper
-$cd go-mydumper
-$make
+$ git clone https://github.com/XeLabs/go-mydumper
+$ cd go-mydumper
+$ make
 
-$./bin/mydumper --help
+$ ./bin/mydumper --help
 Usage: ./bin/mydumper -h [HOST] -P [PORT] -u [USER] -p [PASSWORD] -db [DATABASE] -o [OUTDIR]
   -F int
         Split tables into chunks of this output file size. This value is in MB (default 128)
@@ -38,7 +38,7 @@ Usage: ./bin/mydumper -h [HOST] -P [PORT] -u [USER] -p [PASSWORD] -db [DATABASE]
   -u string
         Username with privileges to run the dump
 
-$./bin/myloader --help
+$ ./bin/myloader --help
 Usage: ./bin/myloader -h [HOST] -P [PORT] -u [USER] -p [PASSWORD] -d  [DIR]
   -P int
         TCP/IP port to connect to (default 3306)
@@ -61,7 +61,7 @@ Usage: ./bin/myloader -h [HOST] -P [PORT] -u [USER] -p [PASSWORD] -d  [DIR]
 首先使用 mydumper 从别的 MySQL 数据源导出数据，比如:
 
 ``` plain
-$./bin/mydumper -h 192.168.0.2 -P 3306 -u test -p test -db sbtest  -o sbtest.sql
+$ ./bin/mydumper -h 192.168.0.2 -P 3306 -u test -p test -db sbtest  -o sbtest.sql
  2017/10/25 13:12:52.933391 dumper.go:35:         [INFO]        dumping.database[sbtest].schema...
  2017/10/25 13:12:52.937743 dumper.go:45:         [INFO]        dumping.table[sbtest.benchyou0].schema...
  2017/10/25 13:12:52.937791 dumper.go:168:        [INFO]        dumping.table[sbtest.benchyou0].datas.thread[1]...
@@ -117,7 +117,7 @@ CREATE TABLE `benchyou0` (
 ### 2.3 导入数据到 RadonDB
 
 ```plain
-$./bin/myloader -h 192.168.0.2 -P 3306 -u radondb -p radondb -d sbtest.sql
+$ ./bin/myloader -h 192.168.0.2 -P 3306 -u radondb -p radondb -d sbtest.sql
  2017/10/25 13:04:17.396002 loader.go:75:         [INFO]        restoring.database[sbtest]
  2017/10/25 13:04:17.458076 loader.go:99:         [INFO]        restoring.schema[sbtest.benchyou0]
  2017/10/25 13:04:17.516236 loader.go:99:         [INFO]        restoring.schema[sbtest.benchyou1]
@@ -149,7 +149,7 @@ $./bin/myloader -h 192.168.0.2 -P 3306 -u radondb -p radondb -d sbtest.sql
 可以使用 mydumper 导出 RadonDB 数据，此过程是流式获取 (select 语句加 '/\*backup\*/' hint) 并导出，基本不占用系统内存。
 
 ```plain
-$./bin/mydumper -h 192.168.0.2 -P 3306 -u radondb -p radondb -db sbtest  -o sbtest.sql
+$ ./bin/mydumper -h 192.168.0.2 -P 3306 -u radondb -p radondb -db sbtest  -o sbtest.sql
  2017/10/25 13:12:52.933391 dumper.go:35:         [INFO]        dumping.database[sbtest].schema...
  2017/10/25 13:12:52.937743 dumper.go:45:         [INFO]        dumping.table[sbtest.benchyou0].schema...
  2017/10/25 13:12:52.937791 dumper.go:168:        [INFO]        dumping.table[sbtest.benchyou0].datas.thread[1]...
