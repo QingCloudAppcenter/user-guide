@@ -71,7 +71,7 @@ Query OK, 0 rows affected (0.02 sec)
 `说明:`
 
 * 创建分区信息并在各个分区生成分区表。
-* 分区表语法必须包含 `PARTITION BY HASH(分区键)`。
+* 分区表语法必须包含 `PARTITION BY HASH (分区键)`。
 * 分区键仅支持指定一个列， 该列数据类型没有限制 (BINARY/NULL 类型除外)。
 * 分区方式为 HASH， 根据分区键 HASH 值均匀分散在各个分区。
 * table_options 只支持 ENGINE 和 CHARSET，其他自动被忽略。
@@ -151,8 +151,7 @@ Create Table: CREATE TABLE `t1` (
 
 #### 2.4. 更改表字符集
 
-RadonDB 的表字符集默认为 utf8．
-`ALTER TABLE table_name CONVERT TO CHARACTER SET {charset}`用来修改表字符集。
+RadonDB 的表字符集默认为 utf8，下例语法用来修改表字符集。
 
 `语法:`
 
