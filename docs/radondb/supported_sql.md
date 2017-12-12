@@ -1,18 +1,18 @@
-# RadonDB支持SQL集
+# RadonDB 支持 SQL 集
 
 ## 背景
 
-在SQL语法上， RadonDB与MySQL完全兼容。
+在 SQL 语法上， RadonDB 与 MySQL 完全兼容。
 
-在满足大部分需求场景下， RadonDB的SQL实现只是MySQL一个子集，从而更好的使用和规范。
+在满足大部分需求场景下， RadonDB 的 SQL 实现只是 MySQL 一个子集，从而更好的使用和规范。
 
 ## DDL
 
 ### 1. DATABASE
 
-RadonDB对Database的操作只支持创建和删除。
+RadonDB 对 Database 的操作只支持创建和删除。
 
-#### 1.1. 创建DB
+#### 1.1. 创建 DB
 
 `语法:`
 
@@ -22,7 +22,7 @@ RadonDB对Database的操作只支持创建和删除。
 
 `说明:`
 
-* RadonDB会把此语句直接发到所有后端执行并返回。
+* RadonDB 会把此语句直接发到所有后端执行并返回。
 * *跨分区非原子操作*。
 
 `示例:`
@@ -32,7 +32,7 @@ mysql> CREATE DATABASE sbtest1;
 Query OK, 4 rows affected (0.01 sec)
 ```
 
-#### 1.2. 删除DB
+#### 1.2. 删除 DB
 
 `语法:`
 
@@ -42,7 +42,7 @@ Query OK, 4 rows affected (0.01 sec)
 
 `说明:`
 
-* RadonDB会把此语句直接发到所有后端并返回。
+* RadonDB 会把此语句直接发到所有后端并返回。
 * *跨分区非原子操作*。
 
 `示例:`
@@ -71,13 +71,13 @@ Query OK, 0 rows affected (0.02 sec)
 `说明:`
 
 * 创建分区信息并在各个分区生成分区表。
-* 分区表语法必须包含`PARTITION BY HASH(分区键)`。
-* 分区键仅支持指定一个列， 该列数据类型没有限制(BINARY/NULL类型除外)。
-* 分区方式为HASH， 根据分区键HASH值均匀分散在各个分区。
-* table_options只支持ENGINE和CHARSET，其他自动被忽略。
-* 分区表默认引擎为InnoDB。
-* 表字符集默认为utf8。
-* 不支持非分区键的PRIMARY/UNIQUE约束，直接返回错误。
+* 分区表语法必须包含 `PARTITION BY HASH(分区键)`。
+* 分区键仅支持指定一个列， 该列数据类型没有限制 (BINARY/NULL 类型除外)。
+* 分区方式为 HASH， 根据分区键 HASH 值均匀分散在各个分区。
+* table_options 只支持 ENGINE 和 CHARSET，其他自动被忽略。
+* 分区表默认引擎为 InnoDB。
+* 表字符集默认为 utf8。
+* 不支持非分区键的 PRIMARY/UNIQUE 约束，直接返回错误。
 * *跨分区非原子操作*。
 
 
@@ -121,7 +121,7 @@ ALTER TABLE ... ENGINE={InnoDB|TokuDB...}
 
 `说明:`
 
-* RadonDB根据路由信息，发到相应的后端执行引擎更改。
+* RadonDB 根据路由信息，发到相应的后端执行引擎更改。
 * *跨分区非原子操作*。
 
 `示例: `
@@ -151,7 +151,7 @@ Create Table: CREATE TABLE `t1` (
 
 #### 2.4. 更改表字符集
 
-RadonDB的表字符集默认为utf8．
+RadonDB 的表字符集默认为 utf8．
 `ALTER TABLE table_name CONVERT TO CHARACTER SET {charset}`用来修改表字符集。
 
 `语法:`
@@ -162,7 +162,7 @@ ALTER TABLE table_name CONVERT TO CHARACTER SET {charset}
 
 `说明:`
 
-* RadonDB根据路由信息，发到相应的后端执行表字符集修改。
+* RadonDB 根据路由信息，发到相应的后端执行表字符集修改。
 * *跨分区非原子操作*。
 
 `示例:`
@@ -340,7 +340,7 @@ ERROR 1105 (HY000): unsupported: cannot.modify.the.column.on.shard.key
 
 ### 4. INDEX
 
-为了简化索引操作， RadonDB只支持CREATE/DROP INDEX语法。
+为了简化索引操作， RadonDB 只支持 CREATE/DROP INDEX 语法。
 
 #### 4.1. 添加索引
 
@@ -352,7 +352,7 @@ CREATE INDEX index_name ON table_name (index_col_name,...)
 
 `说明:`
 
-* RadonDB根据路由信息，发到相应的后端执行索引添加。
+* RadonDB 根据路由信息，发到相应的后端执行索引添加。
 * *跨分区非原子操作*。
 
 `示例:`
@@ -372,7 +372,7 @@ Query OK, 0 rows affected (0.17 sec)
 
 `说明:`
 
-* RadonDB根据路由信息，发到相应的后端执行索引删除。
+* RadonDB 根据路由信息，发到相应的后端执行索引删除。
 * *跨分区非原子操作*。
 
 `示例:`
@@ -384,7 +384,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 ## DML
 
-### 1. SELECT语句
+### 1. SELECT 语句
 
 `语法:`
 
@@ -401,9 +401,9 @@ SELECT
 
 `说明:`
 
-* 支持跨分区的count, sum, avg, max, min等聚合函数， *avg字段必须在select_expr中*, 聚合函数只对数值型有效。
-* 支持跨分区的order by, group by, limit等操作， *字段必须在select_expr中*。
-* 支持join等复杂查询，自动路由到计算节点(AP-Node)执行并返回。
+* 支持跨分区的 count, sum, avg, max, min 等聚合函数， *avg 字段必须在 select_expr 中*, 聚合函数只对数值型有效。
+* 支持跨分区的 order by, group by, limit 等操作， *字段必须在 select_expr 中*。
+* 支持 join 等复杂查询，自动路由到计算节点 (AP-Node) 执行并返回。
 
 `示例:`
 
@@ -419,7 +419,7 @@ mysql> SELECT id, age, sum(id), avg(age) FROM t1 GROUP BY id ORDER BY id DESC LI
 
 ```
 
-### 2. INSERT语句
+### 2. INSERT 语句
 
 `语法:`
 
@@ -432,7 +432,7 @@ INSERT INTO tbl_name
 `说明:`
 
 * 支持分布式事务，保证跨分区写入原子性。
-* 支持insert多个值，这些值可以在不同分区。
+* 支持 insert 多个值，这些值可以在不同分区。
 * 必须指定写入列。
 *  *不支持子句*。
 
@@ -443,7 +443,7 @@ mysql> INSERT INTO t1(id, age) VALUES(1, 24), (2, 28), (3, 29);
 Query OK, 3 rows affected (0.01 sec)
 ```
 
-### 3. DELETE语句
+### 3. DELETE 语句
 
 `语法:`
 
@@ -455,7 +455,7 @@ DELETE  FROM tbl_name
 `说明:`
 
 * 支持分布式事务，保证跨分区删除原子性。
-*  *不支持无WHERE条件删除*。
+*  *不支持无 WHERE 条件删除*。
 *  *不支持子句*。
 
 `示例:`
@@ -465,7 +465,7 @@ mysql> DELETE FROM t1 WHERE id=1;
 Query OK, 2 rows affected (0.01 sec)
 ```
 
-### 4. UPDATE语句
+### 4. UPDATE 语句
 
 `语法:`
 
@@ -478,7 +478,7 @@ UPDATE table_reference
 `说明:`
 
 * 支持分布式事务，保证跨分区更新原子性。
-* *不支持无WHERE条件更新*。
+* *不支持无 WHERE 条件更新*。
 * *不支持更新分区键*。
 *  *不支持子句*。
 
@@ -489,7 +489,7 @@ mysql> UPDATE t1 set age=age+1 WHERE id=1;
 Query OK, 1 row affected (0.00 sec)
 ```
 
-### 5. REPLACE语句
+### 5. REPLACE 语句
 
 `语法:`
 
@@ -502,7 +502,7 @@ REPLACE INTO tbl_name
 `说明:`
 
 * 支持分布式事务，保证跨分区写入原子性。
-* 支持replace多个值，这些值可以在不同分区。
+* 支持 replace 多个值，这些值可以在不同分区。
 * 必须指定写入列。
 
 `示例:`
@@ -524,7 +524,7 @@ SHOW ENGINES
 
 `说明:`
 
-* 后端分区MySQL支持的引擎列表。
+* 后端分区 MySQL 支持的引擎列表。
 
 `示例:`
 
@@ -557,7 +557,7 @@ SHOW DATABASES
 
 `说明:`
 
-* 包含系统DB，比如mysql, information_schema
+* 包含系统 DB，比如 mysql, information_schema
 
 `示例:`
 
@@ -588,7 +588,7 @@ SHOW TABLES
 
 `说明:`
 
-* 如果未指定db_name, 则返回当前DB下的表。
+* 如果未指定 db_name, 则返回当前 DB 下的表。
 
 `示例:`
 
@@ -641,7 +641,7 @@ SHOW PROCESSLIST
 
 `说明:`
 
-* 显示的为client到RadonDB的连接情况，并非后端分区MySQL。
+* 显示的为 client 到 RadonDB 的连接情况，并非后端分区 MySQL。
 
 `示例:`
 
@@ -666,8 +666,8 @@ SHOW VARIABLES
 
 `说明:`
 
-* 为了兼容JDBC/mydumper 。
-* SHOW VARIABLES命令会发往后端分区MySQL(随机分区)获取并返回。
+* 为了兼容 JDBC/mydumper 。
+* SHOW VARIABLES 命令会发往后端分区 MySQL (随机分区)获取并返回。
 
 ## USE
 
@@ -681,7 +681,7 @@ USE db_name
 
 `说明:`
 
-* 切换当前session的database
+* 切换当前 session 的 database
 
 `示例:`
 
@@ -702,7 +702,7 @@ KILL processlist_id
 
 `说明:`
 
-* kill某个链接(包含终止链接正在执行的语句)。
+* kill 某个链接(包含终止链接正在执行的语句)。
 
 `示例:`
 
@@ -723,6 +723,6 @@ ERROR 2013 (HY000): Lost connection to MySQL server during query
 
 `说明:`
 
-* 为了兼容JDBC/mydumper 。
-* SET是一个空操作，*所有操作并不会生效*，请勿直接使用。
+* 为了兼容 JDBC/mydumper 。
+* SET 是一个空操作，*所有操作并不会生效*，请勿直接使用。
 
