@@ -18,7 +18,7 @@ RadonDB 是一款基于 MySQL 研发的新一代分布式关系型数据库 (MyN
 
 ### 1. 基本设置
 
-这里可以填写集群的描述等信息。
+这里可以填写新集群的基本信息。
 
 ![基本设置](../../images/radondb/base_step_1.png)
 
@@ -44,7 +44,7 @@ RadonDB 包含三种类型的节点：SQL 节点、存储节点、计算节点�
 
 ### 3. 网络设置
 
-数据库集群服务只能加入已连接路由器的私有网络，并确保该私有网络的 DHCP 处于『打开』状态。 使用一个数据库独享的私有网络的好处是方便您对其做『过滤控制』，同时也不影响其它私有网络的设置。
+为安全起见，数据库集群服务需加入已连接路由器的私有网络，并确保该私有网络的 DHCP 处于『打开』状态 (默认已打开)。 使用一个数据库独享的私有网络的好处是方便您对其做『过滤控制』，同时也不影响其它私有网络的设置。
 
 ![网络设置](../../images/radondb/base_step_5.png)
 
@@ -64,7 +64,7 @@ RadonDB 包含三种类型的节点：SQL 节点、存储节点、计算节点�
 ![基本属性](../../images/radondb/basic_info.png)
 
 
-### 高可用读写IP信息
+### 高可用读写 IP 信息
 
 集群提供两个高可用的读写 IP，分别对应于数据的读和写。
 
@@ -96,7 +96,7 @@ RadonDB 包含三种类型的节点：SQL 节点、存储节点、计算节点�
 
 ### 配置参数
 
-这里列出了可以修改并持久化的配置参数。没有标注会重启服务的参数，都可以运行时修改，对服务没有影响。
+这里列出了可以修改并持久化的配置参数。没有标注会重启服务的那些参数，都可以在服务运行时修改，对服务没有影响。
 
 ![配置参数](../../images/radondb/env.png)
 
@@ -195,13 +195,13 @@ wget -m ftp://SQL节点IP地址/audit
 
 ```plain
 RadonDB:
-1组SQL节点(16C64G超高性能主机)
-4组存储节点(16C64G超高性能主机)
+1 组 SQL 节点 (16C64G 超高性能主机)
+4 组存储节点 (16C64G 超高性能主机)
 sync_binlog=1
 innodb_flush_log_at_trx_commit=1
 
 RDB:
-RDB(16C64G超高性能主机)
+RDB (16C64G 超高性能主机)
 sync_binlog=1
 innodb_flush_log_at_trx_commit=1
 ```
@@ -214,21 +214,21 @@ innodb_flush_log_at_trx_commit=1
 
 | Item      |    Transaction Per Second (TPS) | Response Time(ms) |
 | :-------- | --------:| :--: |
-| RadonDB(4组存储节点)  | 26589 |  20   |
-| 单机MySQL(QingCloud RDB)    |  9346 |  73  |
+| RadonDB (4 组存储节点)  | 26589 |  20   |
+| 单机 MySQL (QingCloud RDB)    |  9346 |  73  |
 
 可以看到 RadonDB 的延迟是单机 MySQL 的 1/3，但性能几乎是单机的 3 倍，这要得益于 RadonDB 对大表进行切分后，用户的写操作在这些小表上可并发式执行。
 
-### 如何压测RadonDB
+### 如何压测 RadonDB
 
-RadonDB支持[sysbench](https://github.com/akopytov/sysbench)和[benchyou](http://github.com/XeLabs/benchyou)性能压测软件。
+RadonDB 支持 [sysbench](https://github.com/akopytov/sysbench) 和 [benchyou](http://github.com/XeLabs/benchyou) 性能压测软件。
 注意：压测前需要修改建表语句指定分区键 (PARTITION BY HASH (分区键))
 
 ## 数据导入导出
 
 关于数据的导入导出，详见：[数据导入导出](./data_import_and_export.md)
 
-## 支持的SQL集
+## 支持的 SQL 集
 
 正如前文所述，RadonDB 高度兼容 MySQL 语法，但也略有不同，详见：[支持的 SQL 集](./supported_sql.md)
 
