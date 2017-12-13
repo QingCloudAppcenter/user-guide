@@ -9,7 +9,6 @@
 * [Deep Learning](docs/DeepLearning/README.md)
 * [etcd](docs/etcd/README.md)
 * [ELK](docs/elk/README.md)
-* [etcd](docs/etcd/README.md)
 * [Harbor](docs/harbor/README.md)
 * [HBase](docs/hbase/README.md)
 * [Kafka](docs/kafka/README.md)
