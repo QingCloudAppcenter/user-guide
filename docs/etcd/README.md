@@ -65,7 +65,7 @@
 
   起始端口设置为目标端口，协议根据需求选择（UDP/TCP)。
 
-  **要点击应用修改将设置同步，否则不会生效**
+  >要点击应用修改将设置同步，否则不会生效
 
 1. 添加端口转发规则
 
@@ -77,14 +77,14 @@
 
   源端口选择协议，端口，然后填入私网 IP 的地址，协议和端口。
 
-  **要点击应用修改将设置同步，否则不会生效**
+  >要点击应用修改将设置同步，否则不会生效
 
 ## 测试 etcd
 
 etcd 创建完成之后可以进行连接测试。您可以在 etcd 同一私有网络或跨网络的客户端上测试，下载 [etcd](https://github.com/coreos/etcd/releases/tag/v3.2.9) 并解压。现假设客户端和 etcd 在同一私有网络，etcd 集群有三个节点，IP 地址分别为192.168.100.10,192.168.100.11,192.168.100.12， 您可以通过如下命令连接 etcd：
 
 ```shell
-etcdctl --endpoints http://192.168.100.10:2379,http://192.168.100.11:2379,http://192.168.100.12:2379 cluster-health
+# ./etcdctl --endpoints http://192.168.100.10:2379,http://192.168.100.11:2379,http://192.168.100.12:2379 cluster-health
 ```
 
 同时该应用也提供了 REST 接口，详情请参考 [官方文档](https://coreos.com/etcd/docs/latest/getting-started-with-etcd.html#reading-and-writing-to-etcd)。
@@ -94,7 +94,7 @@ etcdctl --endpoints http://192.168.100.10:2379,http://192.168.100.11:2379,http:/
 通过 VPN 连接 VPC，然后使用 dig 访问 coredns
 
 ```shell
-dig www.baidu.com @192.168.0.3
+# dig www.baidu.com @192.168.0.3
 ; <<>> DiG 9.9.7-P3 <<>> www.baidu.com
 ;; global options: +cmd
 ;; Got answer:
@@ -116,8 +116,8 @@ www.a.shifen.com.	234	IN	A	61.135.169.125
 ```
 
 ```shell
-curl http://192.168.0.3/v2/keys/skydns/cluster/skydns/domain/test/ -d {"host":"192.168.0.5","port"}
-dig test.domain.skydns.cluster @192.168.0.3
+# curl http://192.168.0.3/v2/keys/skydns/cluster/skydns/domain/test/ -d {"host":"192.168.0.5","port"}
+# dig test.domain.skydns.cluster @192.168.0.3
 ```
 
 返回了地址记录
