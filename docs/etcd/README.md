@@ -8,9 +8,9 @@
 
 ## 创建 etcd 集群
 
-> etcd 集群需要运行在受管私有网络中。所以在创建一个 etcd 集群之前，需要创建一个 [VPC](https://docs.qingcloud.com/guide/compute_network/vpc.html#id3) 和一个[受管私有网络](https://docs.qingcloud.com/guide/compute_network/vpc.html#id5)，受管私有网络需要加入 VPC，并开启 DHCP 服务（默认开启）。（可选步骤）
-除使用代理节点外，用户也可以使用青云的[负载均衡器](https://docs.qingcloud.com/guide/compute_network/loadbalancer.html#guide-loadbalancer)访问etcd服务。这里需要创建一个监听2379端口的监听器，具体请参考[这里
-](https://docs.qingcloud.com/guide/compute_network/loadbalancer.html#tcp)
+> etcd 集群需要运行在受管私有网络中。所以在创建一个 etcd 集群之前，需要创建一个 [VPC](https://appcenter-docs.qingcloud.com/user-guide/apps/docs/network-config/create_vxnet.html#1-创建-vpc-网络) 和一个[受管私有网络](https://appcenter-docs.qingcloud.com/user-guide/apps/docs/network-config/create_vxnet.html#2创建私有网络)，受管私有网络需要加入 VPC，并开启 DHCP 服务（默认开启）。
+除使用代理节点外，用户也可以使用青云的负载均衡器访问etcd服务。这里需要创建一个监听2379端口的监听器，具体请参考[这里
+](https://appcenter-docs.qingcloud.com/user-guide/apps/docs/network-config/public_loadbalancer.html#3为负载均衡器添加监听器)
 
 ### 第一步：选择基本配置
 
