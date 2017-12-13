@@ -9,8 +9,6 @@
 ## 创建 etcd 集群
 
 > etcd 集群需要运行在受管私有网络中。所以在创建一个 etcd 集群之前，需要创建一个 [VPC](https://appcenter-docs.qingcloud.com/user-guide/apps/docs/network-config/create_vxnet.html#1-创建-vpc-网络) 和一个[受管私有网络](https://appcenter-docs.qingcloud.com/user-guide/apps/docs/network-config/create_vxnet.html#2创建私有网络)，受管私有网络需要加入 VPC，并开启 DHCP 服务（默认开启）。
-除使用代理节点外，用户也可以使用青云的负载均衡器访问 etcd 服务。这里需要创建一个监听 2379 端口的监听器，具体请参考[这里
-](https://appcenter-docs.qingcloud.com/user-guide/apps/docs/network-config/public_loadbalancer.html#3为负载均衡器添加监听器)。
 
 ### 第一步：选择基本配置
 
@@ -60,8 +58,6 @@
 当 etcd 创建完成之后，您可以查看每个节点的运行状态。当节点的服务状态显示为“正常”状态，表示该节点启动正常。 当每个节点都启动正常后 etcd 集群显示为“活跃”状态，表示您已经可以正常使用 etcd 服务了。
 
 如需使用 coredns 服务，请在 VPC 中添加端口转发规则，将 UDP 53 端口转发到 etcd 代理节点的 UDP 53 端口，并在防火墙中添加 UDP 协议端口 53 下行规则。
-
-如需使用 etcd 服务的负载均衡器，并在防火墙中添加 TCP 协议端口 2379 下行规则。
 
 1. 添加防火墙规则
 
