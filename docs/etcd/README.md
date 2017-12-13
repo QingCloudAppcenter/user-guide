@@ -4,12 +4,12 @@
 
 ## 简介
 
-青云QingCloud etcd 服务提供的是原生 [CoreOS etcd](https://coreos.com/etcd/) 云服务，etcd 是一个为分布式系统设计的分布式可靠的键值存储服务，应用程序可以从etcd中读取写入数据，监控数据变化。它主要用来提供注册服务，配置服务等功能。本应用方便用户在青云平台搭建 etcd 集群。应用借助 appcenter 提供的能力可以进行集群的动态扩容，备份恢复，健康检查和监控.并集成 coredns 方便用户通过 dns 进行服务发现。
+青云QingCloud etcd 服务提供的是原生 [CoreOS etcd](https://coreos.com/etcd/) 云服务，etcd 是一个为分布式系统设计的分布式可靠的键值存储服务，应用程序可以从 etcd 中读取写入数据，监控数据变化。它主要用来提供注册服务，配置服务等功能。本应用方便用户在青云平台搭建 etcd 集群。应用借助 AppCenter 提供的能力可以进行集群的动态扩容，备份恢复，健康检查和监控。并集成 coredns 方便用户通过 DNS 进行服务发现。
 
 ## 创建 etcd 集群
 
 > etcd 集群需要运行在受管私有网络中。所以在创建一个 etcd 集群之前，需要创建一个 [VPC](https://appcenter-docs.qingcloud.com/user-guide/apps/docs/network-config/create_vxnet.html#1-创建-vpc-网络) 和一个[受管私有网络](https://appcenter-docs.qingcloud.com/user-guide/apps/docs/network-config/create_vxnet.html#2创建私有网络)，受管私有网络需要加入 VPC，并开启 DHCP 服务（默认开启）。
-除使用代理节点外，用户也可以使用青云的负载均衡器访问etcd服务。这里需要创建一个监听2379端口的监听器，具体请参考[这里
+除使用代理节点外，用户也可以使用青云的负载均衡器访问 etcd 服务。这里需要创建一个监听 2379 端口的监听器，具体请参考[这里
 ](https://appcenter-docs.qingcloud.com/user-guide/apps/docs/network-config/public_loadbalancer.html#3为负载均衡器添加监听器)。
 
 ### 第一步：选择基本配置
@@ -19,7 +19,7 @@
 
   ![](images/basic1.png)
 
-1. 选择etcd节点机器配置
+1. 选择 etcd 节点机器配置
 
   ![](images/etcd_node1.png)
 
@@ -41,7 +41,7 @@
 
     etcd 历史记录自动清除
 
-+ 开启coredns
++ 开启 coredns
 
     打开 coredns 服务，会在代理节点上 53 端口启动 DNS 服务器。如果启用 coredns 服务，请一定要创建代理节点。
 
@@ -53,7 +53,7 @@
 
     服务信息在 etcd 中的前缀，coredns 会读取 etcd 中这个前缀下的数据，并形成记录。
 
-> 目前集群中 etcd 节点的数量支持 3、5、7. etcd 代理节点没有数量限制。
+> 目前集群中 etcd 节点的数量支持 3、5、7。 etcd 代理节点没有数量限制。
 
 ### 第二步：创建成功
 
@@ -69,7 +69,7 @@
 
   起始端口设置为目标端口，协议根据需求选择（UDP/TCP)。
 
-  ** 要点击应用修改将设置同步，否则不会生效 **
+  **要点击应用修改将设置同步，否则不会生效**
 
 1. 添加端口转发规则
 
@@ -81,11 +81,11 @@
 
   源端口选择协议，端口，然后填入私网 IP 的地址，协议和端口。
 
-  ** 要点击应用修改将设置同步，否则不会生效 **
+  **要点击应用修改将设置同步，否则不会生效**
 
 ## 测试 etcd
 
-etcd 创建完成之后可以进行连接测试。访问 [etcd](https://github.com/coreos/etcd/releases/tag/v3.2.9) 下载 etcd 并解压，您可以在 etcd 同一私有网络或跨网络的客户端上测试。现假设客户端和 etcd 在同一私有网络，etcd 集群有三个节点，IP 地址分别为192.168.100.10,192.168.100.11,192.168.100.12， 您可以通过如下命令连接 etcd：
+etcd 创建完成之后可以进行连接测试。您可以在 etcd 同一私有网络或跨网络的客户端上测试，下载 [etcd](https://github.com/coreos/etcd/releases/tag/v3.2.9) 并解压。现假设客户端和 etcd 在同一私有网络，etcd 集群有三个节点，IP 地址分别为192.168.100.10,192.168.100.11,192.168.100.12， 您可以通过如下命令连接 etcd：
 
 ```shell
 etcdctl --endpoints http://192.168.100.10:2379,http://192.168.100.11:2379,http://192.168.100.12:2379 cluster-health
@@ -93,9 +93,9 @@ etcdctl --endpoints http://192.168.100.10:2379,http://192.168.100.11:2379,http:/
 
 同时该应用也提供了 REST 接口，详情请参考 [官方文档](https://coreos.com/etcd/docs/latest/getting-started-with-etcd.html#reading-and-writing-to-etcd)。
 
-测试 coredns
+## 测试 coredns
 
-通过 VPN 连接 VPC,然后使用 dig 访问 coredns
+通过 VPN 连接 VPC，然后使用 dig 访问 coredns
 
 ```shell
 dig www.baidu.com @192.168.0.3
@@ -137,7 +137,7 @@ dig test.domain.skydns.cluster @192.168.0.3
 
 ### 删除节点
 
-当客户端连接并不多的时候您也可以在 etcd 详细页选中需要删除的节点，然后点“删除”按钮删除节点，以节省资源和费用。 同样，删除节点数只能为偶数，删除代理节点可以同时删除。
+当客户端连接并不多的时候您也可以在 etcd 详细页选中需要删除的节点，然后点“删除”按钮删除节点，以节省资源和费用。 同样，删除节点数只能为偶数已保证集群始终为奇数个节点，可以同时删除代理节点。
 
 ## 注意事项
 
