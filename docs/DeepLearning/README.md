@@ -26,7 +26,7 @@ Keras 是一个高层神经网络 API，由 Python 编写，通过调用其他�
 
 基于青云提供的 NVIDIA Tesla P100 GPU，青云深度学习平台配置了 CUDA8.0 和 cuDNN5，并安装了流行的深度学习框架，如 Caffe(BVLC)，TensorFlow(1.2.1)，Keras(2.0.9)，PyTorch(0.2.0_4)，省去了用户搭建环境的麻烦，提高开发效率。用户无需修改代码，即可把本地的代码运行在云上，还能动态扩展所需资源。
 
-> <font color=red>目前仅 pek3a 支持 GPU，如需在其他区创建可以将 GPU 数量设置为 0。TensorFlow，PyTorch 和 Keras 支持用 CPU 进行深度学习应用的训练和测试，Caffe 需要重新编译才可以。</font>
+> <font color=red>目前仅 pek3a , sh1a 支持 GPU，如需在其他区创建可以将 GPU 数量设置为 0。TensorFlow，PyTorch 和 Keras 支持用 CPU 进行深度学习应用的训练和测试，Caffe 需要重新编译才可以。</font>
 
 ## 部署 Deep Learning 服务
 
