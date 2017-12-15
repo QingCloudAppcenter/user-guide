@@ -63,8 +63,12 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 ### 使用客户端节点
 
 Kubernetes 集群创建完成之后可以进行测试。找到客户端节点，点击 vnc 图标。  
+
+使用 <font color=red>**root/k8s**</font>登录。  
+	
 ![](screenshot/跳板机.png)  
-使用 root/k8s 登录。执行
+  
+执行  
 
 ```shell
 kubectl get pods --all-namespaces
@@ -105,11 +109,13 @@ nohup kubectl proxy --address='0.0.0.0' --accept-hosts='.*' --disable-filter=tru
 ```
 
 连接客户端节点所在 vpc 的VPN后，使用浏览器访问 http://客户端节点ip:8001/ui，会自动跳转到dashboard应用。  
-例如：  
+例如： 
+
 ![](screenshot/dashboard.png)
 
 同样，访问http://客户端节点ip:8001/api/v1/proxy/namespaces/kube-system/services/kibana-logging/ 会打开日志服务的kibana  
 如图  
+
 ![](screenshot/kibana.png)
 
 用户可以执行以下命令获得其他服务的proxy地址  
