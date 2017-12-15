@@ -29,8 +29,8 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 ![](screenshot/日志节点配置.png)  
 选择集群主机所在的私网，私网需要在创建集群前准备好。  
 ![](screenshot/网络配置.png)  
-如果用户不想使用 Kubernetes App 的日志节点和内置的日志管理工具，可以预先部署 [ELK App on QingCloud](https://appcenter.qingcloud.com/apps/app-p6au3oyq)，在此处选择其为Kubernetes 集群的依赖服务。  
-<font color=red>**注意**</font>：日志节点数必须为0，ELK 集群必须和 Kubernetes 集群在同一 VPC 下。  
+如果用户不想使用 Kubernetes App 的日志节点和内置的日志管理工具，可以预先部署 [ELK App on QingCloud](https://appcenter.qingcloud.com/apps/app-p6au3oyq)，在此处选择其为Kubernetes 集群的依赖服务。<font color=red>**注意：日志节点数必须为0，ELK 集群必须和 Kubernetes 集群在同一 VPC 下。**</font>  
+
 ![](screenshot/依赖服务配置.png)  
 
 填写 Kubernetes 应用所需参数：  
