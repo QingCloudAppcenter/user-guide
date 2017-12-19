@@ -98,6 +98,7 @@ The following parameters are optional.
 * **Kubernetes log level:** Set the log level of Kubernetes cluster. You can view log through Kibana console.  
 * **Fluent forward server:** Specify fluentd server address if end user wants to use her/his own log server.  
 * **Elastic Search server:** Specify Elastic Search server address if end user wants to use her/his own ES service, the format is ip:port, make sure the ip and port are accessible.  
+* **Enable Istio:** Istio is an experimental function to connect, manage and secure microservices. We do not recommend you enable this in production environment for an stable version of istio is not available, which can guarantee the performance. Currently we use Istio 0.3.0 without Istio-Initializer, and istioctl has been deployed on client node. More details see[Istio](https://istio.io/)。
 
 After deploying Kubernetes cluster, end user may check every node's status in the detailed page of the cluster. 'Healthy' under 'Service status' means this node starts successfully. Cluster's status will become to 'Active' after every node becomes healthy, which means end user can use Kubernetes services now.  
 

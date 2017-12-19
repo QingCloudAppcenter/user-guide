@@ -52,6 +52,7 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 * 设置 Kubernetes 系统的日志级别，之后可以通过 kibana 查看。  
 * 如果用户需要自己对 Kubernetes 的日志或者容器输出的日志进行自定义处理，可以自己搭建 Fluent 或者 Fluent-bit 服务，将服务地址填写到这里，系统会自动将日志转发到填写的日志服务地址上。  
 * 如果用户既不想使用 Kubernetes App 的日志节点和内置的日志管理工具，也不想使用青云提供的 ELK App作为依赖服务，而是用自己搭建的 ELK 或者 EFK 服务，可以通过指定 Elastic Search 服务器的 IP 地址和端口，这里要确保 Kubernetes 集群内的节点能够访问这个地址且端口有效，格式 ip:port。  
+* Istio 是一个试验性功能，用于提供微服务治理的能力。鉴于Istio 还没有发布一个可以保证性能的稳定版本，因此不建议在生产环境开启此选项。当前集成的Istio 版本为0.3.0，Istio-Initializer 未开启，istioctl 部署在客户端节点。详见[Istio官网](https://istio.io/)。
 
 ### 第二步：创建成功
 
