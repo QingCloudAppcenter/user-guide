@@ -84,6 +84,8 @@ Specify other parameters for Kubernetes cluster. The following are some of the i
 
 * The Kubernetes cluster uses QingCloud SDN (software defined network) to provide network for Pods. Every pod will be bound with a NIC and assigned with a private IP address. End user should create vxnets in advance and input the vxnet IDs starting with _vxnet-_ to the parameter 'Pod vxnets'. The Pod vxnets are recommended to be only used for Pods in this Kubernetes cluster. Each vxnet contains up to 253 IP addresses, so create multiple vxnets if you have large amount of Pods. Please separate them by blank character in the Environment Settings. <font color=red>**Please don't include cluster vxnet in the Environment Settings. Also all these Pod vxnets should be in the same VPC as the cluster vxnet.**</font>
 
+* Enable hostnic: enable hostnic plugin for better network performance with a few limitations. hostnic plugin assigned a nic on host to container and the standalone nic would provide better performance. But the total number of nics that are available on single host is up to 64. So the total number of pod on host can not exceed 64. if you choose to disable hostnic, there would be no such limitation.
+
 * The Kubernetes cluster supports the feature of customizing log monitor. End user can search and query all the log resource managed by the Kubernetes. The log will be deleted on a scheduled time to save disk space. It is configurable by the cluster parameter 'Keep log days'.
 
 * Configure the domain name for Kubernetes API, which is used to generate ca certification of API server.  
