@@ -31,6 +31,7 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 ![](screenshot/网络配置.png)  
 如果用户不想使用 Kubernetes App 的日志节点和内置的日志管理工具，可以预先部署 [ELK App on QingCloud](https://appcenter.qingcloud.com/apps/app-p6au3oyq)，在此处选择其为Kubernetes 集群的依赖服务。<font color=red>**注意：日志节点数必须为0，ELK 集群必须和 Kubernetes 集群在同一 VPC 下。**</font>  
 
+
 ![](screenshot/依赖服务配置.png)  
 
 填写 Kubernetes 应用所需参数：  
@@ -38,7 +39,9 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 
 * 为了更好地与青云基础设施集成，Kubernetes 应用需要使用您的 API 秘钥来调用 QingCloud IaaS API。请在控制台生成[秘钥](https://console.qingcloud.com/access_keys/)。  
 
-* Kubernetes 应用使用青云提供的 SDN2.0，创建的 Pod 都会绑定一个网卡，分配一个私网地址。这里可以设置所使用的私网 ID，私网需要预先准备好，如(vxnet-xxxxxxx)。建议给 Pod 设置专用的私网，每个私网可以容纳200多个 IP，如果您需要的容器数量较多，请填写多个，之间用空格切分。<font color=red>**Pod 的 vxnet 请不要复用 Kubernetes 所在的 vxnet，且应和 Kubernetes 集群所在的私网在同一 VPC 中**</font>。  
+* Kubernetes 应用可选使用青云提供的 SDN2.0，创建的 Pod 都会绑定一个网卡，分配一个私网地址。这里可以设置所使用的私网 ID，私网需要预先准备好，如(vxnet-xxxxxxx)。建议给 Pod 设置专用的私网，每个私网可以容纳200多个 IP，如果您需要的容器数量较多，请填写多个，之间用空格切分。<font color=red>**如果打开hostnic,Pod 的 vxnet 请不要复用 Kubernetes 所在的 vxnet，且应和 Kubernetes 集群所在的私网在同一 VPC 中。如果关闭hostnic,请填写Kubernetes 所在的 vxnet**</font>
+
+* 打开hostnic 如果没有特殊网络性能需求，可以关闭hostnic。主机上运行容器的的限制更少。
 
 * Kubernetes 应用内置了自定义日志监控功能，用户可以查询到所有 Kubernetes 管理的资源的日志。为了节省空间，日志会定期销毁。这里可以设置保存日志的天数。  
 
