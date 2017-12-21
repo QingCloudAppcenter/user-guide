@@ -41,7 +41,7 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 
 * Kubernetes 应用可选使用青云提供的 SDN2.0，创建的 Pod 都会绑定一个网卡，分配一个私网地址。这里可以设置所使用的私网 ID，私网需要预先准备好，如(vxnet-xxxxxxx)。建议给 Pod 设置专用的私网，每个私网可以容纳200多个 IP，如果您需要的容器数量较多，请填写多个，之间用空格切分。<font color=red>**如果打开hostnic,Pod 的 vxnet 请不要复用 Kubernetes 所在的 vxnet，且应和 Kubernetes 集群所在的私网在同一 VPC 中。如果关闭hostnic,请填写Kubernetes 所在的 vxnet**</font>
 
-* 打开hostnic 如果没有特殊网络性能需求，可以关闭hostnic。主机上运行容器的的限制更少。
+* 打开hostnic 如果没有特殊网络性能需求，可以关闭hostnic。主机上运行容器的的限制更少。  
 
 * Kubernetes 应用内置了自定义日志监控功能，用户可以查询到所有 Kubernetes 管理的资源的日志。为了节省空间，日志会定期销毁。这里可以设置保存日志的天数。  
 
@@ -55,7 +55,7 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 * 设置 Kubernetes 系统的日志级别，之后可以通过 kibana 查看。  
 * 如果用户需要自己对 Kubernetes 的日志或者容器输出的日志进行自定义处理，可以自己搭建 Fluent 或者 Fluent-bit 服务，将服务地址填写到这里，系统会自动将日志转发到填写的日志服务地址上。  
 * 如果用户既不想使用 Kubernetes App 的日志节点和内置的日志管理工具，也不想使用青云提供的 ELK App作为依赖服务，而是用自己搭建的 ELK 或者 EFK 服务，可以通过指定 Elastic Search 服务器的 IP 地址和端口，这里要确保 Kubernetes 集群内的节点能够访问这个地址且端口有效，格式 ip:port。  
-* Istio 是一个试验性功能，用于提供微服务治理的能力。鉴于Istio 还没有发布一个可以保证性能的稳定版本，因此不建议在生产环境开启此选项。当前集成的Istio 版本为0.3.0，Istio-Initializer 未开启，istioctl 部署在客户端节点。详见[Istio官网](https://istio.io/)。
+* <font color=red>Istio 是一个试验性功能，用于提供微服务治理的能力。鉴于Istio 还没有发布一个可以保证性能的稳定版本，因此不建议在生产环境开启此选项。</font>当前集成的Istio 版本为0.3.0，Istio-Initializer 未开启，istioctl 部署在客户端节点。详见[Istio官网](https://istio.io/)。  
 
 ### 第二步：创建成功
 
@@ -104,7 +104,7 @@ curl elasticsearch-logging.kube-system:9200/_cluster/health
 
 ### 通过浏览器查看集群状态
 
-Kubernetes 集群应用集成了官方的监控组件 heapster 和 dashboard。并提供了一个  elasticsearch kibana集群。方便用户查看监控和日志信息。  
+Kubernetes 集群应用集成了官方的监控组件 heapster 和 dashboard。并提供了一个 elasticsearch kibana集群。方便用户查看监控和日志信息。  
 
 登录客户端节点后执行  
 
@@ -117,7 +117,7 @@ nohup kubectl proxy --address='0.0.0.0' --accept-hosts='.*' --disable-filter=tru
 
 ![](screenshot/dashboard.png)
 
-同样，访问http://客户端节点ip:8001/api/v1/proxy/namespaces/kube-system/services/kibana-logging/ 会打开日志服务的kibana  
+同样，访问http://客户端节点ip:8001/api/v1/proxy/namespaces/kube-system/services/kibana-logging/ 会打开日志服务的 kibana  
 如图  
 
 ![](screenshot/kibana.png)
@@ -157,27 +157,27 @@ MetricsTags.type:node是不同类型实体的标记（例如 pod， node等）
 
 ### Kubernetes集群监控及应用监控
 
-监控集成了prometheus，Service服务采用了NodePort的部署方式，用户可以访问除客户端节点外的任意节点的30000端口来访问prometheus的Web界面。如可以访问http://<主节点IP>:30000/。
+监控集成了 prometheus，Service 服务采用了 NodePort 的部署方式，用户可以访问除客户端节点外的任意节点的30000端口来访问prometheus的Web界面。如可以访问 http://<主节点IP>:30000/。  
 
-prometheus可以通过其自身的Kubernetes service discovery机制来自动发现需要采集数据的targets。可以在Web界面上看到已发现的target。如下图所示。
+prometheus 可以通过其自身的 Kubernetes service discovery 机制来自动发现需要采集数据的 targets。可以在 Web 界面上看到已发现的 target,如下图所示:    
 
 ![](screenshot/prome_target.PNG)
 
-每个target会以prometheus所定义的描述格式提供监控数据。描述格式请参考[官网](https://prometheus.io/docs/instrumenting/exposition_formats/)。
+每个target会以prometheus所定义的描述格式提供监控数据。描述格式请参考[官网](https://prometheus.io/docs/instrumenting/exposition_formats/)。  
 
-通过采集target所提供的监控数据即可在prometheus所提供的Web界面中绘制出图。点击菜单栏的"Graph"按钮，进入绘图界面，如下图所示。
+通过采集 target 所提供的监控数据即可在prometheus所提供的Web界面中绘制出图。点击菜单栏的 "Graph" 按钮，进入绘图界面，如下图所示。  
 
-![](screenshot/prome_graph.PNG)
+![](screenshot/prome_graph.PNG)  
 
-例如我们可以输入如下的表达式来查看prometheus所启动的container的内存使用情况，如下图所示。
+例如我们可以输入如下的表达式来查看 prometheus 所启动的 container 的内存使用情况，如下图所示:  
 
 ```prome
 container_memory_usage_bytes{pod_name="prometheus-0",container_name="prometheus"}
 ```
 
-![](screenshot/prome_memory.PNG)
+![](screenshot/prome_memory.PNG)  
 
-更多的prometheus表达式规则请查看[官方文档](https://prometheus.io/docs/prometheus/latest/querying/basics/)
+更多的 prometheus 表达式规则请查看[官方文档](https://prometheus.io/docs/prometheus/latest/querying/basics/)  
 
 ## 在线伸缩
 

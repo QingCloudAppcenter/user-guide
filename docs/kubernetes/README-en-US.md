@@ -80,13 +80,13 @@ Specify other parameters for Kubernetes cluster. The following are some of the i
 
 ![](screenshot/env_config.png)  
 
-* Kubernetes on QingCloud AppCenter integrates with QingCloud IaaS platform and could manage resource such as volume, VxNet etc. From the aspect of security, end user needs to use her/his own API access key to call QingCloud IaaS API [Access Key](https://console.qingcloud.com/access_keys/).
+* Kubernetes on QingCloud AppCenter integrates with QingCloud IaaS platform and could manage resource such as volume, VxNet etc. From the aspect of security, end user needs to use her/his own API access key to call QingCloud IaaS API [Access Key](https://console.qingcloud.com/access_keys/).  
 
-* The Kubernetes cluster uses QingCloud SDN (software defined network) to provide network for Pods. Every pod will be bound with a NIC and assigned with a private IP address. End user should create vxnets in advance and input the vxnet IDs starting with _vxnet-_ to the parameter 'Pod vxnets'. The Pod vxnets are recommended to be only used for Pods in this Kubernetes cluster. Each vxnet contains up to 253 IP addresses, so create multiple vxnets if you have large amount of Pods. Please separate them by blank character in the Environment Settings. <font color=red>**Please don't include cluster vxnet in the Environment Settings. Also all these Pod vxnets should be in the same VPC as the cluster vxnet.**</font>
+* The Kubernetes cluster uses QingCloud SDN (software defined network) to provide network for Pods. Every pod will be bound with a NIC and assigned with a private IP address. End user should create vxnets in advance and input the vxnet IDs starting with _vxnet-_ to the parameter 'Pod vxnets'. The Pod vxnets are recommended to be only used for Pods in this Kubernetes cluster. Each vxnet contains up to 253 IP addresses, so create multiple vxnets if you have large amount of Pods. Please separate them by blank character in the Environment Settings. <font color=red>**Please don't include cluster vxnet in the Environment Settings. Also all these Pod vxnets should be in the same VPC as the cluster vxnet.**</font>  
 
-* Enable hostnic: enable hostnic plugin for better network performance with a few limitations. hostnic plugin assigned a nic on host to container and the standalone nic would provide better performance. But the total number of nics that are available on single host is up to 64. So the total number of pod on host can not exceed 64. if you choose to disable hostnic, there would be no such limitation.
+* Enable hostnic: enable hostnic plugin for better network performance with a few limitations. hostnic plugin assigned a nic on host to container and the standalone nic would provide better performance. But the total number of nics that are available on single host is up to 64. So the total number of pod on host can not exceed 64. if you choose to disable hostnic, there would be no such limitation.  
 
-* The Kubernetes cluster supports the feature of customizing log monitor. End user can search and query all the log resource managed by the Kubernetes. The log will be deleted on a scheduled time to save disk space. It is configurable by the cluster parameter 'Keep log days'.
+* The Kubernetes cluster supports the feature of customizing log monitor. End user can search and query all the log resource managed by the Kubernetes. The log will be deleted on a scheduled time to save disk space. It is configurable by the cluster parameter 'Keep log days'.  
 
 * Configure the domain name for Kubernetes API, which is used to generate ca certification of API server.  
 
@@ -100,7 +100,7 @@ The following parameters are optional.
 * **Kubernetes log level:** Set the log level of Kubernetes cluster. You can view log through Kibana console.  
 * **Fluent forward server:** Specify fluentd server address if end user wants to use her/his own log server.  
 * **Elastic Search server:** Specify Elastic Search server address if end user wants to use her/his own ES service, the format is ip:port, make sure the ip and port are accessible.  
-* **Enable Istio:** Istio is an experimental function to connect, manage and secure microservices. We do not recommend you enable this in production environment for an stable version of istio is not available, which can guarantee the performance. Currently we use Istio 0.3.0 without Istio-Initializer, and istioctl has been deployed on client node. More details see[Istio](https://istio.io/)。
+* **Enable Istio:** <font color=red>Istio is an experimental function to connect, manage and secure microservices. We do not recommend you to enable it in production environment before an stable version of istio is released, which can guarantee the quality and performance.</font> Currently we use Istio 0.3.0 without Istio-Initializer, and istioctl has been deployed on client node. More details see[Istio](https://istio.io/).
 
 After deploying Kubernetes cluster, end user may check every node's status in the detailed page of the cluster. 'Healthy' under 'Service status' means this node starts successfully. Cluster's status will become to 'Active' after every node becomes healthy, which means end user can use Kubernetes services now.  
 
@@ -203,13 +203,13 @@ Prometheus can automatically discover targets that need to collect data through 
 
 ! [] (screenshot / prome_target.PNG)
 
-Each target provides monitoring data in the exposition format defined by prometheus. Please refer to [official website](https://prometheus.io/docs/instrumenting/exposition_formats/) for exposition format.
+Each target provides monitoring data in the exposition format defined by prometheus. Please refer to [official website](https://prometheus.io/docs/instrumenting/exposition_formats/) for exposition format.  
 
-By collecting the monitoring data provided by the target, prometheus provides a dashboard for you to draw a graph. Click the "Graph" button on the menu, enter the drawing interface, as shown below.
+By collecting the monitoring data provided by the target, prometheus provides a dashboard for you to draw a graph. Click the "Graph" button on the menu, enter the drawing interface, as shown below.  
 
 ! [] (screenshot / prome_graph.PNG)
 
-For example, we can enter the following expression to see the memory usage of the container started by prometheus, as shown below.
+For example, we can enter the following expression to see the memory usage of the container started by prometheus, as shown below.  
 
 `` `prome
 container_memory_usage_bytes {pod_name = "prometheus-0", container_name = "prometheus"}
@@ -217,7 +217,7 @@ container_memory_usage_bytes {pod_name = "prometheus-0", container_name = "prome
 
 ! [] (screenshot / prome_memory.PNG)
 
-For more prometheus expression rules, please refer to [official documentation](https://prometheus.io/docs/prometheus/latest/querying/basics/).
+For more prometheus expression rules, please refer to [official documentation](https://prometheus.io/docs/prometheus/latest/querying/basics/).  
 
 ----
 
