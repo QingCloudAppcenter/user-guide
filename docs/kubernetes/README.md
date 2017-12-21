@@ -8,7 +8,7 @@
 
 
 ## 简介
-
+ 
 Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器化的应用的调度系统，是一个用于容器应用的自动化部署、弹性伸缩、应用升级以及运维等的开源平台。青云QingCloud Kubernetes 服务旨在方便用户在青云平台搭建 Kubernetes 集群。
 
 ## 创建 Kubernetes 集群
@@ -154,6 +154,30 @@ heapster的数据结构可以访问 http://客户端节点ip:8001/api/v1/proxy/n
 heapster-cpu- 是 heapster-的别称。可以通过_type来加以区分。
 MetricsTags.type:node是不同类型实体的标记（例如 pod， node等）
 用户可以先将同一类型数据找出，然后按照需要构建查询。并绘出图表。
+
+### Kubernetes集群监控及应用监控
+
+监控集成了prometheus，Service服务采用了NodePort的部署方式，用户可以访问除客户端节点外的任意节点的30000端口来访问prometheus的Web界面。如可以访问http://<主节点IP>:30000/。
+
+prometheus可以通过其自身的Kubernetes service discovery机制来自动发现需要采集数据的targets。可以在Web界面上看到已发现的target。如下图所示。
+
+![](screenshot/prome_target.PNG)
+
+每个target会以prometheus所定义的描述格式提供监控数据。描述格式请参考[官网](https://prometheus.io/docs/instrumenting/exposition_formats/)。
+
+通过采集target所提供的监控数据即可在prometheus所提供的Web界面中绘制出图。点击菜单栏的"Graph"按钮，进入绘图界面，如下图所示。
+
+![](screenshot/prome_graph.PNG)
+
+例如我们可以输入如下的表达式来查看prometheus所启动的container的内存使用情况，如下图所示。
+
+```prome
+container_memory_usage_bytes{pod_name="prometheus-0",container_name="prometheus"}
+```
+
+![](screenshot/prome_memory.PNG)
+
+更多的prometheus表达式规则请查看[官方文档](https://prometheus.io/docs/prometheus/latest/querying/basics/)
 
 ## 在线伸缩
 

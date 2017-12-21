@@ -195,6 +195,30 @@ _heapster-cpu-_ is the alias name of _heapster-_, which could be identified by a
 _MetricsTags.type:node_ is the tag for different types of instances, like pod, node...etc.  
 End user could find out the data under same type at first then build up query based on requirement and charts.
 
+### Kubernetes Cluster Monitoring and Application Monitoring
+
+The monitoring integrates with prometheus. The Service using for serving prometheus dashboard is defined as NodePort type. You can access the prometheus web portal with 30,000 ports on any node except the client node. For example, you can visit http://<master node IP>:30000/.
+
+Prometheus can automatically discover targets that need to collect data through its own Kubernetes service discovery mechanism. You can see the discovered target on the web interface. As shown below.
+
+! [] (screenshot / prome_target.PNG)
+
+Each target provides monitoring data in the exposition format defined by prometheus. Please refer to [official website](https://prometheus.io/docs/instrumenting/exposition_formats/) for exposition format.
+
+By collecting the monitoring data provided by the target, prometheus provides a dashboard for you to draw a graph. Click the "Graph" button on the menu, enter the drawing interface, as shown below.
+
+! [] (screenshot / prome_graph.PNG)
+
+For example, we can enter the following expression to see the memory usage of the container started by prometheus, as shown below.
+
+`` `prome
+container_memory_usage_bytes {pod_name = "prometheus-0", container_name = "prometheus"}
+`` `
+
+! [] (screenshot / prome_memory.PNG)
+
+For more prometheus expression rules, please refer to [official documentation](https://prometheus.io/docs/prometheus/latest/querying/basics/).
+
 ----
 
 ## Scale horizontal/vertical
