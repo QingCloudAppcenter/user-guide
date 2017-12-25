@@ -34,15 +34,6 @@ Collabora Office 节点依赖于青云 QingCloud 提供的负载均衡器服务�
 
 出于安全考虑，所有的集群都需要部署在私有网络中。如果之前创建 NextCloud 集群时已经创建了私有网络，则需要与 NextCloud 在同一私有网络下。
 
-### 第4步：服务环境参数设置
-
-访问地址是你用来访问这个集群的地址，可以是负载均衡器绑定的公网 IP，也可以是已经设置好 DNS 解析的域名，比如 `https://abc.xyz` 或者 `http://1.2.3.4` 。
-
-> 如果与 NextCloud 集成，则需要注意必须使用与 NextCloud 相同的协议，且默认不需要添加端口号。
-> 比如：
-> NextCloud 集群中的配置为： https://test.nextcloud.com
-> 则 Collabora Office 集群中的配置应为：https://test.nextcloud.com
-
-### 第5步: 用户协议
+### 第4步: 用户协议
 
 阅读并同意青云 APP Center 用户协议之后即可开始部署应用。
