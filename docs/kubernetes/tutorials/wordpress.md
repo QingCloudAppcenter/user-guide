@@ -1,10 +1,12 @@
 # 在 QingCloud Kubernetes 上部署 Wordpress
 
+{% include "../auto-i18n.md" %}
+
 ## 部署
 
 1. 先在 QingCloud 上部署一套 Kubernetes 集群。
 2. 配置好 kubectl 环境，或者直接登陆到客户端（client）节点上进行操作。
-3. 准备好一个可用的公网  IP (EIP) 地址，并复制 ID。
+3. 准备好一个可用的公网  IP (EIP) 地址，并复制 ID。这个eip为可用状态，创建服务时，程序会自动创建负载均衡器，并绑定这个IP。
 
 ```shell
 git clone https://github.com/QingCloudAppcenter/kubernetes.git

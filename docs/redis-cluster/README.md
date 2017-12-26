@@ -1,5 +1,7 @@
 # Redis Cluster on QingCloud AppCenter
 
+<extoc></extoc>
+
 Redis 是一个使用ANSI C编写的开源、支持网络、基于内存、可选持久性的键值对存储数据库。
 
 Redis cluster on QingCloud AppCenter 基于原生的 Redis 提供了 Redis cluster 的 App，能够在 AppCenter 进行一键部署，有如下特性：
@@ -117,7 +119,7 @@ S: 22b3f49a6b87403faeeb1219881e63096802eb6a 192.168.100.15:6379
 
 ### 2）Java 客户端读写数据示例
 
-首先 [下载 Jedis 库和 Apache Commons Pool 依赖库](https://github.com/xetorthio/jedis/wiki/Getting-started)。 把下载下来的 commons-pool2-2.0.jar 和 jedis-2.7.3.jar 放到同一目录下如 lib/， 创建 TestRedisCluster.java，内容如下。 然后编译、执行该 Java 程序（假设一个分片的主从节点分别是 192.168.100.10， 192.168.100.13， 端口均为 6379）。
+首先 [下载 Jedis 库和 Apache Commons Pool 依赖库](https://github.com/xetorthio/jedis/wiki/Getting-started)。 把下载下来的 commons-pool2-2.0.jar 和 jedis-2.9.0.jar 放到同一目录下如 lib/， 创建 TestRedisCluster.java，内容如下。 然后编译、执行该 Java 程序（假设一个分片的主从节点分别是 192.168.100.10， 192.168.100.13， 端口均为 6379）。
 
 ```shell
 javac -cp :./lib/* TestRedisCluster.java
@@ -131,7 +133,7 @@ import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.HostAndPort;
 
 public class TestRedisCluster {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Set<HostAndPort> jedisClusterNodes = new HashSet<HostAndPort>();
         //Jedis Cluster will attempt to discover cluster nodes automatically
         jedisClusterNodes.add(new HostAndPort(args[0], Integer.valueOf(args[2])));

@@ -1,5 +1,7 @@
 # Apache ZooKeeper on QingCloud AppCenter 用户指南
 
+<extoc></extoc>
+
 ## 简介
 
 青云QingCloud ZooKeeper 服务提供的是原生 [Apache ZooKeeper](http://zookeeper.apache.org/) 云服务，ZooKeeper 是一个高可用的分布式数据管理与系统协调软件，它可以为分布式应用提供状态同步、配置管理、名称服务、群组服务、分布式锁及队列、以及 Leader 选举等服务。
