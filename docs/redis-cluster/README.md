@@ -8,7 +8,7 @@ Redis cluster on QingCloud AppCenter 基于原生的 Redis 提供了 Redis clust
 - 集群支持 HA, 即当某个主节点异常，它的从节点会自动切换成主节点
 - 支持集群的横向及纵向伸缩
 - 一键部署
-- 基于最新的 Redis 4.0.2 稳定版构建
+- 基于最新的 Redis 4.0.6 稳定版构建
 
 ## 创建 Redis cluster App
 
@@ -62,7 +62,7 @@ Redis cluster on QingCloud AppCenter 基于原生的 Redis 提供了 Redis clust
 
 ### 1）检查集群状态
 
-在同一私网中创建一台 Linux 主机，您可能需要先装一些依赖包 (如 Ubuntu 下 apt-get install tcl ruby　和　gem install redis)， 然后请 [下载 Redis 4.x](http://download.redis.io/releases/redis-4.0.2.tar.gz), 解压后进入 Redis src 目录，执行以下命令　（假设 Redis cluster 其中一个节点的 IP 为 192.168.100.13, 端口为 6379)。
+在同一私网中创建一台 Linux 主机，您可能需要先装一些依赖包 (如 Ubuntu 下 apt-get install tcl ruby　和　gem install redis)， 然后请 [下载 Redis 4.x](http://download.redis.io/releases/redis-4.0.6.tar.gz), 解压后进入 Redis src 目录，执行以下命令　（假设 Redis cluster 其中一个节点的 IP 为 192.168.100.13, 端口为 6379)。
 
 ```shell
 ./redis-trib.rb check 192.168.100.13:6379
@@ -229,7 +229,7 @@ Redis 集群服务每个主节点可以支持多个从节点。当读的能力�
 
 ### 从 Redis standalone 迁移数据到 Redis cluster
 
-Redis 4.x　提供了一个从 Redis standalone (包括旧版本 2.8.17) 迁移数据到 Redis cluster　的工具 redis-trib.rb, 请 下载 [Redis 4.x](http://download.redis.io/releases/redis-4.0.2.tar.gz), 解压后进入 Redis src目录， 执行以下命令:　
+Redis 4.x　提供了一个从 Redis standalone (包括旧版本 2.8.17) 迁移数据到 Redis cluster　的工具 redis-trib.rb, 请 下载 [Redis 4.x](http://download.redis.io/releases/redis-4.0.6.tar.gz), 解压后进入 Redis src目录， 执行以下命令:　
 (假设 Redis standalone 的主节点 IP 为 192.168.100.11，端口为 6379, Redis cluster 其中一个 节点的 IP 为 192.168.100.20, 端口为 6379)。
 
 ```shell
