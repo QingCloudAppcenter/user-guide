@@ -238,9 +238,17 @@ Created preferred replica election path with {"version":1,"partitions":[{"topic"
 检查 topic 消费者消费情况
 
 ```shell
-$ kafka-consumer-offset-checker.sh  --zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/kafka/cl-zom1un35 --topic test --group test_group
+$ kafka-consumer-groups.sh --bootstrap-server 192.168.0.3:9092,192.168.0.4:9092,192.168.0.9:9092 --describe --group my-group
+Note: This will not show information about old Zookeeper-based consumers.
 
+
+TOPIC                          PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG        CONSUMER-ID                                       HOST                           CLIENT-ID
+test                          0          10              10              0          consumer-1-0000f0c2-eee7-432b-833b-c882334c8f71   /192.168.100.26                consumer-1
+test                          1          7               7               0          consumer-1-0000f0c2-eee7-432b-833b-c882334c8f71   /192.168.100.26                consumer-1
 ```
+
+>0.9.0.0 以前的版本用 kafka-consumer-offset-checker.sh 查看
+>kafka-consumer-offset-checker.sh  --zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/kafka/cl-zom1un35 --topic test --group my-group
 
 ### 更改 topic 配置参数
 
@@ -248,7 +256,7 @@ $ kafka-consumer-offset-checker.sh  --zookeeper 192.168.0.6:2181,192.168.0.8:218
 
 ```shell
 $ kafka-configs.sh --zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/kafka/cl-zom1un35 --entity-type topics --entity-name test  --alter --add-config max.message.bytes=128000
-
+Completed Updating config for entity: topic 'test'.
 ```
 
 ## 注意事项
