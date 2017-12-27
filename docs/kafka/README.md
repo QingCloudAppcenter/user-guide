@@ -160,6 +160,7 @@ Kafka 创建完后，`Kafka on QingCloud AppCenter` 会自动把相关配置加�
 
 ```shell
 $ kafka-topics.sh  --create --zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/kafka/cl-zom1un35 --replication-factor 1 --partitions 3 --topic test
+Created topic "test".
 ```
 
 ### 查看 topic
@@ -167,7 +168,9 @@ $ kafka-topics.sh  --create --zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.16
 查看集群所有 topic
 
 ```shell
-kafka-topics.sh --list --zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/kafka/cl-zom1un35
+$ kafka-topics.sh --list --zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/kafka/cl-zom1un35
+__consumer_offsets
+test
 ```
 
 ### 向 topic 发送消息
@@ -176,6 +179,9 @@ kafka-topics.sh --list --zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7
 
 ```shell
 $ kafka-console-producer.sh --broker-list 192.168.0.3:9092,192.168.0.4:9092,192.168.0.9:9092 --topic test
+>hi
+>hello world
+>how are you
 ```
 
 ### 消费 topic 消息
@@ -183,7 +189,10 @@ $ kafka-console-producer.sh --broker-list 192.168.0.3:9092,192.168.0.4:9092,192.
 消费 test 消息（若没有使用 --from-beginning ， 则从最新的开始消费）
 
 ```shell
-kafka-console-consumer.sh --bootstrap-server 192.168.0.3:9092,192.168.0.4:9092,192.168.0.9:9092 --topic test --from-beginning
+$ kafka-console-consumer.sh --bootstrap-server 192.168.0.3:9092,192.168.0.4:9092,192.168.0.9:9092 --topic test --from-beginning
+hi
+hello world
+how are you
 ```
 
 ### 查看 topic 消息分布情况
@@ -192,6 +201,10 @@ kafka-console-consumer.sh --bootstrap-server 192.168.0.3:9092,192.168.0.4:9092,1
 
 ```shell
 $ kafka-topics.sh --describe --zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/kafka/cl-zom1un35 --topic test
+Topic:test	  PartitionCount:3	  ReplicationFactor:1	  Configs:
+	     Topic: test	Partition: 0	Leader: -1	Replicas: 1	Isr: 1
+	     Topic: test	Partition: 1	Leader: -1	Replicas: 2	Isr: 2
+	     Topic: test	Partition: 2	Leader: 3	Replicas: 3	Isr: 3
 ```
 
 ### 修改 topic
@@ -200,12 +213,15 @@ $ kafka-topics.sh --describe --zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.1
 
 ```shell
 $ kafka-topics.sh -zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/kafka/cl-zom1un35 --alter --topic test  partitions 2
+
 ```
 
 删除 topic
 
 ```shell
 $ kafka-topics.sh -zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/kafka/cl-zom1un35 --delete --topic test
+Topic test is marked for deletion.
+Note: This will have no impact if delete.topic.enable is not set to true.
 ```
 
 ### 平衡 topic
@@ -214,6 +230,7 @@ $ kafka-topics.sh -zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/
 
 ```shell
 $ kafka-preferred-replica-election.sh -zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/kafka/cl-zom1un35
+Created preferred replica election path with {"version":1,"partitions":[{"topic":"__consumer_offsets","partition":34},{"topic":"__consumer_offsets","partition":36},{"topic":"__consumer_offsets","partition":27},...
 ```
 
 ### 查看消费者消费情况
@@ -222,6 +239,7 @@ $ kafka-preferred-replica-election.sh -zookeeper 192.168.0.6:2181,192.168.0.8:21
 
 ```shell
 $ kafka-consumer-offset-checker.sh  --zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/kafka/cl-zom1un35 --topic test --group test_group
+
 ```
 
 ### 更改 topic 配置参数
@@ -230,6 +248,7 @@ $ kafka-consumer-offset-checker.sh  --zookeeper 192.168.0.6:2181,192.168.0.8:218
 
 ```shell
 $ kafka-configs.sh --zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/kafka/cl-zom1un35 --entity-type topics --entity-name test  --alter --add-config max.message.bytes=128000
+
 ```
 
 ## 注意事项
