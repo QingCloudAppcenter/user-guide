@@ -86,8 +86,8 @@ Kafka 创建完后，`Kafka on QingCloud AppCenter` 会自动把相关配置加�
  <li>浏览器上输入: http://任意节点 IP:port，默认端口为 9000</li>
  <li>如果配置时指定需要登录，请使用配置的帐号登录</li>
  <li>选择 Cluster，Add Cluster</li>
- <li>自定义一个名字,填写所连接的 Kafka 集群地址，青云提供的 Kafka 服务对应的命名空间路径为：zkhost1:port,zkhost2:port...,zkhost/kafka/ 集群ID，例如 Kafka 集群 id 为 cl-j0yf8y1l，Zookeeper 地址：192.168.0.1:2181,192.168.0.2:2181,192.168.0.3:2181，则填写 192.168.0.1:2181,192.168.0.2:2181,192.168.0.3:2181/kafka/cl-j0yf8y1</li>
- <li>选择 Kafka 对应的版本，例如 Kafka 版本为 0.10.2，可以选择 0.10.* ，勾选 jmx 配置</li>
+ <li>自定义一个名字，填写所连接的 Kafka 集群地址，青云提供的 Kafka 服务对应的命名空间路径为：zkhost1:port,zkhost2:port...,zkhost/kafka/ 集群 ID，例如 Kafka 集群 id 为 cl-j0yf8y1l，ZooKeeper 地址：192.168.0.1:2181,192.168.0.2:2181,192.168.0.3:2181，则填写 192.168.0.1:2181,192.168.0.2:2181,192.168.0.3:2181/kafka/cl-j0yf8y1</li>
+ <li>选择 Kafka 对应的版本，例如 Kafka 版本为 0.10.2，可以选择 0.10.*，勾选 jmx 配置</li>
  <li>更改基本配置，save 后可以使用 kafka-manger 来管理和监控 Kafka 集群了</li>
  </ol>
 
@@ -121,7 +121,7 @@ Kafka 创建完后，`Kafka on QingCloud AppCenter` 会自动把相关配置加�
 
 ### 扩容集群
 
-  点击 `扩容集群` ， 可以在集群性能不足时提高集群的配置：
+  点击 `扩容集群`，可以在集群性能不足时提高集群的配置：
 
   ![集群扩容](../../images/kafka/kafka1.0.0_cluster_resize.png)
 
