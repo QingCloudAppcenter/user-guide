@@ -213,7 +213,7 @@ Topic:test	  PartitionCount:3	  ReplicationFactor:1	  Configs:
 
 ```shell
 $ kafka-topics.sh -zookeeper 192.168.0.6:2181,192.168.0.8:2181,192.168.0.7:2181/kafka/cl-zom1un35 --alter --topic test  partitions 2
-
+    
 ```
 
 删除 topic
