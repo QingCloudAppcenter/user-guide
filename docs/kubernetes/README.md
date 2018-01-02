@@ -39,7 +39,7 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 
 * 为了更好地与青云基础设施集成，Kubernetes 应用需要使用您的 API 秘钥来调用 QingCloud IaaS API。请在控制台生成[秘钥](https://console.qingcloud.com/access_keys/)。  
 
-* Kubernetes 应用可选使用青云提供的 SDN2.0，创建的 Pod 都会绑定一个网卡，分配一个私网地址。这里可以设置所使用的私网 ID，私网需要预先准备好，如(vxnet-xxxxxxx)。建议给 Pod 设置专用的私网，每个私网可以容纳200多个 IP，如果您需要的容器数量较多，请填写多个，之间用空格切分。<font color=red>**如果打开hostnic,Pod 的 vxnet 请不要复用 Kubernetes 所在的 vxnet，且应和 Kubernetes 集群所在的私网在同一 VPC 中。如果关闭hostnic,请填写Kubernetes 所在的 vxnet**</font>
+* Kubernetes 应用可选择使用青云提供的 SDN2.0（hostnic），创建的 Pod 都会绑定一个网卡，分配一个私网地址。这里可以设置所使用的私网 ID，私网需要预先准备好，如(vxnet-xxxxxxx)。建议给 Pod 设置专用的私网，每个私网可以容纳200多个 IP，如果您需要的容器数量较多，请填写多个，之间用空格切分。<font color=red>**如果打开hostnic,Pod 的 vxnet 请不要复用 Kubernetes 所在的 vxnet，且应和 Kubernetes 集群所在的私网在同一 VPC 中。如果关闭hostnic,请填写Kubernetes 所在的 vxnet**</font>
 
 * 打开hostnic 如果没有特殊网络性能需求，可以关闭hostnic。主机上运行容器的的限制更少。  
 
@@ -51,7 +51,8 @@ Kubernetes 是一个开源的、用于管理云平台中多个主机上的容器
 
 * Registry mirrors Docker hub 官方镜像仓库的 镜像 地址，默认是 docker hub 官方提供的中国区的镜像站点。镜像仓库包含所有官方镜像仓库的所有镜像。  
 * Insecure registries Kubernetes 应用支持使用私有容器仓库，方便使用内部容器仓库的用户，青云提供了[harbor应用](https://appcenter.qingcloud.com/apps/app-2mhyb1ui)可以方便用户部署私有容器仓库。如果私有容器仓库没有支持 https，需要将 registry 的 ip 地址填写在这里（如果端口是非 80 端口，也需要填写，格式 ip:port)。  
-* Kubernetes 需要从 dockerhub.qingcloud.com 下载镜像，dockerhub.qingcloud.com 是青云提供给开发者的仓库服务，不包含官方镜像，这里需要用户填写 docherhub.qingcloud.com 用户名和密码用来下载镜像包含青云定制的 Kubernetes 服务镜像。系统已经内置了 guest 账号，可以拉取 dockerhub.qingcloud.com 上的公开仓库。  
+* 配置私有镜像服务器地址，指向用户自建的或者通过青云 Harbor app 创建的私有镜像服务器，部署集群的时候会自动登陆，以便用户在使用集群的时候直接拉取镜像。<font color=red>**如果是私网下的镜像服务器，确保和 Kubernetes 集群在同一 VPC下，否则需要做 VPC 之间的隧道打通。如果镜像服务器绑定了域名，需要预先在 VPC 的 DNS 管理菜单下添加域名之后，再创建 Kubernetes 集群**</font>  
+* Kubernetes 需要从 dockerhub.qingcloud.com 或者私有镜像服务器下载镜像，dockerhub.qingcloud.com 是青云提供给开发者的仓库服务，不包含官方镜像，这里需要用户填写 docherhub.qingcloud.com 或者私有镜像服务器的用户名和密码，用来下载镜像。系统已经内置了青云 guest 账号，可以拉取 dockerhub.qingcloud.com 上的公开仓库。  
 * 设置 Kubernetes 系统的日志级别，之后可以通过 kibana 查看。  
 * 如果用户需要自己对 Kubernetes 的日志或者容器输出的日志进行自定义处理，可以自己搭建 Fluent 或者 Fluent-bit 服务，将服务地址填写到这里，系统会自动将日志转发到填写的日志服务地址上。  
 * 如果用户既不想使用 Kubernetes App 的日志节点和内置的日志管理工具，也不想使用青云提供的 ELK App作为依赖服务，而是用自己搭建的 ELK 或者 EFK 服务，可以通过指定 Elastic Search 服务器的 IP 地址和端口，这里要确保 Kubernetes 集群内的节点能够访问这个地址且端口有效，格式 ip:port。  
