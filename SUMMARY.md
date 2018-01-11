@@ -5,6 +5,7 @@
 	* [配置端口转发](docs/network-config/config_portmapping.md)
 	* [配置负载均衡器](docs/network-config/public_loadbalancer.md)
 	* [示例](docs/network-config/example.md)
+* [Airflow](docs/Airflow/README.md)
 * [CDH](docs/CDH/README.md)
 * [Collabora Online](docs/collabora-office/README.md)
 * [Deep Learning](docs/DeepLearning/README.md)
